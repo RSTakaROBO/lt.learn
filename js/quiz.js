@@ -1,15 +1,80 @@
-import { CASE_ORDER, TRAIN_MODE } from "./config.js";
+import { CASE_ORDER, TRAIN_MODE, VOCAB_DIRECTION } from "./config.js";
 import { getCheckedCaseKeys } from "./case-selection.js";
 import { els, refreshQuizElements } from "./dom.js";
 import { state } from "./state.js";
-import { bumpWordStat } from "./storage.js";
+import { bumpWordStat, loadCasesShowTranslation, saveVocabBestStreakIfHigher } from "./storage.js";
 import { answersMatch, escapeHtml } from "./text-utils.js";
 import { lemmaKey, nextTask, nextVocabTask } from "./word-selection.js";
+import { vocabRuUserMatches, wordRuFeedbackLine, wordRuPrimary } from "./word-ru.js";
+
+const VOCAB_STREAK_MULT_FROM = 5;
+
+const STREAK_TIER_CLASSES = ["vocab-streak-mult--blue", "vocab-streak-mult--orange", "vocab-streak-mult--purple"];
+
+function casesLemmaDisplayLine(word) {
+  const nom = word?.nominative ?? "";
+  const hint =
+    loadCasesShowTranslation() && wordRuPrimary(word) ? ` (${wordRuPrimary(word)})` : "";
+  return `${nom}${hint}`;
+}
+
+function streakTierClass(n) {
+  if (n >= 15) return "vocab-streak-mult--purple";
+  if (n >= 10) return "vocab-streak-mult--orange";
+  return "vocab-streak-mult--blue";
+}
+
+function pulseVocabStreakMult(wrap) {
+  if (!wrap || wrap.classList.contains("hidden")) return;
+  const valEl = wrap.querySelector(".vocab-streak-mult-value");
+  wrap.classList.remove("vocab-streak-mult--pulse");
+  void wrap.offsetWidth;
+  const onEnd = () => {
+    valEl?.removeEventListener("animationend", onEnd);
+    wrap.classList.remove("vocab-streak-mult--pulse");
+  };
+  valEl?.addEventListener("animationend", onEnd);
+  wrap.classList.add("vocab-streak-mult--pulse");
+}
+
+/** Обновить множитель в карточке слова; при pulse — короткая анимация (новый верный ответ при уже видимом ×N). */
+function syncVocabStreakMult(opts = {}) {
+  const wrap = document.getElementById("vocab-streak-mult");
+  const valEl = document.getElementById("vocab-streak-mult-value");
+  if (!wrap || !valEl) return;
+  const n = state.vocabCorrectStreak;
+  STREAK_TIER_CLASSES.forEach((c) => wrap.classList.remove(c));
+  wrap.classList.remove("vocab-streak-mult--pulse");
+  if (n < VOCAB_STREAK_MULT_FROM) {
+    wrap.classList.add("hidden");
+    wrap.setAttribute("aria-hidden", "true");
+    valEl.textContent = "";
+    return;
+  }
+  valEl.textContent = `×${n}`;
+  wrap.classList.add(streakTierClass(n));
+  wrap.classList.remove("hidden");
+  wrap.setAttribute("aria-hidden", "false");
+  if (opts.pulse) pulseVocabStreakMult(wrap);
+}
+
+/** Сброс серии слов и скрытие множителя (пропуск, меню, новая сессия). */
+export function resetVocabCorrectStreak() {
+  state.vocabCorrectStreak = 0;
+  const wrap = document.getElementById("vocab-streak-mult");
+  const valEl = document.getElementById("vocab-streak-mult-value");
+  wrap?.classList.add("hidden");
+  wrap?.classList.remove("vocab-streak-mult--pulse");
+  STREAK_TIER_CLASSES.forEach((c) => wrap?.classList.remove(c));
+  wrap?.setAttribute("aria-hidden", "true");
+  if (valEl) valEl.textContent = "";
+}
 
 export function inferQuizMode(task) {
   if (!task?.word) return TRAIN_MODE.CASES;
   if (task.mode === TRAIN_MODE.VOCAB) return TRAIN_MODE.VOCAB;
   if (task.mode === TRAIN_MODE.CASES) return TRAIN_MODE.CASES;
+  if (task.vocabHardcore) return TRAIN_MODE.VOCAB;
   if (Array.isArray(task.choices) && task.choices.length >= 4) return TRAIN_MODE.VOCAB;
   return TRAIN_MODE.CASES;
 }
@@ -25,8 +90,8 @@ export function setQuizSkipAvailable(canSkip) {
 export function resetQuizSkipButtonAppearance() {
   if (!els.btnSkip) return;
   els.btnSkip.textContent = "Пропустить";
-  els.btnSkip.classList.remove("ghost", "start");
-  els.btnSkip.classList.add("primary");
+  els.btnSkip.classList.remove("primary", "start");
+  els.btnSkip.classList.add("ghost");
   els.btnSkip.setAttribute("aria-label", "Пропустить");
 }
 
@@ -34,6 +99,8 @@ export function morphQuizSkipToVocabNext() {
   if (!els.btnSkip) return;
   els.btnSkip.textContent = "Далее";
   els.btnSkip.disabled = false;
+  els.btnSkip.classList.remove("ghost");
+  els.btnSkip.classList.add("primary");
   els.btnSkip.setAttribute("aria-label", "Далее");
 }
 
@@ -52,8 +119,19 @@ export function renderVocabChoices(choices) {
   }
 }
 
+function syncQuizCardLayoutMode(mode, vocabHardcore = false) {
+  const qp = document.getElementById("quiz");
+  if (!qp) return;
+  qp.classList.remove("quiz--cases", "quiz--vocab", "quiz--vocab-hardcore");
+  if (mode === "cases") qp.classList.add("quiz--cases");
+  if (mode === "vocab") {
+    qp.classList.add("quiz--vocab");
+    if (vocabHardcore) qp.classList.add("quiz--vocab-hardcore");
+  }
+}
+
 /** @returns {boolean} false только если режим «слова» запрошен, а разметки vocab в DOM нет */
-export function setQuizUiPhase(phase) {
+export function setQuizUiPhase(phase, opts = {}) {
   refreshQuizElements();
 
   const casesEl = els.quizCasesUi;
@@ -64,17 +142,21 @@ export function setQuizUiPhase(phase) {
   if (!casesEl || !sub || !foot) return false;
 
   if (phase === "cases") {
+    syncQuizCardLayoutMode("cases");
     foot.classList.remove("hidden");
     vocabEl?.classList.add("hidden");
     casesEl.classList.remove("hidden");
     sub.hidden = false;
     sub.classList.remove("hidden");
     foot.classList.remove("quiz-footer--single");
+    sub.setAttribute("form", "answer-form");
     return true;
   }
 
   if (phase === "vocab-pending") {
+    const vocabHardcore = !!opts.vocabHardcore;
     if (!vocabEl || !els.vocabOptions) {
+      syncQuizCardLayoutMode(null);
       casesEl.classList.add("hidden");
       vocabEl?.classList.add("hidden");
       sub.hidden = true;
@@ -88,12 +170,21 @@ export function setQuizUiPhase(phase) {
       }
       return false;
     }
+    syncQuizCardLayoutMode("vocab", vocabHardcore);
     foot.classList.remove("hidden");
     vocabEl.classList.remove("hidden");
     casesEl.classList.add("hidden");
-    sub.hidden = true;
-    sub.classList.add("hidden");
-    foot.classList.add("quiz-footer--single");
+    if (vocabHardcore) {
+      foot.classList.remove("quiz-footer--single");
+      sub.hidden = false;
+      sub.classList.remove("hidden");
+      sub.setAttribute("form", "vocab-answer-form");
+    } else {
+      sub.hidden = true;
+      sub.classList.add("hidden");
+      foot.classList.add("quiz-footer--single");
+      sub.setAttribute("form", "answer-form");
+    }
     return true;
   }
 
@@ -117,23 +208,61 @@ export function showQuiz(task) {
 
   if (task.mode === TRAIN_MODE.VOCAB) {
     setSubmitLabel(false);
-    if (!setQuizUiPhase("vocab-pending")) return;
-    if (els.vocabRuDisplay) els.vocabRuDisplay.textContent = (task.word.hint_ru || "").trim() || "—";
-    if (!Array.isArray(task.choices) || task.choices.length < 4) {
+    const hardcore = !!task.vocabHardcore;
+    if (!setQuizUiPhase("vocab-pending", { vocabHardcore: hardcore })) return;
+
+    const vocabForm = document.getElementById("vocab-answer-form");
+    const vocabInput = document.getElementById("vocab-answer-input");
+
+    if (!hardcore && (!Array.isArray(task.choices) || task.choices.length < 4)) {
+      resetVocabCorrectStreak();
       renderVocabChoices([]);
+      vocabForm?.classList.add("hidden");
+      els.vocabOptions?.classList.remove("hidden");
       els.feedback.classList.remove("hidden", "ok", "bad");
       els.feedback.textContent = "Нет данных для вариантов ответа. Вернитесь в меню.";
       return;
     }
-    renderVocabChoices(task.choices);
+
+    if (hardcore) {
+      vocabForm?.classList.remove("hidden");
+      els.vocabOptions?.classList.add("hidden");
+      renderVocabChoices([]);
+      if (vocabInput) {
+        vocabInput.value = "";
+        vocabInput.focus();
+      }
+    } else {
+      vocabForm?.classList.add("hidden");
+      els.vocabOptions?.classList.remove("hidden");
+    }
+
+    const dir = task.vocabDirection || VOCAB_DIRECTION.RU_TO_LT;
+    if (els.vocabRuDisplay) {
+      if (dir === VOCAB_DIRECTION.LT_TO_RU) {
+        els.vocabRuDisplay.textContent = (task.word.nominative || "").trim() || "—";
+        els.vocabRuDisplay.setAttribute("lang", "lt");
+      } else {
+        els.vocabRuDisplay.textContent = wordRuPrimary(task.word) || "—";
+        els.vocabRuDisplay.setAttribute("lang", "ru");
+      }
+    }
+    if (els.vocabOptions) {
+      els.vocabOptions.setAttribute(
+        "aria-label",
+        dir === VOCAB_DIRECTION.LT_TO_RU ? "Выберите русский перевод" : "Выберите литовский вариант",
+      );
+    }
+    if (!hardcore) {
+      renderVocabChoices(task.choices);
+    }
+    syncVocabStreakMult();
     return;
   }
 
   setQuizUiPhase("cases");
   setSubmitLabel(false);
-  const nom = task.word.nominative;
-  const hint = task.word.hint_ru ? ` (${task.word.hint_ru})` : "";
-  els.lemmaDisplay.textContent = nom + hint;
+  els.lemmaDisplay.textContent = casesLemmaDisplayLine(task.word);
 
   const meta = CASE_ORDER.find((c) => c.key === task.targetCase);
   els.targetCaseDisplay.textContent = meta ? meta.ru : task.targetCase;
@@ -173,16 +302,30 @@ export function showFeedback(ok, expected, word) {
 /** Режим «слова»: только подсветка кнопок; подсказки про исключения не показываем. */
 export function finalizeVocabChoice(ok, expected, word, clickedBtn) {
   recordQuizOutcome(word, ok);
+  if (ok) {
+    state.vocabCorrectStreak += 1;
+    saveVocabBestStreakIfHigher(state.vocabCorrectStreak);
+    syncVocabStreakMult({
+      pulse: state.vocabCorrectStreak >= VOCAB_STREAK_MULT_FROM,
+    });
+  } else {
+    state.vocabCorrectStreak = 0;
+    syncVocabStreakMult();
+  }
   els.feedback.classList.remove("ok", "bad");
   els.feedback.classList.add("hidden");
   els.feedback.textContent = "";
   if (!els.vocabOptions) return;
-  const nominal =
-    typeof word?.nominative === "string" && word.nominative.trim() ? word.nominative.trim() : expected;
+  const dir = state.currentTask?.vocabDirection || VOCAB_DIRECTION.RU_TO_LT;
+  const correctNom =
+    typeof word?.nominative === "string" && word.nominative.trim()
+      ? word.nominative.trim()
+      : expected;
   const clickedLemma = clickedBtn?.getAttribute("data-lemma") ?? "";
   els.vocabOptions.querySelectorAll(".vocab-choice").forEach((b) => {
     const lem = b.getAttribute("data-lemma") || "";
-    const isExpected = answersMatch(lem, nominal);
+    const isExpected =
+      dir === VOCAB_DIRECTION.LT_TO_RU ? vocabRuUserMatches(word, lem) : answersMatch(lem, correctNom);
     b.classList.remove("vocab-choice--wrong", "vocab-choice--picked");
     if (isExpected) {
       b.disabled = false;
@@ -193,7 +336,13 @@ export function finalizeVocabChoice(ok, expected, word, clickedBtn) {
       b.classList.remove("vocab-choice--correct");
     }
   });
-  if (!ok && clickedLemma && !answersMatch(clickedLemma, nominal)) {
+  if (
+    !ok &&
+    clickedLemma &&
+    (dir === VOCAB_DIRECTION.LT_TO_RU
+      ? !vocabRuUserMatches(word, clickedLemma)
+      : !answersMatch(clickedLemma, correctNom))
+  ) {
     const wrongBtn =
       clickedBtn?.closest?.(".vocab-choice") ||
       [...els.vocabOptions.querySelectorAll(".vocab-choice")].find((b) =>
@@ -208,10 +357,48 @@ export function finalizeVocabChoice(ok, expected, word, clickedBtn) {
   picked?.classList.add("vocab-choice--picked");
 }
 
+/** Хардкор-слова: первая отправка формы — проверка; вторая — следующее слово. */
+export function processVocabHardcoreSubmit() {
+  if (!state.currentTask?.vocabHardcore || state.currentTask.mode !== TRAIN_MODE.VOCAB) return;
+  const vocabInput = document.getElementById("vocab-answer-input");
+  if (!vocabInput) return;
+
+  if (!state.answered) {
+    const dir = state.currentTask.vocabDirection || VOCAB_DIRECTION.RU_TO_LT;
+    const word = state.currentTask.word;
+    let expected;
+    let ok;
+    if (dir === VOCAB_DIRECTION.LT_TO_RU) {
+      expected = wordRuFeedbackLine(word);
+      ok = vocabRuUserMatches(word, vocabInput.value);
+    } else {
+      expected = (word?.nominative || "").trim();
+      ok = answersMatch(vocabInput.value, expected);
+    }
+    state.answered = true;
+    setSubmitLabel(true);
+    setQuizSkipAvailable(false);
+    if (ok) {
+      state.vocabCorrectStreak += 1;
+      saveVocabBestStreakIfHigher(state.vocabCorrectStreak);
+    } else {
+      state.vocabCorrectStreak = 0;
+    }
+    showFeedback(ok, expected, word);
+    syncVocabStreakMult({
+      pulse: ok && state.vocabCorrectStreak >= VOCAB_STREAK_MULT_FROM,
+    });
+    return;
+  }
+
+  advanceVocabQuiz();
+}
+
 export function advanceVocabQuiz() {
   if (!state.currentTask || state.currentTask.mode !== TRAIN_MODE.VOCAB || !state.answered) return;
   const task = nextVocabTask();
   if (!task) {
+    resetVocabCorrectStreak();
     els.feedback.classList.remove("hidden", "ok", "bad");
     els.feedback.textContent = "Слов больше нет.";
     return;
@@ -219,10 +406,24 @@ export function advanceVocabQuiz() {
   showQuiz(task);
 }
 
+/** После переключения настройки перевода в модалке настроек — обновить подпись на активном экране падежей. */
+export function refreshCasesLemmaDisplayIfActive() {
+  if (
+    !state.currentTask ||
+    state.currentTask.mode !== TRAIN_MODE.CASES ||
+    els.quizShell?.classList.contains("hidden") ||
+    !els.lemmaDisplay
+  ) {
+    return;
+  }
+  els.lemmaDisplay.textContent = casesLemmaDisplayLine(state.currentTask.word);
+}
+
 export function skipCurrentWord() {
   if (!state.currentTask || state.answered) return;
   bumpWordStat(lemmaKey(state.currentTask.word), "skipped");
   if (state.currentTask.mode === TRAIN_MODE.VOCAB) {
+    resetVocabCorrectStreak();
     const task = nextVocabTask();
     if (!task) return;
     showQuiz(task);

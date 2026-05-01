@@ -45,8 +45,7 @@
  * Две колонки действий — общая сетка для шагов мастера и футера квиза.
  */
 .wizard-pack-actions,
-.wizard-case-actions,
-.wizard-mode-actions {
+.wizard-case-actions {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: var(--gap-actions);
@@ -54,20 +53,273 @@
 }
 
 .wizard-pack-actions .btn,
-.wizard-case-actions .btn,
-.wizard-mode-actions .btn {
+.wizard-case-actions .btn {
   width: 100%;
   min-height: var(--touch-btn-min-h);
 }
 
-/* Одна кнопка «Далее» — правая колонка */
-.wizard-mode-actions .btn {
-  grid-column: 2;
+/* Список наборов слов (мастер): карточки вместо простых чекбоксов */
+.pack-card-list {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.72rem, 2.6vmin, 0.98rem);
 }
 
-.mode-option-desc {
-  margin-top: 0.2rem;
+/*
+ * Чекбокс-карточка — единый паттерн для выбора с галочкой (наборы, падежи и др.).
+ * Сборка в DOM: js/checkbox-tile.js → createCheckboxTileLabel().
+ * Статическая разметка: см. index.html (настройки, направление перевода).
+ */
+.pack-card {
+  display: block;
+  margin: 0;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.pack-card-input:focus-visible + .pack-card-face {
+  outline: calc(var(--stroke) + 1px) solid var(--accent);
+  outline-offset: 2px;
+}
+
+.pack-card-face {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  min-height: 3.35rem;
+  padding: 0.82rem 1rem;
+  border-radius: var(--radius-card);
+  border: var(--stroke) solid var(--border);
+  background: var(--surface-elevated);
+  box-shadow: 0 var(--btn-shadow-drop) 0 0 var(--btn-shadow-depth);
+  transition:
+    border-color 0.15s ease,
+    background 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.pack-card:hover .pack-card-face {
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--border));
+}
+
+.pack-card:active .pack-card-face {
+  transform: translateY(1px);
+  box-shadow: 0 calc(var(--btn-shadow-drop) - 1px) 0 0 var(--btn-shadow-depth);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pack-card:active .pack-card-face {
+    transform: none;
+  }
+}
+
+.pack-card-input:checked + .pack-card-face {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 11%, var(--surface-elevated));
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--accent) 38%, transparent),
+    0 var(--btn-shadow-drop) 0 0 var(--btn-shadow-depth);
+}
+
+.pack-card-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.pack-card-title {
+  font-size: clamp(0.98rem, 3.6vmin, 1.08rem);
+  font-weight: 650;
+  letter-spacing: -0.02em;
+  line-height: 1.28;
+  color: var(--text);
+}
+
+.pack-card-meta {
+  margin-top: 0.28rem;
+  font-size: 0.84rem;
+  font-weight: 500;
+  color: var(--muted);
   line-height: 1.35;
+}
+
+.pack-card-meta:empty {
+  display: none;
+}
+
+.pack-card-tick {
+  flex-shrink: 0;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: var(--radius-char);
+  border: var(--stroke) solid var(--border);
+  background: color-mix(in srgb, var(--text) 7%, transparent);
+  display: grid;
+  place-items: center;
+  transition:
+    border-color 0.15s ease,
+    background 0.15s ease;
+}
+
+.pack-card-input:checked + .pack-card-face .pack-card-tick {
+  border-color: color-mix(in srgb, var(--accent) 65%, var(--border));
+  background: var(--accent);
+}
+
+.pack-card-tick::after {
+  content: "";
+  width: 0.36rem;
+  height: 0.58rem;
+  margin-bottom: 2px;
+  border: solid var(--text-on-accent);
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+  opacity: 0;
+}
+
+.pack-card-input:checked + .pack-card-face .pack-card-tick::after {
+  opacity: 1;
+}
+
+.mode-choice-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(0.85rem, 3vmin, 1.15rem);
+  align-items: stretch;
+}
+
+.mode-choice-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 0.35rem;
+  min-height: clamp(5.5rem, 26vmin, 8rem);
+  margin: 0;
+  padding: 0.85rem 0.7rem;
+  text-align: left;
+  font: inherit;
+  font-weight: 600;
+  line-height: 1.25;
+  border-radius: var(--radius-control);
+  border: var(--stroke) solid var(--border);
+  background: var(--surface-elevated);
+  color: var(--text);
+  cursor: pointer;
+  box-shadow: 0 var(--btn-shadow-drop) 0 0 var(--btn-shadow-depth);
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease,
+    background 0.15s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mode-choice-title {
+  font-size: clamp(0.95rem, 3.8vmin, 1.05rem);
+  font-weight: 650;
+  letter-spacing: -0.02em;
+}
+
+.mode-choice-desc {
+  font-size: clamp(0.78rem, 3vmin, 0.88rem);
+  font-weight: 500;
+  color: var(--muted);
+  line-height: 1.35;
+}
+
+.mode-choice-btn:hover {
+  border-color: color-mix(in srgb, var(--accent) 55%, var(--border));
+  box-shadow: 0 var(--btn-shadow-drop) 0 0 var(--btn-shadow-depth);
+}
+
+.mode-choice-btn:active {
+  transform: scale(0.99);
+  box-shadow: 0 calc(var(--btn-shadow-drop) - 1px) 0 0 var(--btn-shadow-depth);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mode-choice-btn:active {
+    transform: none;
+  }
+}
+
+.mode-choice-btn--active {
+  border-color: var(--accent);
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--accent) 42%, transparent),
+    0 var(--btn-shadow-drop) 0 0 var(--btn-shadow-depth);
+  background: color-mix(in srgb, var(--accent) 12%, var(--surface-elevated));
+}
+
+.vocab-direction-grid {
+  margin-bottom: 0;
+}
+
+/* Хардкор: без отдельной «зоны» — полноширинный разделитель + карточка на всю ширину ниже */
+.vocab-hardcore-block {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--panel-section-gap) + 0.35rem);
+  margin-top: calc(var(--panel-section-gap) + 0.35rem);
+  margin-bottom: var(--panel-section-gap);
+  width: 100%;
+}
+
+.vocab-hardcore-divider {
+  flex-shrink: 0;
+  width: 100%;
+  height: var(--stroke);
+  margin: 0;
+  border: none;
+  border-radius: 9999px;
+  background: var(--border);
+}
+
+.vocab-hardcore-list {
+  margin: 0;
+  width: 100%;
+}
+
+.vocab-hardcore-block .pack-card {
+  width: 100%;
+}
+
+.vocab-hardcore-block .pack-card-face {
+  border-color: color-mix(in srgb, var(--error) 38%, var(--border));
+  background: color-mix(in srgb, var(--error) 7%, var(--surface-elevated));
+}
+
+.vocab-hardcore-block .pack-card:hover .pack-card-face {
+  border-color: color-mix(in srgb, var(--error) 48%, var(--border));
+}
+
+.vocab-hardcore-block .pack-card-input:checked + .pack-card-face {
+  border-color: color-mix(in srgb, var(--error) 68%, var(--border));
+  background: color-mix(in srgb, var(--error) 16%, var(--surface-elevated));
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--error) 32%, transparent),
+    0 var(--btn-shadow-drop) 0 0 var(--btn-shadow-depth);
+}
+
+.vocab-hardcore-block .pack-card-title {
+  color: color-mix(in srgb, var(--error) 28%, var(--text));
+}
+
+.vocab-hardcore-block .pack-card-meta {
+  color: color-mix(in srgb, var(--error) 22%, var(--muted));
+}
+
+.vocab-hardcore-block .pack-card-tick {
+  border-color: color-mix(in srgb, var(--error) 45%, var(--border));
+  background: color-mix(in srgb, var(--error) 9%, transparent);
+}
+
+.vocab-hardcore-block .pack-card-input:checked + .pack-card-face .pack-card-tick {
+  border-color: color-mix(in srgb, var(--error) 35%, var(--border));
+  background: var(--error);
+}
+
+.vocab-hardcore-block .pack-card-input:checked + .pack-card-face .pack-card-tick::after {
+  border-color: var(--text-on-error);
 }
 
 .wizard-help-link {
@@ -75,7 +327,7 @@
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 0.85rem;
+  gap: clamp(0.95rem, 3.2vmin, 1.2rem);
 }
 
 .wizard-help-link .btn {
@@ -89,7 +341,12 @@
   justify-content: center;
   align-items: center;
   gap: 0.7rem;
-  margin-bottom: var(--panel-section-gap);
+  margin-bottom: calc(var(--panel-section-gap) + 0.35rem);
+}
+
+/* Первый шаг мастера: свободнее блок режима и справок */
+#setup #step-mode:not(.hidden) > h2 {
+  margin-bottom: 0.75rem;
 }
 
 .wizard-dot {

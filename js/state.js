@@ -7,4 +7,6 @@ export const state = {
   shownLemmaHistory: [],
   manifestCache: null,
   wordStats: {},
+  /** Подряд верных ответов в режиме «Слова» (сбрасывается при ошибке, пропуске, выходе). */
+  vocabCorrectStreak: 0,
 };

@@ -13,7 +13,7 @@
     },
     {
       "id": "food",
-      "title_ru": "Продукты питания (A1–A2)",
+      "title_ru": "Продукты",
       "files": ["food_a1.json", "food_a2.json"]
     }
   ]

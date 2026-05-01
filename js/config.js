@@ -1,13 +1,13 @@
 /** Константы приложения (без побочных эффектов). */
 
 export const CASE_ORDER = [
-  { key: "nominative", ru: "Именительный" },
-  { key: "genitive", ru: "Родительный" },
-  { key: "dative", ru: "Дательный" },
-  { key: "accusative", ru: "Винительный" },
-  { key: "instrumental", ru: "Творительный" },
-  { key: "locative", ru: "Местный" },
-  { key: "vocative", ru: "Звательный" },
+  { key: "nominative", ru: "Именительный", lt: "vardininkas" },
+  { key: "genitive", ru: "Родительный", lt: "kilmininkas" },
+  { key: "dative", ru: "Дательный", lt: "naudininkas" },
+  { key: "accusative", ru: "Винительный", lt: "galininkas" },
+  { key: "instrumental", ru: "Творительный", lt: "įnagininkas" },
+  { key: "locative", ru: "Местный", lt: "vietininkas" },
+  { key: "vocative", ru: "Звательный", lt: "šauksmininkas" },
 ];
 
 export const STORAGE_KEYS = {
@@ -16,6 +16,15 @@ export const STORAGE_KEYS = {
   wordStats: "lt-trainer-word-stats-v1",
   trainMode: "lt-trainer-train-mode-v1",
   theme: "lt-trainer-theme-v1",
+  vocabBestStreak: "lt-trainer-vocab-best-streak-v1",
+  vocabDirections: "lt-trainer-vocab-directions-v1",
+  casesShowTranslation: "lt-trainer-cases-show-translation-v1",
+};
+
+/** Направление в режиме «Изучение слов». */
+export const VOCAB_DIRECTION = {
+  RU_TO_LT: "ru_to_lt",
+  LT_TO_RU: "lt_to_ru",
 };
 
 /** Доступные профили из themes.css (атрибут data-theme на documentElement). */

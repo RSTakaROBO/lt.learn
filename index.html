@@ -31,6 +31,7 @@
   <link rel="stylesheet" href="css/quiz-training.css" />
   <link rel="stylesheet" href="css/buttons.css" />
   <link rel="stylesheet" href="css/overlays.css" />
+  <link rel="stylesheet" href="css/motion.css" />
   <!-- .hidden при ошибке загрузки base.css: иначе fixed-модалки без display:none перекрывают экран -->
   <style>
     .hidden {
@@ -54,21 +55,27 @@
       <div id="step-mode" class="wizard-step">
         <h2>Упражнение</h2>
         <div class="mode-picker">
-          <div class="case-grid" role="radiogroup" aria-label="Тип упражнения">
-            <label class="case-option mode-option">
-              <input type="radio" name="train-mode" value="cases" checked />
-              <div>
-                <div class="case-title">Изучение падежей</div>
-                <div class="case-lt mode-option-desc">Ввод формы слова в выбранном падеже</div>
-              </div>
-            </label>
-            <label class="case-option mode-option">
-              <input type="radio" name="train-mode" value="vocab" />
-              <div>
-                <div class="case-title">Изучение слов</div>
-                <div class="case-lt mode-option-desc">Слово на русском — выберите литовский вариант</div>
-              </div>
-            </label>
+          <div class="mode-choice-grid" role="group" aria-label="Тип упражнения">
+            <button
+              type="button"
+              id="btn-mode-cases"
+              class="mode-choice-btn mode-choice-btn--active"
+              data-train-mode="cases"
+              aria-pressed="true"
+            >
+              <span class="mode-choice-title">Изучение падежей</span>
+              <span class="mode-choice-desc">Ввод формы слова в выбранном падеже</span>
+            </button>
+            <button
+              type="button"
+              id="btn-mode-vocab"
+              class="mode-choice-btn"
+              data-train-mode="vocab"
+              aria-pressed="false"
+            >
+              <span class="mode-choice-title">Изучение слов</span>
+              <span class="mode-choice-desc">Выбор перевода после наборов и шага «Направление»</span>
+            </button>
           </div>
           <div class="wizard-help-link">
             <button type="button" id="btn-open-cases-help" class="btn ghost">Справка по падежам</button>
@@ -77,14 +84,11 @@
             </button>
           </div>
         </div>
-        <div class="actions wizard-mode-actions">
-          <button type="button" id="btn-mode-next" class="btn primary">Далее</button>
-        </div>
       </div>
 
       <div id="step-packs" class="wizard-step hidden">
         <h2>Наборы слов</h2>
-        <div id="pack-list" class="case-grid"></div>
+        <div id="pack-list" class="pack-card-list"></div>
         <p id="pack-step-status" class="status" aria-live="polite"></p>
         <div class="actions wizard-pack-actions">
           <button type="button" id="btn-packs-back" class="btn ghost">Назад</button>
@@ -94,13 +98,71 @@
         </div>
       </div>
 
+      <div id="step-vocab-direction" class="wizard-step hidden">
+        <h2 id="vocab-direction-step-title">Направление перевода</h2>
+        <div
+          class="pack-card-list vocab-direction-grid"
+          role="group"
+          aria-labelledby="vocab-direction-step-title"
+        >
+          <label class="pack-card" for="vocab-dir-ru-lt">
+            <input type="checkbox" id="vocab-dir-ru-lt" class="pack-card-input sr-only" checked />
+            <div class="pack-card-face">
+              <div class="pack-card-main">
+                <div class="pack-card-title">С русского на литовский</div>
+                <div class="pack-card-meta">
+                  Подсказка по-русски — выберите слово на литовском
+                </div>
+              </div>
+              <span class="pack-card-tick" aria-hidden="true"></span>
+            </div>
+          </label>
+          <label class="pack-card" for="vocab-dir-lt-ru">
+            <input type="checkbox" id="vocab-dir-lt-ru" class="pack-card-input sr-only" />
+            <div class="pack-card-face">
+              <div class="pack-card-main">
+                <div class="pack-card-title">С литовского на русский</div>
+                <div class="pack-card-meta">
+                  Слово на литовском — выберите русский перевод
+                </div>
+              </div>
+              <span class="pack-card-tick" aria-hidden="true"></span>
+            </div>
+          </label>
+        </div>
+        <div class="vocab-hardcore-block" aria-label="Режим повышенной сложности">
+          <div class="vocab-hardcore-divider" role="presentation" aria-hidden="true"></div>
+          <div class="pack-card-list vocab-hardcore-list">
+            <label class="pack-card" for="vocab-hardcore">
+              <input type="checkbox" id="vocab-hardcore" class="pack-card-input sr-only" />
+              <div class="pack-card-face">
+                <div class="pack-card-main">
+                  <div class="pack-card-title">Хардкор</div>
+                  <div class="pack-card-meta">
+                    Ввод слова вручную: поле ответа и кнопки литовских букв (без вариантов выбора)
+                  </div>
+                </div>
+                <span class="pack-card-tick" aria-hidden="true"></span>
+              </div>
+            </label>
+          </div>
+        </div>
+        <p id="vocab-direction-step-status" class="status" aria-live="polite"></p>
+        <div class="actions wizard-pack-actions">
+          <button type="button" id="btn-vocab-direction-back" class="btn ghost">Назад</button>
+          <button type="button" id="btn-vocab-direction-start" class="btn primary" aria-label="Начать">
+            Начать
+          </button>
+        </div>
+      </div>
+
       <div id="step-cases" class="wizard-step hidden">
         <h2>Падежи</h2>
-        <div id="case-checkboxes" class="case-grid"></div>
+        <div id="case-checkboxes" class="pack-card-list"></div>
         <p id="case-step-status" class="status case-step-msg" aria-live="polite"></p>
         <div class="actions wizard-case-actions">
           <button type="button" id="btn-cases-back" class="btn ghost">Назад</button>
-          <button type="button" id="btn-start" class="btn start">Начать</button>
+          <button type="button" id="btn-start" class="btn primary">Начать</button>
         </div>
       </div>
     </section>
@@ -109,7 +171,9 @@
       <section id="quiz" class="widget panel">
         <div id="quiz-cases-ui">
           <div class="prompt">
-            <p class="lemma" id="lemma-display"></p>
+            <div class="vocab-ru-card">
+              <p class="lemma vocab-ru-display" id="lemma-display"></p>
+            </div>
             <p class="target-line">
               <span class="target-prefix">Падеж:</span>
               <span id="target-case-display"></span>
@@ -135,14 +199,38 @@
         <div id="quiz-vocab-ui" class="hidden">
           <div class="vocab-ru-card">
             <p class="lemma vocab-ru-display" id="vocab-ru-display"></p>
+            <div id="vocab-streak-mult" class="vocab-streak-mult hidden" aria-hidden="true">
+              <span id="vocab-streak-mult-value" class="vocab-streak-mult-value"></span>
+            </div>
           </div>
           <div id="vocab-options" class="vocab-options" role="group" aria-label="Выберите перевод"></div>
+          <form id="vocab-answer-form" class="vocab-answer-form hidden" autocomplete="off">
+            <label class="sr-only" for="vocab-answer-input">Ваш ответ</label>
+            <input
+              type="text"
+              id="vocab-answer-input"
+              placeholder="Введите слово…"
+              spellcheck="false"
+              autocapitalize="off"
+            />
+            <div id="vocab-lt-chars" class="lt-chars" role="toolbar" aria-label="Вставить литовскую букву">
+              <button type="button" class="lt-char" data-char="ą" title="ą">ą</button>
+              <button type="button" class="lt-char" data-char="č" title="č">č</button>
+              <button type="button" class="lt-char" data-char="ę" title="ę">ę</button>
+              <button type="button" class="lt-char" data-char="ė" title="ė">ė</button>
+              <button type="button" class="lt-char" data-char="į" title="į">į</button>
+              <button type="button" class="lt-char" data-char="š" title="š">š</button>
+              <button type="button" class="lt-char" data-char="ų" title="ų">ų</button>
+              <button type="button" class="lt-char" data-char="ū" title="ū">ū</button>
+              <button type="button" class="lt-char" data-char="ž" title="ž">ž</button>
+            </div>
+          </form>
         </div>
 
         <div id="feedback" class="feedback hidden" aria-live="polite"></div>
 
         <div class="actions quiz-answer-actions quiz-footer-actions" id="quiz-footer-actions">
-          <button type="button" id="btn-skip" class="btn primary" aria-label="Пропустить">Пропустить</button>
+          <button type="button" id="btn-skip" class="btn ghost" aria-label="Пропустить">Пропустить</button>
           <button type="submit" form="answer-form" class="btn primary" id="btn-quiz-submit-cases">Проверить</button>
         </div>
       </section>
@@ -662,6 +750,27 @@
               <input type="radio" name="app-theme" value="bloom" />
               <div>
                 <div class="case-title">Цветение</div>
+              </div>
+            </label>
+          </div>
+        </div>
+        <div class="settings-training-block">
+          <div class="pack-card-list settings-training-options-list">
+            <label class="pack-card" for="settings-cases-show-translation">
+              <input
+                type="checkbox"
+                id="settings-cases-show-translation"
+                class="pack-card-input sr-only"
+                checked
+              />
+              <div class="pack-card-face">
+                <div class="pack-card-main">
+                  <div class="pack-card-title">Отображать перевод при изучении падежей</div>
+                  <div class="pack-card-meta">
+                    Русский перевод в скобках под литовским словом
+                  </div>
+                </div>
+                <span class="pack-card-tick" aria-hidden="true"></span>
               </div>
             </label>
           </div>

@@ -1,57 +1,56 @@
 {
   "words": [
     {
-      "hint_ru": "стол",
       "nominative": "stalas",
       "genitive": "stalo",
       "dative": "stalui",
       "accusative": "stalą",
       "instrumental": "stalu",
       "locative": "stale",
-      "vocative": "stale"
+      "vocative": "stale",
+      "ru": "стол"
     },
     {
-      "hint_ru": "стул",
       "nominative": "kėdė",
       "genitive": "kėdės",
       "dative": "kėdei",
       "accusative": "kėdę",
       "instrumental": "kėde",
       "locative": "kėdėje",
-      "vocative": "kėde"
+      "vocative": "kėde",
+      "ru": "стул"
     },
     {
-      "hint_ru": "кровать",
       "nominative": "lova",
       "genitive": "lovos",
       "dative": "lovai",
       "accusative": "lovą",
       "instrumental": "lova",
       "locative": "lovoje",
-      "vocative": "lova"
+      "vocative": "lova",
+      "ru": "кровать"
     },
     {
-      "hint_ru": "холодильник",
       "nominative": "šaldytuvas",
       "genitive": "šaldytuvo",
       "dative": "šaldytuvui",
       "accusative": "šaldytuvą",
       "instrumental": "šaldytuvu",
       "locative": "šaldytuve",
-      "vocative": "šaldytuvai"
+      "vocative": "šaldytuvai",
+      "ru": "холодильник"
     },
     {
-      "hint_ru": "лампа",
       "nominative": "lemputė",
       "genitive": "lemputės",
       "dative": "lemputei",
       "accusative": "lemputę",
       "instrumental": "lempute",
       "locative": "lemputėje",
-      "vocative": "lempute"
+      "vocative": "lempute",
+      "ru": "лампа"
     },
     {
-      "hint_ru": "дверь",
       "exception": true,
       "exception_note_ru": "Существительное только во множественном числе (pluralia tantum); парадигма как у мн. ч., не как у одного предмета.",
       "nominative": "durys",
@@ -60,77 +59,78 @@
       "accusative": "duris",
       "instrumental": "durimis",
       "locative": "duryse",
-      "vocative": "durys"
+      "vocative": "durys",
+      "ru": "дверь"
     },
     {
-      "hint_ru": "чашка",
       "nominative": "puodelis",
       "genitive": "puodelio",
       "dative": "puodeliui",
       "accusative": "puodelį",
       "instrumental": "puodeliu",
       "locative": "puodelyje",
-      "vocative": "puodeli"
+      "vocative": "puodeli",
+      "ru": "чашка"
     },
     {
-      "hint_ru": "тарелка",
       "nominative": "lėkštė",
       "genitive": "lėkštės",
       "dative": "lėkštei",
       "accusative": "lėkštę",
       "instrumental": "lėkšte",
       "locative": "lėkštėje",
-      "vocative": "lėkšte"
+      "vocative": "lėkšte",
+      "ru": "тарелка"
     },
     {
-      "hint_ru": "ложка",
       "nominative": "šaukštas",
       "genitive": "šaukšto",
       "dative": "šaukštui",
       "accusative": "šaukštą",
       "instrumental": "šaukštu",
       "locative": "šaukšte",
-      "vocative": "šaukštai"
+      "vocative": "šaukštai",
+      "ru": "ложка"
     },
     {
-      "hint_ru": "кухня",
       "nominative": "virtuvė",
       "genitive": "virtuvės",
       "dative": "virtuvei",
       "accusative": "virtuvę",
       "instrumental": "virtuve",
       "locative": "virtuvėje",
-      "vocative": "virtuve"
+      "vocative": "virtuve",
+      "ru": "кухня"
     },
     {
-      "hint_ru": "ванная",
       "nominative": "vonia",
       "genitive": "vonios",
       "dative": "voniai",
       "accusative": "vonią",
       "instrumental": "vonia",
       "locative": "vonioje",
-      "vocative": "vonia"
+      "vocative": "vonia",
+      "ru": "ванная"
     },
     {
-      "hint_ru": "ковёр",
       "nominative": "kilimas",
       "genitive": "kilimo",
       "dative": "kilimui",
       "accusative": "kilimą",
       "instrumental": "kilimu",
       "locative": "kilime",
-      "vocative": "kilime"
+      "vocative": "kilime",
+      "ru": "ковёр"
     },
     {
-      "hint_ru": "зеркало",
       "nominative": "veidrodis",
       "genitive": "veidrodžio",
       "dative": "veidrodžiui",
       "accusative": "veidrodį",
       "instrumental": "veidrodžiu",
       "locative": "veidrodyje",
-      "vocative": "veidrodi"
+      "vocative": "veidrodi",
+      "ru": "зеркало"
     }
   ]
 }

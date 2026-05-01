@@ -10,10 +10,13 @@ export function normalizeAnswer(s) {
   return s.trim().normalize("NFC");
 }
 
+/** Ключ для сравнения ответов и дедупликации вариантов (пробелы, NFC, регистр, е/ё). */
+export function comparableAnswerKey(s) {
+  return normalizeAnswer(s).toLowerCase().replace(/\u0451/g, "\u0435");
+}
+
 export function answersMatch(user, expected) {
-  const u = normalizeAnswer(user).toLowerCase();
-  const e = normalizeAnswer(expected).toLowerCase();
-  return u === e;
+  return comparableAnswerKey(user) === comparableAnswerKey(expected);
 }
 
 /** Склонение: «N слов» по-русски. */

@@ -2,7 +2,7 @@
  * Кэширует оболочку и JSON-словари для офлайна и быстрого старта после установки PWA.
  * При смене списка файлов увеличьте CACHE_VERSION.
  */
-const CACHE_VERSION = "lt-trainer-v104";
+const CACHE_VERSION = "lt-trainer-v151";
 
 /** Пути относительно scope (папка, где лежит sw.js). */
 function precacheUrls(scopeUrl) {
@@ -20,6 +20,7 @@ function precacheUrls(scopeUrl) {
     rel("css/quiz-training.css"),
     rel("css/buttons.css"),
     rel("css/overlays.css"),
+    rel("css/motion.css"),
     rel("js/main.js"),
     rel("js/config.js"),
     rel("js/state.js"),
@@ -32,7 +33,9 @@ function precacheUrls(scopeUrl) {
     rel("js/input-lt.js"),
     rel("js/manifest-packs.js"),
     rel("js/word-selection.js"),
+    rel("js/word-ru.js"),
     rel("js/case-selection.js"),
+    rel("js/checkbox-tile.js"),
     rel("js/quiz.js"),
     rel("js/wizard.js"),
     rel("js/overlays.js"),
@@ -59,11 +62,11 @@ async function matchCached(cache, request) {
   return res || null;
 }
 
-/** Список паков должен подтягиваться с сервера без «залипания» старого precache. */
-function isWordsManifestRequest(request) {
+/** Словари и manifest — сначала сеть, иначе после переименования полей остаётся старый precache. */
+function isWordsJsonRequest(request) {
   try {
     const pathname = new URL(request.url).pathname;
-    return pathname.endsWith("/words/manifest.json");
+    return pathname.endsWith(".json") && pathname.includes("/words/");
   } catch {
     return false;
   }
@@ -99,7 +102,7 @@ self.addEventListener("fetch", (event) => {
     (async () => {
       const cache = await caches.open(CACHE_VERSION);
 
-      if (isWordsManifestRequest(event.request)) {
+      if (isWordsJsonRequest(event.request)) {
         try {
           const networkRes = await fetch(event.request);
           if (networkRes.ok) {

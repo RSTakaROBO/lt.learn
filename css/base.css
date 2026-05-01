@@ -27,7 +27,8 @@ button,
 .lt-char,
 .vocab-choice,
 .quiz-bar-btn,
-.case-option {
+.case-option,
+.pack-card {
   user-select: none;
   -webkit-user-select: none;
   -moz-user-select: none;

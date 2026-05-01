@@ -1,3 +1,4 @@
+import { createCheckboxTileLabel } from "./checkbox-tile.js";
 import { els } from "./dom.js";
 import { state } from "./state.js";
 import { loadSelectedPacks } from "./storage.js";
@@ -30,33 +31,17 @@ export function renderPackList(packs) {
     if (!p || typeof p.id !== "string" || !p.id || !Array.isArray(p.files)) continue;
 
     const inputId = safePackInputId(p.id);
-    const wrap = document.createElement("label");
-    wrap.className = "case-option";
-    wrap.htmlFor = inputId;
-
-    const cb = document.createElement("input");
-    cb.type = "checkbox";
-    cb.id = inputId;
-    cb.value = p.id;
-    cb.checked = defaultAll ? true : saved.includes(p.id);
-
     const title =
       typeof p.title_ru === "string" && p.title_ru.trim() ? p.title_ru.trim() : p.id;
 
-    const text = document.createElement("div");
-    const titleDiv = document.createElement("div");
-    titleDiv.className = "case-title";
-    titleDiv.textContent = title;
-
-    const countDiv = document.createElement("div");
-    countDiv.className = "case-lt pack-word-count";
-    countDiv.textContent = "…";
-
-    text.appendChild(titleDiv);
-    text.appendChild(countDiv);
-
-    wrap.appendChild(cb);
-    wrap.appendChild(text);
+    const wrap = createCheckboxTileLabel({
+      id: inputId,
+      value: p.id,
+      checked: defaultAll ? true : saved.includes(p.id),
+      titleText: title,
+      metaClass: "pack-word-count",
+      metaChildren: [document.createTextNode("…")],
+    });
     els.packList.appendChild(wrap);
   }
 }
@@ -120,7 +105,7 @@ export async function fillPackWordCountsInUi() {
 
   for (const p of state.manifestCache.packs) {
     const input = [...els.packList.querySelectorAll('input[type="checkbox"]')].find((i) => i.value === p.id);
-    const countEl = input?.closest(".case-option")?.querySelector(".pack-word-count");
+    const countEl = input?.closest(".pack-card")?.querySelector(".pack-word-count");
     if (!countEl || !p.files?.length) continue;
 
     let sum = 0;

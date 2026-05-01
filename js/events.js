@@ -1,4 +1,4 @@
-import { TRAIN_MODE } from "./config.js";
+import { TRAIN_MODE, VOCAB_DIRECTION } from "./config.js";
 import { getCheckedCaseKeys } from "./case-selection.js";
 import { els } from "./dom.js";
 import { handleAnswerInputShiftCycles, insertAtCaret } from "./input-lt.js";
@@ -11,6 +11,9 @@ import {
   advanceVocabQuiz,
   finalizeVocabChoice,
   morphQuizSkipToVocabNext,
+  processVocabHardcoreSubmit,
+  refreshCasesLemmaDisplayIfActive,
+  resetVocabCorrectStreak,
   setQuizSkipAvailable,
   setSubmitLabel,
   showFeedback,
@@ -30,45 +33,57 @@ import {
   openSettingsOverlay,
   openStatsOverlay,
   openVerbsHelp,
+  syncSettingsTrainingCheckbox,
 } from "./overlays.js";
 import { state } from "./state.js";
 import {
   loadTrainMode,
+  loadVocabDirections,
+  saveCasesShowTranslation,
   saveSelectedCases,
   saveSelectedPacks,
   saveTrainMode,
+  saveVocabDirections,
 } from "./storage.js";
 import { answersMatch } from "./text-utils.js";
 import { applyTheme } from "./theme.js";
 import { nextTask, nextVocabTask } from "./word-selection.js";
+import { hasWordRu, vocabRuUserMatches, wordRuFeedbackLine } from "./word-ru.js";
 import {
-  getTrainModeFromUi,
-  renderWizardDots,
+  persistVocabDirectionsFromUiIfValid,
+  readVocabDirectionsFromUi,
   showWizardCases,
   showWizardMode,
   showWizardPacks,
-  syncWizardPacksNextPresentation,
-  updateWizardProgress,
+  showWizardVocabDirection,
+  syncModeChoiceButtons,
 } from "./wizard.js";
 
 export function bindEvents() {
-  els.modePicker?.addEventListener("change", () => {
-    if (!els.stepMode.classList.contains("hidden")) {
-      renderWizardDots(getTrainModeFromUi() === TRAIN_MODE.VOCAB ? 2 : 3);
-      updateWizardProgress(1);
-    }
-    if (!els.stepPacks.classList.contains("hidden")) {
-      syncWizardPacksNextPresentation();
-    }
+  els.btnModeCases?.addEventListener("click", () => {
+    saveTrainMode(TRAIN_MODE.CASES);
+    syncModeChoiceButtons(TRAIN_MODE.CASES);
+    showWizardPacks();
   });
 
-  els.btnModeNext.addEventListener("click", () => {
-    saveTrainMode(getTrainModeFromUi());
+  els.btnModeVocab?.addEventListener("click", () => {
+    saveTrainMode(TRAIN_MODE.VOCAB);
+    syncModeChoiceButtons(TRAIN_MODE.VOCAB);
     showWizardPacks();
   });
 
   els.packList.addEventListener("change", () => {
     saveSelectedPacks(getCheckedPackIds());
+  });
+
+  document.getElementById("vocab-dir-ru-lt")?.addEventListener("change", () => {
+    saveVocabDirections(readVocabDirectionsFromUi());
+  });
+  document.getElementById("vocab-dir-lt-ru")?.addEventListener("change", () => {
+    saveVocabDirections(readVocabDirectionsFromUi());
+  });
+  document.getElementById("vocab-hardcore")?.addEventListener("change", () => {
+    saveVocabDirections(readVocabDirectionsFromUi());
   });
 
   els.caseCheckboxes.addEventListener("change", () => {
@@ -79,6 +94,45 @@ export function bindEvents() {
   els.btnPacksBack.addEventListener("click", () => {
     els.packStepStatus.textContent = "";
     showWizardMode();
+  });
+
+  els.btnVocabDirectionBack?.addEventListener("click", () => {
+    if (els.vocabDirectionStepStatus) els.vocabDirectionStepStatus.textContent = "";
+    showWizardPacks();
+  });
+
+  els.btnVocabDirectionStart?.addEventListener("click", () => {
+    if (els.vocabDirectionStepStatus) els.vocabDirectionStepStatus.textContent = "";
+    if (!persistVocabDirectionsFromUiIfValid()) {
+      if (els.vocabDirectionStepStatus) {
+        els.vocabDirectionStepStatus.textContent = "Выберите хотя бы одно направление перевода.";
+      }
+      return;
+    }
+    const withHint = state.wordBank.filter((w) => hasWordRu(w) && w.nominative);
+    const dirsNow = readVocabDirectionsFromUi();
+    const needChoices = !dirsNow.hardcore && withHint.length < 4;
+    const needAny = dirsNow.hardcore && withHint.length < 1;
+    if (needChoices || needAny) {
+      if (els.vocabDirectionStepStatus) {
+        els.vocabDirectionStepStatus.textContent = dirsNow.hardcore
+          ? "Нужно хотя бы одно слово с русским переводом в выбранных наборах."
+          : "Для «Изучение слов» нужно минимум 4 слова с русским переводом в выбранных наборах.";
+      }
+      return;
+    }
+    state.shownLemmaHistory = [];
+    resetVocabCorrectStreak();
+    const task = nextVocabTask();
+    if (!task) {
+      if (els.vocabDirectionStepStatus) {
+        els.vocabDirectionStepStatus.textContent = readVocabDirectionsFromUi().hardcore
+          ? "Не удалось начать игру. Проверьте наборы слов."
+          : "Не удалось составить четыре варианта ответа.";
+      }
+      return;
+    }
+    showQuiz(task);
   });
 
   els.btnPacksNext.addEventListener("click", async () => {
@@ -99,21 +153,15 @@ export function bindEvents() {
       els.packStepStatus.textContent = "";
       els.caseStepStatus.textContent = "";
       if (loadTrainMode() === TRAIN_MODE.VOCAB) {
-        const withHint = state.wordBank.filter(
-          (w) => typeof w.hint_ru === "string" && w.hint_ru.trim() && w.nominative,
-        );
-        if (withHint.length < 4) {
-          els.packStepStatus.textContent =
-            "Для «Изучение слов» нужно минимум 4 слова с русской подсказкой в выбранных наборах.";
+        const withHint = state.wordBank.filter((w) => hasWordRu(w) && w.nominative);
+        const hardcore = loadVocabDirections().hardcore;
+        if ((!hardcore && withHint.length < 4) || (hardcore && withHint.length < 1)) {
+          els.packStepStatus.textContent = hardcore
+            ? "Для «Изучение слов» нужно хотя бы одно слово с русским переводом в выбранных наборах."
+            : "Для «Изучение слов» нужно минимум 4 слова с русским переводом в выбранных наборах.";
           return;
         }
-        state.shownLemmaHistory = [];
-        const task = nextVocabTask();
-        if (!task) {
-          els.packStepStatus.textContent = "Не удалось составить четыре варианта ответа.";
-          return;
-        }
-        showQuiz(task);
+        showWizardVocabDirection();
         return;
       }
       showWizardCases();
@@ -137,7 +185,23 @@ export function bindEvents() {
     insertAtCaret(els.answerInput, ch);
   });
 
+  document.getElementById("vocab-lt-chars")?.addEventListener("click", (e) => {
+    const btn = e.target.closest(".lt-char");
+    const input = document.getElementById("vocab-answer-input");
+    if (!btn || !input) return;
+    const ch = btn.getAttribute("data-char");
+    if (!ch) return;
+    insertAtCaret(input, ch);
+  });
+
   els.answerInput.addEventListener("keydown", handleAnswerInputShiftCycles);
+
+  document.getElementById("vocab-answer-input")?.addEventListener("keydown", handleAnswerInputShiftCycles);
+
+  document.getElementById("vocab-answer-form")?.addEventListener("submit", (e) => {
+    e.preventDefault();
+    processVocabHardcoreSubmit();
+  });
 
   els.btnStart.addEventListener("click", () => {
     els.caseStepStatus.textContent = "";
@@ -158,6 +222,7 @@ export function bindEvents() {
       return;
     }
     els.caseStepStatus.textContent = "";
+    resetVocabCorrectStreak();
     showQuiz(task);
   });
 
@@ -191,17 +256,36 @@ export function bindEvents() {
   els.vocabOptions.addEventListener("click", (e) => {
     const btn = e.target.closest(".vocab-choice");
     if (!btn || !state.currentTask || state.currentTask.mode !== TRAIN_MODE.VOCAB) return;
-    if (state.answered) return;
+
+    if (state.answered) {
+      const word = state.currentTask.word;
+      const dir = state.currentTask.vocabDirection || VOCAB_DIRECTION.RU_TO_LT;
+      const lem = btn.getAttribute("data-lemma") || "";
+      const matches =
+        dir === VOCAB_DIRECTION.LT_TO_RU ? vocabRuUserMatches(word, lem) : answersMatch(lem, (word?.nominative || "").trim());
+      if (btn.classList.contains("vocab-choice--correct") && matches) {
+        advanceVocabQuiz();
+      }
+      return;
+    }
 
     state.answered = true;
-    const expected = state.currentTask.word.nominative;
-    const ok = answersMatch(btn.getAttribute("data-lemma") || "", expected);
+    const dir = state.currentTask.vocabDirection || VOCAB_DIRECTION.RU_TO_LT;
+    const word = state.currentTask.word;
+    const lem = btn.getAttribute("data-lemma") || "";
+    const ok =
+      dir === VOCAB_DIRECTION.LT_TO_RU
+        ? vocabRuUserMatches(word, lem)
+        : answersMatch(lem, (word?.nominative || "").trim());
+    const expected =
+      dir === VOCAB_DIRECTION.LT_TO_RU ? wordRuFeedbackLine(word) : (word?.nominative || "").trim();
     finalizeVocabChoice(ok, expected, state.currentTask.word, btn);
     morphQuizSkipToVocabNext();
   });
 
   els.btnSkip.addEventListener("click", () => {
     if (state.currentTask?.mode === TRAIN_MODE.VOCAB && state.answered) {
+      if (state.currentTask.vocabHardcore) return;
       advanceVocabQuiz();
       return;
     }
@@ -253,6 +337,11 @@ export function bindEvents() {
     applyTheme(input.value);
   });
 
+  els.settingsCasesShowTranslation?.addEventListener("change", () => {
+    saveCasesShowTranslation(!!els.settingsCasesShowTranslation?.checked);
+    refreshCasesLemmaDisplayIfActive();
+  });
+
   els.btnOpenCasesHelp?.addEventListener("click", () => openCasesHelp());
   els.btnCasesHelpClose?.addEventListener("click", () => closeCasesHelp());
   els.btnOpenVerbsHelp?.addEventListener("click", () => openVerbsHelp());
@@ -271,9 +360,11 @@ export function bindEvents() {
     }
     els.quizShell.classList.add("hidden");
     els.setup.classList.remove("hidden");
+    resetVocabCorrectStreak();
     showWizardMode();
     els.packStepStatus.textContent = "";
     els.caseStepStatus.textContent = "";
+    if (els.vocabDirectionStepStatus) els.vocabDirectionStepStatus.textContent = "";
     state.currentTask = null;
     state.shownLemmaHistory = [];
   });

@@ -6,7 +6,16 @@
   min-height: 0;
 }
 
+.vocab-answer-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  flex-shrink: 0;
+}
+
+/* Множитель серии ×N: правый нижний угол карточки слова (с 5 подряд верных) */
 .vocab-ru-card {
+  position: relative;
   flex: 1;
   min-height: 0;
   display: flex;
@@ -17,13 +26,90 @@
   border-radius: var(--radius-card);
   border: var(--stroke) solid var(--border);
   background: var(--surface-elevated);
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
+  /* Режим «слова»: без полос прокрутки карточки — множитель и pulse через transform иначе дают scroll */
+  overflow: hidden;
+}
+
+.vocab-streak-mult {
+  position: absolute;
+  right: 0.5rem;
+  bottom: 0.45rem;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  pointer-events: none;
+  line-height: 1;
+}
+
+.vocab-streak-mult-value {
+  font-size: clamp(1.85rem, 6.8vmin, 2.45rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  transform-origin: 100% 100%;
+  transition: color 0.2s ease;
+}
+
+.vocab-streak-mult--blue .vocab-streak-mult-value {
+  color: #3b82f6;
+}
+
+.vocab-streak-mult--orange .vocab-streak-mult-value {
+  color: #f97316;
+}
+
+.vocab-streak-mult--purple .vocab-streak-mult-value {
+  color: #a855f7;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .vocab-streak-mult--pulse .vocab-streak-mult-value {
+    animation: vocab-streak-mult-pulse 0.78s cubic-bezier(0.28, 1.55, 0.42, 1);
+  }
+}
+
+@keyframes vocab-streak-mult-pulse {
+  0% {
+    transform: scale(1);
+  }
+  38% {
+    transform: scale(1.46);
+  }
+  72% {
+    transform: scale(1.08);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vocab-streak-mult--pulse .vocab-streak-mult-value {
+    animation: vocab-streak-mult-pulse-subtle 0.48s ease;
+  }
+}
+
+@keyframes vocab-streak-mult-pulse-subtle {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.52;
+  }
 }
 
 .vocab-ru-display {
   margin: 0;
   text-align: center;
+}
+
+/* Длинные слова и ×N не должны раздувать карточку по ширине (десктоп + множитель). */
+.vocab-ru-card .vocab-ru-display {
+  max-width: 100%;
+  min-width: 0;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 .vocab-options {
@@ -75,6 +161,15 @@
   gap: var(--panel-section-gap);
 }
 
+/* Слово в падежах — та же рамка и фон, что у карточки в режиме «слова» */
+#quiz-cases-ui .prompt > .vocab-ru-card {
+  flex: none;
+  min-height: unset;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
 #answer-form {
   display: flex;
   flex-direction: column;
@@ -110,7 +205,8 @@
   color: var(--accent);
 }
 
-#answer-input {
+#answer-input,
+#vocab-answer-input {
   width: 100%;
   font: inherit;
   font-size: 1.15rem;
@@ -122,9 +218,16 @@
   margin-bottom: 0;
 }
 
-#answer-input:focus {
+#answer-input:focus,
+#vocab-answer-input:focus {
+  outline: none;
+}
+
+/* Кольцо внутри поля — не обрезается родителем при overflow */
+#answer-input:focus-visible,
+#vocab-answer-input:focus-visible {
   outline: calc(var(--stroke) + 1px) solid var(--accent);
-  outline-offset: 2px;
+  outline-offset: calc(-1 * var(--stroke) - 1px);
 }
 
 .lt-chars {
@@ -225,20 +328,66 @@
   color: color-mix(in srgb, var(--text) 82%, var(--muted));
 }
 
-/* Режим падежей: блок задания забирает свободную высоту — нижние кнопки прижаты к низу карточки */
-#quiz.panel > #quiz-cases-ui:not(.hidden) {
-  flex: 1 1 0;
-  min-height: 0;
-  overflow-x: hidden;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
+/* Режим «слова»: зазор между блоком задания и нижней кнопкой (margin-top: auto снимает margin у .actions) */
+#quiz.panel.quiz--vocab {
+  row-gap: var(--panel-section-gap);
 }
 
+/* Режим «слова»: прижимаем «Далее» к низу панели (блок слов уже с flex: 1 в #quiz-vocab-ui) */
 #quiz.panel > #feedback:not(.hidden) {
   flex-shrink: 0;
 }
 
-#quiz.panel > .quiz-footer-actions {
+#quiz.panel.quiz--vocab > .quiz-footer-actions {
   margin-top: auto;
+  flex-shrink: 0;
+}
+
+/* Хардкор-слова: карточка слова выше (поле ввода и буквы съедают экран — даём слову воздух), футер без «прижима к низу» */
+#quiz.panel.quiz--vocab-hardcore > #quiz-vocab-ui:not(.hidden) {
+  flex: 0 1 auto;
+  gap: 0.55rem;
+}
+
+#quiz.panel.quiz--vocab-hardcore > #quiz-vocab-ui:not(.hidden) > .vocab-ru-card {
+  flex: 0 1 auto;
+  min-height: 0;
+  max-height: min(116vh, 44rem);
+  padding: 2rem 2.3rem;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+#quiz.panel.quiz--vocab-hardcore > #quiz-vocab-ui:not(.hidden) .vocab-ru-card .lemma,
+#quiz.panel.quiz--vocab-hardcore > #quiz-vocab-ui:not(.hidden) .vocab-ru-card .vocab-ru-display {
+  font-size: clamp(1.22rem, 5vmin, 1.92rem);
+  line-height: 1.3;
+}
+
+#quiz.panel.quiz--vocab-hardcore .vocab-streak-mult {
+  right: 0.42rem;
+  bottom: 0.38rem;
+}
+
+#quiz.panel.quiz--vocab-hardcore .vocab-streak-mult-value {
+  font-size: clamp(2.4rem, 8.4vmin, 3.7rem);
+}
+
+#quiz.panel.quiz--vocab-hardcore > .quiz-footer-actions {
+  margin-top: 0;
+  flex-shrink: 0;
+}
+
+#quiz.panel.quiz--vocab-hardcore #vocab-answer-form {
+  gap: 0.55rem;
+}
+
+/* Режим падежей: ответ сразу под клавиатурой литовских букв, без лишнего разрыва */
+#quiz.panel.quiz--cases > #feedback:not(.hidden) {
+  margin-top: 0.55rem;
+}
+
+/* Падежи: футер не уезжает вниз под клавиатуру */
+#quiz.panel.quiz--cases > .quiz-footer-actions {
   flex-shrink: 0;
 }

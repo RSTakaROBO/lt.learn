@@ -1,0 +1,156 @@
+/**
+ * Анимации и короткие переходы. Уважает prefers-reduced-motion: reduce.
+ */
+:root {
+  --motion-fast: 0.18s;
+  --motion-medium: 0.34s;
+  --motion-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --motion-ease-spring: cubic-bezier(0.34, 1.2, 0.64, 1);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes motion-feedback-in {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes motion-sheet-in {
+    from {
+      opacity: 0;
+      transform: translateY(14px) scale(0.985);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  @keyframes motion-modal-in {
+    from {
+      opacity: 0;
+      transform: translateY(22px) scale(0.94);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  @keyframes motion-vocab-resolve {
+    0% {
+      transform: scale(1);
+    }
+    35% {
+      transform: scale(1.045);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  /* Обратная связь после проверки падежа */
+  .feedback:not(.hidden) {
+    animation: motion-feedback-in var(--motion-medium) var(--motion-ease-out) both;
+  }
+
+  /* Карточка квиза при входе в тренировку */
+  .quiz-shell:not(.hidden) #quiz.panel {
+    animation: motion-sheet-in calc(var(--motion-medium) + 0.04s) var(--motion-ease-out) both;
+  }
+
+  /* Полноэкранные справки */
+  .cases-help-shell:not(.hidden) #cases-help.panel,
+  .verbs-help-shell:not(.hidden) #verbs-help.panel {
+    animation: motion-sheet-in calc(var(--motion-medium) + 0.06s) var(--motion-ease-out) both;
+  }
+
+  /* Модальные панели статистики и настроек */
+  .stats-overlay:not(.hidden) .stats-panel,
+  .settings-overlay:not(.hidden) .settings-panel {
+    animation: motion-modal-in calc(var(--motion-medium) + 0.08s) var(--motion-ease-out) both;
+  }
+
+  /* Карточки ответов в режиме слов */
+  .btn.vocab-choice {
+    transition:
+      background-color var(--motion-fast) ease,
+      color var(--motion-fast) ease,
+      box-shadow var(--motion-fast) var(--motion-ease-out),
+      transform var(--motion-fast) var(--motion-ease-out),
+      filter var(--motion-fast) ease,
+      opacity var(--motion-fast) ease;
+  }
+
+  .btn.vocab-choice:active:not(:disabled) {
+    transform: scale(0.988);
+  }
+
+  .btn.vocab-choice.vocab-choice--correct,
+  .btn.vocab-choice.vocab-choice--wrong {
+    animation: motion-vocab-resolve 0.42s var(--motion-ease-spring) both;
+  }
+
+  /* Основные кнопки: лёгкое нажатие */
+  .btn:not(.vocab-choice):active:not(:disabled) {
+    transform: translateY(1px);
+  }
+
+  .btn:not(.vocab-choice) {
+    transition: transform 0.14s var(--motion-ease-out), filter 0.2s ease;
+  }
+
+  .quiz-bar-btn {
+    transition:
+      transform 0.16s var(--motion-ease-out),
+      color 0.2s ease,
+      background 0.2s ease;
+  }
+
+  .quiz-bar-btn:active:not(:disabled) {
+    transform: scale(0.94);
+  }
+
+  .lt-char {
+    transition:
+      transform 0.14s var(--motion-ease-out),
+      color 0.15s ease,
+      background 0.15s ease;
+  }
+
+  .case-option {
+    transition:
+      border-color 0.18s ease,
+      transform 0.16s var(--motion-ease-out),
+      background-color 0.18s ease;
+  }
+
+  .case-option:active {
+    transform: scale(0.992);
+  }
+
+  .wizard-dot {
+    transition:
+      transform var(--motion-medium) var(--motion-ease-spring),
+      background 0.28s ease,
+      box-shadow 0.28s ease;
+  }
+
+  .vocab-ru-card {
+    transition:
+      border-color 0.22s ease,
+      box-shadow 0.28s ease;
+  }
+
+  #answer-input {
+    transition:
+      border-color 0.2s ease,
+      box-shadow 0.22s ease,
+      outline-offset 0.15s ease;
+  }
+}

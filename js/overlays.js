@@ -1,12 +1,19 @@
 import { els } from "./dom.js";
 import { state } from "./state.js";
-import { normalizeWordStatRow } from "./storage.js";
+import { loadCasesShowTranslation, normalizeWordStatRow } from "./storage.js";
 import { escapeHtml } from "./text-utils.js";
 import { syncThemeRadiosFromDom } from "./theme.js";
+
+export function syncSettingsTrainingCheckbox() {
+  if (els.settingsCasesShowTranslation) {
+    els.settingsCasesShowTranslation.checked = loadCasesShowTranslation();
+  }
+}
 
 export function openSettingsOverlay() {
   closeStatsOverlay();
   syncThemeRadiosFromDom();
+  syncSettingsTrainingCheckbox();
   els.settingsOverlay?.classList.remove("hidden");
   document.body.classList.add("settings-modal-open");
   els.btnSettingsClose?.focus();

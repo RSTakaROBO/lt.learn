@@ -102,3 +102,78 @@ export function bumpWordStat(lemma, field) {
   state.wordStats[lemma][field]++;
   saveWordStatsToStorage();
 }
+
+export function loadVocabBestStreak() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEYS.vocabBestStreak);
+    const n = raw == null ? NaN : parseInt(raw, 10);
+    return Number.isFinite(n) && n >= 0 ? n : 0;
+  } catch {
+    return 0;
+  }
+}
+
+/** Сохраняет серию, если она выше уже сохранённого рекорда. */
+export function saveVocabBestStreakIfHigher(streak) {
+  if (!Number.isFinite(streak) || streak < 0) return;
+  const prev = loadVocabBestStreak();
+  if (streak <= prev) return;
+  try {
+    localStorage.setItem(STORAGE_KEYS.vocabBestStreak, String(Math.floor(streak)));
+  } catch {
+    /* ignore */
+  }
+}
+
+const VOCAB_DIRECTIONS_DEFAULT = { ru_to_lt: true, lt_to_ru: false, hardcore: false };
+
+export function loadVocabDirections() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEYS.vocabDirections);
+    if (!raw) return { ...VOCAB_DIRECTIONS_DEFAULT };
+    const p = JSON.parse(raw);
+    let ru_to_lt = !!p.ru_to_lt;
+    let lt_to_ru = !!p.lt_to_ru;
+    if (!ru_to_lt && !lt_to_ru) {
+      ru_to_lt = VOCAB_DIRECTIONS_DEFAULT.ru_to_lt;
+      lt_to_ru = VOCAB_DIRECTIONS_DEFAULT.lt_to_ru;
+    }
+    const hardcore = !!p.hardcore;
+    return { ru_to_lt, lt_to_ru, hardcore };
+  } catch {
+    return { ...VOCAB_DIRECTIONS_DEFAULT };
+  }
+}
+
+export function saveVocabDirections(dirs) {
+  try {
+    localStorage.setItem(
+      STORAGE_KEYS.vocabDirections,
+      JSON.stringify({
+        ru_to_lt: !!dirs.ru_to_lt,
+        lt_to_ru: !!dirs.lt_to_ru,
+        hardcore: !!dirs.hardcore,
+      }),
+    );
+  } catch {
+    /* ignore */
+  }
+}
+
+export function loadCasesShowTranslation() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEYS.casesShowTranslation);
+    if (raw === null) return true;
+    return raw === "1" || raw === "true";
+  } catch {
+    return true;
+  }
+}
+
+export function saveCasesShowTranslation(show) {
+  try {
+    localStorage.setItem(STORAGE_KEYS.casesShowTranslation, show ? "1" : "0");
+  } catch {
+    /* ignore */
+  }
+}

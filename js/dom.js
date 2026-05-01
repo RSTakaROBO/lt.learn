@@ -3,15 +3,19 @@
 export const els = {
   stepMode: document.getElementById("step-mode"),
   stepPacks: document.getElementById("step-packs"),
+  stepVocabDirection: document.getElementById("step-vocab-direction"),
   stepCases: document.getElementById("step-cases"),
+  btnModeCases: document.getElementById("btn-mode-cases"),
+  btnModeVocab: document.getElementById("btn-mode-vocab"),
   wizardProgress: document.getElementById("wizard-progress"),
-  btnModeNext: document.getElementById("btn-mode-next"),
-  modePicker: document.querySelector(".mode-picker"),
   packList: document.getElementById("pack-list"),
   btnPacksNext: document.getElementById("btn-packs-next"),
   btnPacksBack: document.getElementById("btn-packs-back"),
   btnCasesBack: document.getElementById("btn-cases-back"),
   packStepStatus: document.getElementById("pack-step-status"),
+  vocabDirectionStepStatus: document.getElementById("vocab-direction-step-status"),
+  btnVocabDirectionBack: document.getElementById("btn-vocab-direction-back"),
+  btnVocabDirectionStart: document.getElementById("btn-vocab-direction-start"),
   caseCheckboxes: document.getElementById("case-checkboxes"),
   btnStart: document.getElementById("btn-start"),
   btnSubmit: document.getElementById("btn-quiz-submit-cases"),
@@ -52,6 +56,7 @@ export const els = {
   settingsOverlay: document.getElementById("settings-overlay"),
   btnSettingsClose: document.getElementById("btn-settings-close"),
   themePicker: document.getElementById("theme-picker"),
+  settingsCasesShowTranslation: document.getElementById("settings-cases-show-translation"),
 };
 
 export function refreshQuizElements() {
@@ -69,4 +74,5 @@ export function refreshQuizElements() {
   els.ltCharsBar = document.getElementById("lt-chars");
   els.lemmaDisplay = document.getElementById("lemma-display");
   els.targetCaseDisplay = document.getElementById("target-case-display");
+  els.stepVocabDirection = document.getElementById("step-vocab-direction");
 }

@@ -1,57 +1,56 @@
 {
   "words": [
     {
-      "hint_ru": "окно",
       "nominative": "langas",
       "genitive": "lango",
       "dative": "langui",
       "accusative": "langą",
       "instrumental": "langumu",
       "locative": "lange",
-      "vocative": "langas"
+      "vocative": "langas",
+      "ru": "окно"
     },
     {
-      "hint_ru": "книга",
       "nominative": "knyga",
       "genitive": "knygos",
       "dative": "knygai",
       "accusative": "knygą",
       "instrumental": "knyga",
       "locative": "knygoje",
-      "vocative": "knyga"
+      "vocative": "knyga",
+      "ru": "книга"
     },
     {
-      "hint_ru": "ребёнок",
       "nominative": "vaikas",
       "genitive": "vaiko",
       "dative": "vaikui",
       "accusative": "vaiką",
       "instrumental": "vaiku",
       "locative": "vaike",
-      "vocative": "vaike"
+      "vocative": "vaike",
+      "ru": "ребёнок"
     },
     {
-      "hint_ru": "девочка",
       "nominative": "mergaitė",
       "genitive": "mergaitės",
       "dative": "mergaitei",
       "accusative": "mergaitę",
       "instrumental": "mergaite",
       "locative": "mergaitėje",
-      "vocative": "mergaite"
+      "vocative": "mergaite",
+      "ru": "девочка"
     },
     {
-      "hint_ru": "город",
       "nominative": "miestas",
       "genitive": "miesto",
       "dative": "miestui",
       "accusative": "miestą",
       "instrumental": "miestu",
       "locative": "mieste",
-      "vocative": "mieste"
+      "vocative": "mieste",
+      "ru": "город"
     },
     {
-      "hint_ru": "страна",
       "exception": true,
       "exception_note_ru": "Женское существительное на -is (тип šalis): окончания не совпадают с типичными словами на -a / -ė.",
       "nominative": "šalis",
@@ -60,10 +59,10 @@
       "accusative": "šalį",
       "instrumental": "šalimi",
       "locative": "šalyje",
-      "vocative": "šalie"
+      "vocative": "šalie",
+      "ru": "страна"
     },
     {
-      "hint_ru": "человек",
       "exception": true,
       "exception_note_ru": "Неправильное / особое склонение (основа меняется: žmogus → žmonės во мн. ч. и т.д.).",
       "nominative": "žmogus",
@@ -72,20 +71,20 @@
       "accusative": "žmogų",
       "instrumental": "žmogumi",
       "locative": "žmoguje",
-      "vocative": "žmogau"
+      "vocative": "žmogau",
+      "ru": "человек"
     },
     {
-      "hint_ru": "день",
       "nominative": "diena",
       "genitive": "dienos",
       "dative": "dienai",
       "accusative": "dieną",
       "instrumental": "diena",
       "locative": "dienoje",
-      "vocative": "diena"
+      "vocative": "diena",
+      "ru": "день"
     },
     {
-      "hint_ru": "вода",
       "exception": true,
       "exception_note_ru": "Существительное с чередованием / «жидкое» склонение (vanduo ↔ vanden-).",
       "nominative": "vanduo",
@@ -94,10 +93,10 @@
       "accusative": "vandenį",
       "instrumental": "vandeniu",
       "locative": "vandenyje",
-      "vocative": "vandenie"
+      "vocative": "vandenie",
+      "ru": "вода"
     },
     {
-      "hint_ru": "дом",
       "exception": true,
       "exception_note_ru": "Звательный падеж совпадает с местным (name), а не с именительным — частая учебная ловушка.",
       "nominative": "namas",
@@ -106,100 +105,100 @@
       "accusative": "namą",
       "instrumental": "namu",
       "locative": "name",
-      "vocative": "name"
+      "vocative": "name",
+      "ru": "дом"
     },
     {
-      "hint_ru": "мать",
       "nominative": "motina",
       "genitive": "motinos",
       "dative": "motinai",
       "accusative": "motiną",
       "instrumental": "motina",
       "locative": "motinoje",
-      "vocative": "motina"
+      "vocative": "motina",
+      "ru": "мать"
     },
     {
-      "hint_ru": "друг",
       "nominative": "draugas",
       "genitive": "draugo",
       "dative": "draugui",
       "accusative": "draugą",
       "instrumental": "draugu",
       "locative": "drauge",
-      "vocative": "drauge"
+      "vocative": "drauge",
+      "ru": "друг"
     },
     {
-      "hint_ru": "автомобиль",
       "nominative": "automobilis",
       "genitive": "automobilio",
       "dative": "automobiliui",
       "accusative": "automobilį",
       "instrumental": "automobiliu",
       "locative": "automobilyje",
-      "vocative": "automobili"
+      "vocative": "automobili",
+      "ru": "автомобиль"
     },
     {
-      "hint_ru": "школа",
       "nominative": "mokykla",
       "genitive": "mokyklos",
       "dative": "mokyklai",
       "accusative": "mokyklą",
       "instrumental": "mokykla",
       "locative": "mokykloje",
-      "vocative": "mokykla"
+      "vocative": "mokykla",
+      "ru": "школа"
     },
     {
-      "hint_ru": "язык",
       "nominative": "kalba",
       "genitive": "kalbos",
       "dative": "kalbai",
       "accusative": "kalbą",
       "instrumental": "kalba",
       "locative": "kalboje",
-      "vocative": "kalba"
+      "vocative": "kalba",
+      "ru": "язык"
     },
     {
-      "hint_ru": "дерево",
       "nominative": "medis",
       "genitive": "medžio",
       "dative": "mediui",
       "accusative": "medį",
       "instrumental": "medžiu",
       "locative": "medyje",
-      "vocative": "medi"
+      "vocative": "medi",
+      "ru": "дерево"
     },
     {
-      "hint_ru": "трава",
       "nominative": "žolė",
       "genitive": "žolės",
       "dative": "žolei",
       "accusative": "žolę",
       "instrumental": "žole",
       "locative": "žolėje",
-      "vocative": "žole"
+      "vocative": "žole",
+      "ru": "трава"
     },
     {
-      "hint_ru": "солнце",
       "nominative": "saulė",
       "genitive": "saulės",
       "dative": "saulei",
       "accusative": "saulę",
       "instrumental": "saule",
       "locative": "saulėje",
-      "vocative": "saule"
+      "vocative": "saule",
+      "ru": "солнце"
     },
     {
-      "hint_ru": "кошка",
       "nominative": "katė",
       "genitive": "katės",
       "dative": "katei",
       "accusative": "katę",
       "instrumental": "kate",
       "locative": "katėje",
-      "vocative": "kate"
+      "vocative": "kate",
+      "ru": "кошка"
     },
     {
-      "hint_ru": "собака",
       "exception": true,
       "exception_note_ru": "Неправильное склонение (тип šuo / šun-).",
       "nominative": "šuo",
@@ -208,147 +207,148 @@
       "accusative": "šunį",
       "instrumental": "šunimi",
       "locative": "šunyje",
-      "vocative": "šunie"
+      "vocative": "šunie",
+      "ru": "собака"
     },
     {
-      "hint_ru": "рыба",
       "nominative": "žuvis",
       "genitive": "žuvies",
       "dative": "žuvei",
       "accusative": "žuvį",
       "instrumental": "žuvimi",
       "locative": "žuvyje",
-      "vocative": "žuvie"
+      "vocative": "žuvie",
+      "ru": "рыба"
     },
     {
-      "hint_ru": "голова",
       "nominative": "galva",
       "genitive": "galvos",
       "dative": "galvai",
       "accusative": "galvą",
       "instrumental": "galva",
       "locative": "galvoje",
-      "vocative": "galva"
+      "vocative": "galva",
+      "ru": "голова"
     },
     {
-      "hint_ru": "рука",
       "nominative": "ranka",
       "genitive": "rankos",
       "dative": "rankai",
       "accusative": "ranką",
       "instrumental": "ranka",
       "locative": "rankoje",
-      "vocative": "ranka"
+      "vocative": "ranka",
+      "ru": "рука"
     },
     {
-      "hint_ru": "нога",
       "nominative": "koja",
       "genitive": "kojos",
       "dative": "kojai",
       "accusative": "koją",
       "instrumental": "koja",
       "locative": "kojoje",
-      "vocative": "koja"
+      "vocative": "koja",
+      "ru": "нога"
     },
     {
-      "hint_ru": "работа",
       "nominative": "darbas",
       "genitive": "darbo",
       "dative": "darbui",
       "accusative": "darbą",
       "instrumental": "darbu",
       "locative": "darbe",
-      "vocative": "darbe"
+      "vocative": "darbe",
+      "ru": "работа"
     },
     {
-      "hint_ru": "время",
       "nominative": "laikas",
       "genitive": "laiko",
       "dative": "laikui",
       "accusative": "laiką",
       "instrumental": "laiku",
       "locative": "laike",
-      "vocative": "laikai"
+      "vocative": "laikai",
+      "ru": "время"
     },
     {
-      "hint_ru": "дождь",
       "nominative": "lietus",
       "genitive": "lietaus",
       "dative": "lietui",
       "accusative": "lietų",
       "instrumental": "lietumi",
       "locative": "lietuje",
-      "vocative": "lietau"
+      "vocative": "lietau",
+      "ru": "дождь"
     },
     {
-      "hint_ru": "снег",
       "nominative": "sniegas",
       "genitive": "sniego",
       "dative": "sniegui",
       "accusative": "sniegą",
       "instrumental": "sniegu",
       "locative": "sniege",
-      "vocative": "sniegau"
+      "vocative": "sniegau",
+      "ru": "снег"
     },
     {
-      "hint_ru": "облако",
       "nominative": "debesis",
       "genitive": "debesies",
       "dative": "debesiui",
       "accusative": "debesį",
       "instrumental": "debesimi",
       "locative": "debesyje",
-      "vocative": "debesie"
+      "vocative": "debesie",
+      "ru": "облако"
     },
     {
-      "hint_ru": "ученик",
       "nominative": "mokinys",
       "genitive": "mokinio",
       "dative": "mokiniui",
       "accusative": "mokinį",
       "instrumental": "mokiniu",
       "locative": "mokinyje",
-      "vocative": "mokini"
+      "vocative": "mokini",
+      "ru": "ученик"
     },
     {
-      "hint_ru": "учитель",
       "nominative": "mokytojas",
       "genitive": "mokytojo",
       "dative": "mokytojui",
       "accusative": "mokytoją",
       "instrumental": "mokytoju",
       "locative": "mokytoje",
-      "vocative": "mokytojau"
+      "vocative": "mokytojau",
+      "ru": "учитель"
     },
     {
-      "hint_ru": "дорога",
       "nominative": "kelias",
       "genitive": "kelio",
       "dative": "keliui",
       "accusative": "kelią",
       "instrumental": "keliu",
       "locative": "kelyje",
-      "vocative": "keliau"
+      "vocative": "keliau",
+      "ru": "дорога"
     },
     {
-      "hint_ru": "река",
       "nominative": "upė",
       "genitive": "upės",
       "dative": "upei",
       "accusative": "upę",
       "instrumental": "upe",
       "locative": "upėje",
-      "vocative": "upe"
+      "vocative": "upe",
+      "ru": "река"
     },
     {
-      "hint_ru": "птица",
       "nominative": "paukštis",
       "genitive": "paukščio",
       "dative": "paukščiui",
       "accusative": "paukštį",
       "instrumental": "paukščiu",
       "locative": "paukštyje",
-      "vocative": "paukšti"
+      "vocative": "paukšti",
+      "ru": "птица"
     }
   ]
 }

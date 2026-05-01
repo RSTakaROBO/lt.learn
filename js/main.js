@@ -6,9 +6,11 @@ import { loadPersistedWordStats } from "./storage.js";
 import { applyTheme, loadTheme, syncThemeRadiosFromDom } from "./theme.js";
 import {
   applyTrainModeFromStorage,
+  applyVocabDirectionCheckboxesFromStorage,
   renderCaseCheckboxes,
   showWizardMode,
 } from "./wizard.js";
+import { syncSettingsTrainingCheckbox } from "./overlays.js";
 
 function registerServiceWorker() {
   if (!("serviceWorker" in navigator)) return;
@@ -38,8 +40,10 @@ async function init() {
   state.wordStats = loadPersistedWordStats();
   applyTheme(loadTheme());
   syncThemeRadiosFromDom();
+  syncSettingsTrainingCheckbox();
   renderCaseCheckboxes();
   applyTrainModeFromStorage();
+  applyVocabDirectionCheckboxesFromStorage();
   bindEvents();
   showWizardMode();
   try {

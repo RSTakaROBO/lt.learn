@@ -9,10 +9,22 @@
   justify-content: flex-start;
   padding-top: max(var(--shell-pad-top), env(safe-area-inset-top, 0px));
   padding-right: max(var(--shell-pad-x), env(safe-area-inset-right, 0px));
-  padding-bottom: var(--shell-pad-bottom);
   padding-left: max(var(--shell-pad-x), env(safe-area-inset-left, 0px));
-  overflow: hidden;
   background: transparent;
+}
+
+.stats-overlay {
+  padding-bottom: var(--shell-pad-bottom);
+  overflow: hidden;
+}
+
+/* Настройки: без лишнего «поля» под нижнюю панель — высота по контенту; длинный список тем скроллится всей модалкой и может уходить под toolbar. */
+.settings-overlay {
+  padding-bottom: calc(env(safe-area-inset-bottom, 0px) + var(--shell-pad-bottom-extra));
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: contain;
 }
 
 /* Закрытые модалки не должны перехватывать клики, если base.css / .hidden не подгрузился */
@@ -58,6 +70,32 @@ body.settings-modal-open .quiz-bottom-bar {
   flex-shrink: 0;
 }
 
+.settings-overlay .settings-panel {
+  /* Не flex-shrink: иначе панель жмётся по высоте экрана, а содержимое «вылезает» и наезжает на «Закрыть». */
+  flex: 0 0 auto;
+  min-height: calc(
+    100dvh - max(var(--shell-pad-top), env(safe-area-inset-top, 0px)) -
+      calc(env(safe-area-inset-bottom, 0px) + var(--shell-pad-bottom-extra))
+  );
+}
+
+.settings-overlay .settings-theme-block {
+  flex: 0 0 auto;
+  min-height: 0;
+  overflow: visible;
+}
+
+.settings-overlay .theme-picker.case-grid {
+  flex: 0 0 auto;
+  min-height: unset;
+  overflow: visible;
+  padding-bottom: var(--panel-scroll-pad);
+}
+
+.settings-overlay .settings-panel > .stats-close-actions {
+  margin-bottom: calc(var(--quiz-bottom-bar-clearance) + env(safe-area-inset-bottom, 0px));
+}
+
 .settings-theme-block {
   flex: 1;
   min-height: 0;
@@ -79,6 +117,18 @@ body.settings-modal-open .quiz-bottom-bar {
   -webkit-overflow-scrolling: touch;
   align-content: start;
   padding-bottom: var(--panel-scroll-pad);
+}
+
+.settings-training-block {
+  flex-shrink: 0;
+  margin-top: 1rem;
+  margin-bottom: var(--panel-section-gap);
+  padding-top: 1rem;
+  border-top: var(--stroke) solid var(--border);
+}
+
+.settings-training-options-list {
+  margin: 0;
 }
 
 .stats-summary {
@@ -126,6 +176,77 @@ body.settings-modal-open .quiz-bottom-bar {
   border-radius: var(--radius-control);
   background: transparent;
   -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: contain;
+}
+
+/*
+ * Сенсорные экраны: системная/псевдо-полоса часто даёт белый прямоугольник без скруглений (особенно iOS WebKit).
+ * Прокрутка пальцем сохраняется — полосу не показываем.
+ */
+@media (pointer: coarse) {
+  .stats-table-wrap {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .stats-table-wrap::-webkit-scrollbar {
+    display: none;
+    width: 0 !important;
+    height: 0 !important;
+    appearance: none;
+    background: transparent;
+  }
+}
+
+/*
+ * Десктоп (мышь / точный стилус): только ползунок — тонкая скруглённая полоска без стрелок (Windows Chrome/Edge/Safari).
+ * Прозрачный трек = не «колба» у края панели.
+ */
+@media (pointer: fine) {
+  .stats-table-wrap {
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in srgb, var(--muted) 52%, var(--border)) transparent;
+  }
+
+  .stats-table-wrap::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+    background: transparent;
+  }
+
+  .stats-table-wrap::-webkit-scrollbar-button,
+  .stats-table-wrap::-webkit-scrollbar-button:single-button {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+  }
+
+  .stats-table-wrap::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+
+  .stats-table-wrap::-webkit-scrollbar-track {
+    background: transparent;
+    margin-block: 8px;
+    margin-inline: 2px;
+    border-radius: 999px;
+  }
+
+  .stats-table-wrap::-webkit-scrollbar-thumb {
+    border-radius: 999px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+    background-color: color-mix(in srgb, var(--muted) 46%, var(--border));
+    box-shadow: none;
+  }
+
+  .stats-table-wrap::-webkit-scrollbar-thumb:hover {
+    background-color: color-mix(in srgb, var(--muted) 68%, var(--border));
+  }
+
+  .stats-table-wrap::-webkit-scrollbar-thumb:active {
+    background-color: color-mix(in srgb, var(--muted) 82%, var(--border));
+  }
 }
 
 .stats-table {
