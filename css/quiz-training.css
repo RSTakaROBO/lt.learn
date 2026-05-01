@@ -112,6 +112,24 @@
   word-break: break-word;
 }
 
+/* Только режим «слова»: колонка — тело карточки забирает высоту, прокрутка только внутри него */
+#quiz-vocab-ui > .vocab-ru-card {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+#quiz-vocab-ui > .vocab-ru-card > .vocab-ru-card-body {
+  flex: 1;
+  min-height: 0;
+  min-width: 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+
 .vocab-options {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -352,9 +370,12 @@
 #quiz.panel.quiz--vocab-hardcore > #quiz-vocab-ui:not(.hidden) > .vocab-ru-card {
   flex: 0 1 auto;
   min-height: 0;
-  max-height: min(116vh, 44rem);
-  padding: 2rem 2.3rem;
-  overflow-x: hidden;
+  max-height: min(232vh, 88rem);
+  padding: 4rem 2.3rem;
+  overflow: hidden;
+}
+
+#quiz.panel.quiz--vocab-hardcore > #quiz-vocab-ui:not(.hidden) > .vocab-ru-card > .vocab-ru-card-body {
   overflow-y: auto;
 }
 
