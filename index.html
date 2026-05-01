@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Литовские падежи — тренажёр</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app">
+    <header class="header">
+      <h1>Литовские падежи</h1>
+    </header>
+
+    <section id="setup" class="panel">
+      <div id="step-packs" class="wizard-step">
+        <h2>Шаг 1. Наборы слов</h2>
+        <div id="pack-list" class="case-grid"></div>
+        <div class="actions">
+          <button type="button" id="btn-packs-next" class="btn primary">Далее</button>
+        </div>
+        <p id="pack-step-status" class="status" aria-live="polite"></p>
+      </div>
+
+      <div id="step-cases" class="wizard-step hidden">
+        <h2>Шаг 2. Падежи</h2>
+        <div id="case-checkboxes" class="case-grid"></div>
+        <p id="case-step-status" class="status case-step-msg" aria-live="polite"></p>
+        <div class="actions wizard-case-actions">
+          <button type="button" id="btn-cases-back" class="btn ghost">Назад</button>
+          <button type="button" id="btn-start" class="btn primary">Начать</button>
+        </div>
+      </div>
+    </section>
+
+    <div id="quiz-shell" class="quiz-shell hidden">
+      <section id="quiz" class="panel">
+        <div class="prompt">
+          <p class="lemma" id="lemma-display"></p>
+          <p class="target-line">
+            <span class="target-prefix">Падеж:</span>
+            <span id="target-case-display"></span>
+          </p>
+        </div>
+        <form id="answer-form" autocomplete="off">
+          <label class="sr-only" for="answer-input">Ваш ответ</label>
+          <input type="text" id="answer-input" placeholder="Введите слово…" spellcheck="false" autocapitalize="off" />
+          <div id="lt-chars" class="lt-chars" role="toolbar" aria-label="Вставить литовскую букву">
+            <button type="button" class="lt-char" data-char="ą" title="ą">ą</button>
+            <button type="button" class="lt-char" data-char="č" title="č">č</button>
+            <button type="button" class="lt-char" data-char="ę" title="ę">ę</button>
+            <button type="button" class="lt-char" data-char="ė" title="ė">ė</button>
+            <button type="button" class="lt-char" data-char="į" title="į">į</button>
+            <button type="button" class="lt-char" data-char="š" title="š">š</button>
+            <button type="button" class="lt-char" data-char="ų" title="ų">ų</button>
+            <button type="button" class="lt-char" data-char="ū" title="ū">ū</button>
+            <button type="button" class="lt-char" data-char="ž" title="ž">ž</button>
+          </div>
+          <div class="actions quiz-answer-actions">
+            <button type="button" id="btn-skip" class="btn ghost">Пропустить</button>
+            <button type="submit" class="btn primary">Проверить</button>
+          </div>
+        </form>
+        <div id="feedback" class="feedback hidden" aria-live="polite"></div>
+      </section>
+      <div class="quiz-below-card">
+        <button type="button" id="btn-stats" class="btn ghost quiz-settings-btn">Статистика</button>
+        <button type="button" id="btn-back-setup" class="btn ghost quiz-settings-btn">В меню</button>
+      </div>
+    </div>
+    <div
+      id="stats-overlay"
+      class="stats-overlay hidden"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="stats-title"
+    >
+      <div class="stats-panel panel">
+        <h2 id="stats-title">Статистика</h2>
+        <div id="stats-summary" class="stats-summary"></div>
+        <div class="stats-table-wrap">
+          <table class="stats-table" id="stats-table">
+            <thead>
+              <tr>
+                <th scope="col">Слово</th>
+                <th scope="col">Верно</th>
+                <th scope="col">Неверно</th>
+              </tr>
+            </thead>
+            <tbody id="stats-table-body"></tbody>
+          </table>
+          <p id="stats-empty" class="stats-empty hidden">Пока нет данных — ответьте на несколько слов или пропустите их.</p>
+        </div>
+        <button type="button" id="btn-stats-close" class="btn primary stats-close-btn">Закрыть</button>
+      </div>
+    </div>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>
