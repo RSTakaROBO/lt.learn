@@ -93,4 +93,5 @@
 
 #quiz.panel {
   overflow: visible;
+  min-height: 0;
 }

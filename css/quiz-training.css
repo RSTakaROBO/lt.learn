@@ -224,3 +224,21 @@
 .feedback.bad .exception-hint {
   color: color-mix(in srgb, var(--text) 82%, var(--muted));
 }
+
+/* Режим падежей: блок задания забирает свободную высоту — нижние кнопки прижаты к низу карточки */
+#quiz.panel > #quiz-cases-ui:not(.hidden) {
+  flex: 1 1 0;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+#quiz.panel > #feedback:not(.hidden) {
+  flex-shrink: 0;
+}
+
+#quiz.panel > .quiz-footer-actions {
+  margin-top: auto;
+  flex-shrink: 0;
+}

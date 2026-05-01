@@ -102,7 +102,7 @@
 
 .cases-help-footer-actions {
   flex-shrink: 0;
-  margin-top: var(--panel-section-gap);
+  margin-top: auto;
 }
 
 .cases-help-footer-actions .btn {
