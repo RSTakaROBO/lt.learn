@@ -10,6 +10,11 @@
       "id": "home",
       "title_ru": "Дом и быт",
       "files": ["home.json"]
+    },
+    {
+      "id": "food",
+      "title_ru": "Продукты питания (A1–A2)",
+      "files": ["food_a1.json", "food_a2.json"]
     }
   ]
 }

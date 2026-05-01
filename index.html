@@ -4,10 +4,21 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#0f1419" />
+  <script>
+    (function () {
+      try {
+        var k = "lt-trainer-theme-v1";
+        var ids = ["default", "ocean", "forest", "dusk", "ember", "day", "paper", "mist", "bloom"];
+        var t = localStorage.getItem(k);
+        if (t && ids.indexOf(t) !== -1 && t !== "default") document.documentElement.setAttribute("data-theme", t);
+      } catch (e) {}
+    })();
+  </script>
+  <link rel="stylesheet" href="themes.css" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="LT падежи" />
-  <title>Литовские падежи — тренажёр</title>
+  <title>Тренажёр падежей</title>
   <link rel="manifest" href="site.webmanifest" />
   <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png" />
   <link rel="apple-touch-icon" href="icons/icon-180.png" />
@@ -15,66 +26,536 @@
 </head>
 <body>
   <div class="app">
-    <header class="header">
-      <h1>Литовские падежи</h1>
-    </header>
+    <section id="setup" class="widget panel">
+      <div
+        id="wizard-progress"
+        class="wizard-progress"
+        role="progressbar"
+        aria-valuenow="1"
+        aria-valuemin="1"
+        aria-valuemax="3"
+        aria-label="Этапы настройки"
+      ></div>
 
-    <section id="setup" class="panel">
-      <div id="step-packs" class="wizard-step">
-        <h2>Шаг 1. Наборы слов</h2>
-        <div id="pack-list" class="case-grid"></div>
-        <div class="actions">
-          <button type="button" id="btn-packs-next" class="btn primary">Далее</button>
+      <div id="step-mode" class="wizard-step">
+        <h2>Упражнение</h2>
+        <div class="mode-picker">
+          <div class="case-grid" role="radiogroup" aria-label="Тип упражнения">
+            <label class="case-option mode-option">
+              <input type="radio" name="train-mode" value="cases" checked />
+              <div>
+                <div class="case-title">Изучение падежей</div>
+                <div class="case-lt mode-option-desc">Ввод формы слова в выбранном падеже</div>
+              </div>
+            </label>
+            <label class="case-option mode-option">
+              <input type="radio" name="train-mode" value="vocab" />
+              <div>
+                <div class="case-title">Изучение слов</div>
+                <div class="case-lt mode-option-desc">Слово на русском — выберите литовский вариант</div>
+              </div>
+            </label>
+          </div>
+          <div class="wizard-help-link">
+            <button type="button" id="btn-open-cases-help" class="btn ghost">Справка по падежам</button>
+            <button type="button" id="btn-open-verbs-help" class="btn ghost">
+              Справка: <span lang="lt">yra</span> / <span lang="lt">nėra</span>
+            </button>
+          </div>
         </div>
+        <div class="actions wizard-mode-actions">
+          <button type="button" id="btn-mode-next" class="btn primary">Далее</button>
+        </div>
+      </div>
+
+      <div id="step-packs" class="wizard-step hidden">
+        <h2>Наборы слов</h2>
+        <div id="pack-list" class="case-grid"></div>
         <p id="pack-step-status" class="status" aria-live="polite"></p>
+        <div class="actions wizard-pack-actions">
+          <button type="button" id="btn-packs-back" class="btn ghost">Назад</button>
+          <button type="button" id="btn-packs-next" class="btn primary" aria-label="Далее">
+            Далее
+          </button>
+        </div>
       </div>
 
       <div id="step-cases" class="wizard-step hidden">
-        <h2>Шаг 2. Падежи</h2>
+        <h2>Падежи</h2>
         <div id="case-checkboxes" class="case-grid"></div>
         <p id="case-step-status" class="status case-step-msg" aria-live="polite"></p>
         <div class="actions wizard-case-actions">
           <button type="button" id="btn-cases-back" class="btn ghost">Назад</button>
-          <button type="button" id="btn-start" class="btn primary">Начать</button>
+          <button type="button" id="btn-start" class="btn start">Начать</button>
         </div>
       </div>
     </section>
 
     <div id="quiz-shell" class="quiz-shell hidden">
-      <section id="quiz" class="panel">
-        <div class="prompt">
-          <p class="lemma" id="lemma-display"></p>
-          <p class="target-line">
-            <span class="target-prefix">Падеж:</span>
-            <span id="target-case-display"></span>
-          </p>
+      <section id="quiz" class="widget panel">
+        <div id="quiz-cases-ui">
+          <div class="prompt">
+            <p class="lemma" id="lemma-display"></p>
+            <p class="target-line">
+              <span class="target-prefix">Падеж:</span>
+              <span id="target-case-display"></span>
+            </p>
+          </div>
+          <form id="answer-form" autocomplete="off">
+            <label class="sr-only" for="answer-input">Ваш ответ</label>
+            <input type="text" id="answer-input" placeholder="Введите слово…" spellcheck="false" autocapitalize="off" />
+            <div id="lt-chars" class="lt-chars" role="toolbar" aria-label="Вставить литовскую букву">
+              <button type="button" class="lt-char" data-char="ą" title="ą">ą</button>
+              <button type="button" class="lt-char" data-char="č" title="č">č</button>
+              <button type="button" class="lt-char" data-char="ę" title="ę">ę</button>
+              <button type="button" class="lt-char" data-char="ė" title="ė">ė</button>
+              <button type="button" class="lt-char" data-char="į" title="į">į</button>
+              <button type="button" class="lt-char" data-char="š" title="š">š</button>
+              <button type="button" class="lt-char" data-char="ų" title="ų">ų</button>
+              <button type="button" class="lt-char" data-char="ū" title="ū">ū</button>
+              <button type="button" class="lt-char" data-char="ž" title="ž">ž</button>
+            </div>
+          </form>
         </div>
-        <form id="answer-form" autocomplete="off">
-          <label class="sr-only" for="answer-input">Ваш ответ</label>
-          <input type="text" id="answer-input" placeholder="Введите слово…" spellcheck="false" autocapitalize="off" />
-          <div id="lt-chars" class="lt-chars" role="toolbar" aria-label="Вставить литовскую букву">
-            <button type="button" class="lt-char" data-char="ą" title="ą">ą</button>
-            <button type="button" class="lt-char" data-char="č" title="č">č</button>
-            <button type="button" class="lt-char" data-char="ę" title="ę">ę</button>
-            <button type="button" class="lt-char" data-char="ė" title="ė">ė</button>
-            <button type="button" class="lt-char" data-char="į" title="į">į</button>
-            <button type="button" class="lt-char" data-char="š" title="š">š</button>
-            <button type="button" class="lt-char" data-char="ų" title="ų">ų</button>
-            <button type="button" class="lt-char" data-char="ū" title="ū">ū</button>
-            <button type="button" class="lt-char" data-char="ž" title="ž">ž</button>
+
+        <div id="quiz-vocab-ui" class="hidden">
+          <div class="vocab-ru-card">
+            <p class="lemma vocab-ru-display" id="vocab-ru-display"></p>
           </div>
-          <div class="actions quiz-answer-actions">
-            <button type="button" id="btn-skip" class="btn ghost">Пропустить</button>
-            <button type="submit" class="btn primary">Проверить</button>
-          </div>
-        </form>
+          <div id="vocab-options" class="vocab-options" role="group" aria-label="Выберите перевод"></div>
+        </div>
+
         <div id="feedback" class="feedback hidden" aria-live="polite"></div>
+
+        <div class="actions quiz-answer-actions quiz-footer-actions" id="quiz-footer-actions">
+          <button type="button" id="btn-skip" class="btn primary" aria-label="Пропустить">Пропустить</button>
+          <button type="submit" form="answer-form" class="btn primary" id="btn-quiz-submit-cases">Проверить</button>
+        </div>
       </section>
-      <div class="quiz-below-card">
-        <button type="button" id="btn-stats" class="btn ghost quiz-settings-btn">Статистика</button>
-        <button type="button" id="btn-back-setup" class="btn ghost quiz-settings-btn">В меню</button>
-      </div>
     </div>
+
+    <div id="cases-help-shell" class="cases-help-shell hidden">
+      <section id="cases-help" class="widget panel" aria-labelledby="cases-help-title">
+        <h2 id="cases-help-title" tabindex="-1">Справка по падежам</h2>
+        <div class="cases-help-scroll-block">
+          <section class="cases-help-case-block" aria-labelledby="ch-kil">
+            <h3 class="cases-help-table-title" id="ch-kil">
+              Родительный <span lang="lt" class="cases-help-lt-sub">kilmininkas</span>
+            </h3>
+            <div class="cases-help-table-wrap">
+              <table class="cases-help-table cases-help-table--one-case">
+                <thead>
+                  <tr>
+                    <th scope="col">Основа</th>
+                    <th scope="col">Ед. ч.</th>
+                    <th scope="col">Мн. ч.</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row"><span lang="lt">−as</span></th>
+                    <td><span lang="lt">−o</span></td>
+                    <td><span lang="lt">−ų</span></td>
+                  </tr>
+                  <tr>
+                    <th scope="row"><span lang="lt">−is</span></th>
+                    <td><span lang="lt">−io</span></td>
+                    <td><span lang="lt">−ių</span></td>
+                  </tr>
+                  <tr>
+                    <th scope="row"><span lang="lt">−ys</span></th>
+                    <td><span lang="lt">−io</span></td>
+                    <td><span lang="lt">−ių</span></td>
+                  </tr>
+                  <tr>
+                    <th scope="row"><span lang="lt">−us</span></th>
+                    <td><span lang="lt">−aus</span></td>
+                    <td><span lang="lt">−ų</span></td>
+                  </tr>
+                  <tr>
+                    <th scope="row"><span lang="lt">−a</span></th>
+                    <td><span lang="lt">−os</span></td>
+                    <td><span lang="lt">−ų</span></td>
+                  </tr>
+                  <tr>
+                    <th scope="row"><span lang="lt">−ė</span></th>
+                    <td><span lang="lt">−ės</span></td>
+                    <td><span lang="lt">−ių</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="cases-help-case-block" aria-labelledby="ch-naud">
+            <h3 class="cases-help-table-title" id="ch-naud">
+              Дательный <span lang="lt" class="cases-help-lt-sub">naudininkas</span>
+            </h3>
+            <div class="cases-help-table-wrap">
+              <table class="cases-help-table cases-help-table--one-case">
+                <thead>
+                  <tr>
+                    <th scope="col">Основа</th>
+                    <th scope="col">Ед. ч.</th>
+                    <th scope="col">Мн. ч.</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row"><span lang="lt">−as</span></th>
+                    <td><span lang="lt">−ui</span></td>
+                    <td><span lang="lt">−ams</span></td>
+                  </tr>
+                  <tr>
+                    <th scope="row"><span lang="lt">−is</span></th>
+                    <td><span lang="lt">−iui</span></td>
+                    <td><span lang="lt">−iams</span></td>
+                  </tr>
+                  <tr>
+                    <th scope="row"><span lang="lt">−ys</span></th>
+                    <td><span lang="lt">−iui</span></td>
+                    <td><span lang="lt">−iams</span></td>
+                  </tr>
+                  <tr>
+                    <th scope="row"><span lang="lt">−us</span></th>
+                    <td><span lang="lt">−ui</span></td>
+                    <td><span lang="lt">−ums</span></td>
+                  </tr>
+                  <tr>
+                    <th scope="row"><span lang="lt">−a</span></th>
+                    <td><span lang="lt">−ai</span></td>
+                    <td><span lang="lt">−oms</span></td>
+                  </tr>
+                  <tr>
+                    <th scope="row"><span lang="lt">−ė</span></th>
+                    <td><span lang="lt">−ei</span></td>
+                    <td><span lang="lt">−ėms</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="cases-help-case-block" aria-labelledby="ch-gal">
+            <h3 class="cases-help-table-title" id="ch-gal">
+              Винительный <span lang="lt" class="cases-help-lt-sub">galininkas</span>
+            </h3>
+            <div class="cases-help-table-wrap">
+              <table class="cases-help-table cases-help-table--one-case">
+                <thead>
+                  <tr>
+                    <th scope="col">Основа</th>
+                    <th scope="col">Ед. ч.</th>
+                    <th scope="col">Мн. ч.</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row"><span lang="lt">−as</span></th>
+                    <td><span lang="lt">−ą</span></td>
+                    <td><span lang="lt">−us</span></td>
+                  </tr>
+                  <tr>
+                    <th scope="row"><span lang="lt">−is</span></th>
+                    <td><span lang="lt">−į</span></td>
+                    <td><span lang="lt">−ius</span></td>
+                  </tr>
+                  <tr>
+                    <th scope="row"><span lang="lt">−ys</span></th>
+                    <td><span lang="lt">−į</span></td>
+                    <td><span lang="lt">−ius</span></td>
+                  </tr>
+                  <tr>
+                    <th scope="row"><span lang="lt">−us</span></th>
+                    <td><span lang="lt">−ų</span></td>
+                    <td><span lang="lt">−us</span></td>
+                  </tr>
+                  <tr>
+                    <th scope="row"><span lang="lt">−a</span></th>
+                    <td><span lang="lt">−ą</span></td>
+                    <td><span lang="lt">−as</span></td>
+                  </tr>
+                  <tr>
+                    <th scope="row"><span lang="lt">−ė</span></th>
+                    <td><span lang="lt">−ę</span></td>
+                    <td><span lang="lt">−es</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="cases-help-case-block" aria-labelledby="ch-inag">
+            <h3 class="cases-help-table-title" id="ch-inag">
+              Творительный <span lang="lt" class="cases-help-lt-sub">įnagininkas</span>
+            </h3>
+            <div class="cases-help-table-wrap">
+              <table class="cases-help-table cases-help-table--one-case">
+                <thead>
+                  <tr>
+                    <th scope="col">Основа</th>
+                    <th scope="col">Ед. ч.</th>
+                    <th scope="col">Мн. ч.</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row"><span lang="lt">−as</span></th>
+                    <td><span lang="lt">−u</span></td>
+                    <td><span lang="lt">−ais</span></td>
+                  </tr>
+                  <tr>
+                    <th scope="row"><span lang="lt">−is</span></th>
+                    <td><span lang="lt">−iu</span></td>
+                    <td><span lang="lt">−iais</span></td>
+                  </tr>
+                  <tr>
+                    <th scope="row"><span lang="lt">−ys</span></th>
+                    <td><span lang="lt">−iu</span></td>
+                    <td><span lang="lt">−iais</span></td>
+                  </tr>
+                  <tr>
+                    <th scope="row"><span lang="lt">−us</span></th>
+                    <td><span lang="lt">−umi</span></td>
+                    <td><span lang="lt">−umis</span></td>
+                  </tr>
+                  <tr>
+                    <th scope="row"><span lang="lt">−a</span></th>
+                    <td><span lang="lt">−a</span></td>
+                    <td><span lang="lt">−omis</span></td>
+                  </tr>
+                  <tr>
+                    <th scope="row"><span lang="lt">−ė</span></th>
+                    <td><span lang="lt">−e</span></td>
+                    <td><span lang="lt">−ėmis</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="cases-help-case-block" aria-labelledby="ch-viet">
+            <h3 class="cases-help-table-title" id="ch-viet">
+              Местный <span lang="lt" class="cases-help-lt-sub">vietininkas</span>
+            </h3>
+            <div class="cases-help-table-wrap">
+              <table class="cases-help-table cases-help-table--one-case">
+                <thead>
+                  <tr>
+                    <th scope="col">Основа</th>
+                    <th scope="col">Ед. ч.</th>
+                    <th scope="col">Мн. ч.</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row"><span lang="lt">−as</span></th>
+                    <td><span lang="lt">−e</span></td>
+                    <td><span lang="lt">−uose</span></td>
+                  </tr>
+                  <tr>
+                    <th scope="row"><span lang="lt">−is</span></th>
+                    <td><span lang="lt">−yje</span></td>
+                    <td><span lang="lt">−iuose</span></td>
+                  </tr>
+                  <tr>
+                    <th scope="row"><span lang="lt">−ys</span></th>
+                    <td><span lang="lt">−yje</span></td>
+                    <td><span lang="lt">−iuose</span></td>
+                  </tr>
+                  <tr>
+                    <th scope="row"><span lang="lt">−us</span></th>
+                    <td><span lang="lt">−uje</span></td>
+                    <td><span lang="lt">−uose</span></td>
+                  </tr>
+                  <tr>
+                    <th scope="row"><span lang="lt">−a</span></th>
+                    <td><span lang="lt">−oje</span></td>
+                    <td><span lang="lt">−ose</span></td>
+                  </tr>
+                  <tr>
+                    <th scope="row"><span lang="lt">−ė</span></th>
+                    <td><span lang="lt">−ėje</span></td>
+                    <td><span lang="lt">−ėse</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="cases-help-case-block" aria-labelledby="ch-sauk">
+            <h3 class="cases-help-table-title" id="ch-sauk">
+              Звательный <span lang="lt" class="cases-help-lt-sub">šauksmininkas</span>
+            </h3>
+            <div class="cases-help-table-wrap">
+              <table class="cases-help-table cases-help-table--one-case">
+                <thead>
+                  <tr>
+                    <th scope="col">Основа</th>
+                    <th scope="col">Ед. ч.</th>
+                    <th scope="col">Мн. ч.</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row"><span lang="lt">−as</span></th>
+                    <td><span lang="lt">−ai</span></td>
+                    <td><span lang="lt">−ai</span></td>
+                  </tr>
+                  <tr>
+                    <th scope="row"><span lang="lt">−is</span></th>
+                    <td><span lang="lt">−i</span></td>
+                    <td><span lang="lt">−iai</span></td>
+                  </tr>
+                  <tr>
+                    <th scope="row"><span lang="lt">−ys</span></th>
+                    <td><span lang="lt">−iau</span></td>
+                    <td><span lang="lt">−iai</span></td>
+                  </tr>
+                  <tr>
+                    <th scope="row"><span lang="lt">−us</span></th>
+                    <td><span lang="lt">−au</span></td>
+                    <td><span lang="lt">−ūs</span></td>
+                  </tr>
+                  <tr>
+                    <th scope="row"><span lang="lt">−a</span></th>
+                    <td><span lang="lt">−a</span></td>
+                    <td><span lang="lt">−os</span></td>
+                  </tr>
+                  <tr>
+                    <th scope="row"><span lang="lt">−ė</span></th>
+                    <td><span lang="lt">−e</span></td>
+                    <td><span lang="lt">−ės</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p class="cases-help-case-note sub">
+              Мн. ч. звательного часто совпадает с именительным мн. ч. У <span lang="lt">−ys</span> звательный ед. ч. часто на
+              <span lang="lt">−iau</span> (<i lang="lt">arklys</i> — <i lang="lt">arkliau</i>), но бывают слова на <span lang="lt">−y</span>.
+            </p>
+          </section>
+        </div>
+        <div class="actions cases-help-footer-actions">
+          <button type="button" id="btn-cases-help-close" class="btn primary">Закрыть</button>
+        </div>
+      </section>
+    </div>
+
+    <div id="verbs-help-shell" class="verbs-help-shell hidden">
+      <section id="verbs-help" class="widget panel" aria-labelledby="verbs-help-title">
+        <h2 id="verbs-help-title" tabindex="-1">
+          Справка: <span lang="lt">yra</span> и <span lang="lt">nėra</span>
+        </h2>
+        <div class="cases-help-scroll-block">
+          <section class="cases-help-case-block" aria-labelledby="vh-but-present">
+            <h3 class="cases-help-table-title" id="vh-but-present">
+              Настоящее время <span lang="lt" class="cases-help-lt-sub">būti</span>
+            </h3>
+            <div class="cases-help-table-wrap">
+              <table class="cases-help-table cases-help-table--one-case">
+                <thead>
+                  <tr>
+                    <th scope="col">Лицо</th>
+                    <th scope="col">Утверждение</th>
+                    <th scope="col">Отрицание</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">я <span lang="lt" class="cases-help-lt-sub">aš</span></th>
+                    <td><span lang="lt">esu</span></td>
+                    <td><span lang="lt">nesu</span></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">ты <span lang="lt" class="cases-help-lt-sub">tu</span></th>
+                    <td><span lang="lt">esi</span></td>
+                    <td><span lang="lt">nesi</span></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">он / она <span lang="lt" class="cases-help-lt-sub">jis / ji</span></th>
+                    <td><span lang="lt">yra</span></td>
+                    <td><span lang="lt">nėra</span></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">мы <span lang="lt" class="cases-help-lt-sub">mes</span></th>
+                    <td><span lang="lt">esame</span></td>
+                    <td><span lang="lt">nesame</span></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">вы <span lang="lt" class="cases-help-lt-sub">jūs</span></th>
+                    <td><span lang="lt">esate</span></td>
+                    <td><span lang="lt">nesate</span></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">они <span lang="lt" class="cases-help-lt-sub">jie / jos</span></th>
+                    <td><span lang="lt">yra</span></td>
+                    <td><span lang="lt">nėra</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p class="cases-help-case-note sub">
+              В 3-м лице <span lang="lt">yra</span> и <span lang="lt">nėra</span> совпадают для единственного и множественного числа.
+            </p>
+          </section>
+        </div>
+        <div class="actions cases-help-footer-actions">
+          <button type="button" id="btn-verbs-help-close" class="btn primary">Закрыть</button>
+        </div>
+      </section>
+    </div>
+
+    <nav class="quiz-bottom-bar" role="toolbar" aria-label="Меню тренажёра">
+      <div class="quiz-bottom-bar-inner">
+        <button type="button" id="btn-stats" class="quiz-bar-btn" aria-label="Статистика">
+          <svg class="quiz-bar-icon" viewBox="0 0 24 24" width="26" height="26" aria-hidden="true">
+            <path
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              d="M6 20V14M12 20V8M18 20v-9"
+            />
+          </svg>
+          <span class="quiz-bar-label">Статистика</span>
+        </button>
+        <button type="button" id="btn-back-setup" class="quiz-bar-btn" aria-label="В меню">
+          <svg class="quiz-bar-icon" viewBox="0 0 24 24" width="26" height="26" aria-hidden="true">
+            <path
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M4 10.5 12 4l8 6.5V19a1.5 1.5 0 01-1.5 1.5h-4v-6h-5v6H5.5A1.5 1.5 0 014 19v-8.5z"
+            />
+          </svg>
+          <span class="quiz-bar-label">Меню</span>
+        </button>
+        <button type="button" id="btn-settings" class="quiz-bar-btn" aria-label="Настройки">
+          <svg class="quiz-bar-icon" viewBox="0 0 24 24" width="26" height="26" aria-hidden="true">
+            <path
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M12 15a3 3 0 100-6 3 3 0 000 6z"
+            />
+            <path
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9c.26.604.852.997 1.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"
+            />
+          </svg>
+          <span class="quiz-bar-label">Настройки</span>
+        </button>
+      </div>
+    </nav>
     <div
       id="stats-overlay"
       class="stats-overlay hidden"
@@ -82,7 +563,7 @@
       aria-modal="true"
       aria-labelledby="stats-title"
     >
-      <div class="stats-panel panel">
+      <div class="stats-panel widget panel">
         <h2 id="stats-title">Статистика</h2>
         <div id="stats-summary" class="stats-summary"></div>
         <div class="stats-table-wrap">
@@ -98,7 +579,82 @@
           </table>
           <p id="stats-empty" class="stats-empty hidden">Пока нет данных — ответьте на несколько слов или пропустите их.</p>
         </div>
-        <button type="button" id="btn-stats-close" class="btn primary stats-close-btn">Закрыть</button>
+        <div class="actions stats-close-actions">
+          <button type="button" id="btn-stats-close" class="btn primary stats-close-btn">Закрыть</button>
+        </div>
+      </div>
+    </div>
+    <div
+      id="settings-overlay"
+      class="settings-overlay hidden"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="settings-title"
+    >
+      <div class="settings-panel widget panel">
+        <h2 id="settings-title">Настройки</h2>
+        <div class="settings-theme-block">
+          <p class="sub">Цветовая тема</p>
+          <div id="theme-picker" class="theme-picker case-grid" role="radiogroup" aria-label="Цветовая тема">
+            <label class="case-option theme-option">
+              <input type="radio" name="app-theme" value="default" checked />
+              <div>
+                <div class="case-title">Полночь</div>
+              </div>
+            </label>
+            <label class="case-option theme-option">
+              <input type="radio" name="app-theme" value="ocean" />
+              <div>
+                <div class="case-title">Океан</div>
+              </div>
+            </label>
+            <label class="case-option theme-option">
+              <input type="radio" name="app-theme" value="forest" />
+              <div>
+                <div class="case-title">Лес</div>
+              </div>
+            </label>
+            <label class="case-option theme-option">
+              <input type="radio" name="app-theme" value="dusk" />
+              <div>
+                <div class="case-title">Сумерки</div>
+              </div>
+            </label>
+            <label class="case-option theme-option">
+              <input type="radio" name="app-theme" value="ember" />
+              <div>
+                <div class="case-title">Янтарь</div>
+              </div>
+            </label>
+            <label class="case-option theme-option">
+              <input type="radio" name="app-theme" value="day" />
+              <div>
+                <div class="case-title">День</div>
+              </div>
+            </label>
+            <label class="case-option theme-option">
+              <input type="radio" name="app-theme" value="paper" />
+              <div>
+                <div class="case-title">Бумага</div>
+              </div>
+            </label>
+            <label class="case-option theme-option">
+              <input type="radio" name="app-theme" value="mist" />
+              <div>
+                <div class="case-title">Туман</div>
+              </div>
+            </label>
+            <label class="case-option theme-option">
+              <input type="radio" name="app-theme" value="bloom" />
+              <div>
+                <div class="case-title">Цветение</div>
+              </div>
+            </label>
+          </div>
+        </div>
+        <div class="actions stats-close-actions">
+          <button type="button" id="btn-settings-close" class="btn primary stats-close-btn">Закрыть</button>
+        </div>
       </div>
     </div>
   </div>

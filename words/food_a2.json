@@ -1,0 +1,159 @@
+{
+  "pack_note_ru": "Уровень A2 — чуть шире лексика про продукты (учебные формы).",
+  "words": [
+    {
+      "hint_ru": "мясо",
+      "level_ru": "A2",
+      "nominative": "mėsa",
+      "genitive": "mėsos",
+      "dative": "mėsai",
+      "accusative": "mėsą",
+      "instrumental": "mėsa",
+      "locative": "mėsoje",
+      "vocative": "mėsa"
+    },
+    {
+      "hint_ru": "рыба",
+      "level_ru": "A2",
+      "nominative": "žuvis",
+      "genitive": "žuvies",
+      "dative": "žuviai",
+      "accusative": "žuvį",
+      "instrumental": "žuvimi",
+      "locative": "žuvyje",
+      "vocative": "žuvie"
+    },
+    {
+      "hint_ru": "творог",
+      "level_ru": "A2",
+      "nominative": "varškė",
+      "genitive": "varškės",
+      "dative": "varškei",
+      "accusative": "varškę",
+      "instrumental": "varške",
+      "locative": "varškėje",
+      "vocative": "varške"
+    },
+    {
+      "hint_ru": "масло сливочное",
+      "level_ru": "A2",
+      "nominative": "sviestas",
+      "genitive": "sviesto",
+      "dative": "sviestui",
+      "accusative": "sviestą",
+      "instrumental": "sviestu",
+      "locative": "svieste",
+      "vocative": "svieste"
+    },
+    {
+      "hint_ru": "растительное масло",
+      "level_ru": "A2",
+      "nominative": "aliejus",
+      "genitive": "aliejaus",
+      "dative": "aliejui",
+      "accusative": "aliejų",
+      "instrumental": "aliejumi",
+      "locative": "aliejuje",
+      "vocative": "aliejau"
+    },
+    {
+      "hint_ru": "сахар",
+      "level_ru": "A2",
+      "nominative": "cukrus",
+      "genitive": "cukraus",
+      "dative": "cukrui",
+      "accusative": "cukrų",
+      "instrumental": "cukrumi",
+      "locative": "cukruje",
+      "vocative": "cukrau"
+    },
+    {
+      "hint_ru": "арбуз",
+      "level_ru": "A2",
+      "nominative": "arbūzas",
+      "genitive": "arbūzo",
+      "dative": "arbūžui",
+      "accusative": "arbūzą",
+      "instrumental": "arbūžu",
+      "locative": "arbūže",
+      "vocative": "arbūže"
+    },
+    {
+      "hint_ru": "апельсин",
+      "level_ru": "A2",
+      "nominative": "apelsinas",
+      "genitive": "apelsino",
+      "dative": "apelsinui",
+      "accusative": "apelsiną",
+      "instrumental": "apelsinu",
+      "locative": "apelsine",
+      "vocative": "apelsine"
+    },
+    {
+      "hint_ru": "чеснок",
+      "level_ru": "A2",
+      "nominative": "česnakas",
+      "genitive": "česnako",
+      "dative": "česnakui",
+      "accusative": "česnaką",
+      "instrumental": "česnaku",
+      "locative": "česnake",
+      "vocative": "česnake"
+    },
+    {
+      "hint_ru": "шоколад",
+      "level_ru": "A2",
+      "nominative": "šokoladas",
+      "genitive": "šokolado",
+      "dative": "šokoladui",
+      "accusative": "šokoladą",
+      "instrumental": "šokoladu",
+      "locative": "šokolade",
+      "vocative": "šokolade"
+    },
+    {
+      "hint_ru": "суп",
+      "level_ru": "A2",
+      "nominative": "sriuba",
+      "genitive": "sriubos",
+      "dative": "sriubai",
+      "accusative": "sriubą",
+      "instrumental": "sriuba",
+      "locative": "sriuboje",
+      "vocative": "sriuba"
+    },
+    {
+      "hint_ru": "овощ",
+      "level_ru": "A2",
+      "nominative": "daržovė",
+      "genitive": "daržovės",
+      "dative": "daržovei",
+      "accusative": "daržovę",
+      "instrumental": "daržove",
+      "locative": "daržovėje",
+      "vocative": "daržove"
+    },
+    {
+      "hint_ru": "мёд",
+      "level_ru": "A2",
+      "nominative": "medus",
+      "genitive": "medaus",
+      "dative": "medui",
+      "accusative": "medų",
+      "instrumental": "medumi",
+      "locative": "meduje",
+      "vocative": "medau"
+    },
+    {
+      "hint_ru": "напиток",
+      "level_ru": "A2",
+      "nominative": "gerimas",
+      "genitive": "gerimo",
+      "dative": "gerimui",
+      "accusative": "gerimą",
+      "instrumental": "gerimu",
+      "locative": "gerime",
+      "vocative": "gerime"
+    }
+  ]
+}

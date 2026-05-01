@@ -2,7 +2,7 @@
  * Кэширует оболочку и JSON-словари для офлайна и быстрого старта после установки PWA.
  * При смене списка файлов увеличьте CACHE_VERSION.
  */
-const CACHE_VERSION = "lt-trainer-v1";
+const CACHE_VERSION = "lt-trainer-v90";
 
 /** Пути относительно scope (папка, где лежит sw.js). */
 function precacheUrls(scopeUrl) {
@@ -10,6 +10,7 @@ function precacheUrls(scopeUrl) {
   const rel = (path) => new URL(path.replace(/^\//, ""), base).href;
   return [
     rel("index.html"),
+    rel("themes.css"),
     rel("style.css"),
     rel("app.js"),
     rel("site.webmanifest"),
@@ -20,6 +21,8 @@ function precacheUrls(scopeUrl) {
     rel("words/manifest.json"),
     rel("words/common.json"),
     rel("words/home.json"),
+    rel("words/food_a1.json"),
+    rel("words/food_a2.json"),
   ];
 }
 
@@ -30,6 +33,16 @@ async function matchCached(cache, request) {
     res = await cache.match(new URL("index.html", self.registration.scope).href);
   }
   return res || null;
+}
+
+/** Список паков должен подтягиваться с сервера без «залипания» старого precache. */
+function isWordsManifestRequest(request) {
+  try {
+    const pathname = new URL(request.url).pathname;
+    return pathname.endsWith("/words/manifest.json");
+  } catch {
+    return false;
+  }
 }
 
 self.addEventListener("install", (event) => {
@@ -61,6 +74,26 @@ self.addEventListener("fetch", (event) => {
   event.respondWith(
     (async () => {
       const cache = await caches.open(CACHE_VERSION);
+
+      if (isWordsManifestRequest(event.request)) {
+        try {
+          const networkRes = await fetch(event.request);
+          if (networkRes.ok) {
+            await cache.put(event.request, networkRes.clone());
+            return networkRes;
+          }
+        } catch {
+          /* offline → кеш */
+        }
+        const stale = await cache.match(event.request);
+        if (stale) return stale;
+        try {
+          return await fetch(event.request);
+        } catch {
+          return Response.error();
+        }
+      }
+
       const cached = await matchCached(cache, event.request);
       if (cached) return cached;
 

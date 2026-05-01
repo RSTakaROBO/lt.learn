@@ -1,0 +1,148 @@
+{
+  "pack_note_ru": "Уровень A1 — базовые слова про еду (учебные формы).",
+  "words": [
+    {
+      "hint_ru": "хлеб",
+      "level_ru": "A1",
+      "nominative": "duona",
+      "genitive": "duonos",
+      "dative": "duonai",
+      "accusative": "duoną",
+      "instrumental": "duona",
+      "locative": "duonoje",
+      "vocative": "duona"
+    },
+    {
+      "hint_ru": "молоко",
+      "level_ru": "A1",
+      "nominative": "pienas",
+      "genitive": "pieno",
+      "dative": "pienui",
+      "accusative": "pieną",
+      "instrumental": "pienu",
+      "locative": "piene",
+      "vocative": "piene"
+    },
+    {
+      "hint_ru": "яблоко",
+      "level_ru": "A1",
+      "nominative": "obuolys",
+      "genitive": "obuolio",
+      "dative": "obuoliui",
+      "accusative": "obuolį",
+      "instrumental": "obuoliu",
+      "locative": "obuolyje",
+      "vocative": "obuoly"
+    },
+    {
+      "hint_ru": "банан",
+      "level_ru": "A1",
+      "nominative": "bananas",
+      "genitive": "banano",
+      "dative": "bananui",
+      "accusative": "bananą",
+      "instrumental": "bananu",
+      "locative": "banane",
+      "vocative": "banane"
+    },
+    {
+      "hint_ru": "кофе",
+      "level_ru": "A1",
+      "nominative": "kava",
+      "genitive": "kavos",
+      "dative": "kavai",
+      "accusative": "kavą",
+      "instrumental": "kava",
+      "locative": "kavoje",
+      "vocative": "kava"
+    },
+    {
+      "hint_ru": "чай",
+      "level_ru": "A1",
+      "nominative": "arbata",
+      "genitive": "arbatos",
+      "dative": "arbatai",
+      "accusative": "arbatą",
+      "instrumental": "arbata",
+      "locative": "arbatoje",
+      "vocative": "arbata"
+    },
+    {
+      "hint_ru": "картофелина / картофель",
+      "level_ru": "A1",
+      "nominative": "bulvė",
+      "genitive": "bulvės",
+      "dative": "bulvei",
+      "accusative": "bulvę",
+      "instrumental": "bulve",
+      "locative": "bulvėje",
+      "vocative": "bulve"
+    },
+    {
+      "hint_ru": "помидор",
+      "level_ru": "A1",
+      "nominative": "pomidoras",
+      "genitive": "pomidoro",
+      "dative": "pomidorui",
+      "accusative": "pomidorą",
+      "instrumental": "pomidoru",
+      "locative": "pomidore",
+      "vocative": "pomidore"
+    },
+    {
+      "hint_ru": "огурец",
+      "level_ru": "A1",
+      "nominative": "agurkas",
+      "genitive": "agurko",
+      "dative": "agurkui",
+      "accusative": "agurką",
+      "instrumental": "agurku",
+      "locative": "agurke",
+      "vocative": "agurke"
+    },
+    {
+      "hint_ru": "лук",
+      "level_ru": "A1",
+      "nominative": "svogūnas",
+      "genitive": "svogūno",
+      "dative": "svogūnui",
+      "accusative": "svogūną",
+      "instrumental": "svogūnu",
+      "locative": "svogūne",
+      "vocative": "svogūne"
+    },
+    {
+      "hint_ru": "сыр",
+      "level_ru": "A1",
+      "nominative": "sūris",
+      "genitive": "sūrio",
+      "dative": "sūriui",
+      "accusative": "sūrį",
+      "instrumental": "sūriu",
+      "locative": "sūryje",
+      "vocative": "sūri"
+    },
+    {
+      "hint_ru": "яйцо",
+      "level_ru": "A1",
+      "nominative": "kiaušinis",
+      "genitive": "kiaušinio",
+      "dative": "kiaušiniui",
+      "accusative": "kiaušinį",
+      "instrumental": "kiaušiniu",
+      "locative": "kiaušinyje",
+      "vocative": "kiaušini"
+    },
+    {
+      "hint_ru": "соль",
+      "level_ru": "A1",
+      "nominative": "druska",
+      "genitive": "druskos",
+      "dative": "druskai",
+      "accusative": "druską",
+      "instrumental": "druska",
+      "locative": "druskoje",
+      "vocative": "druska"
+    }
+  ]
+}

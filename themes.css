@@ -1,0 +1,188 @@
+/**
+ * Цветовые профили приложения. Меняйте значения здесь — все экраны берут токены из :root темы.
+ * Активная тема: атрибут data-theme на <html> (см. app.js, локальный ключ lt-trainer-theme-v1).
+ *
+ * У каждой темы заданы и фон страницы (--bg), и карточки (--surface). Экраны «Статистика» и «Настройки»
+ * без затемняющей подложки — фон как у страницы, видна только карточка.
+ *
+ * --btn-shadow-depth: цвет нижней «полоски» объёма у кнопок (см. style.css). Меняется с темой; на тёмных
+ * темах он слегка осветнён относительно почти чёрного, чтобы полоска читалась на --surface.
+ *
+ * --control-ghost-bg: фон вторичной кнопки (.btn.ghost) через rgba — надёжнее, чем color-mix, в WebView/Android.
+ * color-scheme: чтобы браузер не рисовал нативные тёмные кнопки поверх светлой темы приложения.
+ */
+
+html:not([data-theme]),
+html[data-theme="default"] {
+  --bg: #0f1419;
+  --surface: #212c3b;
+  --border: #2d3a4a;
+  --text: #e8eef5;
+  --muted: #8fa3b8;
+  --accent: #6cb8ff;
+  --success: #5ecf8c;
+  --error: #ff7a7a;
+  --surface-elevated: #323f56;
+  /* Полоска под кнопкой: на тёмном фоне чуть светлее «чистого» чёрного — иначе не отличается от --surface */
+  --btn-shadow-depth: #2d3a4d;
+  --text-on-accent: #0a0f14;
+  --text-on-success: #052210;
+  --text-on-error: #1a0707;
+  --elev-shadow: color-mix(in srgb, #05080c 55%, transparent);
+  color-scheme: dark;
+  --control-ghost-bg: rgba(232, 238, 245, 0.14);
+}
+
+html[data-theme="ocean"] {
+  --bg: #0c1520;
+  --surface: #152a38;
+  --border: #1f3a4d;
+  --text: #e4f4fc;
+  --muted: #7aa3bc;
+  --accent: #3dccff;
+  --success: #3ee6a8;
+  --error: #ff8f8f;
+  --surface-elevated: #1e3a52;
+  --btn-shadow-depth: #2a4a63;
+  --text-on-accent: #051018;
+  --text-on-success: #041e14;
+  --text-on-error: #1c0a0a;
+  --elev-shadow: color-mix(in srgb, #040a10 56%, transparent);
+  color-scheme: dark;
+  --control-ghost-bg: rgba(228, 244, 252, 0.13);
+}
+
+html[data-theme="forest"] {
+  --bg: #0d1612;
+  --surface: #1a2e24;
+  --border: #274536;
+  --text: #e8f2eb;
+  --muted: #89a894;
+  --accent: #6fe3a6;
+  --success: #5ede8f;
+  --error: #ff8c85;
+  --surface-elevated: #243d30;
+  --btn-shadow-depth: #2f4d40;
+  --text-on-accent: #05140c;
+  --text-on-success: #051808;
+  --text-on-error: #1c0c09;
+  --elev-shadow: color-mix(in srgb, #040806 58%, transparent);
+  color-scheme: dark;
+  --control-ghost-bg: rgba(232, 242, 235, 0.13);
+}
+
+html[data-theme="dusk"] {
+  --bg: #14101c;
+  --surface: #261f34;
+  --border: #3a304c;
+  --text: #f0e9fb;
+  --muted: #a698bd;
+  --accent: #c9a6ff;
+  --success: #7fe0a8;
+  --error: #ff8fa3;
+  --surface-elevated: #342b46;
+  --btn-shadow-depth: #453a5c;
+  --text-on-accent: #12081f;
+  --text-on-success: #06140d;
+  --text-on-error: #1c080e;
+  --elev-shadow: color-mix(in srgb, #080510 56%, transparent);
+  color-scheme: dark;
+  --control-ghost-bg: rgba(240, 233, 251, 0.14);
+}
+
+html[data-theme="ember"] {
+  --bg: #18120e;
+  --surface: #2c221a;
+  --border: #403528;
+  --text: #faf3ea;
+  --muted: #b9a491;
+  --accent: #ffb347;
+  --success: #7ecf7a;
+  --error: #ff7d6e;
+  --surface-elevated: #3d3025;
+  --btn-shadow-depth: #524436;
+  --text-on-accent: #1a1004;
+  --text-on-success: #081206;
+  --text-on-error: #1c0c08;
+  --elev-shadow: color-mix(in srgb, #0c0805 58%, transparent);
+  color-scheme: dark;
+  --control-ghost-bg: rgba(250, 243, 234, 0.13);
+}
+
+/* ——— Светлые темы (фон страницы и карточки задаются явно) ——— */
+
+html[data-theme="day"] {
+  --bg: #e8ecf2;
+  --surface: #ffffff;
+  --border: #c5ced9;
+  --text: #141c26;
+  --muted: #55687a;
+  --accent: #2563eb;
+  --success: #16a34a;
+  --error: #dc2626;
+  --surface-elevated: #dfe6ef;
+  --btn-shadow-depth: #334155;
+  --text-on-accent: #f8fafc;
+  --text-on-success: #0a1f0f;
+  --text-on-error: #450a0a;
+  --elev-shadow: color-mix(in srgb, #0f172a 14%, transparent);
+  color-scheme: light;
+  --control-ghost-bg: rgba(20, 28, 38, 0.07);
+}
+
+html[data-theme="paper"] {
+  --bg: #f5f1ea;
+  --surface: #fffdf9;
+  --border: #d6cec2;
+  --text: #2a2319;
+  --muted: #6e6558;
+  --accent: #c2410c;
+  --success: #15803d;
+  --error: #b91c1c;
+  --surface-elevated: #ebe4d8;
+  --btn-shadow-depth: #f18a3c;
+  --text-on-accent: #fffaf5;
+  --text-on-success: #0d1f12;
+  --text-on-error: #431407;
+  --elev-shadow: color-mix(in srgb, #292524 12%, transparent);
+  color-scheme: light;
+  --control-ghost-bg: rgba(42, 35, 25, 0.065);
+}
+
+html[data-theme="mist"] {
+  --bg: #e4edf6;
+  --surface: #f8fafc;
+  --border: #b2c2d6;
+  --text: #0f172a;
+  --muted: #5f6e82;
+  --accent: #0369a1;
+  --success: #047857;
+  --error: #be123c;
+  --surface-elevated: #d7e4f2;
+  --btn-shadow-depth: #1e3a5f;
+  --text-on-accent: #f0f9ff;
+  --text-on-success: #022c22;
+  --text-on-error: #450a1a;
+  --elev-shadow: color-mix(in srgb, #0f172a 13%, transparent);
+  color-scheme: light;
+  --control-ghost-bg: rgba(15, 23, 42, 0.065);
+}
+
+html[data-theme="bloom"] {
+  --bg: #f2eef8;
+  --surface: #fdfcfe;
+  --border: #cfc5dd;
+  --text: #1f1630;
+  --muted: #65587a;
+  --accent: #6d28d9;
+  --success: #059669;
+  --error: #be185d;
+  --surface-elevated: #e8e0f4;
+  --btn-shadow-depth: #b79af6;
+  --text-on-accent: #faf5ff;
+  --text-on-success: #022c22;
+  --text-on-error: #4c0519;
+  --elev-shadow: color-mix(in srgb, #1e1b4b 12%, transparent);
+  color-scheme: light;
+  --control-ghost-bg: rgba(31, 22, 48, 0.055);
+}

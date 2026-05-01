@@ -16,6 +16,27 @@ const STORAGE_KEYS = {
   cases: "lt-cases-trainer-selected-cases",
   packs: "lt-cases-trainer-selected-packs",
   wordStats: "lt-trainer-word-stats-v1",
+  trainMode: "lt-trainer-train-mode-v1",
+  theme: "lt-trainer-theme-v1",
+};
+
+/** Доступные профили из themes.css (атрибут data-theme на documentElement). */
+const THEME_IDS = [
+  "default",
+  "ocean",
+  "forest",
+  "dusk",
+  "ember",
+  "day",
+  "paper",
+  "mist",
+  "bloom",
+];
+
+/** Режим упражнения после шага «Упражнение». */
+const TRAIN_MODE = {
+  CASES: "cases",
+  VOCAB: "vocab",
 };
 
 /** Цикл символов при Shift + эта латинская буква (нижний регистр); без Shift поведение обычное. */
@@ -30,18 +51,38 @@ const LT_SHIFT_KEY_CYCLES = {
 };
 
 const els = {
+  stepMode: document.getElementById("step-mode"),
   stepPacks: document.getElementById("step-packs"),
   stepCases: document.getElementById("step-cases"),
+  wizardProgress: document.getElementById("wizard-progress"),
+  btnModeNext: document.getElementById("btn-mode-next"),
+  modePicker: document.querySelector(".mode-picker"),
   packList: document.getElementById("pack-list"),
   btnPacksNext: document.getElementById("btn-packs-next"),
+  btnPacksBack: document.getElementById("btn-packs-back"),
   btnCasesBack: document.getElementById("btn-cases-back"),
   packStepStatus: document.getElementById("pack-step-status"),
   caseCheckboxes: document.getElementById("case-checkboxes"),
   btnStart: document.getElementById("btn-start"),
-  btnSubmit: document.querySelector("#answer-form button[type='submit']"),
+  btnSubmit: document.getElementById("btn-quiz-submit-cases"),
+  quizFooterActions: document.getElementById("quiz-footer-actions"),
+  quizCasesUi: document.getElementById("quiz-cases-ui"),
+  quizVocabUi: document.getElementById("quiz-vocab-ui"),
+  vocabRuDisplay: document.getElementById("vocab-ru-display"),
+  vocabOptions: document.getElementById("vocab-options"),
   caseStepStatus: document.getElementById("case-step-status"),
   setup: document.getElementById("setup"),
   quizShell: document.getElementById("quiz-shell"),
+  casesHelpShell: document.getElementById("cases-help-shell"),
+  casesHelpScrollBlock: document.querySelector("#cases-help .cases-help-scroll-block"),
+  casesHelpTitle: document.getElementById("cases-help-title"),
+  btnOpenCasesHelp: document.getElementById("btn-open-cases-help"),
+  btnCasesHelpClose: document.getElementById("btn-cases-help-close"),
+  verbsHelpShell: document.getElementById("verbs-help-shell"),
+  verbsHelpScrollBlock: document.querySelector("#verbs-help .cases-help-scroll-block"),
+  verbsHelpTitle: document.getElementById("verbs-help-title"),
+  btnOpenVerbsHelp: document.getElementById("btn-open-verbs-help"),
+  btnVerbsHelpClose: document.getElementById("btn-verbs-help-close"),
   lemmaDisplay: document.getElementById("lemma-display"),
   targetCaseDisplay: document.getElementById("target-case-display"),
   answerForm: document.getElementById("answer-form"),
@@ -57,6 +98,10 @@ const els = {
   statsTableBody: document.getElementById("stats-table-body"),
   statsEmpty: document.getElementById("stats-empty"),
   btnStatsClose: document.getElementById("btn-stats-close"),
+  btnSettings: document.getElementById("btn-settings"),
+  settingsOverlay: document.getElementById("settings-overlay"),
+  btnSettingsClose: document.getElementById("btn-settings-close"),
+  themePicker: document.getElementById("theme-picker"),
 };
 
 let wordBank = [];
@@ -80,6 +125,31 @@ let manifestCache = null;
 
 /** По ключу nominative: { correct, wrong, skipped } */
 let wordStats = {};
+
+function refreshQuizElements() {
+  els.quizCasesUi = document.getElementById("quiz-cases-ui");
+  els.quizVocabUi = document.getElementById("quiz-vocab-ui");
+  els.vocabRuDisplay = document.getElementById("vocab-ru-display");
+  els.vocabOptions = document.getElementById("vocab-options");
+  els.quizFooterActions = document.getElementById("quiz-footer-actions");
+  els.btnQuizSubmitCases = document.getElementById("btn-quiz-submit-cases");
+  els.btnSkip = document.getElementById("btn-skip");
+  els.btnSubmit = els.btnQuizSubmitCases;
+  els.answerForm = document.getElementById("answer-form");
+  els.answerInput = document.getElementById("answer-input");
+  els.feedback = document.getElementById("feedback");
+  els.ltCharsBar = document.getElementById("lt-chars");
+  els.lemmaDisplay = document.getElementById("lemma-display");
+  els.targetCaseDisplay = document.getElementById("target-case-display");
+}
+
+function inferQuizMode(task) {
+  if (!task?.word) return TRAIN_MODE.CASES;
+  if (task.mode === TRAIN_MODE.VOCAB) return TRAIN_MODE.VOCAB;
+  if (task.mode === TRAIN_MODE.CASES) return TRAIN_MODE.CASES;
+  if (Array.isArray(task.choices) && task.choices.length >= 4) return TRAIN_MODE.VOCAB;
+  return TRAIN_MODE.CASES;
+}
 
 function loadSelectedCases() {
   try {
@@ -198,14 +268,216 @@ function resolveFilesFromPackIds(packIds) {
   return out;
 }
 
+function loadTrainMode() {
+  try {
+    const m = localStorage.getItem(STORAGE_KEYS.trainMode);
+    if (m === TRAIN_MODE.VOCAB || m === TRAIN_MODE.CASES) return m;
+  } catch {
+    /* ignore */
+  }
+  return TRAIN_MODE.CASES;
+}
+
+function saveTrainMode(mode) {
+  try {
+    if (mode === TRAIN_MODE.VOCAB || mode === TRAIN_MODE.CASES) {
+      localStorage.setItem(STORAGE_KEYS.trainMode, mode);
+    }
+  } catch {
+    /* ignore */
+  }
+}
+
+function loadTheme() {
+  const attr = document.documentElement.getAttribute("data-theme");
+  if (attr && THEME_IDS.includes(attr)) return attr;
+  try {
+    const t = localStorage.getItem(STORAGE_KEYS.theme);
+    if (t && THEME_IDS.includes(t)) return t;
+  } catch {
+    /* ignore */
+  }
+  return "default";
+}
+
+function applyTheme(themeId) {
+  const id = THEME_IDS.includes(themeId) ? themeId : "default";
+  if (id === "default") {
+    document.documentElement.removeAttribute("data-theme");
+  } else {
+    document.documentElement.setAttribute("data-theme", id);
+  }
+  try {
+    localStorage.setItem(STORAGE_KEYS.theme, id);
+  } catch {
+    /* ignore */
+  }
+  updateThemeColorMeta();
+}
+
+function updateThemeColorMeta() {
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if (!meta) return;
+  const bg = getComputedStyle(document.documentElement).getPropertyValue("--bg").trim();
+  if (bg) meta.setAttribute("content", bg);
+}
+
+function syncThemeRadiosFromDom() {
+  if (!els.themePicker) return;
+  const id = loadTheme();
+  const input = els.themePicker.querySelector(`input[name="app-theme"][value="${id}"]`);
+  if (input) input.checked = true;
+}
+
+function openSettingsOverlay() {
+  closeStatsOverlay();
+  syncThemeRadiosFromDom();
+  els.settingsOverlay?.classList.remove("hidden");
+  document.body.classList.add("settings-modal-open");
+  els.btnSettingsClose?.focus();
+}
+
+function closeSettingsOverlay() {
+  els.settingsOverlay?.classList.add("hidden");
+  document.body.classList.remove("settings-modal-open");
+}
+
+function isSettingsOverlayOpen() {
+  return els.settingsOverlay && !els.settingsOverlay.classList.contains("hidden");
+}
+
+function isCasesHelpOpen() {
+  return els.casesHelpShell && !els.casesHelpShell.classList.contains("hidden");
+}
+
+function isVerbsHelpOpen() {
+  return els.verbsHelpShell && !els.verbsHelpShell.classList.contains("hidden");
+}
+
+function openCasesHelp() {
+  closeStatsOverlay();
+  closeSettingsOverlay();
+  if (!els.casesHelpShell) return;
+  els.verbsHelpShell?.classList.add("hidden");
+  els.setup.classList.add("hidden");
+  els.quizShell.classList.add("hidden");
+  els.casesHelpShell.classList.remove("hidden");
+  if (els.casesHelpScrollBlock) els.casesHelpScrollBlock.scrollTop = 0;
+  document.documentElement.scrollTop = 0;
+  document.body.scrollTop = 0;
+  requestAnimationFrame(() => {
+    els.casesHelpTitle?.focus({ preventScroll: true });
+  });
+}
+
+function closeCasesHelp() {
+  if (!els.casesHelpShell) return;
+  els.casesHelpShell.classList.add("hidden");
+  els.setup.classList.remove("hidden");
+}
+
+function openVerbsHelp() {
+  closeStatsOverlay();
+  closeSettingsOverlay();
+  if (!els.verbsHelpShell) return;
+  els.casesHelpShell?.classList.add("hidden");
+  els.setup.classList.add("hidden");
+  els.quizShell.classList.add("hidden");
+  els.verbsHelpShell.classList.remove("hidden");
+  if (els.verbsHelpScrollBlock) els.verbsHelpScrollBlock.scrollTop = 0;
+  document.documentElement.scrollTop = 0;
+  document.body.scrollTop = 0;
+  requestAnimationFrame(() => {
+    els.verbsHelpTitle?.focus({ preventScroll: true });
+  });
+}
+
+function closeVerbsHelp() {
+  if (!els.verbsHelpShell) return;
+  els.verbsHelpShell.classList.add("hidden");
+  els.setup.classList.remove("hidden");
+}
+
+function getTrainModeFromUi() {
+  const el = document.querySelector('input[name="train-mode"]:checked');
+  return el?.value === TRAIN_MODE.VOCAB ? TRAIN_MODE.VOCAB : TRAIN_MODE.CASES;
+}
+
+function applyTrainModeFromStorage() {
+  const m = loadTrainMode();
+  const input = document.querySelector(`input[name="train-mode"][value="${m}"]`);
+  if (input) input.checked = true;
+}
+
+function wizardDotCountForUi() {
+  return getTrainModeFromUi() === TRAIN_MODE.VOCAB ? 2 : 3;
+}
+
+function wizardDotCountAfterModeChosen() {
+  return loadTrainMode() === TRAIN_MODE.VOCAB ? 2 : 3;
+}
+
+function renderWizardDots(count) {
+  if (!els.wizardProgress) return;
+  els.wizardProgress.innerHTML = "";
+  els.wizardProgress.setAttribute("aria-valuemax", String(count));
+  for (let i = 0; i < count; i++) {
+    const dot = document.createElement("span");
+    dot.className = "wizard-dot";
+    dot.setAttribute("aria-hidden", "true");
+    els.wizardProgress.appendChild(dot);
+  }
+}
+
+function updateWizardProgress(step) {
+  const dots = els.wizardProgress?.querySelectorAll(".wizard-dot");
+  const max = dots?.length || 1;
+  const n = Math.min(max, Math.max(1, step));
+  dots.forEach((dot, i) => {
+    dot.classList.toggle("is-active", i + 1 === n);
+  });
+  if (els.wizardProgress) els.wizardProgress.setAttribute("aria-valuenow", String(n));
+}
+
+function showWizardMode() {
+  els.stepMode.classList.remove("hidden");
+  els.stepPacks.classList.add("hidden");
+  els.stepCases.classList.add("hidden");
+  renderWizardDots(wizardDotCountForUi());
+  updateWizardProgress(1);
+}
+
+function syncWizardPacksNextPresentation() {
+  const btn = els.btnPacksNext;
+  if (!btn) return;
+  if (loadTrainMode() === TRAIN_MODE.VOCAB) {
+    btn.textContent = "Начать";
+    btn.classList.remove("primary");
+    btn.classList.add("start");
+    btn.setAttribute("aria-label", "Начать");
+  } else {
+    btn.textContent = "Далее";
+    btn.classList.remove("start");
+    btn.classList.add("primary");
+    btn.setAttribute("aria-label", "Далее");
+  }
+}
+
 function showWizardPacks() {
+  els.stepMode.classList.add("hidden");
   els.stepPacks.classList.remove("hidden");
   els.stepCases.classList.add("hidden");
+  renderWizardDots(wizardDotCountAfterModeChosen());
+  updateWizardProgress(2);
+  syncWizardPacksNextPresentation();
 }
 
 function showWizardCases() {
+  els.stepMode.classList.add("hidden");
   els.stepPacks.classList.add("hidden");
   els.stepCases.classList.remove("hidden");
+  renderWizardDots(3);
+  updateWizardProgress(3);
 }
 
 function renderCaseCheckboxes() {
@@ -436,7 +708,7 @@ async function loadWordsFromFiles(files) {
 
 async function loadManifestAndRenderPacks() {
   const base = "words/";
-  const manifestRes = await fetch(`${base}manifest.json`);
+  const manifestRes = await fetch(`${base}manifest.json`, { cache: "no-store" });
   if (!manifestRes.ok) throw new Error(`manifest.json: ${manifestRes.status}`);
   const raw = await manifestRes.json();
   manifestCache = normalizeManifest(raw);
@@ -551,24 +823,172 @@ function nextTask(selectedKeys) {
 
   const word = pickWeightedRandom(candidates, computeWordSelectionWeight);
   const targetCase = pickRandom(selectedKeys);
-  return { word, targetCase };
+  return { mode: TRAIN_MODE.CASES, word, targetCase };
+}
+
+function shuffleArray(arr) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    const t = a[i];
+    a[i] = a[j];
+    a[j] = t;
+  }
+  return a;
+}
+
+function nextVocabTask() {
+  const usable = wordBank.filter(
+    (w) =>
+      typeof w.hint_ru === "string" &&
+      w.hint_ru.trim() &&
+      typeof w.nominative === "string" &&
+      w.nominative,
+  );
+  if (usable.length < 4) return null;
+
+  let candidates = usable.filter(
+    (w) => countWordsSinceLemma(lemmaKey(w), shownLemmaHistory) >= MIN_GAP_BEFORE_SAME_LEMMA,
+  );
+
+  if (!candidates.length) {
+    const lastLemma =
+      shownLemmaHistory.length > 0 ? shownLemmaHistory[shownLemmaHistory.length - 1] : null;
+    candidates = lastLemma != null ? usable.filter((w) => lemmaKey(w) !== lastLemma) : usable.slice();
+  }
+
+  if (!candidates.length) {
+    candidates = usable;
+  }
+
+  const word = pickWeightedRandom(candidates, computeWordSelectionWeight);
+  const correct = word.nominative;
+  const others = usable.filter((w) => lemmaKey(w) !== lemmaKey(word));
+  const picks = shuffleArray(others).slice(0, 3);
+  if (picks.length < 3) return null;
+  const distractors = picks.map((w) => w.nominative);
+  const choices = shuffleArray([correct, ...distractors]);
+  return { mode: TRAIN_MODE.VOCAB, word, choices };
 }
 
 function setSubmitLabel(answeredFlag) {
-  if (els.btnSubmit) els.btnSubmit.textContent = answeredFlag ? "Следующее слово" : "Проверить";
+  if (els.btnSubmit) els.btnSubmit.textContent = answeredFlag ? "Далее" : "Проверить";
+}
+
+function setQuizSkipAvailable(canSkip) {
+  if (els.btnSkip) els.btnSkip.disabled = !canSkip;
+}
+
+function resetQuizSkipButtonAppearance() {
+  if (!els.btnSkip) return;
+  els.btnSkip.textContent = "Пропустить";
+  els.btnSkip.classList.remove("ghost", "start");
+  els.btnSkip.classList.add("primary");
+  els.btnSkip.setAttribute("aria-label", "Пропустить");
+}
+
+/** После ответа в «слова»: та же кнопка — только текст «Далее», стиль как у «Пропустить» (голубая primary). */
+function morphQuizSkipToVocabNext() {
+  if (!els.btnSkip) return;
+  els.btnSkip.textContent = "Далее";
+  els.btnSkip.disabled = false;
+  els.btnSkip.setAttribute("aria-label", "Далее");
+}
+
+function renderVocabChoices(choices) {
+  if (!els.vocabOptions) return;
+  els.vocabOptions.innerHTML = "";
+  const list = Array.isArray(choices) ? choices : [];
+  for (const lem of list) {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "btn ghost vocab-choice";
+    btn.setAttribute("data-lemma", lem);
+    btn.textContent = lem;
+    btn.setAttribute("aria-label", lem);
+    els.vocabOptions.appendChild(btn);
+  }
+}
+
+/** @returns {boolean} false только если режим «слова» запрошен, а разметки vocab в DOM нет */
+function setQuizUiPhase(phase) {
+  refreshQuizElements();
+
+  const casesEl = els.quizCasesUi;
+  const vocabEl = els.quizVocabUi;
+  const sub = els.btnQuizSubmitCases;
+  const foot = els.quizFooterActions;
+
+  if (!casesEl || !sub || !foot) return false;
+
+  if (phase === "cases") {
+    foot.classList.remove("hidden");
+    vocabEl?.classList.add("hidden");
+    casesEl.classList.remove("hidden");
+    sub.hidden = false;
+    sub.classList.remove("hidden");
+    foot.classList.remove("quiz-footer--single");
+    return true;
+  }
+
+  if (phase === "vocab-pending") {
+    if (!vocabEl || !els.vocabOptions) {
+      casesEl.classList.add("hidden");
+      vocabEl?.classList.add("hidden");
+      sub.hidden = true;
+      sub.classList.add("hidden");
+      foot.classList.add("hidden");
+      foot.classList.remove("quiz-footer--single");
+      if (els.feedback) {
+        els.feedback.classList.remove("hidden", "ok", "bad");
+        els.feedback.textContent =
+          "Не удалось открыть режим «Слова». Обновите страницу или очистите данные сайта / кэш приложения.";
+      }
+      return false;
+    }
+    foot.classList.remove("hidden");
+    vocabEl.classList.remove("hidden");
+    casesEl.classList.add("hidden");
+    sub.hidden = true;
+    sub.classList.add("hidden");
+    foot.classList.add("quiz-footer--single");
+    return true;
+  }
+
+  return true;
 }
 
 function showQuiz(task) {
+  refreshQuizElements();
+  task.mode = inferQuizMode(task);
+
   currentTask = task;
   shownLemmaHistory.push(lemmaKey(task.word));
   answered = false;
-  setSubmitLabel(false);
+  resetQuizSkipButtonAppearance();
+  setQuizSkipAvailable(true);
   els.setup.classList.add("hidden");
   els.quizShell.classList.remove("hidden");
   els.feedback.classList.add("hidden");
   els.feedback.textContent = "";
   els.feedback.classList.remove("ok", "bad");
 
+  if (task.mode === TRAIN_MODE.VOCAB) {
+    setSubmitLabel(false);
+    if (!setQuizUiPhase("vocab-pending")) return;
+    if (els.vocabRuDisplay) els.vocabRuDisplay.textContent = (task.word.hint_ru || "").trim() || "—";
+    if (!Array.isArray(task.choices) || task.choices.length < 4) {
+      renderVocabChoices([]);
+      els.feedback.classList.remove("hidden", "ok", "bad");
+      els.feedback.textContent = "Нет данных для вариантов ответа. Вернитесь в меню.";
+      return;
+    }
+    renderVocabChoices(task.choices);
+    return;
+  }
+
+  setQuizUiPhase("cases");
+  setSubmitLabel(false);
   const nom = task.word.nominative;
   const hint = task.word.hint_ru ? ` (${task.word.hint_ru})` : "";
   els.lemmaDisplay.textContent = nom + hint;
@@ -590,18 +1010,54 @@ function exceptionHintHtml(word) {
   return `<p class="exception-hint"><strong>Исключение:</strong> ${escapeHtml(note)}</p>`;
 }
 
+function recordQuizOutcome(word, ok) {
+  bumpWordStat(lemmaKey(word), ok ? "correct" : "wrong");
+}
+
 function showFeedback(ok, expected, word) {
+  recordQuizOutcome(word, ok);
   els.feedback.classList.remove("hidden", "ok", "bad");
   if (ok) {
     els.feedback.classList.add("ok");
     const exc = exceptionHintHtml(word);
     els.feedback.innerHTML = exc ? `<p>Верно</p>${exc}` : "<p>Верно</p>";
-    bumpWordStat(lemmaKey(word), "correct");
   } else {
     els.feedback.classList.add("bad");
     const exc = exceptionHintHtml(word);
     els.feedback.innerHTML = `<p>Неверно</p><p class="correct-form">Правильно: <strong>${escapeHtml(expected)}</strong></p>${exc}`;
-    bumpWordStat(lemmaKey(word), "wrong");
+  }
+}
+
+/** Режим «слова»: только подсветка кнопок; подсказки про исключения не показываем. */
+function finalizeVocabChoice(ok, expected, word, clickedBtn) {
+  recordQuizOutcome(word, ok);
+  els.feedback.classList.remove("ok", "bad");
+  els.feedback.classList.add("hidden");
+  els.feedback.textContent = "";
+  if (!els.vocabOptions) return;
+  const nominal =
+    typeof word?.nominative === "string" && word.nominative.trim() ? word.nominative.trim() : expected;
+  const clickedLemma = clickedBtn?.getAttribute("data-lemma") ?? "";
+  els.vocabOptions.querySelectorAll(".vocab-choice").forEach((b) => {
+    const lem = b.getAttribute("data-lemma") || "";
+    const isExpected = answersMatch(lem, nominal);
+    b.classList.remove("vocab-choice--wrong");
+    if (isExpected) {
+      b.disabled = false;
+      b.classList.add("vocab-choice--correct");
+    } else {
+      b.disabled = true;
+      b.classList.remove("vocab-choice--correct");
+    }
+  });
+  if (!ok && clickedLemma && !answersMatch(clickedLemma, nominal)) {
+    const wrongBtn =
+      clickedBtn?.closest?.(".vocab-choice") ||
+      [...els.vocabOptions.querySelectorAll(".vocab-choice")].find((b) =>
+        answersMatch(b.getAttribute("data-lemma") || "", clickedLemma),
+      );
+    wrongBtn?.classList.add("vocab-choice--wrong");
+    if (wrongBtn) wrongBtn.disabled = true;
   }
 }
 
@@ -663,6 +1119,7 @@ function renderStatsScreen() {
 }
 
 function openStatsOverlay() {
+  closeSettingsOverlay();
   renderStatsScreen();
   els.statsOverlay.classList.remove("hidden");
   document.body.classList.add("stats-modal-open");
@@ -678,9 +1135,26 @@ function isStatsOverlayOpen() {
   return els.statsOverlay && !els.statsOverlay.classList.contains("hidden");
 }
 
+function advanceVocabQuiz() {
+  if (!currentTask || currentTask.mode !== TRAIN_MODE.VOCAB || !answered) return;
+  const task = nextVocabTask();
+  if (!task) {
+    els.feedback.classList.remove("hidden", "ok", "bad");
+    els.feedback.textContent = "Слов больше нет.";
+    return;
+  }
+  showQuiz(task);
+}
+
 function skipCurrentWord() {
-  if (!currentTask) return;
+  if (!currentTask || answered) return;
   bumpWordStat(lemmaKey(currentTask.word), "skipped");
+  if (currentTask.mode === TRAIN_MODE.VOCAB) {
+    const task = nextVocabTask();
+    if (!task) return;
+    showQuiz(task);
+    return;
+  }
   const keys = getCheckedCaseKeys();
   const task = nextTask(keys);
   if (!task) return;
@@ -688,6 +1162,21 @@ function skipCurrentWord() {
 }
 
 function bindEvents() {
+  els.modePicker?.addEventListener("change", () => {
+    if (!els.stepMode.classList.contains("hidden")) {
+      renderWizardDots(wizardDotCountForUi());
+      updateWizardProgress(1);
+    }
+    if (!els.stepPacks.classList.contains("hidden")) {
+      syncWizardPacksNextPresentation();
+    }
+  });
+
+  els.btnModeNext.addEventListener("click", () => {
+    saveTrainMode(getTrainModeFromUi());
+    showWizardPacks();
+  });
+
   els.packList.addEventListener("change", () => {
     saveSelectedPacks(getCheckedPackIds());
   });
@@ -695,6 +1184,11 @@ function bindEvents() {
   els.caseCheckboxes.addEventListener("change", () => {
     saveSelectedCases(getCheckedCaseKeys());
     els.caseStepStatus.textContent = "";
+  });
+
+  els.btnPacksBack.addEventListener("click", () => {
+    els.packStepStatus.textContent = "";
+    showWizardMode();
   });
 
   els.btnPacksNext.addEventListener("click", async () => {
@@ -714,6 +1208,24 @@ function bindEvents() {
       saveSelectedPacks(ids);
       els.packStepStatus.textContent = "";
       els.caseStepStatus.textContent = "";
+      if (loadTrainMode() === TRAIN_MODE.VOCAB) {
+        const withHint = wordBank.filter(
+          (w) => typeof w.hint_ru === "string" && w.hint_ru.trim() && w.nominative,
+        );
+        if (withHint.length < 4) {
+          els.packStepStatus.textContent =
+            "Для «Изучение слов» нужно минимум 4 слова с русской подсказкой в выбранных наборах.";
+          return;
+        }
+        shownLemmaHistory = [];
+        const task = nextVocabTask();
+        if (!task) {
+          els.packStepStatus.textContent = "Не удалось составить четыре варианта ответа.";
+          return;
+        }
+        showQuiz(task);
+        return;
+      }
       showWizardCases();
     } catch (err) {
       els.packStepStatus.textContent =
@@ -762,6 +1274,7 @@ function bindEvents() {
   els.answerForm.addEventListener("submit", (e) => {
     e.preventDefault();
     if (!currentTask) return;
+    if (currentTask.mode === TRAIN_MODE.VOCAB) return;
 
     const keys = getCheckedCaseKeys();
     const expected = currentTask.word[currentTask.targetCase];
@@ -771,25 +1284,60 @@ function bindEvents() {
       const ok = answersMatch(user, expected);
       answered = true;
       setSubmitLabel(true);
+      setQuizSkipAvailable(false);
       showFeedback(ok, expected, currentTask.word);
       return;
     }
 
     const task = nextTask(keys);
     if (!task) {
+      els.feedback.classList.remove("hidden", "ok", "bad");
       els.feedback.textContent = "Слов больше нет.";
       return;
     }
     showQuiz(task);
   });
 
-  els.btnSkip.addEventListener("click", () => skipCurrentWord());
+  els.vocabOptions.addEventListener("click", (e) => {
+    const btn = e.target.closest(".vocab-choice");
+    if (!btn || !currentTask || currentTask.mode !== TRAIN_MODE.VOCAB) return;
+    if (answered) return;
+
+    answered = true;
+    const expected = currentTask.word.nominative;
+    const ok = answersMatch(btn.getAttribute("data-lemma") || "", expected);
+    finalizeVocabChoice(ok, expected, currentTask.word, btn);
+    morphQuizSkipToVocabNext();
+  });
+
+  els.btnSkip.addEventListener("click", () => {
+    if (currentTask?.mode === TRAIN_MODE.VOCAB && answered) {
+      advanceVocabQuiz();
+      return;
+    }
+    skipCurrentWord();
+  });
 
   document.addEventListener("keydown", (e) => {
     if (e.key !== "Escape") return;
+    if (isSettingsOverlayOpen()) {
+      e.preventDefault();
+      closeSettingsOverlay();
+      return;
+    }
     if (isStatsOverlayOpen()) {
       e.preventDefault();
       closeStatsOverlay();
+      return;
+    }
+    if (isCasesHelpOpen()) {
+      e.preventDefault();
+      closeCasesHelp();
+      return;
+    }
+    if (isVerbsHelpOpen()) {
+      e.preventDefault();
+      closeVerbsHelp();
       return;
     }
     if (!currentTask || els.quizShell.classList.contains("hidden")) return;
@@ -803,11 +1351,38 @@ function bindEvents() {
     if (e.target === els.statsOverlay) closeStatsOverlay();
   });
 
+  els.btnSettings?.addEventListener("click", () => openSettingsOverlay());
+  els.btnSettingsClose?.addEventListener("click", () => closeSettingsOverlay());
+  els.settingsOverlay?.addEventListener("click", (e) => {
+    if (e.target === els.settingsOverlay) closeSettingsOverlay();
+  });
+
+  els.themePicker?.addEventListener("change", (ev) => {
+    const input = ev.target;
+    if (!(input instanceof HTMLInputElement) || input.name !== "app-theme") return;
+    applyTheme(input.value);
+  });
+
+  els.btnOpenCasesHelp?.addEventListener("click", () => openCasesHelp());
+  els.btnCasesHelpClose?.addEventListener("click", () => closeCasesHelp());
+  els.btnOpenVerbsHelp?.addEventListener("click", () => openVerbsHelp());
+  els.btnVerbsHelpClose?.addEventListener("click", () => closeVerbsHelp());
+
   els.btnBackSetup.addEventListener("click", () => {
     closeStatsOverlay();
+    closeSettingsOverlay();
+    if (isCasesHelpOpen()) {
+      closeCasesHelp();
+      return;
+    }
+    if (isVerbsHelpOpen()) {
+      closeVerbsHelp();
+      return;
+    }
     els.quizShell.classList.add("hidden");
     els.setup.classList.remove("hidden");
-    showWizardPacks();
+    showWizardMode();
+    els.packStepStatus.textContent = "";
     els.caseStepStatus.textContent = "";
     currentTask = null;
     shownLemmaHistory = [];
@@ -825,18 +1400,27 @@ function registerServiceWorker() {
 
   window.addEventListener("load", () => {
     const url = new URL("sw.js", location.href).href;
-    navigator.serviceWorker.register(url).catch((err) => {
-      console.warn("Service worker:", err);
-    });
+    navigator.serviceWorker
+      .register(url)
+      .then((reg) => {
+        reg.update().catch(() => {});
+      })
+      .catch((err) => {
+        console.warn("Service worker:", err);
+      });
   });
 }
 
 async function init() {
   registerServiceWorker();
+  refreshQuizElements();
   wordStats = loadPersistedWordStats();
+  applyTheme(loadTheme());
+  syncThemeRadiosFromDom();
   renderCaseCheckboxes();
+  applyTrainModeFromStorage();
   bindEvents();
-  showWizardPacks();
+  showWizardMode();
   try {
     await loadManifestAndRenderPacks();
   } catch (err) {
