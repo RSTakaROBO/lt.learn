@@ -814,7 +814,25 @@ function bindEvents() {
   });
 }
 
+function registerServiceWorker() {
+  if (!("serviceWorker" in navigator)) return;
+  const hostOk =
+    location.protocol === "https:" ||
+    location.hostname === "localhost" ||
+    location.hostname === "127.0.0.1" ||
+    location.hostname === "[::1]";
+  if (!hostOk) return;
+
+  window.addEventListener("load", () => {
+    const url = new URL("sw.js", location.href).href;
+    navigator.serviceWorker.register(url).catch((err) => {
+      console.warn("Service worker:", err);
+    });
+  });
+}
+
 async function init() {
+  registerServiceWorker();
   wordStats = loadPersistedWordStats();
   renderCaseCheckboxes();
   bindEvents();

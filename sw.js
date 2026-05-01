@@ -1,0 +1,78 @@
+/**
+ * Кэширует оболочку и JSON-словари для офлайна и быстрого старта после установки PWA.
+ * При смене списка файлов увеличьте CACHE_VERSION.
+ */
+const CACHE_VERSION = "lt-trainer-v1";
+
+/** Пути относительно scope (папка, где лежит sw.js). */
+function precacheUrls(scopeUrl) {
+  const base = scopeUrl.endsWith("/") ? scopeUrl : `${scopeUrl}/`;
+  const rel = (path) => new URL(path.replace(/^\//, ""), base).href;
+  return [
+    rel("index.html"),
+    rel("style.css"),
+    rel("app.js"),
+    rel("site.webmanifest"),
+    rel("icons/icon-180.png"),
+    rel("icons/icon-192.png"),
+    rel("icons/icon-512.png"),
+    rel("icons/icon-512-maskable.png"),
+    rel("words/manifest.json"),
+    rel("words/common.json"),
+    rel("words/home.json"),
+  ];
+}
+
+async function matchCached(cache, request) {
+  let res = await cache.match(request);
+  if (res) return res;
+  if (request.mode === "navigate") {
+    res = await cache.match(new URL("index.html", self.registration.scope).href);
+  }
+  return res || null;
+}
+
+self.addEventListener("install", (event) => {
+  event.waitUntil(
+    caches
+      .open(CACHE_VERSION)
+      .then((cache) => cache.addAll(precacheUrls(self.registration.scope)))
+      .then(() => self.skipWaiting())
+      .catch((err) => {
+        console.warn("[sw] precache failed", err);
+      }),
+  );
+});
+
+self.addEventListener("activate", (event) => {
+  event.waitUntil(
+    caches
+      .keys()
+      .then((keys) =>
+        Promise.all(keys.filter((k) => k !== CACHE_VERSION).map((k) => caches.delete(k))),
+      )
+      .then(() => self.clients.claim()),
+  );
+});
+
+self.addEventListener("fetch", (event) => {
+  if (event.request.method !== "GET") return;
+
+  event.respondWith(
+    (async () => {
+      const cache = await caches.open(CACHE_VERSION);
+      const cached = await matchCached(cache, event.request);
+      if (cached) return cached;
+
+      try {
+        return await fetch(event.request);
+      } catch {
+        if (event.request.mode === "navigate") {
+          const fallback = await cache.match(new URL("index.html", self.registration.scope).href);
+          if (fallback) return fallback;
+        }
+        return Response.error();
+      }
+    })(),
+  );
+});
