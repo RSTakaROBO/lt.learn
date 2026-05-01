@@ -1,8 +1,8 @@
 {
   "id": "./",
-  "name": "Литовские падежи — тренажёр",
-  "short_name": "LT падежи",
-  "description": "Тренажёр склонения литовских слов по падежам.",
+  "name": "Lietuvių kalbos mokymasis",
+  "short_name": "LT Learning",
+  "description": "Lietuvių kalbos mokymasis",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",

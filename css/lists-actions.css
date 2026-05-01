@@ -1,0 +1,135 @@
+.sub {
+  font-size: 0.9rem;
+  color: var(--muted);
+  margin: 0 0 1rem;
+}
+
+.case-grid {
+  display: grid;
+  gap: var(--gap-actions);
+}
+
+.case-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  padding: 0.55rem 0.65rem;
+  border-radius: var(--radius-control);
+  border: var(--stroke) solid var(--border);
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+
+.case-option:hover {
+  border-color: var(--accent);
+}
+
+.case-option input {
+  margin-top: 0.2rem;
+}
+
+.case-option .case-title {
+  font-weight: 500;
+}
+
+.case-option .case-lt {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.actions {
+  margin-top: var(--panel-section-gap);
+}
+
+/**
+ * Две колонки действий — общая сетка для шагов мастера и футера квиза.
+ */
+.wizard-pack-actions,
+.wizard-case-actions,
+.wizard-mode-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--gap-actions);
+  align-items: center;
+}
+
+.wizard-pack-actions .btn,
+.wizard-case-actions .btn,
+.wizard-mode-actions .btn {
+  width: 100%;
+  min-height: var(--touch-btn-min-h);
+}
+
+/* Одна кнопка «Далее» — правая колонка */
+.wizard-mode-actions .btn {
+  grid-column: 2;
+}
+
+.mode-option-desc {
+  margin-top: 0.2rem;
+  line-height: 1.35;
+}
+
+.wizard-help-link {
+  flex-shrink: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.wizard-help-link .btn {
+  display: block;
+  width: 100%;
+  text-align: center;
+}
+
+.wizard-progress {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.7rem;
+  margin-bottom: var(--panel-section-gap);
+}
+
+.wizard-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--muted) 55%, var(--border));
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.wizard-dot.is-active {
+  background: var(--accent);
+  transform: scale(1.4);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 35%, transparent);
+}
+
+.quiz-footer-actions {
+  flex-shrink: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--gap-actions);
+}
+
+.quiz-footer-actions .btn {
+  width: 100%;
+}
+
+.quiz-footer-actions.quiz-footer--single {
+  grid-template-columns: 1fr;
+}
+
+.status {
+  margin-top: 0.75rem;
+  font-size: 0.88rem;
+  color: var(--muted);
+}
+
+.case-step-msg:empty {
+  display: none;
+}

@@ -1,0 +1,110 @@
+.cases-help-scroll-block {
+  flex: 1;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: var(--panel-scroll-pad);
+  padding-inline: 3px;
+}
+
+.cases-help-scroll-block .cases-help-case-block:first-child .cases-help-table-title {
+  margin-top: 0;
+}
+
+.cases-help-case-block {
+  margin-bottom: 1.2rem;
+}
+
+.cases-help-case-block:last-child {
+  margin-bottom: 0;
+}
+
+.cases-help-table-title {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0 0 0.45rem;
+  line-height: 1.35;
+}
+
+.cases-help-lt-sub {
+  font-weight: 500;
+  font-size: 0.86rem;
+  color: var(--muted);
+}
+
+.cases-help-case-note {
+  margin: 0.4rem 0 0;
+  font-size: 0.84rem;
+  line-height: 1.4;
+}
+
+.cases-help-table-wrap {
+  overflow: hidden;
+  margin-bottom: 0;
+  border: var(--stroke) solid var(--border);
+  border-radius: var(--radius-table-wrap);
+  background: var(--surface);
+}
+
+.cases-help-table {
+  width: 100%;
+  min-width: 0;
+  border-collapse: collapse;
+  font-size: 0.82rem;
+}
+
+.cases-help-table--one-case thead th {
+  font-size: 0.76rem;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.cases-help-table th,
+.cases-help-table td {
+  padding: 0.45rem 0.5rem;
+  border-bottom: var(--stroke) solid var(--border);
+  text-align: center;
+  vertical-align: middle;
+  background-color: transparent;
+}
+
+.cases-help-table th[scope="row"] {
+  text-align: left;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.cases-help-table tbody th[scope="row"] {
+  color: var(--text);
+}
+
+.cases-help-table thead th {
+  font-weight: 600;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  color: var(--muted);
+  background-color: var(--surface);
+  border-bottom: var(--stroke) solid var(--border);
+}
+
+.cases-help-table tbody td span[lang="lt"],
+.cases-help-table tbody th span[lang="lt"] {
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.cases-help-table tbody tr:last-child th,
+.cases-help-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.cases-help-footer-actions {
+  flex-shrink: 0;
+  margin-top: var(--panel-section-gap);
+}
+
+.cases-help-footer-actions .btn {
+  width: 100%;
+}

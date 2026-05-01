@@ -1,11 +1,11 @@
 /**
  * Цветовые профили приложения. Меняйте значения здесь — все экраны берут токены из :root темы.
- * Активная тема: атрибут data-theme на <html> (см. app.js, локальный ключ lt-trainer-theme-v1).
+ * Активная тема: атрибут data-theme на <html> (см. js/theme.js + js/main.js, ключ lt-trainer-theme-v1).
  *
  * У каждой темы заданы и фон страницы (--bg), и карточки (--surface). Экраны «Статистика» и «Настройки»
  * без затемняющей подложки — фон как у страницы, видна только карточка.
  *
- * --btn-shadow-depth: цвет нижней «полоски» объёма у кнопок (см. style.css). Меняется с темой; на тёмных
+ * --btn-shadow-depth: цвет нижней «полоски» объёма у кнопок (см. css/buttons.css). Меняется с темой; на тёмных
  * темах он слегка осветнён относительно почти чёрного, чтобы полоска читалась на --surface.
  *
  * --control-ghost-bg: фон вторичной кнопки (.btn.ghost) через rgba — надёжнее, чем color-mix, в WebView/Android.
@@ -123,8 +123,8 @@ html[data-theme="day"] {
   --surface-elevated: #dfe6ef;
   --btn-shadow-depth: #334155;
   --text-on-accent: #f8fafc;
-  --text-on-success: #0a1f0f;
-  --text-on-error: #450a0a;
+  --text-on-success: #ffffff;
+  --text-on-error: #ffffff;
   --elev-shadow: color-mix(in srgb, #0f172a 14%, transparent);
   color-scheme: light;
   --control-ghost-bg: rgba(20, 28, 38, 0.07);
@@ -142,8 +142,8 @@ html[data-theme="paper"] {
   --surface-elevated: #ebe4d8;
   --btn-shadow-depth: #f18a3c;
   --text-on-accent: #fffaf5;
-  --text-on-success: #0d1f12;
-  --text-on-error: #431407;
+  --text-on-success: #ffffff;
+  --text-on-error: #ffffff;
   --elev-shadow: color-mix(in srgb, #292524 12%, transparent);
   color-scheme: light;
   --control-ghost-bg: rgba(42, 35, 25, 0.065);
@@ -161,8 +161,8 @@ html[data-theme="mist"] {
   --surface-elevated: #d7e4f2;
   --btn-shadow-depth: #1e3a5f;
   --text-on-accent: #f0f9ff;
-  --text-on-success: #022c22;
-  --text-on-error: #450a1a;
+  --text-on-success: #ffffff;
+  --text-on-error: #ffffff;
   --elev-shadow: color-mix(in srgb, #0f172a 13%, transparent);
   color-scheme: light;
   --control-ghost-bg: rgba(15, 23, 42, 0.065);
@@ -180,8 +180,8 @@ html[data-theme="bloom"] {
   --surface-elevated: #e8e0f4;
   --btn-shadow-depth: #b79af6;
   --text-on-accent: #faf5ff;
-  --text-on-success: #022c22;
-  --text-on-error: #4c0519;
+  --text-on-success: #ffffff;
+  --text-on-error: #ffffff;
   --elev-shadow: color-mix(in srgb, #1e1b4b 12%, transparent);
   color-scheme: light;
   --control-ghost-bg: rgba(31, 22, 48, 0.055);

@@ -1,0 +1,96 @@
+/* Карточка экрана: виджет / panel одинаково по языку */
+.widget,
+.panel {
+  background: var(--surface);
+  border: var(--stroke) solid var(--border);
+  border-radius: var(--radius-card);
+  padding: var(--panel-padding);
+  padding-bottom: var(--panel-padding-bottom);
+}
+
+.widget h2,
+.panel h2 {
+  font-size: 1.1rem;
+  margin: 0 0 0.35rem;
+}
+
+/* Запас под тень нижнего ряда кнопок (мастер: .actions внутри .wizard-step) */
+.widget > .actions:last-child,
+.widget > .wizard-step > .actions {
+  padding-bottom: var(--widget-actions-shadow-pad);
+}
+
+/* Мастер: высота на экран, прокрутка списков */
+#setup.panel {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+}
+
+#setup .wizard-progress {
+  flex-shrink: 0;
+}
+
+#setup .wizard-step:not(.hidden) {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: visible;
+}
+
+#setup .wizard-step:not(.hidden) > h2 {
+  flex-shrink: 0;
+}
+
+#setup .wizard-step:not(.hidden) > .case-grid {
+  flex: 1 1 0;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  align-content: start;
+  padding-bottom: var(--panel-scroll-pad);
+}
+
+#setup .wizard-step:not(.hidden) > .mode-picker {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+#setup .wizard-step:not(.hidden) > .mode-picker > .case-grid {
+  flex: 0 0 auto;
+  overflow: visible;
+  padding-bottom: 0;
+}
+
+#setup .wizard-step:not(.hidden) > .mode-picker > .wizard-help-link {
+  flex-shrink: 0;
+}
+
+#setup .wizard-step:not(.hidden) > .status {
+  flex-shrink: 0;
+}
+
+#setup .wizard-step:not(.hidden) > .actions {
+  flex-shrink: 0;
+  margin-top: auto;
+  padding-top: var(--panel-section-gap);
+  width: 100%;
+}
+
+/* Без :has() — старые WebView */
+.quiz-shell:not(.hidden) > #quiz.panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+#quiz.panel {
+  overflow: visible;
+}

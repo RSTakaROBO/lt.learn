@@ -2,7 +2,7 @@
  * Кэширует оболочку и JSON-словари для офлайна и быстрого старта после установки PWA.
  * При смене списка файлов увеличьте CACHE_VERSION.
  */
-const CACHE_VERSION = "lt-trainer-v90";
+const CACHE_VERSION = "lt-trainer-v101";
 
 /** Пути относительно scope (папка, где лежит sw.js). */
 function precacheUrls(scopeUrl) {
@@ -11,8 +11,32 @@ function precacheUrls(scopeUrl) {
   return [
     rel("index.html"),
     rel("themes.css"),
-    rel("style.css"),
-    rel("app.js"),
+    rel("css/tokens.css"),
+    rel("css/base.css"),
+    rel("css/layout.css"),
+    rel("css/surfaces-panel.css"),
+    rel("css/lists-actions.css"),
+    rel("css/reference-help.css"),
+    rel("css/quiz-training.css"),
+    rel("css/buttons.css"),
+    rel("css/overlays.css"),
+    rel("js/main.js"),
+    rel("js/config.js"),
+    rel("js/state.js"),
+    rel("js/dom.js"),
+    rel("js/text-utils.js"),
+    rel("js/word-validation.js"),
+    rel("js/storage.js"),
+    rel("js/random.js"),
+    rel("js/theme.js"),
+    rel("js/input-lt.js"),
+    rel("js/manifest-packs.js"),
+    rel("js/word-selection.js"),
+    rel("js/case-selection.js"),
+    rel("js/quiz.js"),
+    rel("js/wizard.js"),
+    rel("js/overlays.js"),
+    rel("js/events.js"),
     rel("site.webmanifest"),
     rel("icons/icon-180.png"),
     rel("icons/icon-192.png"),

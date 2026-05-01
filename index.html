@@ -22,7 +22,21 @@
   <link rel="manifest" href="site.webmanifest" />
   <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png" />
   <link rel="apple-touch-icon" href="icons/icon-180.png" />
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="css/tokens.css" />
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+  <link rel="stylesheet" href="css/surfaces-panel.css" />
+  <link rel="stylesheet" href="css/lists-actions.css" />
+  <link rel="stylesheet" href="css/reference-help.css" />
+  <link rel="stylesheet" href="css/quiz-training.css" />
+  <link rel="stylesheet" href="css/buttons.css" />
+  <link rel="stylesheet" href="css/overlays.css" />
+  <!-- .hidden при ошибке загрузки base.css: иначе fixed-модалки без display:none перекрывают экран -->
+  <style>
+    .hidden {
+      display: none !important;
+    }
+  </style>
 </head>
 <body>
   <div class="app">
@@ -528,7 +542,7 @@
               stroke-width="2"
               stroke-linecap="round"
               stroke-linejoin="round"
-              d="M4 10.5 12 4l8 6.5V19a1.5 1.5 0 01-1.5 1.5h-4v-6h-5v6H5.5A1.5 1.5 0 014 19v-8.5z"
+              d="M4 10.5 12 4l8 6.5V19a1.5 1.5 0 0 1 -1.5 1.5h-4v-6h-5v6H5.5A1.5 1.5 0 0 1 4 19v-8.5z"
             />
           </svg>
           <span class="quiz-bar-label">Меню</span>
@@ -541,7 +555,7 @@
               stroke-width="2"
               stroke-linecap="round"
               stroke-linejoin="round"
-              d="M12 15a3 3 0 100-6 3 3 0 000 6z"
+              d="M12 15a3 3 0 1 0 0-6a3 3 0 1 0 0 6"
             />
             <path
               fill="none"
@@ -549,7 +563,7 @@
               stroke-width="2"
               stroke-linecap="round"
               stroke-linejoin="round"
-              d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9c.26.604.852.997 1.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"
+              d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1 -2.83 0l-.06-.06a1.65 1.65 0 0 0 -1.82-.33 1.65 1.65 0 0 0 -1 1.51V21a2 2 0 0 1 -2 2 2 0 0 1 -2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0 -1.82.33l-.06.06a2 2 0 0 1 -2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0 -1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0 -.33-1.82l-.06-.06a2 2 0 1 1 2.83 -2.83l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 1 0 2.83 2.83l-.06.06a1.65 1.65 0 0 0 -.33 1.82V9c.26.604.852.997 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0 -1.51 1z"
             />
           </svg>
           <span class="quiz-bar-label">Настройки</span>
@@ -658,6 +672,6 @@
       </div>
     </div>
   </div>
-  <script src="app.js"></script>
+  <script type="module" src="js/main.js"></script>
 </body>
 </html>

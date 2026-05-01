@@ -1,0 +1,226 @@
+#quiz-vocab-ui:not(.hidden) {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--panel-section-gap);
+  min-height: 0;
+}
+
+.vocab-ru-card {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 1.05rem 1.2rem;
+  border-radius: var(--radius-card);
+  border: var(--stroke) solid var(--border);
+  background: var(--surface-elevated);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.vocab-ru-display {
+  margin: 0;
+  text-align: center;
+}
+
+.vocab-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-auto-rows: auto;
+  gap: clamp(0.65rem, 2.2vmin, 1rem);
+  flex: none;
+  min-height: 0;
+  justify-items: stretch;
+  margin-bottom: 0.15rem;
+}
+
+#quiz-vocab-ui:not(.hidden) .vocab-options {
+  margin-bottom: 0;
+}
+
+.vocab-choice {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+  aspect-ratio: 1 / 1;
+  font-weight: 600;
+  font-size: clamp(1.2rem, 4.5vmin, 1.85rem);
+  line-height: 1.2;
+  text-align: center;
+  word-break: break-word;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  touch-action: manipulation;
+}
+
+.vocab-choice:disabled {
+  cursor: default;
+}
+
+/* `.btn { font: inherit }` в buttons.css иначе перебивает размер */
+.btn.vocab-choice {
+  font-size: clamp(1.2rem, 4.5vmin, 1.85rem);
+}
+
+#quiz-cases-ui {
+  display: flex;
+  flex-direction: column;
+  gap: var(--panel-section-gap);
+}
+
+#answer-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.prompt {
+  margin-bottom: 0;
+}
+
+.prompt .target-line {
+  margin: 1rem 0 0;
+  font-size: 1.05rem;
+  line-height: 1.45;
+}
+
+.prompt .target-prefix {
+  color: var(--muted);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-right: 0.35rem;
+}
+
+.prompt #target-case-display {
+  font-weight: 600;
+}
+
+.lemma {
+  font-size: clamp(1.95rem, 5.2vmin, 2.45rem);
+  font-weight: 600;
+  margin: 0;
+  color: var(--accent);
+}
+
+#answer-input {
+  width: 100%;
+  font: inherit;
+  font-size: 1.15rem;
+  padding: 0.65rem 0.85rem;
+  border-radius: var(--radius-control);
+  border: var(--stroke) solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  margin-bottom: 0;
+}
+
+#answer-input:focus {
+  outline: calc(var(--stroke) + 1px) solid var(--accent);
+  outline-offset: 2px;
+}
+
+.lt-chars {
+  display: grid;
+  grid-template-columns: repeat(9, minmax(0, 1fr));
+  column-gap: 0.4rem;
+  row-gap: 0.45rem;
+  width: 100%;
+  margin-bottom: 0;
+  padding: 0.55rem 0.35rem;
+  box-sizing: border-box;
+  border: var(--stroke) solid var(--border);
+  border-radius: var(--radius-control);
+  background: color-mix(in srgb, var(--bg) 88%, var(--surface));
+}
+
+.lt-char {
+  font: inherit;
+  font-size: 0.95rem;
+  font-weight: 600;
+  min-width: 0;
+  width: 100%;
+  margin: 0;
+  padding: 0.42rem 0.15rem;
+  border: none;
+  border-radius: var(--radius-char);
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+  line-height: 1.2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lt-char:hover {
+  color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+}
+
+.lt-char:active {
+  transform: scale(0.97);
+}
+
+@media (max-width: 600px) {
+  .lt-chars {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    column-gap: 0.45rem;
+    row-gap: 0.5rem;
+    padding: 0.55rem 0.45rem;
+  }
+
+  .lt-char {
+    padding: 0.48rem 0.2rem;
+    min-height: var(--touch-btn-min-h);
+    font-size: 1rem;
+  }
+}
+
+.feedback {
+  margin-top: var(--panel-section-gap);
+  padding: 0.85rem 1rem;
+  border-radius: var(--radius-control);
+  border: var(--stroke) solid var(--border);
+}
+
+.feedback.ok {
+  border-color: color-mix(in srgb, var(--success) 50%, var(--border));
+  background: color-mix(in srgb, var(--success) 12%, var(--surface));
+}
+
+.feedback.bad {
+  border-color: color-mix(in srgb, var(--error) 50%, var(--border));
+  background: color-mix(in srgb, var(--error) 12%, var(--surface));
+}
+
+.feedback p {
+  margin: 0;
+}
+
+.feedback .correct-form {
+  margin-top: 0.35rem;
+  font-weight: 600;
+}
+
+.feedback .exception-hint {
+  margin-top: 0.75rem;
+  font-size: 0.92rem;
+  font-weight: normal;
+  color: var(--muted);
+}
+
+.feedback.ok .exception-hint {
+  color: color-mix(in srgb, var(--text) 72%, var(--muted));
+}
+
+.feedback.bad .exception-hint {
+  color: color-mix(in srgb, var(--text) 82%, var(--muted));
+}

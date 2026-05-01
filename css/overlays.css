@@ -1,0 +1,186 @@
+.stats-overlay,
+.settings-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  padding-top: max(var(--shell-pad-top), env(safe-area-inset-top, 0px));
+  padding-right: max(var(--shell-pad-x), env(safe-area-inset-right, 0px));
+  padding-bottom: var(--shell-pad-bottom);
+  padding-left: max(var(--shell-pad-x), env(safe-area-inset-left, 0px));
+  overflow: hidden;
+  background: transparent;
+}
+
+/* Закрытые модалки не должны перехватывать клики, если base.css / .hidden не подгрузился */
+.stats-overlay.hidden,
+.settings-overlay.hidden {
+  display: none !important;
+  pointer-events: none !important;
+  visibility: hidden !important;
+}
+
+body.stats-modal-open > .app > *:not(#stats-overlay):not(#settings-overlay):not(.quiz-bottom-bar),
+body.settings-modal-open > .app > *:not(#stats-overlay):not(#settings-overlay):not(.quiz-bottom-bar) {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+body.stats-modal-open #stats-overlay,
+body.settings-modal-open #settings-overlay {
+  visibility: visible;
+  pointer-events: auto;
+}
+
+body.stats-modal-open .quiz-bottom-bar,
+body.settings-modal-open .quiz-bottom-bar {
+  z-index: 110;
+}
+
+.stats-panel,
+.settings-panel {
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: var(--shell-max-width);
+  min-height: 0;
+  margin: 0 auto;
+  overflow: visible;
+  background-color: var(--surface);
+}
+
+.stats-panel > h2,
+.settings-panel > h2 {
+  flex-shrink: 0;
+}
+
+.settings-theme-block {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  margin-top: 0.65rem;
+  overflow: hidden;
+}
+
+.settings-theme-block > .sub {
+  flex-shrink: 0;
+  margin: 0 0 0.65rem;
+}
+
+.theme-picker.case-grid {
+  flex: 1 1 0;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  align-content: start;
+  padding-bottom: var(--panel-scroll-pad);
+}
+
+.stats-summary {
+  flex-shrink: 0;
+  margin: var(--panel-section-gap) 0;
+}
+
+.stats-summary-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.65rem 1rem;
+}
+
+@media (min-width: 440px) {
+  .stats-summary-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.stats-sum-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.stats-sum-label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+
+.stats-sum-val {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.stats-table-wrap {
+  flex: 1 1 0;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  margin-bottom: var(--panel-section-gap);
+  border: var(--stroke) solid var(--border);
+  border-radius: var(--radius-control);
+  background: transparent;
+  -webkit-overflow-scrolling: touch;
+}
+
+.stats-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+  background-color: transparent;
+}
+
+.stats-table th,
+.stats-table td {
+  padding: 0.45rem 0.55rem;
+  border-bottom: var(--stroke) solid var(--border);
+  text-align: right;
+  background-color: transparent;
+}
+
+.stats-table th:first-child,
+.stats-table td:first-child {
+  text-align: left;
+}
+
+.stats-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background-color: var(--surface);
+  font-weight: 600;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--muted);
+  box-shadow: 0 var(--stroke) 0 var(--border);
+}
+
+.stats-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.stats-table tbody tr:hover td {
+  background-color: color-mix(in srgb, var(--accent) 6%, var(--surface));
+}
+
+.stats-empty {
+  margin: 0;
+  padding: 1rem;
+  font-size: 0.9rem;
+  color: var(--muted);
+  text-align: center;
+}
+
+.stats-close-actions {
+  flex-shrink: 0;
+}
+
+.stats-close-actions .stats-close-btn {
+  width: 100%;
+}
