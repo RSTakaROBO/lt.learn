@@ -1,6 +1,137 @@
 {
-  "pack_note_ru": "Уровень A2 — чуть шире лексика про продукты (учебные формы).",
+  "title": "Продукты и еда",
   "words": [
+    {
+      "nominative": "duona",
+      "genitive": "duonos",
+      "dative": "duonai",
+      "accusative": "duoną",
+      "instrumental": "duona",
+      "locative": "duonoje",
+      "vocative": "duona",
+      "ru": "хлеб"
+    },
+    {
+      "nominative": "pienas",
+      "genitive": "pieno",
+      "dative": "pienui",
+      "accusative": "pieną",
+      "instrumental": "pienu",
+      "locative": "piene",
+      "vocative": "piene",
+      "ru": "молоко"
+    },
+    {
+      "nominative": "obuolys",
+      "genitive": "obuolio",
+      "dative": "obuoliui",
+      "accusative": "obuolį",
+      "instrumental": "obuoliu",
+      "locative": "obuolyje",
+      "vocative": "obuoly",
+      "ru": "яблоко"
+    },
+    {
+      "nominative": "bananas",
+      "genitive": "banano",
+      "dative": "bananui",
+      "accusative": "bananą",
+      "instrumental": "bananu",
+      "locative": "banane",
+      "vocative": "banane",
+      "ru": "банан"
+    },
+    {
+      "nominative": "kava",
+      "genitive": "kavos",
+      "dative": "kavai",
+      "accusative": "kavą",
+      "instrumental": "kava",
+      "locative": "kavoje",
+      "vocative": "kava",
+      "ru": "кофе"
+    },
+    {
+      "nominative": "arbata",
+      "genitive": "arbatos",
+      "dative": "arbatai",
+      "accusative": "arbatą",
+      "instrumental": "arbata",
+      "locative": "arbatoje",
+      "vocative": "arbata",
+      "ru": "чай"
+    },
+    {
+      "nominative": "bulvė",
+      "genitive": "bulvės",
+      "dative": "bulvei",
+      "accusative": "bulvę",
+      "instrumental": "bulve",
+      "locative": "bulvėje",
+      "vocative": "bulve",
+      "ru": "картофель",
+      "ru_alt": "картошка"
+    },
+    {
+      "nominative": "pomidoras",
+      "genitive": "pomidoro",
+      "dative": "pomidorui",
+      "accusative": "pomidorą",
+      "instrumental": "pomidoru",
+      "locative": "pomidore",
+      "vocative": "pomidore",
+      "ru": "помидор"
+    },
+    {
+      "nominative": "agurkas",
+      "genitive": "agurko",
+      "dative": "agurkui",
+      "accusative": "agurką",
+      "instrumental": "agurku",
+      "locative": "agurke",
+      "vocative": "agurke",
+      "ru": "огурец"
+    },
+    {
+      "nominative": "svogūnas",
+      "genitive": "svogūno",
+      "dative": "svogūnui",
+      "accusative": "svogūną",
+      "instrumental": "svogūnu",
+      "locative": "svogūne",
+      "vocative": "svogūne",
+      "ru": "лук"
+    },
+    {
+      "nominative": "sūris",
+      "genitive": "sūrio",
+      "dative": "sūriui",
+      "accusative": "sūrį",
+      "instrumental": "sūriu",
+      "locative": "sūryje",
+      "vocative": "sūri",
+      "ru": "сыр"
+    },
+    {
+      "nominative": "kiaušinis",
+      "genitive": "kiaušinio",
+      "dative": "kiaušiniui",
+      "accusative": "kiaušinį",
+      "instrumental": "kiaušiniu",
+      "locative": "kiaušinyje",
+      "vocative": "kiaušini",
+      "ru": "яйцо"
+    },
+    {
+      "nominative": "druska",
+      "genitive": "druskos",
+      "dative": "druskai",
+      "accusative": "druską",
+      "instrumental": "druska",
+      "locative": "druskoje",
+      "vocative": "druska",
+      "ru": "соль"
+    },
     {
       "nominative": "mėsa",
       "genitive": "mėsos",
@@ -14,7 +145,7 @@
     {
       "nominative": "žuvis",
       "genitive": "žuvies",
-      "dative": "žuviai",
+      "dative": "žuvei",
       "accusative": "žuvį",
       "instrumental": "žuvimi",
       "locative": "žuvyje",

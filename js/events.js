@@ -1,9 +1,11 @@
 import { TRAIN_MODE, VOCAB_DIRECTION } from "./config.js";
+import { parseCustomPackJsonFile } from "./custom-packs.js";
 import { getCheckedCaseKeys } from "./case-selection.js";
 import { els } from "./dom.js";
 import { handleAnswerInputShiftCycles, insertAtCaret } from "./input-lt.js";
 import {
   getCheckedPackIds,
+  loadManifestAndRenderPacks,
   loadWordsFromFiles,
   resolveFilesFromPackIds,
 } from "./manifest-packs.js";
@@ -22,14 +24,20 @@ import {
 } from "./quiz.js";
 import {
   closeCasesHelp,
+  closeHelpHub,
+  closePackPromptOverlay,
   closeSettingsOverlay,
   closeStatsOverlay,
   closeVerbsHelp,
   isCasesHelpOpen,
+  isHelpHubOpen,
+  isPackPromptOverlayOpen,
   isSettingsOverlayOpen,
   isStatsOverlayOpen,
   isVerbsHelpOpen,
   openCasesHelp,
+  openHelpHub,
+  openPackPromptOverlay,
   openSettingsOverlay,
   openStatsOverlay,
   openVerbsHelp,
@@ -37,8 +45,11 @@ import {
 } from "./overlays.js";
 import { state } from "./state.js";
 import {
+  appendCustomPackRecord,
+  loadSelectedPacks,
   loadTrainMode,
   loadVocabDirections,
+  removeCustomPackById,
   saveCasesShowTranslation,
   saveSelectedCases,
   saveSelectedPacks,
@@ -74,6 +85,93 @@ export function bindEvents() {
 
   els.packList.addEventListener("change", () => {
     saveSelectedPacks(getCheckedPackIds());
+  });
+
+  els.packList.addEventListener(
+    "click",
+    async (e) => {
+      const delBtn = e.target.closest(".pack-card-delete-btn");
+      if (!delBtn || !(delBtn instanceof HTMLElement)) return;
+      const id = delBtn.dataset.deletePackId;
+      if (!id || !id.startsWith("custom-")) return;
+      e.preventDefault();
+      e.stopPropagation();
+      removeCustomPackById(id);
+      const sel = loadSelectedPacks();
+      if (sel && sel.length) saveSelectedPacks(sel.filter((x) => x !== id));
+      els.packStepStatus.textContent = "";
+      try {
+        await loadManifestAndRenderPacks();
+        els.packStepStatus.textContent = "Пользовательский набор удалён.";
+      } catch (err) {
+        els.packStepStatus.textContent =
+          err instanceof Error ? err.message : "Не удалось обновить список наборов.";
+        console.error(err);
+      }
+    },
+    true,
+  );
+
+  els.btnPackPromptHelp?.addEventListener("click", () => openPackPromptOverlay());
+
+  els.btnPackPromptClose?.addEventListener("click", () => closePackPromptOverlay());
+
+  els.packPromptOverlay?.addEventListener("click", (e) => {
+    if (e.target === els.packPromptOverlay) closePackPromptOverlay();
+  });
+
+  els.btnPackPromptCopy?.addEventListener("click", async () => {
+    const ta = els.packPromptTextarea;
+    const btn = els.btnPackPromptCopy;
+    if (!ta || !btn) return;
+    const label = "Скопировать";
+    const fail = () => {
+      ta.focus();
+      ta.select();
+      btn.textContent = "Выделите текст";
+      window.setTimeout(() => {
+        btn.textContent = label;
+      }, 2000);
+    };
+    try {
+      await navigator.clipboard.writeText(ta.value);
+      btn.textContent = "Скопировано";
+      window.setTimeout(() => {
+        btn.textContent = label;
+      }, 1600);
+    } catch {
+      try {
+        ta.select();
+        document.execCommand("copy");
+        btn.textContent = "Скопировано";
+        window.setTimeout(() => {
+          btn.textContent = label;
+        }, 1600);
+      } catch {
+        fail();
+      }
+    }
+  });
+
+  els.packJsonInput?.addEventListener("change", async (ev) => {
+    const input = ev.target;
+    if (!(input instanceof HTMLInputElement)) return;
+    const file = input.files?.[0];
+    input.value = "";
+    if (!file) return;
+    els.packStepStatus.textContent = "";
+    try {
+      const text = await file.text();
+      const record = parseCustomPackJsonFile(text, file.name);
+      appendCustomPackRecord(record);
+      const sel = loadSelectedPacks();
+      if (sel && sel.length > 0) saveSelectedPacks([...sel, record.id]);
+      await loadManifestAndRenderPacks();
+      els.packStepStatus.textContent = `Набор «${record.title}» добавлен (${record.words.length} слов).`;
+    } catch (err) {
+      els.packStepStatus.textContent = err instanceof Error ? err.message : String(err);
+      console.error(err);
+    }
   });
 
   document.getElementById("vocab-dir-ru-lt")?.addEventListener("change", () => {
@@ -294,6 +392,16 @@ export function bindEvents() {
 
   document.addEventListener("keydown", (e) => {
     if (e.key !== "Escape") return;
+    if (isPackPromptOverlayOpen()) {
+      e.preventDefault();
+      closePackPromptOverlay();
+      return;
+    }
+    if (isHelpHubOpen()) {
+      e.preventDefault();
+      closeHelpHub();
+      return;
+    }
     if (isSettingsOverlayOpen()) {
       e.preventDefault();
       closeSettingsOverlay();
@@ -331,6 +439,14 @@ export function bindEvents() {
     if (e.target === els.settingsOverlay) closeSettingsOverlay();
   });
 
+  els.btnHelpHub?.addEventListener("click", () => openHelpHub());
+  els.helpHubOverlay?.addEventListener("click", (e) => {
+    if (e.target === els.helpHubOverlay) closeHelpHub();
+  });
+  els.btnHelpHubClose?.addEventListener("click", () => closeHelpHub());
+  els.btnHelpHubCases?.addEventListener("click", () => openCasesHelp());
+  els.btnHelpHubVerbs?.addEventListener("click", () => openVerbsHelp());
+
   els.themePicker?.addEventListener("change", (ev) => {
     const input = ev.target;
     if (!(input instanceof HTMLInputElement) || input.name !== "app-theme") return;
@@ -342,14 +458,14 @@ export function bindEvents() {
     refreshCasesLemmaDisplayIfActive();
   });
 
-  els.btnOpenCasesHelp?.addEventListener("click", () => openCasesHelp());
   els.btnCasesHelpClose?.addEventListener("click", () => closeCasesHelp());
-  els.btnOpenVerbsHelp?.addEventListener("click", () => openVerbsHelp());
   els.btnVerbsHelpClose?.addEventListener("click", () => closeVerbsHelp());
 
   els.btnBackSetup.addEventListener("click", () => {
     closeStatsOverlay();
     closeSettingsOverlay();
+    closePackPromptOverlay();
+    closeHelpHub();
     if (isCasesHelpOpen()) {
       closeCasesHelp();
       return;

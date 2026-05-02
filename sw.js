@@ -2,7 +2,7 @@
  * Кэширует оболочку и JSON-словари для офлайна и быстрого старта после установки PWA.
  * При смене списка файлов увеличьте CACHE_VERSION.
  */
-const CACHE_VERSION = "lt-trainer-v153";
+const CACHE_VERSION = "lt-trainer-v191";
 
 /** Пути относительно scope (папка, где лежит sw.js). */
 function precacheUrls(scopeUrl) {
@@ -32,6 +32,8 @@ function precacheUrls(scopeUrl) {
     rel("js/theme.js"),
     rel("js/input-lt.js"),
     rel("js/manifest-packs.js"),
+    rel("js/custom-packs.js"),
+    rel("js/custom-pack-llm-prompt.js"),
     rel("js/word-selection.js"),
     rel("js/word-ru.js"),
     rel("js/case-selection.js"),
@@ -48,8 +50,8 @@ function precacheUrls(scopeUrl) {
     rel("words/manifest.json"),
     rel("words/common.json"),
     rel("words/home.json"),
-    rel("words/food_a1.json"),
-    rel("words/food_a2.json"),
+    rel("words/time.json"),
+    rel("words/food.json"),
   ];
 }
 
@@ -101,6 +103,39 @@ self.addEventListener("fetch", (event) => {
   event.respondWith(
     (async () => {
       const cache = await caches.open(CACHE_VERSION);
+
+      /* HTML-оболочка: сначала сеть (обновления UI), при офлайне — кэш precache */
+      if (event.request.mode === "navigate") {
+        try {
+          const networkRes = await fetch(event.request);
+          if (networkRes.ok) {
+            const scope = self.registration.scope;
+            const indexHref = new URL("index.html", scope).href;
+            await cache.put(event.request, networkRes.clone());
+            await cache.put(indexHref, networkRes.clone());
+            return networkRes;
+          }
+        } catch {
+          /* offline */
+        }
+        const fromCache = await matchCached(cache, event.request);
+        if (fromCache) return fromCache;
+      }
+
+      /* CSS/темы: сначала сеть — иначе после смены вёрстки остаётся старый layout.css при свежем index.html */
+      if (event.request.destination === "style") {
+        try {
+          const networkRes = await fetch(event.request);
+          if (networkRes.ok) {
+            await cache.put(event.request, networkRes.clone());
+            return networkRes;
+          }
+        } catch {
+          /* offline */
+        }
+        const cachedStyle = await cache.match(event.request);
+        if (cachedStyle) return cachedStyle;
+      }
 
       if (isWordsJsonRequest(event.request)) {
         try {

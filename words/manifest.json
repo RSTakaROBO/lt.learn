@@ -1,20 +1,20 @@
 {
-  "trainer_note_ru": "Формы слов подобраны вручную для тренажёра (типичные учебные парадигмы, не выгрузка из корпуса). Сверяйте формы с авторитетными словарями (например žodynas.lt, Akademikas).",
   "packs": [
     {
       "id": "basic",
-      "title_ru": "Базовый набор",
       "files": ["common.json"]
     },
     {
       "id": "home",
-      "title_ru": "Дом и быт",
       "files": ["home.json"]
     },
     {
+      "id": "time",
+      "files": ["time.json"]
+    },
+    {
       "id": "food",
-      "title_ru": "Продукты",
-      "files": ["food_a1.json", "food_a2.json"]
+      "files": ["food.json"]
     }
   ]
 }

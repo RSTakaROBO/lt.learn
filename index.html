@@ -37,6 +37,22 @@
     .hidden {
       display: none !important;
     }
+    /* Нижняя панель: 4 колонки (!important — над закэшированным CSS из SW). */
+    .quiz-bottom-bar-inner {
+      display: grid !important;
+      grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+      width: 100% !important;
+      box-sizing: border-box !important;
+      gap: 0.28rem !important;
+    }
+    .quiz-bar-btn {
+      min-width: 0 !important;
+    }
+    @media (max-width: 440px) {
+      .quiz-bottom-bar-inner {
+        gap: 0.18rem !important;
+      }
+    }
   </style>
 </head>
 <body>
@@ -53,7 +69,12 @@
       ></div>
 
       <div id="step-mode" class="wizard-step">
-        <h2>Упражнение</h2>
+        <header class="wizard-app-head">
+          <h2 class="wizard-home-title">
+            <span class="wizard-home-title-kicker">Ни дня без</span>
+            <span class="wizard-home-title-em">литовского</span>
+          </h2>
+        </header>
         <div class="mode-picker">
           <div class="mode-choice-grid" role="group" aria-label="Тип упражнения">
             <button
@@ -77,19 +98,35 @@
               <span class="mode-choice-desc">Выбор перевода после наборов и шага «Направление»</span>
             </button>
           </div>
-          <div class="wizard-help-link">
-            <button type="button" id="btn-open-cases-help" class="btn ghost">Справка по падежам</button>
-            <button type="button" id="btn-open-verbs-help" class="btn ghost">
-              Справка: <span lang="lt">yra</span> / <span lang="lt">nėra</span>
-            </button>
-          </div>
         </div>
       </div>
 
       <div id="step-packs" class="wizard-step hidden">
         <h2>Наборы слов</h2>
-        <div id="pack-list" class="pack-card-list"></div>
+        <div id="pack-list" class="pack-card-list wizard-scroll-well"></div>
         <p id="pack-step-status" class="status" aria-live="polite"></p>
+        <div class="pack-custom-upload">
+          <!-- Нативный тап по перекрывающему input (label), без JS .click(); accept=*/* для диалога «Все файлы» на Android; тип проверяется при разборе JSON -->
+          <button
+            type="button"
+            id="btn-pack-prompt-help"
+            class="btn ghost btn-pack-prompt-help"
+            aria-label="Промпт для нейросети: как составить свой JSON"
+            title="Промпт для нейросети"
+          >
+            ?
+          </button>
+          <label class="btn ghost btn-pack-json-main pack-json-upload-label">
+            <span class="pack-json-upload-label-text">Загрузить свой JSON…</span>
+            <input
+              type="file"
+              id="pack-json-input"
+              class="pack-json-file-input-native"
+              accept="*/*"
+              aria-label="Загрузить свой файл словаря JSON"
+            />
+          </label>
+        </div>
         <div class="actions wizard-pack-actions">
           <button type="button" id="btn-packs-back" class="btn ghost">Назад</button>
           <button type="button" id="btn-packs-next" class="btn primary" aria-label="Далее">
@@ -101,7 +138,7 @@
       <div id="step-vocab-direction" class="wizard-step hidden">
         <h2 id="vocab-direction-step-title">Направление перевода</h2>
         <div
-          class="pack-card-list vocab-direction-grid"
+          class="pack-card-list vocab-direction-grid wizard-scroll-well"
           role="group"
           aria-labelledby="vocab-direction-step-title"
         >
@@ -158,7 +195,7 @@
 
       <div id="step-cases" class="wizard-step hidden">
         <h2>Падежи</h2>
-        <div id="case-checkboxes" class="pack-card-list"></div>
+        <div id="case-checkboxes" class="pack-card-list wizard-scroll-well"></div>
         <p id="case-step-status" class="status case-step-msg" aria-live="polite"></p>
         <div class="actions wizard-case-actions">
           <button type="button" id="btn-cases-back" class="btn ghost">Назад</button>
@@ -611,8 +648,7 @@
     </div>
 
     <nav class="quiz-bottom-bar" role="toolbar" aria-label="Меню тренажёра">
-      <div class="quiz-bottom-bar-inner">
-        <button type="button" id="btn-stats" class="quiz-bar-btn" aria-label="Статистика">
+      <div class="quiz-bottom-bar-inner"><button type="button" id="btn-stats" class="quiz-bar-btn" aria-label="Статистика">
           <svg class="quiz-bar-icon" viewBox="0 0 24 24" width="26" height="26" aria-hidden="true">
             <path
               fill="none"
@@ -623,8 +659,7 @@
             />
           </svg>
           <span class="quiz-bar-label">Статистика</span>
-        </button>
-        <button type="button" id="btn-back-setup" class="quiz-bar-btn" aria-label="В меню">
+        </button><button type="button" id="btn-back-setup" class="quiz-bar-btn" aria-label="В меню">
           <svg class="quiz-bar-icon" viewBox="0 0 24 24" width="26" height="26" aria-hidden="true">
             <path
               fill="none"
@@ -636,8 +671,19 @@
             />
           </svg>
           <span class="quiz-bar-label">Меню</span>
-        </button>
-        <button type="button" id="btn-settings" class="quiz-bar-btn" aria-label="Настройки">
+        </button><button type="button" id="btn-help-hub" class="quiz-bar-btn" aria-label="Справка">
+          <svg class="quiz-bar-icon" viewBox="0 0 24 24" width="26" height="26" aria-hidden="true">
+            <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2" />
+            <path
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              d="M9.75 9.75a2.25 2.25 0 1 1 3 2.13c-.56.49-.89 1-.89 1.62V14M12 17h.01"
+            />
+          </svg>
+          <span class="quiz-bar-label">Справка</span>
+        </button><button type="button" id="btn-settings" class="quiz-bar-btn" aria-label="Настройки">
           <svg class="quiz-bar-icon" viewBox="0 0 24 24" width="26" height="26" aria-hidden="true">
             <path
               fill="none"
@@ -657,9 +703,28 @@
             />
           </svg>
           <span class="quiz-bar-label">Настройки</span>
-        </button>
-      </div>
+        </button></div>
     </nav>
+    <div
+      id="help-hub-overlay"
+      class="settings-overlay help-hub-overlay hidden"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="help-hub-title"
+    >
+      <div class="settings-panel widget panel help-hub-panel">
+        <h2 id="help-hub-title">Справка</h2>
+        <div class="help-hub-actions">
+          <button type="button" id="btn-help-hub-cases" class="btn ghost">Справка по падежам</button>
+          <button type="button" id="btn-help-hub-verbs" class="btn ghost">
+            Справка: <span lang="lt">yra</span> / <span lang="lt">nėra</span>
+          </button>
+        </div>
+        <div class="actions stats-close-actions">
+          <button type="button" id="btn-help-hub-close" class="btn primary stats-close-btn">Закрыть</button>
+        </div>
+      </div>
+    </div>
     <div
       id="stats-overlay"
       class="stats-overlay hidden"
@@ -779,6 +844,33 @@
         </div>
         <div class="actions stats-close-actions">
           <button type="button" id="btn-settings-close" class="btn primary stats-close-btn">Закрыть</button>
+        </div>
+      </div>
+    </div>
+    <div
+      id="pack-prompt-overlay"
+      class="settings-overlay pack-prompt-overlay hidden"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="pack-prompt-title"
+    >
+      <div class="settings-panel widget panel pack-prompt-panel">
+        <h2 id="pack-prompt-title" tabindex="-1">Промпт для нейросети</h2>
+        <p class="sub pack-prompt-lead">
+          Скопируйте текст и вставьте в чат с LLM. Ответ сохраните как файл .json и загрузите в тренажёр через «Загрузить свой JSON…».
+        </p>
+        <label class="sr-only" for="pack-prompt-text">Текст промпта для языковой модели</label>
+        <textarea
+          id="pack-prompt-text"
+          class="pack-prompt-textarea"
+          readonly
+          spellcheck="false"
+          rows="14"
+          aria-readonly="true"
+        ></textarea>
+        <div class="actions wizard-pack-actions pack-prompt-actions">
+          <button type="button" id="btn-pack-prompt-copy" class="btn ghost">Скопировать</button>
+          <button type="button" id="btn-pack-prompt-close" class="btn primary">Закрыть</button>
         </div>
       </div>
     </div>

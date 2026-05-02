@@ -58,11 +58,150 @@
   min-height: var(--touch-btn-min-h);
 }
 
+/** Ряд: компактная «?» и основная кнопка загрузки JSON. */
+.pack-custom-upload {
+  margin-top: var(--panel-section-gap);
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  gap: var(--gap-actions);
+}
+
+.pack-custom-upload .btn-pack-prompt-help {
+  flex: 0 0 auto;
+  width: var(--touch-btn-min-h);
+  min-width: var(--touch-btn-min-h);
+  padding-left: 0;
+  padding-right: 0;
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+
+.pack-custom-upload .btn-pack-json-main {
+  flex: 1;
+  min-width: 0;
+  min-height: var(--touch-btn-min-h);
+}
+
+/**
+ * Android/Chromium: программный клик по «обрезанному» input часто даёт только галерею.
+ * Перекрываем видимую «кнопку» нативным input — тап попадает в выбор файла напрямую.
+ */
+.pack-json-upload-label {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  cursor: pointer;
+  box-sizing: border-box;
+  text-align: center;
+  margin: 0;
+  isolation: isolate;
+}
+
+.pack-json-upload-label-text {
+  position: relative;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.pack-json-file-input-native {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  opacity: 0;
+  cursor: pointer;
+  font: inherit;
+  line-height: inherit;
+  color: transparent;
+  background: transparent;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+/* Иначе Chromium/WebKit рисуют «сырую» кнопку выбора файла поверх ghost-стиля */
+.pack-json-file-input-native::file-selector-button {
+  display: none;
+}
+
+.pack-json-file-input-native::-webkit-file-upload-button {
+  display: none;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.pack-json-upload-label:has(.pack-json-file-input-native:focus-visible) {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
 /* Список наборов слов (мастер): карточки вместо простых чекбоксов */
 .pack-card-list {
   display: flex;
   flex-direction: column;
   gap: clamp(0.72rem, 2.6vmin, 0.98rem);
+}
+
+/*
+ * Пользовательский пак: корзина в одном ряду с галочкой (внутри .pack-card-face),
+ * карточка по ширине как у встроенных паков.
+ */
+.pack-card--custom-user .pack-card-delete-slot {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pack-card-delete-btn {
+  -webkit-appearance: none;
+  appearance: none;
+  box-sizing: border-box;
+  border: none;
+  background: transparent;
+  box-shadow: none;
+  cursor: pointer;
+  border-radius: var(--radius-char);
+  color: var(--error);
+  width: var(--touch-btn-min-h);
+  height: var(--touch-btn-min-h);
+  min-width: var(--touch-btn-min-h);
+  min-height: var(--touch-btn-min-h);
+  aspect-ratio: 1;
+  padding: 0;
+  margin: 0;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pack-card-delete-btn svg {
+  display: block;
+  width: 1.35rem;
+  height: 1.35rem;
+}
+
+.pack-card-delete-btn:hover {
+  color: color-mix(in srgb, var(--error) 88%, var(--text));
+  background: color-mix(in srgb, var(--error) 12%, transparent);
+}
+
+.pack-card-delete-btn:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--error) 55%, transparent);
+  outline-offset: 2px;
+}
+
+.pack-card-delete-btn:active {
+  opacity: 0.88;
 }
 
 /*
@@ -322,20 +461,6 @@
   border-color: var(--text-on-error);
 }
 
-.wizard-help-link {
-  flex-shrink: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: clamp(0.95rem, 3.2vmin, 1.2rem);
-}
-
-.wizard-help-link .btn {
-  display: block;
-  width: 100%;
-  text-align: center;
-}
-
 .wizard-progress {
   display: flex;
   justify-content: center;
@@ -344,9 +469,73 @@
   margin-bottom: calc(var(--panel-section-gap) + 0.35rem);
 }
 
-/* Первый шаг мастера: свободнее блок режима и справок */
-#setup #step-mode:not(.hidden) > h2 {
-  margin-bottom: 0.75rem;
+/* Шапка приложения на первом шаге мастера */
+#setup #step-mode:not(.hidden) > .wizard-app-head {
+  text-align: center;
+  margin-bottom: clamp(0.95rem, 4vmin, 1.35rem);
+  padding: clamp(0.25rem, 1.8vmin, 0.55rem) 0 0;
+}
+
+#setup #step-mode:not(.hidden) .wizard-home-title {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.08em;
+}
+
+#setup #step-mode:not(.hidden) .wizard-home-title-kicker {
+  font-size: clamp(0.88rem, 3.5vmin, 1.05rem);
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--muted) 55%, var(--text));
+}
+
+#setup #step-mode:not(.hidden) .wizard-home-title-em {
+  font-size: clamp(1.72rem, 7.5vmin, 2.45rem);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 1.05;
+  color: var(--accent);
+  text-shadow: 0 0 42px color-mix(in srgb, var(--accent) 42%, transparent);
+}
+
+#setup #step-mode:not(.hidden) .wizard-home-title::after {
+  content: "";
+  display: block;
+  width: min(9.5rem, 52%);
+  height: 3px;
+  margin-top: clamp(0.55rem, 2.5vmin, 0.75rem);
+  border-radius: 999px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in srgb, var(--accent) 88%, transparent),
+    transparent
+  );
+  opacity: 0.95;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  #setup #step-mode:not(.hidden) .wizard-home-title-em {
+    animation: wizard-home-title-in 0.65s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  #setup #step-mode:not(.hidden) .wizard-home-title-kicker {
+    animation: wizard-home-title-in 0.55s cubic-bezier(0.22, 1, 0.36, 1) 0.06s both;
+  }
+}
+
+@keyframes wizard-home-title-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.35rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .wizard-dot {
@@ -387,6 +576,7 @@
   color: var(--muted);
 }
 
-.case-step-msg:empty {
+/* Не резервируем место под сообщение, пока текста нет — список ближе к кнопкам */
+#setup .wizard-step > .status:empty {
   display: none;
 }

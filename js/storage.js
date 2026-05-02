@@ -39,6 +39,45 @@ export function saveSelectedPacks(ids) {
   }
 }
 
+/** Записанные пользователем наборы (как в JSON словарей: id, title, words). */
+export function loadCustomPackRecords() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEYS.customPacks);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+}
+
+export function appendCustomPackRecord(record) {
+  const rows = loadCustomPackRecords();
+  rows.push({
+    id: record.id,
+    title: record.title,
+    words: record.words,
+  });
+  try {
+    localStorage.setItem(STORAGE_KEYS.customPacks, JSON.stringify(rows));
+  } catch (e) {
+    if (e instanceof DOMException && (e.name === "QuotaExceededError" || e.code === 22)) {
+      throw new Error("Не хватило места в локальном хранилище браузера.");
+    }
+    throw e;
+  }
+}
+
+export function removeCustomPackById(id) {
+  if (typeof id !== "string" || !id.startsWith("custom-")) return;
+  const rows = loadCustomPackRecords().filter((r) => r && r.id !== id);
+  try {
+    localStorage.setItem(STORAGE_KEYS.customPacks, JSON.stringify(rows));
+  } catch {
+    /* ignore */
+  }
+}
+
 export function loadTrainMode() {
   try {
     const m = localStorage.getItem(STORAGE_KEYS.trainMode);

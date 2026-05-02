@@ -1,3 +1,4 @@
+import { CUSTOM_PACK_LLM_PROMPT } from "./custom-pack-llm-prompt.js";
 import { els } from "./dom.js";
 import { state } from "./state.js";
 import { loadCasesShowTranslation, normalizeWordStatRow } from "./storage.js";
@@ -12,6 +13,8 @@ export function syncSettingsTrainingCheckbox() {
 
 export function openSettingsOverlay() {
   closeStatsOverlay();
+  closePackPromptOverlay();
+  closeHelpHub();
   syncThemeRadiosFromDom();
   syncSettingsTrainingCheckbox();
   els.settingsOverlay?.classList.remove("hidden");
@@ -22,6 +25,24 @@ export function openSettingsOverlay() {
 export function closeSettingsOverlay() {
   els.settingsOverlay?.classList.add("hidden");
   document.body.classList.remove("settings-modal-open");
+}
+
+export function closeHelpHub() {
+  els.helpHubOverlay?.classList.add("hidden");
+  document.body.classList.remove("help-hub-modal-open");
+}
+
+export function openHelpHub() {
+  closeStatsOverlay();
+  closeSettingsOverlay();
+  closePackPromptOverlay();
+  els.helpHubOverlay?.classList.remove("hidden");
+  document.body.classList.add("help-hub-modal-open");
+  els.btnHelpHubClose?.focus();
+}
+
+export function isHelpHubOpen() {
+  return !!(els.helpHubOverlay && !els.helpHubOverlay.classList.contains("hidden"));
 }
 
 export function isSettingsOverlayOpen() {
@@ -37,8 +58,10 @@ export function isVerbsHelpOpen() {
 }
 
 export function openCasesHelp() {
+  closeHelpHub();
   closeStatsOverlay();
   closeSettingsOverlay();
+  closePackPromptOverlay();
   if (!els.casesHelpShell) return;
   els.verbsHelpShell?.classList.add("hidden");
   els.setup.classList.add("hidden");
@@ -59,8 +82,10 @@ export function closeCasesHelp() {
 }
 
 export function openVerbsHelp() {
+  closeHelpHub();
   closeStatsOverlay();
   closeSettingsOverlay();
+  closePackPromptOverlay();
   if (!els.verbsHelpShell) return;
   els.casesHelpShell?.classList.add("hidden");
   els.setup.classList.add("hidden");
@@ -138,7 +163,9 @@ function renderStatsScreen() {
 }
 
 export function openStatsOverlay() {
+  closePackPromptOverlay();
   closeSettingsOverlay();
+  closeHelpHub();
   renderStatsScreen();
   els.statsOverlay.classList.remove("hidden");
   document.body.classList.add("stats-modal-open");
@@ -152,4 +179,26 @@ export function closeStatsOverlay() {
 
 export function isStatsOverlayOpen() {
   return els.statsOverlay && !els.statsOverlay.classList.contains("hidden");
+}
+
+export function openPackPromptOverlay() {
+  closeStatsOverlay();
+  closeSettingsOverlay();
+  closeHelpHub();
+  if (els.packPromptTextarea) els.packPromptTextarea.value = CUSTOM_PACK_LLM_PROMPT;
+  els.packPromptOverlay?.classList.remove("hidden");
+  document.body.classList.add("pack-prompt-modal-open");
+  if (els.btnPackPromptCopy) els.btnPackPromptCopy.textContent = "Скопировать";
+  requestAnimationFrame(() => {
+    els.packPromptTitle?.focus({ preventScroll: true });
+  });
+}
+
+export function closePackPromptOverlay() {
+  els.packPromptOverlay?.classList.add("hidden");
+  document.body.classList.remove("pack-prompt-modal-open");
+}
+
+export function isPackPromptOverlayOpen() {
+  return els.packPromptOverlay && !els.packPromptOverlay.classList.contains("hidden");
 }

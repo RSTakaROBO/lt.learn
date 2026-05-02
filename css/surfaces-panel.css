@@ -45,16 +45,30 @@
   flex-shrink: 0;
 }
 
-#setup .wizard-step:not(.hidden) > .case-grid,
-#setup .wizard-step:not(.hidden) > #pack-list.pack-card-list,
-#setup .wizard-step:not(.hidden) > #case-checkboxes.pack-card-list {
+/* Прокручиваемые списки мастера: «лоток»; полосу не показываем (везде одинаково), прокрутка колесом/жестом. */
+#setup .wizard-step:not(.hidden) > .wizard-scroll-well {
   flex: 1 1 0;
   min-height: 0;
   overflow-x: hidden;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   align-content: start;
-  padding-bottom: var(--panel-scroll-pad);
+  overscroll-behavior-y: contain;
+  border-radius: var(--radius-card);
+  border: var(--stroke) solid var(--border);
+  background: color-mix(in srgb, var(--bg) 22%, var(--surface));
+  padding: 0.55rem 0.6rem;
+  padding-bottom: calc(var(--panel-scroll-pad) + 0.55rem);
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+#setup .wizard-step:not(.hidden) > .wizard-scroll-well::-webkit-scrollbar {
+  display: none;
+  width: 0 !important;
+  height: 0 !important;
+  appearance: none;
+  background: transparent;
 }
 
 #setup .wizard-step:not(.hidden) > .mode-picker {
@@ -64,14 +78,10 @@
   gap: clamp(1rem, 3.5vmin, 1.35rem);
 }
 
-#setup .wizard-step:not(.hidden) > .mode-picker > .mode-choice-grid {
+#setup #step-mode:not(.hidden) > .mode-picker > .mode-choice-grid {
   flex: 0 0 auto;
   overflow: visible;
   padding-bottom: 0;
-}
-
-#setup .wizard-step:not(.hidden) > .mode-picker > .wizard-help-link {
-  flex-shrink: 0;
 }
 
 #setup .wizard-step:not(.hidden) > .status {

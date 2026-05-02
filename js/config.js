@@ -19,6 +19,7 @@ export const STORAGE_KEYS = {
   vocabBestStreak: "lt-trainer-vocab-best-streak-v1",
   vocabDirections: "lt-trainer-vocab-directions-v1",
   casesShowTranslation: "lt-trainer-cases-show-translation-v1",
+  customPacks: "lt-trainer-custom-packs-v1",
 };
 
 /** Направление в режиме «Изучение слов». */
