@@ -1,16 +1,18 @@
 /** Константы приложения (без побочных эффектов). */
 
 export const CASE_ORDER = [
-  { key: "nominative", ru: "Именительный", lt: "vardininkas" },
-  { key: "genitive", ru: "Родительный", lt: "kilmininkas" },
-  { key: "dative", ru: "Дательный", lt: "naudininkas" },
-  { key: "accusative", ru: "Винительный", lt: "galininkas" },
-  { key: "instrumental", ru: "Творительный", lt: "įnagininkas" },
-  { key: "locative", ru: "Местный", lt: "vietininkas" },
-  { key: "vocative", ru: "Звательный", lt: "šauksmininkas" },
+  { key: "nominative", lt: "vardininkas" },
+  { key: "genitive", lt: "kilmininkas" },
+  { key: "dative", lt: "naudininkas" },
+  { key: "accusative", lt: "galininkas" },
+  { key: "instrumental", lt: "įnagininkas" },
+  { key: "locative", lt: "vietininkas" },
+  { key: "vocative", lt: "šauksmininkas" },
 ];
 
 export const STORAGE_KEYS = {
+  /** Версия схемы данных приложения (миграции в js/storage.js). */
+  schemaVersion: "lt-trainer-storage-schema-version",
   cases: "lt-cases-trainer-selected-cases",
   packs: "lt-cases-trainer-selected-packs",
   wordStats: "lt-trainer-word-stats-v1",
@@ -22,6 +24,9 @@ export const STORAGE_KEYS = {
   customPacks: "lt-trainer-custom-packs-v1",
 };
 
+/** Текущая версия схемы; при увеличении добавить миграцию `STORAGE_MIGRATIONS[nextVersion]`. */
+export const STORAGE_SCHEMA_VERSION = 1;
+
 /** Направление в режиме «Изучение слов». */
 export const VOCAB_DIRECTION = {
   RU_TO_LT: "ru_to_lt",
@@ -29,17 +34,7 @@ export const VOCAB_DIRECTION = {
 };
 
 /** Доступные профили из themes.css (атрибут data-theme на documentElement). */
-export const THEME_IDS = [
-  "default",
-  "ocean",
-  "forest",
-  "dusk",
-  "ember",
-  "day",
-  "paper",
-  "mist",
-  "bloom",
-];
+export const THEME_IDS = ["ocean", "forest", "ember", "paper", "mist"];
 
 export const TRAIN_MODE = {
   CASES: "cases",

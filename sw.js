@@ -2,7 +2,7 @@
  * Кэширует оболочку и JSON-словари для офлайна и быстрого старта после установки PWA.
  * При смене списка файлов увеличьте CACHE_VERSION.
  */
-const CACHE_VERSION = "lt-trainer-v192";
+const CACHE_VERSION = "lt-trainer-v198";
 
 /** Пути относительно scope (папка, где лежит sw.js). */
 function precacheUrls(scopeUrl) {
@@ -33,6 +33,10 @@ function precacheUrls(scopeUrl) {
     rel("js/input-lt.js"),
     rel("js/manifest-packs.js"),
     rel("js/custom-packs.js"),
+    rel("js/i18n/strings-ru.js"),
+    rel("js/i18n/core.js"),
+    rel("js/i18n/dom.js"),
+    rel("js/i18n/llm-prompt-ru.js"),
     rel("js/custom-pack-llm-prompt.js"),
     rel("js/word-selection.js"),
     rel("js/vocab-round.js"),
@@ -57,12 +61,7 @@ function precacheUrls(scopeUrl) {
 }
 
 async function matchCached(cache, request) {
-  let res = await cache.match(request);
-  if (res) return res;
-  if (request.mode === "navigate") {
-    res = await cache.match(new URL("index.html", self.registration.scope).href);
-  }
-  return res || null;
+  return cache.match(request);
 }
 
 /** Словари и manifest — сначала сеть, иначе после переименования полей остаётся старый precache. */
@@ -163,10 +162,6 @@ self.addEventListener("fetch", (event) => {
       try {
         return await fetch(event.request);
       } catch {
-        if (event.request.mode === "navigate") {
-          const fallback = await cache.match(new URL("index.html", self.registration.scope).href);
-          if (fallback) return fallback;
-        }
         return Response.error();
       }
     })(),

@@ -2,9 +2,7 @@ import { comparableAnswerKey } from "./text-utils.js";
 
 export function wordRuPrimary(word) {
   const ru = typeof word?.ru === "string" ? word.ru.trim() : "";
-  if (ru) return ru;
-  const legacy = typeof word?.hint_ru === "string" ? word.hint_ru.trim() : "";
-  return legacy;
+  return ru;
 }
 
 export function wordRuAlt(word) {

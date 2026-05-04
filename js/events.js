@@ -1,3 +1,5 @@
+import { fmt } from "./i18n/core.js";
+import { STR } from "./i18n/strings-ru.js";
 import { TRAIN_MODE, VOCAB_DIRECTION } from "./config.js";
 import { parseCustomPackJsonFile } from "./custom-packs.js";
 import { getCheckedCaseKeys } from "./case-selection.js";
@@ -105,10 +107,10 @@ export function bindEvents() {
       els.packStepStatus.textContent = "";
       try {
         await loadManifestAndRenderPacks();
-        els.packStepStatus.textContent = "Пользовательский набор удалён.";
+        els.packStepStatus.textContent = STR.events.customPackRemoved;
       } catch (err) {
         els.packStepStatus.textContent =
-          err instanceof Error ? err.message : "Не удалось обновить список наборов.";
+          err instanceof Error ? err.message : STR.events.refreshPackListFailed;
         console.error(err);
       }
     },
@@ -127,18 +129,18 @@ export function bindEvents() {
     const ta = els.packPromptTextarea;
     const btn = els.btnPackPromptCopy;
     if (!ta || !btn) return;
-    const label = "Скопировать";
+    const label = STR.clipboard.copyLabel;
     const fail = () => {
       ta.focus();
       ta.select();
-      btn.textContent = "Выделите текст";
+      btn.textContent = STR.clipboard.selectManually;
       window.setTimeout(() => {
         btn.textContent = label;
       }, 2000);
     };
     try {
       await navigator.clipboard.writeText(ta.value);
-      btn.textContent = "Скопировано";
+      btn.textContent = STR.clipboard.copied;
       window.setTimeout(() => {
         btn.textContent = label;
       }, 1600);
@@ -146,7 +148,7 @@ export function bindEvents() {
       try {
         ta.select();
         document.execCommand("copy");
-        btn.textContent = "Скопировано";
+        btn.textContent = STR.clipboard.copied;
         window.setTimeout(() => {
           btn.textContent = label;
         }, 1600);
@@ -165,12 +167,15 @@ export function bindEvents() {
     els.packStepStatus.textContent = "";
     try {
       const text = await file.text();
-      const record = parseCustomPackJsonFile(text, file.name);
+      const record = parseCustomPackJsonFile(text);
       appendCustomPackRecord(record);
       const sel = loadSelectedPacks();
       if (sel && sel.length > 0) saveSelectedPacks([...sel, record.id]);
       await loadManifestAndRenderPacks();
-      els.packStepStatus.textContent = `Набор «${record.title}» добавлен (${record.words.length} слов).`;
+      els.packStepStatus.textContent = fmt(STR.events.packAdded, {
+        title: record.title,
+        count: record.words.length,
+      });
     } catch (err) {
       els.packStepStatus.textContent = err instanceof Error ? err.message : String(err);
       console.error(err);
@@ -206,7 +211,7 @@ export function bindEvents() {
     if (els.vocabDirectionStepStatus) els.vocabDirectionStepStatus.textContent = "";
     if (!persistVocabDirectionsFromUiIfValid()) {
       if (els.vocabDirectionStepStatus) {
-        els.vocabDirectionStepStatus.textContent = "Выберите хотя бы одно направление перевода.";
+        els.vocabDirectionStepStatus.textContent = STR.events.pickVocabDir;
       }
       return;
     }
@@ -217,8 +222,8 @@ export function bindEvents() {
     if (needChoices || needAny) {
       if (els.vocabDirectionStepStatus) {
         els.vocabDirectionStepStatus.textContent = dirsNow.hardcore
-          ? "Нужно хотя бы одно слово с русским переводом в выбранных наборах."
-          : "Для «Изучение слов» нужно минимум 4 слова с русским переводом в выбранных наборах.";
+          ? STR.events.vocabNeedRuOne
+          : STR.events.vocabNeedRuFour;
       }
       return;
     }
@@ -226,7 +231,7 @@ export function bindEvents() {
     resetVocabCorrectStreak();
     if (!initVocabRound()) {
       if (els.vocabDirectionStepStatus) {
-        els.vocabDirectionStepStatus.textContent = "Не удалось начать раунд: нет слов с переводом.";
+        els.vocabDirectionStepStatus.textContent = STR.events.roundNoWords;
       }
       return;
     }
@@ -234,8 +239,8 @@ export function bindEvents() {
     if (!task) {
       if (els.vocabDirectionStepStatus) {
         els.vocabDirectionStepStatus.textContent = readVocabDirectionsFromUi().hardcore
-          ? "Не удалось начать игру. Проверьте наборы слов."
-          : "Не удалось составить четыре варианта ответа.";
+          ? STR.events.vocabStartHardcoreFail
+          : STR.events.vocabStartChoicesFail;
       }
       return;
     }
@@ -245,15 +250,15 @@ export function bindEvents() {
   els.btnPacksNext.addEventListener("click", async () => {
     const ids = getCheckedPackIds();
     if (!ids.length) {
-      els.packStepStatus.textContent = "Выберите хотя бы один набор.";
+      els.packStepStatus.textContent = STR.events.pickOnePack;
       return;
     }
     const files = resolveFilesFromPackIds(ids);
     if (!files.length) {
-      els.packStepStatus.textContent = "В выбранных паках нет файлов со словами.";
+      els.packStepStatus.textContent = STR.events.packsNoWordFiles;
       return;
     }
-    els.packStepStatus.textContent = "Загрузка словарей…";
+    els.packStepStatus.textContent = STR.events.loadingDictionaries;
     try {
       await loadWordsFromFiles(files);
       saveSelectedPacks(ids);
@@ -261,11 +266,11 @@ export function bindEvents() {
       els.caseStepStatus.textContent = "";
       if (loadTrainMode() === TRAIN_MODE.VOCAB) {
         const withHint = state.wordBank.filter((w) => hasWordRu(w) && w.nominative);
-        const hardcore = loadVocabDirections().hardcore;
+        const hardcore = !!loadVocabDirections()?.hardcore;
         if ((!hardcore && withHint.length < 4) || (hardcore && withHint.length < 1)) {
           els.packStepStatus.textContent = hardcore
-            ? "Для «Изучение слов» нужно хотя бы одно слово с русским переводом в выбранных наборах."
-            : "Для «Изучение слов» нужно минимум 4 слова с русским переводом в выбранных наборах.";
+            ? STR.events.vocabAfterPackHardcore
+            : STR.events.vocabAfterPackFour;
           return;
         }
         showWizardVocabDirection();
@@ -273,8 +278,9 @@ export function bindEvents() {
       }
       showWizardCases();
     } catch (err) {
-      els.packStepStatus.textContent =
-        `Ошибка загрузки: ${err.message}. Откройте сайт через локальный сервер в папке проекта (fetch к файлам с file:// часто блокируется).`;
+      els.packStepStatus.textContent = fmt(STR.events.loadFailed, {
+        message: err instanceof Error ? err.message : String(err),
+      });
       console.error(err);
     }
   });
@@ -314,11 +320,11 @@ export function bindEvents() {
     els.caseStepStatus.textContent = "";
     const keys = getCheckedCaseKeys();
     if (!keys.length) {
-      els.caseStepStatus.textContent = "Выберите хотя бы один падеж.";
+      els.caseStepStatus.textContent = STR.events.pickOneCase;
       return;
     }
     if (!state.wordBank.length) {
-      els.caseStepStatus.textContent = "Нет загруженных слов.";
+      els.caseStepStatus.textContent = STR.events.noWordsLoaded;
       return;
     }
     saveSelectedCases(keys);
@@ -326,7 +332,7 @@ export function bindEvents() {
     state.shownLemmaHistory = [];
     const task = nextTask(keys);
     if (!task) {
-      els.caseStepStatus.textContent = "Нет подходящих слов для выбранных падежей.";
+      els.caseStepStatus.textContent = STR.events.noMatchingWords;
       return;
     }
     els.caseStepStatus.textContent = "";
@@ -355,7 +361,7 @@ export function bindEvents() {
     const task = nextTask(keys);
     if (!task) {
       els.feedback.classList.remove("hidden", "ok", "bad");
-      els.feedback.textContent = "Слов больше нет.";
+      els.feedback.textContent = STR.quiz.noWordsLeft;
       return;
     }
     showQuiz(task);
@@ -536,7 +542,7 @@ export function bindEvents() {
       els.setup.classList.remove("hidden");
       showWizardVocabDirection();
       if (els.vocabDirectionStepStatus) {
-        els.vocabDirectionStepStatus.textContent = "Не удалось начать раунд: нет слов с переводом.";
+        els.vocabDirectionStepStatus.textContent = STR.events.roundNoWords;
       }
       return;
     }
@@ -548,8 +554,8 @@ export function bindEvents() {
       showWizardVocabDirection();
       if (els.vocabDirectionStepStatus) {
         els.vocabDirectionStepStatus.textContent = readVocabDirectionsFromUi().hardcore
-          ? "Не удалось начать раунд. Проверьте наборы слов."
-          : "Не удалось составить четыре варианта ответа.";
+          ? STR.events.roundRepeatFail
+          : STR.events.roundRepeatChoices;
       }
       return;
     }

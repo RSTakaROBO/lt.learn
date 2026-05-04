@@ -5,6 +5,8 @@ import {
   WEIGHT_PER_SKIP,
   WEIGHT_PER_WRONG,
 } from "./config.js";
+import { fmt } from "./i18n/core.js";
+import { STR } from "./i18n/strings-ru.js";
 import { state } from "./state.js";
 import { hasWordRu } from "./word-ru.js";
 
@@ -37,6 +39,8 @@ export function initVocabRound() {
   );
   if (!usable.length) {
     state.vocabRound = null;
+    syncVocabRoundProgress();
+    syncVocabRoundLemmaDots(null);
     return false;
   }
   const pool = new Set(usable.map((w) => roundLemmaKey(w)).filter(Boolean));
@@ -56,12 +60,14 @@ export function initVocabRound() {
     maxStreak: 0,
   };
   syncVocabRoundProgress();
+  syncVocabRoundLemmaDots(null);
   return true;
 }
 
 export function clearVocabRound() {
   state.vocabRound = null;
   syncVocabRoundProgress();
+  syncVocabRoundLemmaDots(null);
 }
 
 export function isVocabRoundActive() {
@@ -97,27 +103,34 @@ export function applyVocabRoundAnswer(word, ok) {
   const inPool = vr.pool.has(lem);
   if (!inPool) {
     if (!ok) vr.lemmaTowardThree[lem] = 0;
+    const slot = vr.lemmaTowardThree[lem];
+    syncVocabRoundLemmaDots(word, typeof slot === "number" ? slot : 0);
     return;
   }
   const row = ensureRoundRow(vr, lem);
+  let dotsForUi = 0;
   if (ok) {
     row.correct += 1;
     vr.gradedCorrect += 1;
     const n = (vr.lemmaTowardThree[lem] || 0) + 1;
     vr.lemmaTowardThree[lem] = n;
+    dotsForUi = Math.min(n, VOCAB_ROUND_STREAK_TO_REMOVE);
     if (n >= VOCAB_ROUND_STREAK_TO_REMOVE) {
       vr.pool.delete(lem);
       delete vr.lemmaTowardThree[lem];
+      dotsForUi = VOCAB_ROUND_STREAK_TO_REMOVE;
     }
   } else {
     row.wrong += 1;
     vr.gradedWrong += 1;
     vr.lemmaTowardThree[lem] = 0;
+    dotsForUi = 0;
     vr.wrongByLemma[lem] = (vr.wrongByLemma[lem] || 0) + 1;
   }
   if (ok) {
     vr.maxStreak = Math.max(vr.maxStreak, state.vocabCorrectStreak || 0);
   }
+  syncVocabRoundLemmaDots(word, dotsForUi);
   syncVocabRoundProgress();
 }
 
@@ -130,7 +143,42 @@ export function applyVocabRoundSkip(word) {
   const row = ensureRoundRow(vr, lem);
   row.skipped += 1;
   vr.lemmaTowardThree[lem] = 0;
+  syncVocabRoundLemmaDots(word, 0);
   syncVocabRoundProgress();
+}
+
+/**
+ * Три точки внизу карточки: сколько верных подряд по этой лемме в раунде (0–3).
+ * @param {object | null} word
+ * @param {number} [filledOverride] явное значение после ответа (например 3 в момент снятия с пула)
+ */
+export function syncVocabRoundLemmaDots(word, filledOverride) {
+  const wrap = document.getElementById("vocab-round-lemma-dots");
+  if (!wrap) return;
+  const vr = state.vocabRound;
+  if (!vr || !word) {
+    wrap.classList.add("hidden");
+    wrap.setAttribute("aria-hidden", "true");
+    wrap.removeAttribute("aria-label");
+    wrap.querySelectorAll(".vocab-round-lemma-dot").forEach((d) => d.classList.remove("is-filled"));
+    return;
+  }
+  const lem = roundLemmaKey(word);
+  let filled = 0;
+  if (typeof filledOverride === "number" && Number.isFinite(filledOverride)) {
+    filled = Math.max(0, Math.min(VOCAB_ROUND_STREAK_TO_REMOVE, filledOverride));
+  } else if (lem) {
+    filled = Math.min(VOCAB_ROUND_STREAK_TO_REMOVE, vr.lemmaTowardThree[lem] || 0);
+  }
+  wrap.querySelectorAll(".vocab-round-lemma-dot").forEach((d, i) => {
+    d.classList.toggle("is-filled", i < filled);
+  });
+  wrap.classList.remove("hidden");
+  wrap.setAttribute("aria-hidden", "false");
+  wrap.setAttribute(
+    "aria-label",
+    fmt(STR.vocabRound.ariaDots, { filled, max: VOCAB_ROUND_STREAK_TO_REMOVE }),
+  );
 }
 
 export function syncVocabRoundProgress() {
@@ -154,7 +202,7 @@ export function syncVocabRoundProgress() {
   wrap.setAttribute("aria-valuemax", String(vr.initialSize));
   wrap.setAttribute(
     "aria-label",
-    `Убрано из пула ${done} из ${vr.initialSize} слов`,
+    fmt(STR.vocabRound.ariaProgress, { done, total: vr.initialSize }),
   );
   wrap.classList.remove("hidden");
   wrap.setAttribute("aria-hidden", "false");

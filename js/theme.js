@@ -1,27 +1,26 @@
 import { STORAGE_KEYS, THEME_IDS } from "./config.js";
 import { els } from "./dom.js";
 
+function isValidThemeId(raw) {
+  return typeof raw === "string" && THEME_IDS.includes(raw);
+}
+
 export function loadTheme() {
   const attr = document.documentElement.getAttribute("data-theme");
-  if (attr && THEME_IDS.includes(attr)) return attr;
+  if (isValidThemeId(attr)) return attr;
   try {
     const t = localStorage.getItem(STORAGE_KEYS.theme);
-    if (t && THEME_IDS.includes(t)) return t;
+    return isValidThemeId(t) ? t : null;
   } catch {
-    /* ignore */
+    return null;
   }
-  return "default";
 }
 
 export function applyTheme(themeId) {
-  const id = THEME_IDS.includes(themeId) ? themeId : "default";
-  if (id === "default") {
-    document.documentElement.removeAttribute("data-theme");
-  } else {
-    document.documentElement.setAttribute("data-theme", id);
-  }
+  if (!isValidThemeId(themeId)) return;
+  document.documentElement.setAttribute("data-theme", themeId);
   try {
-    localStorage.setItem(STORAGE_KEYS.theme, id);
+    localStorage.setItem(STORAGE_KEYS.theme, themeId);
   } catch {
     /* ignore */
   }
@@ -38,6 +37,6 @@ export function updateThemeColorMeta() {
 export function syncThemeRadiosFromDom() {
   if (!els.themePicker) return;
   const id = loadTheme();
-  const input = els.themePicker.querySelector(`input[name="app-theme"][value="${id}"]`);
+  const input = id ? els.themePicker.querySelector(`input[name="app-theme"][value="${id}"]`) : null;
   if (input) input.checked = true;
 }

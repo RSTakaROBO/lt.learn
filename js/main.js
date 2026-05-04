@@ -1,9 +1,12 @@
+import { applyDomI18n } from "./i18n/dom.js";
+import { fmt } from "./i18n/core.js";
+import { STR } from "./i18n/strings-ru.js";
 import { refreshQuizElements, els } from "./dom.js";
 import { bindEvents } from "./events.js";
 import { loadManifestAndRenderPacks } from "./manifest-packs.js";
 import { state } from "./state.js";
-import { loadPersistedWordStats } from "./storage.js";
-import { applyTheme, loadTheme, syncThemeRadiosFromDom } from "./theme.js";
+import { initTrainerStorage, loadPersistedWordStats } from "./storage.js";
+import { applyTheme, loadTheme, syncThemeRadiosFromDom, updateThemeColorMeta } from "./theme.js";
 import {
   applyTrainModeFromStorage,
   applyVocabDirectionCheckboxesFromStorage,
@@ -35,10 +38,14 @@ function registerServiceWorker() {
 }
 
 async function init() {
+  applyDomI18n();
   registerServiceWorker();
   refreshQuizElements();
+  initTrainerStorage();
   state.wordStats = loadPersistedWordStats();
-  applyTheme(loadTheme());
+  const savedTheme = loadTheme();
+  if (savedTheme) applyTheme(savedTheme);
+  else updateThemeColorMeta();
   syncThemeRadiosFromDom();
   syncSettingsTrainingCheckbox();
   renderCaseCheckboxes();
@@ -49,8 +56,9 @@ async function init() {
   try {
     await loadManifestAndRenderPacks();
   } catch (err) {
-    els.packStepStatus.textContent =
-      `Ошибка: ${err.message}. Откройте сайт через локальный сервер в папке проекта (fetch к файлам с file:// часто блокируется).`;
+    els.packStepStatus.textContent = fmt(STR.main.loadManifestError, {
+      message: err instanceof Error ? err.message : String(err),
+    });
     console.error(err);
   }
 }

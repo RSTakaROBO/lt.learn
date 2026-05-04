@@ -41,6 +41,31 @@
   line-height: 1;
 }
 
+/* Прогресс «3 верных подряд» по лемме в раунде — слева снизу карточки */
+.vocab-round-lemma-dots {
+  position: absolute;
+  left: 0.5rem;
+  bottom: 0.48rem;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  pointer-events: none;
+}
+
+.vocab-round-lemma-dot {
+  width: 0.36rem;
+  height: 0.36rem;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background: color-mix(in srgb, var(--text) 18%, transparent);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--border) 75%, transparent);
+}
+
+.vocab-round-lemma-dot.is-filled {
+  background: color-mix(in srgb, var(--accent) 78%, var(--text));
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent) 35%, transparent);
+}
+
 .vocab-streak-mult-value {
   font-weight: 800;
   letter-spacing: -0.04em;

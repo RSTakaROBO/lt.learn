@@ -1,4 +1,6 @@
 import { CASE_ORDER, TRAIN_MODE, VOCAB_DIRECTION } from "./config.js";
+import { caseRu } from "./i18n/core.js";
+import { STR } from "./i18n/strings-ru.js";
 import { getCheckedCaseKeys } from "./case-selection.js";
 import { els, refreshQuizElements } from "./dom.js";
 import { state } from "./state.js";
@@ -6,7 +8,13 @@ import { bumpWordStat, loadCasesShowTranslation, saveVocabBestStreakIfHigher } f
 import { answersMatch, escapeHtml } from "./text-utils.js";
 import { lemmaKey, nextTask, nextVocabTask } from "./word-selection.js";
 import { vocabRuUserMatches, wordRuFeedbackLine, wordRuPrimary } from "./word-ru.js";
-import { applyVocabRoundAnswer, applyVocabRoundSkip, roundLemmaKey, syncVocabRoundProgress } from "./vocab-round.js";
+import {
+  applyVocabRoundAnswer,
+  applyVocabRoundSkip,
+  roundLemmaKey,
+  syncVocabRoundLemmaDots,
+  syncVocabRoundProgress,
+} from "./vocab-round.js";
 import { openVocabRoundSummaryOverlay } from "./overlays.js";
 
 const VOCAB_STREAK_MULT_FROM = 5;
@@ -24,7 +32,9 @@ const STREAK_MULT_TIER_CLASSES = [
 function casesLemmaDisplayLine(word) {
   const nom = word?.nominative ?? "";
   const hint =
-    loadCasesShowTranslation() && wordRuPrimary(word) ? ` (${wordRuPrimary(word)})` : "";
+    loadCasesShowTranslation() === true && wordRuPrimary(word)
+      ? ` (${wordRuPrimary(word)})`
+      : "";
   return `${nom}${hint}`;
 }
 
@@ -93,7 +103,7 @@ export function inferQuizMode(task) {
 }
 
 export function setSubmitLabel(answeredFlag) {
-  if (els.btnSubmit) els.btnSubmit.textContent = answeredFlag ? "Далее" : "Проверить";
+  if (els.btnSubmit) els.btnSubmit.textContent = answeredFlag ? STR.quiz.next : STR.quiz.check;
 }
 
 export function setQuizSkipAvailable(canSkip) {
@@ -102,19 +112,19 @@ export function setQuizSkipAvailable(canSkip) {
 
 export function resetQuizSkipButtonAppearance() {
   if (!els.btnSkip) return;
-  els.btnSkip.textContent = "Пропустить";
+  els.btnSkip.textContent = STR.quiz.skip;
   els.btnSkip.classList.remove("primary", "start");
   els.btnSkip.classList.add("ghost");
-  els.btnSkip.setAttribute("aria-label", "Пропустить");
+  els.btnSkip.setAttribute("aria-label", STR.quiz.skip);
 }
 
 export function morphQuizSkipToVocabNext() {
   if (!els.btnSkip) return;
-  els.btnSkip.textContent = "Далее";
+  els.btnSkip.textContent = STR.quiz.next;
   els.btnSkip.disabled = false;
   els.btnSkip.classList.remove("ghost");
   els.btnSkip.classList.add("primary");
-  els.btnSkip.setAttribute("aria-label", "Далее");
+  els.btnSkip.setAttribute("aria-label", STR.quiz.next);
 }
 
 export function renderVocabChoices(choices) {
@@ -178,8 +188,7 @@ export function setQuizUiPhase(phase, opts = {}) {
       foot.classList.remove("quiz-footer--single");
       if (els.feedback) {
         els.feedback.classList.remove("hidden", "ok", "bad");
-        els.feedback.textContent =
-          "Не удалось открыть режим «Слова». Обновите страницу или очистите данные сайта / кэш приложения.";
+        els.feedback.textContent = STR.quiz.noVocabUi;
       }
       return false;
     }
@@ -224,6 +233,7 @@ export function showQuiz(task) {
     setSubmitLabel(false);
     const hardcore = !!task.vocabHardcore;
     if (!setQuizUiPhase("vocab-pending", { vocabHardcore: hardcore })) {
+      syncVocabRoundLemmaDots(null);
       syncVocabRoundProgress();
       return;
     }
@@ -237,7 +247,8 @@ export function showQuiz(task) {
       vocabForm?.classList.add("hidden");
       els.vocabOptions?.classList.remove("hidden");
       els.feedback.classList.remove("hidden", "ok", "bad");
-      els.feedback.textContent = "Нет данных для вариантов ответа. Вернитесь в меню.";
+      els.feedback.textContent = STR.quiz.noVocabChoices;
+      syncVocabRoundLemmaDots(null);
       syncVocabRoundProgress();
       return;
     }
@@ -258,23 +269,24 @@ export function showQuiz(task) {
     const dir = task.vocabDirection || VOCAB_DIRECTION.RU_TO_LT;
     if (els.vocabRuDisplay) {
       if (dir === VOCAB_DIRECTION.LT_TO_RU) {
-        els.vocabRuDisplay.textContent = (task.word.nominative || "").trim() || "—";
+        els.vocabRuDisplay.textContent = (task.word.nominative || "").trim();
         els.vocabRuDisplay.setAttribute("lang", "lt");
       } else {
-        els.vocabRuDisplay.textContent = wordRuPrimary(task.word) || "—";
+        els.vocabRuDisplay.textContent = wordRuPrimary(task.word);
         els.vocabRuDisplay.setAttribute("lang", "ru");
       }
     }
     if (els.vocabOptions) {
       els.vocabOptions.setAttribute(
         "aria-label",
-        dir === VOCAB_DIRECTION.LT_TO_RU ? "Выберите русский перевод" : "Выберите литовский вариант",
+        dir === VOCAB_DIRECTION.LT_TO_RU ? STR.quiz.vocabLtToRuAria : STR.quiz.vocabRuToLtAria,
       );
     }
     if (!hardcore) {
       renderVocabChoices(task.choices);
     }
     syncVocabStreakMult();
+    syncVocabRoundLemmaDots(task.word);
     syncVocabRoundProgress();
     return;
   }
@@ -284,21 +296,21 @@ export function showQuiz(task) {
   els.lemmaDisplay.textContent = casesLemmaDisplayLine(task.word);
 
   const meta = CASE_ORDER.find((c) => c.key === task.targetCase);
-  els.targetCaseDisplay.textContent = meta ? meta.ru : task.targetCase;
+  els.targetCaseDisplay.textContent = meta ? caseRu(meta.key) : task.targetCase;
 
   els.answerInput.value = "";
   els.answerInput.focus();
+  syncVocabRoundLemmaDots(null);
   syncVocabRoundProgress();
 }
 
 function exceptionHintHtml(word) {
-  if (!word || (!word.exception && !(typeof word.exception_note_ru === "string" && word.exception_note_ru.trim())))
-    return "";
   const note =
-    typeof word.exception_note_ru === "string" && word.exception_note_ru.trim()
+    typeof word?.exception_note_ru === "string" && word.exception_note_ru.trim()
       ? word.exception_note_ru.trim()
-      : "Слово относится к исключениям или нестандартному склонению — формы надёжнее учить по словарю отдельно.";
-  return `<p class="exception-hint"><strong>Исключение:</strong> ${escapeHtml(note)}</p>`;
+      : "";
+  if (!note) return "";
+  return `<p class="exception-hint"><strong>${escapeHtml(STR.quiz.exceptionStrong)}</strong> ${escapeHtml(note)}</p>`;
 }
 
 function recordQuizOutcome(word, ok) {
@@ -311,11 +323,11 @@ export function showFeedback(ok, expected, word) {
   if (ok) {
     els.feedback.classList.add("ok");
     const exc = exceptionHintHtml(word);
-    els.feedback.innerHTML = exc ? `<p>Верно</p>${exc}` : "<p>Верно</p>";
+    els.feedback.innerHTML = exc ? `<p>${escapeHtml(STR.quiz.correct)}</p>${exc}` : `<p>${escapeHtml(STR.quiz.correct)}</p>`;
   } else {
     els.feedback.classList.add("bad");
     const exc = exceptionHintHtml(word);
-    els.feedback.innerHTML = `<p>Неверно</p><p class="correct-form">Правильно: <strong>${escapeHtml(expected)}</strong></p>${exc}`;
+    els.feedback.innerHTML = `<p>${escapeHtml(STR.quiz.wrong)}</p><p class="correct-form">${escapeHtml(STR.quiz.correctIs)} <strong>${escapeHtml(expected)}</strong></p>${exc}`;
   }
 }
 
@@ -432,7 +444,7 @@ export function advanceVocabQuiz() {
       return;
     }
     els.feedback.classList.remove("hidden", "ok", "bad");
-    els.feedback.textContent = "Слов больше нет.";
+    els.feedback.textContent = STR.quiz.noWordsLeft;
     return;
   }
   showQuiz(task);

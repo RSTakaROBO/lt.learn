@@ -1,3 +1,5 @@
+import { fmt } from "./i18n/core.js";
+import { STR } from "./i18n/strings-ru.js";
 import { CUSTOM_PACK_LLM_PROMPT } from "./custom-pack-llm-prompt.js";
 import { els } from "./dom.js";
 import { state } from "./state.js";
@@ -7,9 +9,9 @@ import { syncThemeRadiosFromDom } from "./theme.js";
 import { getVocabRoundSummarySnapshot } from "./vocab-round.js";
 
 export function syncSettingsTrainingCheckbox() {
-  if (els.settingsCasesShowTranslation) {
-    els.settingsCasesShowTranslation.checked = loadCasesShowTranslation();
-  }
+  if (!els.settingsCasesShowTranslation) return;
+  const v = loadCasesShowTranslation();
+  if (typeof v === "boolean") els.settingsCasesShowTranslation.checked = v;
 }
 
 export function openSettingsOverlay() {
@@ -116,6 +118,7 @@ function aggregateWordStatsTotals() {
   let skipped = 0;
   for (const row of Object.values(state.wordStats)) {
     const n = normalizeWordStatRow(row);
+    if (!n) continue;
     correct += n.correct;
     wrong += n.wrong;
     skipped += n.skipped;
@@ -127,9 +130,10 @@ function buildSortedWordStatRows() {
   return Object.entries(state.wordStats)
     .map(([lemma, row]) => {
       const n = normalizeWordStatRow(row);
+      if (!n) return null;
       return { lemma, correct: n.correct, wrong: n.wrong, skipped: n.skipped };
     })
-    .filter((r) => r.correct + r.wrong + r.skipped > 0)
+    .filter((r) => r && r.correct + r.wrong + r.skipped > 0)
     .sort((a, b) => {
       if (b.wrong !== a.wrong) return b.wrong - a.wrong;
       if (b.skipped !== a.skipped) return b.skipped - a.skipped;
@@ -140,14 +144,14 @@ function buildSortedWordStatRows() {
 function renderStatsScreen() {
   const { correct, wrong, skipped } = aggregateWordStatsTotals();
   const graded = correct + wrong;
-  const pctLabel = graded > 0 ? `${Math.round((100 * correct) / graded)}%` : "—";
+  const pctLabel = graded > 0 ? `${Math.round((100 * correct) / graded)}%` : STR.quiz.emDash;
 
   els.statsSummary.innerHTML = `
     <div class="stats-summary-grid">
-      <div class="stats-sum-cell"><span class="stats-sum-label">Верно</span><span class="stats-sum-val">${correct}</span></div>
-      <div class="stats-sum-cell"><span class="stats-sum-label">Неверно</span><span class="stats-sum-val">${wrong}</span></div>
-      <div class="stats-sum-cell"><span class="stats-sum-label">Пропущено</span><span class="stats-sum-val">${skipped}</span></div>
-      <div class="stats-sum-cell"><span class="stats-sum-label">Процент верных</span><span class="stats-sum-val">${pctLabel}</span></div>
+      <div class="stats-sum-cell"><span class="stats-sum-label">${escapeHtml(STR.stats.sumCorrect)}</span><span class="stats-sum-val">${correct}</span></div>
+      <div class="stats-sum-cell"><span class="stats-sum-label">${escapeHtml(STR.stats.sumWrong)}</span><span class="stats-sum-val">${wrong}</span></div>
+      <div class="stats-sum-cell"><span class="stats-sum-label">${escapeHtml(STR.stats.sumSkipped)}</span><span class="stats-sum-val">${skipped}</span></div>
+      <div class="stats-sum-cell"><span class="stats-sum-label">${escapeHtml(STR.stats.sumPercent)}</span><span class="stats-sum-val">${pctLabel}</span></div>
     </div>
   `;
 
@@ -197,22 +201,23 @@ export function openVocabRoundSummaryOverlay() {
   const body = document.getElementById("vocab-round-summary-body");
   if (!overlay || !body || !snap) return;
 
+  const VR = STR.vocabRound;
   const accInner =
     snap.accuracyPct == null
-      ? `<span class="vocab-round-summary-stat-num">—</span>`
-      : `<span class="vocab-round-summary-stat-num vocab-round-summary-stat-num--accent">${snap.accuracyPct}</span><span class="vocab-round-summary-stat-unit" aria-hidden="true">%</span>`;
+      ? `<span class="vocab-round-summary-stat-num">${escapeHtml(STR.quiz.emDash)}</span>`
+      : `<span class="vocab-round-summary-stat-num vocab-round-summary-stat-num--accent">${snap.accuracyPct}</span><span class="vocab-round-summary-stat-unit" aria-hidden="true">${escapeHtml(VR.percentUnit)}</span>`;
 
   const tableBlock =
     snap.topHard.length === 0
-      ? `<p class="vocab-round-summary-empty sub">За раунд не было неверных ответов по словам.</p>`
+      ? `<p class="vocab-round-summary-empty sub">${escapeHtml(VR.noWrongWords)}</p>`
       : `<div class="vocab-round-summary-table-scroll">
           <table class="vocab-round-summary-table">
-            <caption class="sr-only">Топ слов по числу ошибок</caption>
+            <caption class="sr-only">${escapeHtml(VR.tableCaption)}</caption>
             <thead>
               <tr>
-                <th scope="col" class="vocab-round-summary-th vocab-round-summary-th--num">#</th>
-                <th scope="col" class="vocab-round-summary-th vocab-round-summary-th--word">Слово</th>
-                <th scope="col" class="vocab-round-summary-th vocab-round-summary-th--err">Ошибок</th>
+                <th scope="col" class="vocab-round-summary-th vocab-round-summary-th--num">${escapeHtml(VR.thNum)}</th>
+                <th scope="col" class="vocab-round-summary-th vocab-round-summary-th--word">${escapeHtml(VR.thWord)}</th>
+                <th scope="col" class="vocab-round-summary-th vocab-round-summary-th--err">${escapeHtml(VR.thErr)}</th>
               </tr>
             </thead>
             <tbody>
@@ -233,18 +238,18 @@ export function openVocabRoundSummaryOverlay() {
   body.innerHTML = `
     <div class="vocab-round-summary-stats-card" aria-live="polite">
       <div class="vocab-round-summary-stat-row">
-        <span class="vocab-round-summary-stat-label">Точность</span>
+        <span class="vocab-round-summary-stat-label">${escapeHtml(VR.statAccuracy)}</span>
         <div class="vocab-round-summary-stat-val">${accInner}</div>
       </div>
       <div class="vocab-round-summary-stat-row">
-        <span class="vocab-round-summary-stat-label">Максимальная серия</span>
+        <span class="vocab-round-summary-stat-label">${escapeHtml(VR.statMaxStreak)}</span>
         <div class="vocab-round-summary-stat-val">
           <span class="vocab-round-summary-stat-num vocab-round-summary-stat-num--accent">${snap.maxStreak}</span>
         </div>
       </div>
     </div>
     <div class="vocab-round-summary-section">
-      <p class="vocab-round-summary-section-title">Сложнее всего дались</p>
+      <p class="vocab-round-summary-section-title">${escapeHtml(VR.sectionHard)}</p>
       ${tableBlock}
     </div>
   `;
@@ -273,7 +278,7 @@ export function openPackPromptOverlay() {
   if (els.packPromptTextarea) els.packPromptTextarea.value = CUSTOM_PACK_LLM_PROMPT;
   els.packPromptOverlay?.classList.remove("hidden");
   document.body.classList.add("pack-prompt-modal-open");
-  if (els.btnPackPromptCopy) els.btnPackPromptCopy.textContent = "Скопировать";
+  if (els.btnPackPromptCopy) els.btnPackPromptCopy.textContent = STR.packPrompt.copy;
   requestAnimationFrame(() => {
     els.packPromptTitle?.focus({ preventScroll: true });
   });

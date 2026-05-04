@@ -3,22 +3,24 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#0f1419" />
+  <meta name="theme-color" content="#0c1520" />
   <script>
     (function () {
       try {
         var k = "lt-trainer-theme-v1";
-        var ids = ["default", "ocean", "forest", "dusk", "ember", "day", "paper", "mist", "bloom"];
+        var allowed = ["ocean", "forest", "ember", "paper", "mist"];
         var t = localStorage.getItem(k);
-        if (t && ids.indexOf(t) !== -1 && t !== "default") document.documentElement.setAttribute("data-theme", t);
+        if (t && allowed.indexOf(t) !== -1) {
+          document.documentElement.setAttribute("data-theme", t);
+        }
       } catch (e) {}
     })();
   </script>
   <link rel="stylesheet" href="themes.css" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="apple-mobile-web-app-title" content="LT падежи" />
-  <title>Тренажёр падежей</title>
+  <meta name="apple-mobile-web-app-title" content="" />
+  <title></title>
   <link rel="manifest" href="site.webmanifest" />
   <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png" />
   <link rel="apple-touch-icon" href="icons/icon-180.png" />
@@ -65,18 +67,17 @@
         aria-valuenow="1"
         aria-valuemin="1"
         aria-valuemax="3"
-        aria-label="Этапы настройки"
       ></div>
 
       <div id="step-mode" class="wizard-step">
         <header class="wizard-app-head">
           <h2 class="wizard-home-title">
-            <span class="wizard-home-title-kicker">Ни дня без</span>
-            <span class="wizard-home-title-em">литовского</span>
+            <span class="wizard-home-title-kicker"></span>
+            <span class="wizard-home-title-em"></span>
           </h2>
         </header>
         <div class="mode-picker">
-          <div class="mode-choice-grid" role="group" aria-label="Тип упражнения">
+          <div class="mode-choice-grid" role="group">
             <button
               type="button"
               id="btn-mode-cases"
@@ -84,8 +85,8 @@
               data-train-mode="cases"
               aria-pressed="true"
             >
-              <span class="mode-choice-title">Изучение падежей</span>
-              <span class="mode-choice-desc">Ввод формы слова в выбранном падеже</span>
+              <span class="mode-choice-title"></span>
+              <span class="mode-choice-desc"></span>
             </button>
             <button
               type="button"
@@ -94,15 +95,15 @@
               data-train-mode="vocab"
               aria-pressed="false"
             >
-              <span class="mode-choice-title">Изучение слов</span>
-              <span class="mode-choice-desc">Выбор перевода после наборов и шага «Направление»</span>
+              <span class="mode-choice-title"></span>
+              <span class="mode-choice-desc"></span>
             </button>
           </div>
         </div>
       </div>
 
       <div id="step-packs" class="wizard-step hidden">
-        <h2>Наборы слов</h2>
+        <h2></h2>
         <div id="pack-list" class="pack-card-list wizard-scroll-well"></div>
         <p id="pack-step-status" class="status" aria-live="polite"></p>
         <div class="pack-custom-upload">
@@ -111,32 +112,28 @@
             type="button"
             id="btn-pack-prompt-help"
             class="btn ghost btn-pack-prompt-help"
-            aria-label="Промпт для нейросети: как составить свой JSON"
-            title="Промпт для нейросети"
           >
             ?
           </button>
           <label class="btn ghost btn-pack-json-main pack-json-upload-label">
-            <span class="pack-json-upload-label-text">Загрузить свой JSON…</span>
+            <span class="pack-json-upload-label-text"></span>
             <input
               type="file"
               id="pack-json-input"
               class="pack-json-file-input-native"
               accept="*/*"
-              aria-label="Загрузить свой файл словаря JSON"
             />
           </label>
         </div>
         <div class="actions wizard-pack-actions">
-          <button type="button" id="btn-packs-back" class="btn ghost">Назад</button>
-          <button type="button" id="btn-packs-next" class="btn primary" aria-label="Далее">
-            Далее
+          <button type="button" id="btn-packs-back" class="btn ghost"></button>
+          <button type="button" id="btn-packs-next" class="btn primary">
           </button>
         </div>
       </div>
 
       <div id="step-vocab-direction" class="wizard-step hidden">
-        <h2 id="vocab-direction-step-title">Направление перевода</h2>
+        <h2 id="vocab-direction-step-title"></h2>
         <div
           class="pack-card-list vocab-direction-grid wizard-scroll-well"
           role="group"
@@ -146,10 +143,8 @@
             <input type="checkbox" id="vocab-dir-ru-lt" class="pack-card-input sr-only" checked />
             <div class="pack-card-face">
               <div class="pack-card-main">
-                <div class="pack-card-title">С русского на литовский</div>
-                <div class="pack-card-meta">
-                  Подсказка по-русски — выберите слово на литовском
-                </div>
+                <div class="pack-card-title"></div>
+                <div class="pack-card-meta"></div>
               </div>
               <span class="pack-card-tick" aria-hidden="true"></span>
             </div>
@@ -158,26 +153,22 @@
             <input type="checkbox" id="vocab-dir-lt-ru" class="pack-card-input sr-only" />
             <div class="pack-card-face">
               <div class="pack-card-main">
-                <div class="pack-card-title">С литовского на русский</div>
-                <div class="pack-card-meta">
-                  Слово на литовском — выберите русский перевод
-                </div>
+                <div class="pack-card-title"></div>
+                <div class="pack-card-meta"></div>
               </div>
               <span class="pack-card-tick" aria-hidden="true"></span>
             </div>
           </label>
         </div>
-        <div class="vocab-hardcore-block" aria-label="Режим повышенной сложности">
+        <div class="vocab-hardcore-block">
           <div class="vocab-hardcore-divider" role="presentation" aria-hidden="true"></div>
           <div class="pack-card-list vocab-hardcore-list">
             <label class="pack-card" for="vocab-hardcore">
               <input type="checkbox" id="vocab-hardcore" class="pack-card-input sr-only" />
               <div class="pack-card-face">
                 <div class="pack-card-main">
-                  <div class="pack-card-title">Хардкор</div>
-                  <div class="pack-card-meta">
-                    Ввод слова вручную: поле ответа и кнопки литовских букв (без вариантов выбора)
-                  </div>
+                  <div class="pack-card-title"></div>
+                  <div class="pack-card-meta"></div>
                 </div>
                 <span class="pack-card-tick" aria-hidden="true"></span>
               </div>
@@ -186,20 +177,19 @@
         </div>
         <p id="vocab-direction-step-status" class="status" aria-live="polite"></p>
         <div class="actions wizard-pack-actions">
-          <button type="button" id="btn-vocab-direction-back" class="btn ghost">Назад</button>
-          <button type="button" id="btn-vocab-direction-start" class="btn primary" aria-label="Начать">
-            Начать
+          <button type="button" id="btn-vocab-direction-back" class="btn ghost"></button>
+          <button type="button" id="btn-vocab-direction-start" class="btn primary">
           </button>
         </div>
       </div>
 
       <div id="step-cases" class="wizard-step hidden">
-        <h2>Падежи</h2>
+        <h2></h2>
         <div id="case-checkboxes" class="pack-card-list wizard-scroll-well"></div>
         <p id="case-step-status" class="status case-step-msg" aria-live="polite"></p>
         <div class="actions wizard-case-actions">
-          <button type="button" id="btn-cases-back" class="btn ghost">Назад</button>
-          <button type="button" id="btn-start" class="btn primary">Начать</button>
+          <button type="button" id="btn-cases-back" class="btn ghost"></button>
+          <button type="button" id="btn-start" class="btn primary"></button>
         </div>
       </div>
     </section>
@@ -212,14 +202,14 @@
               <p class="lemma vocab-ru-display" id="lemma-display"></p>
             </div>
             <p class="target-line">
-              <span class="target-prefix">Падеж:</span>
+              <span class="target-prefix"></span>
               <span id="target-case-display"></span>
             </p>
           </div>
           <form id="answer-form" autocomplete="off">
-            <label class="sr-only" for="answer-input">Ваш ответ</label>
-            <input type="text" id="answer-input" placeholder="Введите слово…" spellcheck="false" autocapitalize="off" />
-            <div id="lt-chars" class="lt-chars" role="toolbar" aria-label="Вставить литовскую букву">
+            <label class="sr-only" for="answer-input"></label>
+            <input type="text" id="answer-input" placeholder="" spellcheck="false" autocapitalize="off" />
+            <div id="lt-chars" class="lt-chars" role="toolbar">
               <button type="button" class="lt-char" data-char="ą" title="ą">ą</button>
               <button type="button" class="lt-char" data-char="č" title="č">č</button>
               <button type="button" class="lt-char" data-char="ę" title="ę">ę</button>
@@ -241,6 +231,16 @@
             <div id="vocab-streak-mult" class="vocab-streak-mult hidden" aria-hidden="true">
               <span id="vocab-streak-mult-value" class="vocab-streak-mult-value"></span>
             </div>
+            <div
+              id="vocab-round-lemma-dots"
+              class="vocab-round-lemma-dots hidden"
+              aria-hidden="true"
+              role="img"
+            >
+              <span class="vocab-round-lemma-dot" aria-hidden="true"></span>
+              <span class="vocab-round-lemma-dot" aria-hidden="true"></span>
+              <span class="vocab-round-lemma-dot" aria-hidden="true"></span>
+            </div>
           </div>
           <div
             id="vocab-round-progress"
@@ -253,17 +253,17 @@
               <div id="vocab-round-progress-fill" class="vocab-round-progress-fill"></div>
             </div>
           </div>
-          <div id="vocab-options" class="vocab-options" role="group" aria-label="Выберите перевод"></div>
+          <div id="vocab-options" class="vocab-options" role="group"></div>
           <form id="vocab-answer-form" class="vocab-answer-form hidden" autocomplete="off">
-            <label class="sr-only" for="vocab-answer-input">Ваш ответ</label>
+            <label class="sr-only" for="vocab-answer-input"></label>
             <input
               type="text"
               id="vocab-answer-input"
-              placeholder="Введите слово…"
+              placeholder=""
               spellcheck="false"
               autocapitalize="off"
             />
-            <div id="vocab-lt-chars" class="lt-chars" role="toolbar" aria-label="Вставить литовскую букву">
+            <div id="vocab-lt-chars" class="lt-chars" role="toolbar">
               <button type="button" class="lt-char" data-char="ą" title="ą">ą</button>
               <button type="button" class="lt-char" data-char="č" title="č">č</button>
               <button type="button" class="lt-char" data-char="ę" title="ę">ę</button>
@@ -280,27 +280,28 @@
         <div id="feedback" class="feedback hidden" aria-live="polite"></div>
 
         <div class="actions quiz-answer-actions quiz-footer-actions" id="quiz-footer-actions">
-          <button type="button" id="btn-skip" class="btn ghost" aria-label="Пропустить">Пропустить</button>
-          <button type="submit" form="answer-form" class="btn primary" id="btn-quiz-submit-cases">Проверить</button>
+          <button type="button" id="btn-skip" class="btn ghost"></button>
+          <button type="submit" form="answer-form" class="btn primary" id="btn-quiz-submit-cases"></button>
         </div>
       </section>
     </div>
 
     <div id="cases-help-shell" class="cases-help-shell hidden">
       <section id="cases-help" class="widget panel" aria-labelledby="cases-help-title">
-        <h2 id="cases-help-title" tabindex="-1">Справка по падежам</h2>
+        <h2 id="cases-help-title" tabindex="-1"></h2>
         <div class="cases-help-scroll-block">
           <section class="cases-help-case-block" aria-labelledby="ch-kil">
             <h3 class="cases-help-table-title" id="ch-kil">
-              Родительный <span lang="lt" class="cases-help-lt-sub">kilmininkas</span>
+              <span class="cases-help-ru-case" data-case-key="genitive"></span>
+              <span lang="lt" class="cases-help-lt-sub">kilmininkas</span>
             </h3>
             <div class="cases-help-table-wrap">
               <table class="cases-help-table cases-help-table--one-case">
                 <thead>
                   <tr>
-                    <th scope="col">Основа</th>
-                    <th scope="col">Ед. ч.</th>
-                    <th scope="col">Мн. ч.</th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
                   </tr>
                 </thead>
                 <tbody>
@@ -341,15 +342,16 @@
 
           <section class="cases-help-case-block" aria-labelledby="ch-naud">
             <h3 class="cases-help-table-title" id="ch-naud">
-              Дательный <span lang="lt" class="cases-help-lt-sub">naudininkas</span>
+              <span class="cases-help-ru-case" data-case-key="dative"></span>
+              <span lang="lt" class="cases-help-lt-sub">naudininkas</span>
             </h3>
             <div class="cases-help-table-wrap">
               <table class="cases-help-table cases-help-table--one-case">
                 <thead>
                   <tr>
-                    <th scope="col">Основа</th>
-                    <th scope="col">Ед. ч.</th>
-                    <th scope="col">Мн. ч.</th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
                   </tr>
                 </thead>
                 <tbody>
@@ -390,15 +392,16 @@
 
           <section class="cases-help-case-block" aria-labelledby="ch-gal">
             <h3 class="cases-help-table-title" id="ch-gal">
-              Винительный <span lang="lt" class="cases-help-lt-sub">galininkas</span>
+              <span class="cases-help-ru-case" data-case-key="accusative"></span>
+              <span lang="lt" class="cases-help-lt-sub">galininkas</span>
             </h3>
             <div class="cases-help-table-wrap">
               <table class="cases-help-table cases-help-table--one-case">
                 <thead>
                   <tr>
-                    <th scope="col">Основа</th>
-                    <th scope="col">Ед. ч.</th>
-                    <th scope="col">Мн. ч.</th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
                   </tr>
                 </thead>
                 <tbody>
@@ -439,15 +442,16 @@
 
           <section class="cases-help-case-block" aria-labelledby="ch-inag">
             <h3 class="cases-help-table-title" id="ch-inag">
-              Творительный <span lang="lt" class="cases-help-lt-sub">įnagininkas</span>
+              <span class="cases-help-ru-case" data-case-key="instrumental"></span>
+              <span lang="lt" class="cases-help-lt-sub">įnagininkas</span>
             </h3>
             <div class="cases-help-table-wrap">
               <table class="cases-help-table cases-help-table--one-case">
                 <thead>
                   <tr>
-                    <th scope="col">Основа</th>
-                    <th scope="col">Ед. ч.</th>
-                    <th scope="col">Мн. ч.</th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
                   </tr>
                 </thead>
                 <tbody>
@@ -488,15 +492,16 @@
 
           <section class="cases-help-case-block" aria-labelledby="ch-viet">
             <h3 class="cases-help-table-title" id="ch-viet">
-              Местный <span lang="lt" class="cases-help-lt-sub">vietininkas</span>
+              <span class="cases-help-ru-case" data-case-key="locative"></span>
+              <span lang="lt" class="cases-help-lt-sub">vietininkas</span>
             </h3>
             <div class="cases-help-table-wrap">
               <table class="cases-help-table cases-help-table--one-case">
                 <thead>
                   <tr>
-                    <th scope="col">Основа</th>
-                    <th scope="col">Ед. ч.</th>
-                    <th scope="col">Мн. ч.</th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
                   </tr>
                 </thead>
                 <tbody>
@@ -537,15 +542,16 @@
 
           <section class="cases-help-case-block" aria-labelledby="ch-sauk">
             <h3 class="cases-help-table-title" id="ch-sauk">
-              Звательный <span lang="lt" class="cases-help-lt-sub">šauksmininkas</span>
+              <span class="cases-help-ru-case" data-case-key="vocative"></span>
+              <span lang="lt" class="cases-help-lt-sub">šauksmininkas</span>
             </h3>
             <div class="cases-help-table-wrap">
               <table class="cases-help-table cases-help-table--one-case">
                 <thead>
                   <tr>
-                    <th scope="col">Основа</th>
-                    <th scope="col">Ед. ч.</th>
-                    <th scope="col">Мн. ч.</th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
                   </tr>
                 </thead>
                 <tbody>
@@ -582,84 +588,78 @@
                 </tbody>
               </table>
             </div>
-            <p class="cases-help-case-note sub">
-              Мн. ч. звательного часто совпадает с именительным мн. ч. У <span lang="lt">−ys</span> звательный ед. ч. часто на
-              <span lang="lt">−iau</span> (<i lang="lt">arklys</i> — <i lang="lt">arkliau</i>), но бывают слова на <span lang="lt">−y</span>.
-            </p>
+            <p class="cases-help-case-note sub"></p>
           </section>
         </div>
         <div class="actions cases-help-footer-actions">
-          <button type="button" id="btn-cases-help-close" class="btn primary">Закрыть</button>
+          <button type="button" id="btn-cases-help-close" class="btn primary"></button>
         </div>
       </section>
     </div>
 
     <div id="verbs-help-shell" class="verbs-help-shell hidden">
       <section id="verbs-help" class="widget panel" aria-labelledby="verbs-help-title">
-        <h2 id="verbs-help-title" tabindex="-1">
-          Справка: <span lang="lt">yra</span> и <span lang="lt">nėra</span>
-        </h2>
+        <h2 id="verbs-help-title" tabindex="-1"></h2>
         <div class="cases-help-scroll-block">
           <section class="cases-help-case-block" aria-labelledby="vh-but-present">
             <h3 class="cases-help-table-title" id="vh-but-present">
-              Настоящее время <span lang="lt" class="cases-help-lt-sub">būti</span>
+              <span class="cases-help-ru-case"></span>
+              <span lang="lt" class="cases-help-lt-sub">būti</span>
             </h3>
             <div class="cases-help-table-wrap">
               <table class="cases-help-table cases-help-table--one-case">
                 <thead>
                   <tr>
-                    <th scope="col">Лицо</th>
-                    <th scope="col">Утверждение</th>
-                    <th scope="col">Отрицание</th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
-                    <th scope="row">я <span lang="lt" class="cases-help-lt-sub">aš</span></th>
+                    <th scope="row"><span lang="lt" class="cases-help-lt-sub">aš</span></th>
                     <td><span lang="lt">esu</span></td>
                     <td><span lang="lt">nesu</span></td>
                   </tr>
                   <tr>
-                    <th scope="row">ты <span lang="lt" class="cases-help-lt-sub">tu</span></th>
+                    <th scope="row"><span lang="lt" class="cases-help-lt-sub">tu</span></th>
                     <td><span lang="lt">esi</span></td>
                     <td><span lang="lt">nesi</span></td>
                   </tr>
                   <tr>
-                    <th scope="row">он / она <span lang="lt" class="cases-help-lt-sub">jis / ji</span></th>
+                    <th scope="row"><span lang="lt" class="cases-help-lt-sub">jis / ji</span></th>
                     <td><span lang="lt">yra</span></td>
                     <td><span lang="lt">nėra</span></td>
                   </tr>
                   <tr>
-                    <th scope="row">мы <span lang="lt" class="cases-help-lt-sub">mes</span></th>
+                    <th scope="row"><span lang="lt" class="cases-help-lt-sub">mes</span></th>
                     <td><span lang="lt">esame</span></td>
                     <td><span lang="lt">nesame</span></td>
                   </tr>
                   <tr>
-                    <th scope="row">вы <span lang="lt" class="cases-help-lt-sub">jūs</span></th>
+                    <th scope="row"><span lang="lt" class="cases-help-lt-sub">jūs</span></th>
                     <td><span lang="lt">esate</span></td>
                     <td><span lang="lt">nesate</span></td>
                   </tr>
                   <tr>
-                    <th scope="row">они <span lang="lt" class="cases-help-lt-sub">jie / jos</span></th>
+                    <th scope="row"><span lang="lt" class="cases-help-lt-sub">jie / jos</span></th>
                     <td><span lang="lt">yra</span></td>
                     <td><span lang="lt">nėra</span></td>
                   </tr>
                 </tbody>
               </table>
             </div>
-            <p class="cases-help-case-note sub">
-              В 3-м лице <span lang="lt">yra</span> и <span lang="lt">nėra</span> совпадают для единственного и множественного числа.
-            </p>
+            <p class="cases-help-case-note sub"></p>
           </section>
         </div>
         <div class="actions cases-help-footer-actions">
-          <button type="button" id="btn-verbs-help-close" class="btn primary">Закрыть</button>
+          <button type="button" id="btn-verbs-help-close" class="btn primary"></button>
         </div>
       </section>
     </div>
 
-    <nav class="quiz-bottom-bar" role="toolbar" aria-label="Меню тренажёра">
-      <div class="quiz-bottom-bar-inner"><button type="button" id="btn-stats" class="quiz-bar-btn" aria-label="Статистика">
+    <nav class="quiz-bottom-bar" role="toolbar">
+      <div class="quiz-bottom-bar-inner"><button type="button" id="btn-stats" class="quiz-bar-btn">
           <svg class="quiz-bar-icon" viewBox="0 0 24 24" width="26" height="26" aria-hidden="true">
             <path
               fill="none"
@@ -669,8 +669,8 @@
               d="M6 20V14M12 20V8M18 20v-9"
             />
           </svg>
-          <span class="quiz-bar-label">Статистика</span>
-        </button><button type="button" id="btn-back-setup" class="quiz-bar-btn" aria-label="В меню">
+          <span class="quiz-bar-label"></span>
+        </button><button type="button" id="btn-back-setup" class="quiz-bar-btn">
           <svg class="quiz-bar-icon" viewBox="0 0 24 24" width="26" height="26" aria-hidden="true">
             <path
               fill="none"
@@ -681,8 +681,8 @@
               d="M4 10.5 12 4l8 6.5V19a1.5 1.5 0 0 1 -1.5 1.5h-4v-6h-5v6H5.5A1.5 1.5 0 0 1 4 19v-8.5z"
             />
           </svg>
-          <span class="quiz-bar-label">Меню</span>
-        </button><button type="button" id="btn-help-hub" class="quiz-bar-btn" aria-label="Справка">
+          <span class="quiz-bar-label"></span>
+        </button><button type="button" id="btn-help-hub" class="quiz-bar-btn">
           <svg class="quiz-bar-icon" viewBox="0 0 24 24" width="26" height="26" aria-hidden="true">
             <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2" />
             <path
@@ -693,8 +693,8 @@
               d="M9.75 9.75a2.25 2.25 0 1 1 3 2.13c-.56.49-.89 1-.89 1.62V14M12 17h.01"
             />
           </svg>
-          <span class="quiz-bar-label">Справка</span>
-        </button><button type="button" id="btn-settings" class="quiz-bar-btn" aria-label="Настройки">
+          <span class="quiz-bar-label"></span>
+        </button><button type="button" id="btn-settings" class="quiz-bar-btn">
           <svg class="quiz-bar-icon" viewBox="0 0 24 24" width="26" height="26" aria-hidden="true">
             <path
               fill="none"
@@ -713,7 +713,7 @@
               d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1 -2.83 0l-.06-.06a1.65 1.65 0 0 0 -1.82-.33 1.65 1.65 0 0 0 -1 1.51V21a2 2 0 0 1 -2 2 2 0 0 1 -2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0 -1.82.33l-.06.06a2 2 0 0 1 -2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0 -1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0 -.33-1.82l-.06-.06a2 2 0 1 1 2.83 -2.83l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 1 0 2.83 2.83l-.06.06a1.65 1.65 0 0 0 -.33 1.82V9c.26.604.852.997 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0 -1.51 1z"
             />
           </svg>
-          <span class="quiz-bar-label">Настройки</span>
+          <span class="quiz-bar-label"></span>
         </button></div>
     </nav>
     <div
@@ -724,15 +724,13 @@
       aria-labelledby="help-hub-title"
     >
       <div class="settings-panel widget panel help-hub-panel">
-        <h2 id="help-hub-title">Справка</h2>
+        <h2 id="help-hub-title"></h2>
         <div class="help-hub-actions">
-          <button type="button" id="btn-help-hub-cases" class="btn ghost">Справка по падежам</button>
-          <button type="button" id="btn-help-hub-verbs" class="btn ghost">
-            Справка: <span lang="lt">yra</span> / <span lang="lt">nėra</span>
-          </button>
+          <button type="button" id="btn-help-hub-cases" class="btn ghost"></button>
+          <button type="button" id="btn-help-hub-verbs" class="btn ghost"></button>
         </div>
         <div class="actions stats-close-actions">
-          <button type="button" id="btn-help-hub-close" class="btn primary stats-close-btn">Закрыть</button>
+          <button type="button" id="btn-help-hub-close" class="btn primary stats-close-btn"></button>
         </div>
       </div>
     </div>
@@ -744,14 +742,12 @@
       aria-labelledby="vocab-round-summary-title"
     >
       <div class="stats-panel widget panel vocab-round-summary-panel">
-        <h2 id="vocab-round-summary-title">Раунд завершён</h2>
+        <h2 id="vocab-round-summary-title"></h2>
         <div id="vocab-round-summary-body" class="vocab-round-summary-body"></div>
         <div class="actions stats-close-actions vocab-round-summary-actions">
           <button type="button" id="btn-vocab-round-summary-repeat" class="btn ghost stats-close-btn">
-            Повторить
           </button>
           <button type="button" id="btn-vocab-round-summary-ok" class="btn primary stats-close-btn">
-            Ок
           </button>
         </div>
       </div>
@@ -764,23 +760,23 @@
       aria-labelledby="stats-title"
     >
       <div class="stats-panel widget panel">
-        <h2 id="stats-title">Статистика</h2>
+        <h2 id="stats-title"></h2>
         <div id="stats-summary" class="stats-summary"></div>
         <div class="stats-table-wrap">
           <table class="stats-table" id="stats-table">
             <thead>
               <tr>
-                <th scope="col">Слово</th>
-                <th scope="col">Верно</th>
-                <th scope="col">Неверно</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+                <th scope="col"></th>
               </tr>
             </thead>
             <tbody id="stats-table-body"></tbody>
           </table>
-          <p id="stats-empty" class="stats-empty hidden">Пока нет данных — ответьте на несколько слов или пропустите их.</p>
+          <p id="stats-empty" class="stats-empty hidden"></p>
         </div>
         <div class="actions stats-close-actions">
-          <button type="button" id="btn-stats-close" class="btn primary stats-close-btn">Закрыть</button>
+          <button type="button" id="btn-stats-close" class="btn primary stats-close-btn"></button>
         </div>
       </div>
     </div>
@@ -792,62 +788,38 @@
       aria-labelledby="settings-title"
     >
       <div class="settings-panel widget panel">
-        <h2 id="settings-title">Настройки</h2>
+        <h2 id="settings-title"></h2>
         <div class="settings-theme-block">
-          <p class="sub">Цветовая тема</p>
-          <div id="theme-picker" class="theme-picker case-grid" role="radiogroup" aria-label="Цветовая тема">
+          <p class="sub"></p>
+          <div id="theme-picker" class="theme-picker case-grid" role="radiogroup">
             <label class="case-option theme-option">
-              <input type="radio" name="app-theme" value="default" checked />
+              <input type="radio" name="app-theme" value="ocean" checked />
               <div>
-                <div class="case-title">Полночь</div>
-              </div>
-            </label>
-            <label class="case-option theme-option">
-              <input type="radio" name="app-theme" value="ocean" />
-              <div>
-                <div class="case-title">Океан</div>
+                <div class="case-title"></div>
               </div>
             </label>
             <label class="case-option theme-option">
               <input type="radio" name="app-theme" value="forest" />
               <div>
-                <div class="case-title">Лес</div>
-              </div>
-            </label>
-            <label class="case-option theme-option">
-              <input type="radio" name="app-theme" value="dusk" />
-              <div>
-                <div class="case-title">Сумерки</div>
+                <div class="case-title"></div>
               </div>
             </label>
             <label class="case-option theme-option">
               <input type="radio" name="app-theme" value="ember" />
               <div>
-                <div class="case-title">Янтарь</div>
-              </div>
-            </label>
-            <label class="case-option theme-option">
-              <input type="radio" name="app-theme" value="day" />
-              <div>
-                <div class="case-title">День</div>
+                <div class="case-title"></div>
               </div>
             </label>
             <label class="case-option theme-option">
               <input type="radio" name="app-theme" value="paper" />
               <div>
-                <div class="case-title">Бумага</div>
+                <div class="case-title"></div>
               </div>
             </label>
             <label class="case-option theme-option">
               <input type="radio" name="app-theme" value="mist" />
               <div>
-                <div class="case-title">Туман</div>
-              </div>
-            </label>
-            <label class="case-option theme-option">
-              <input type="radio" name="app-theme" value="bloom" />
-              <div>
-                <div class="case-title">Цветение</div>
+                <div class="case-title"></div>
               </div>
             </label>
           </div>
@@ -863,10 +835,8 @@
               />
               <div class="pack-card-face">
                 <div class="pack-card-main">
-                  <div class="pack-card-title">Отображать перевод при изучении падежей</div>
-                  <div class="pack-card-meta">
-                    Русский перевод в скобках под литовским словом
-                  </div>
+                  <div class="pack-card-title"></div>
+                  <div class="pack-card-meta"></div>
                 </div>
                 <span class="pack-card-tick" aria-hidden="true"></span>
               </div>
@@ -874,7 +844,7 @@
           </div>
         </div>
         <div class="actions stats-close-actions">
-          <button type="button" id="btn-settings-close" class="btn primary stats-close-btn">Закрыть</button>
+          <button type="button" id="btn-settings-close" class="btn primary stats-close-btn"></button>
         </div>
       </div>
     </div>
@@ -886,11 +856,9 @@
       aria-labelledby="pack-prompt-title"
     >
       <div class="settings-panel widget panel pack-prompt-panel">
-        <h2 id="pack-prompt-title" tabindex="-1">Промпт для нейросети</h2>
-        <p class="sub pack-prompt-lead">
-          Скопируйте текст и вставьте в чат с LLM. Ответ сохраните как файл .json и загрузите в тренажёр через «Загрузить свой JSON…».
-        </p>
-        <label class="sr-only" for="pack-prompt-text">Текст промпта для языковой модели</label>
+        <h2 id="pack-prompt-title" tabindex="-1"></h2>
+        <p class="sub pack-prompt-lead"></p>
+        <label class="sr-only" for="pack-prompt-text"></label>
         <textarea
           id="pack-prompt-text"
           class="pack-prompt-textarea"
@@ -900,8 +868,8 @@
           aria-readonly="true"
         ></textarea>
         <div class="actions wizard-pack-actions pack-prompt-actions">
-          <button type="button" id="btn-pack-prompt-copy" class="btn ghost">Скопировать</button>
-          <button type="button" id="btn-pack-prompt-close" class="btn primary">Закрыть</button>
+          <button type="button" id="btn-pack-prompt-copy" class="btn ghost"></button>
+          <button type="button" id="btn-pack-prompt-close" class="btn primary"></button>
         </div>
       </div>
     </div>

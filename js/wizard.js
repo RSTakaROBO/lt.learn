@@ -1,10 +1,13 @@
 import { CASE_ORDER, TRAIN_MODE } from "./config.js";
+import { caseRu } from "./i18n/core.js";
+import { STR } from "./i18n/strings-ru.js";
 import { createCheckboxTileLabel } from "./checkbox-tile.js";
 import { els } from "./dom.js";
 import { loadSelectedCases, loadTrainMode, loadVocabDirections, saveVocabDirections } from "./storage.js";
 
 export function applyVocabDirectionCheckboxesFromStorage() {
   const d = loadVocabDirections();
+  if (!d) return;
   const ruLt = document.getElementById("vocab-dir-ru-lt");
   const ltRu = document.getElementById("vocab-dir-lt-ru");
   const hc = document.getElementById("vocab-hardcore");
@@ -46,11 +49,12 @@ export function getTrainModeFromUi() {
   const v = pressed?.getAttribute("data-train-mode");
   if (v === TRAIN_MODE.VOCAB) return TRAIN_MODE.VOCAB;
   if (v === TRAIN_MODE.CASES) return TRAIN_MODE.CASES;
-  return loadTrainMode();
+  return null;
 }
 
 export function applyTrainModeFromStorage() {
-  syncModeChoiceButtons(loadTrainMode());
+  const m = loadTrainMode();
+  if (m) syncModeChoiceButtons(m);
 }
 
 /** Оба режима: тип упражнения → наборы → (слова: направление | падежи: падежи) — три шага. */
@@ -106,10 +110,10 @@ export function showWizardMode() {
 export function syncWizardPacksNextPresentation() {
   const btn = els.btnPacksNext;
   if (!btn) return;
-  btn.textContent = "Далее";
+  btn.textContent = STR.packs.next;
   btn.classList.remove("start");
   btn.classList.add("primary");
-  btn.setAttribute("aria-label", "Далее");
+  btn.setAttribute("aria-label", STR.packs.next);
 }
 
 export function showWizardPacks() {
@@ -138,8 +142,7 @@ export function showWizardCases() {
 export function renderCaseCheckboxes() {
   const saved = loadSelectedCases();
   const selectableCases = CASE_ORDER.filter((c) => c.key !== "nominative");
-  const defaultKeys = selectableCases.map((c) => c.key);
-  const selected = saved && saved.length ? saved : defaultKeys;
+  const selected = Array.isArray(saved) && saved.length ? saved : [];
 
   els.caseCheckboxes.innerHTML = "";
   for (const c of selectableCases) {
@@ -155,7 +158,7 @@ export function renderCaseCheckboxes() {
       id,
       value: c.key,
       checked: selected.includes(c.key),
-      titleText: c.ru,
+      titleText: caseRu(c.key),
       metaChildren,
     });
     els.caseCheckboxes.appendChild(wrap);

@@ -23,9 +23,9 @@ function computeWordSelectionWeight(word) {
   const s = getWordStat(lemmaKey(word));
   const w =
     WEIGHT_BASE +
-    s.wrong * WEIGHT_PER_WRONG +
-    s.skipped * WEIGHT_PER_SKIP -
-    s.correct * WEIGHT_PER_CORRECT;
+    (s ? s.wrong : 0) * WEIGHT_PER_WRONG +
+    (s ? s.skipped : 0) * WEIGHT_PER_SKIP -
+    (s ? s.correct : 0) * WEIGHT_PER_CORRECT;
   return Math.max(WEIGHT_MIN, w);
 }
 
@@ -121,6 +121,7 @@ function buildVocabChoicesLtToRu(usable, word) {
 
 export function nextVocabTask() {
   const dirsCfg = loadVocabDirections();
+  if (!dirsCfg) return null;
   const enabled = [];
   if (dirsCfg.ru_to_lt) enabled.push(VOCAB_DIRECTION.RU_TO_LT);
   if (dirsCfg.lt_to_ru) enabled.push(VOCAB_DIRECTION.LT_TO_RU);

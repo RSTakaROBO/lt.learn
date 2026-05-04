@@ -13,26 +13,6 @@
  */
 
 html:not([data-theme]),
-html[data-theme="default"] {
-  --bg: #0f1419;
-  --surface: #212c3b;
-  --border: #2d3a4a;
-  --text: #e8eef5;
-  --muted: #8fa3b8;
-  --accent: #6cb8ff;
-  --success: #5ecf8c;
-  --error: #ff7a7a;
-  --surface-elevated: #323f56;
-  /* Полоска под кнопкой: на тёмном фоне чуть светлее «чистого» чёрного — иначе не отличается от --surface */
-  --btn-shadow-depth: #2d3a4d;
-  --text-on-accent: #0a0f14;
-  --text-on-success: #052210;
-  --text-on-error: #1a0707;
-  --elev-shadow: color-mix(in srgb, #05080c 55%, transparent);
-  color-scheme: dark;
-  --control-ghost-bg: rgba(232, 238, 245, 0.14);
-}
-
 html[data-theme="ocean"] {
   --bg: #0c1520;
   --surface: #152a38;
@@ -71,25 +51,6 @@ html[data-theme="forest"] {
   --control-ghost-bg: rgba(232, 242, 235, 0.13);
 }
 
-html[data-theme="dusk"] {
-  --bg: #14101c;
-  --surface: #261f34;
-  --border: #3a304c;
-  --text: #f0e9fb;
-  --muted: #a698bd;
-  --accent: #c9a6ff;
-  --success: #7fe0a8;
-  --error: #ff8fa3;
-  --surface-elevated: #342b46;
-  --btn-shadow-depth: #453a5c;
-  --text-on-accent: #12081f;
-  --text-on-success: #06140d;
-  --text-on-error: #1c080e;
-  --elev-shadow: color-mix(in srgb, #080510 56%, transparent);
-  color-scheme: dark;
-  --control-ghost-bg: rgba(240, 233, 251, 0.14);
-}
-
 html[data-theme="ember"] {
   --bg: #18120e;
   --surface: #2c221a;
@@ -111,25 +72,6 @@ html[data-theme="ember"] {
 
 /* ——— Светлые темы: спокойные фоны, аккуратный контраст; верно/неверно — разнесённые оттенки
  * (изумруд/бирюза vs розово-коралловый), чтобы блоки обратной связи и кнопки читались без «кислотности». ——— */
-
-html[data-theme="day"] {
-  --bg: #e8ecf4;
-  --surface: #ffffff;
-  --border: #c4cfdf;
-  --text: #101828;
-  --muted: #5c6678;
-  --accent: #1d4ed8;
-  --success: #0f766e;
-  --error: #d92652;
-  --surface-elevated: #e8eef8;
-  --btn-shadow-depth: #475569;
-  --text-on-accent: #f8fafc;
-  --text-on-success: #f6fffd;
-  --text-on-error: #fff8fa;
-  --elev-shadow: color-mix(in srgb, #0f172a 12%, transparent);
-  color-scheme: light;
-  --control-ghost-bg: rgba(16, 24, 40, 0.072);
-}
 
 html[data-theme="paper"] {
   --bg: #f3efe6;
@@ -169,21 +111,3 @@ html[data-theme="mist"] {
   --control-ghost-bg: rgba(15, 23, 42, 0.068);
 }
 
-html[data-theme="bloom"] {
-  --bg: #eee8f6;
-  --surface: #fdfbff;
-  --border: #c5b8dc;
-  --text: #1c142f;
-  --muted: #635a78;
-  --accent: #5b21b6;
-  --success: #0d7d6a;
-  --error: #db2777;
-  --surface-elevated: #e4daf5;
-  --btn-shadow-depth: #7c3aed;
-  --text-on-accent: #faf5ff;
-  --text-on-success: #f5fffc;
-  --text-on-error: #fff7fb;
-  --elev-shadow: color-mix(in srgb, #312e81 11%, transparent);
-  color-scheme: light;
-  --control-ghost-bg: rgba(28, 20, 47, 0.058);
-}

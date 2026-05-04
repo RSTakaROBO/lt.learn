@@ -44,7 +44,7 @@ export function handleAnswerInputShiftCycles(e) {
 
   if (end > start && end - start !== 1) return;
 
-  const insertFallback = () => insertAtCaret(input, cycle.length > 1 ? cycle[1] : cycle[0]);
+  const insertSecondOrFirst = () => insertAtCaret(input, cycle.length > 1 ? cycle[1] : cycle[0]);
 
   let apply = null;
 
@@ -66,7 +66,7 @@ export function handleAnswerInputShiftCycles(e) {
   }
 
   if (!apply) {
-    apply = insertFallback;
+    apply = insertSecondOrFirst;
   }
 
   e.preventDefault();
