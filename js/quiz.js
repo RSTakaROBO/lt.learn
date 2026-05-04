@@ -6,10 +6,20 @@ import { bumpWordStat, loadCasesShowTranslation, saveVocabBestStreakIfHigher } f
 import { answersMatch, escapeHtml } from "./text-utils.js";
 import { lemmaKey, nextTask, nextVocabTask } from "./word-selection.js";
 import { vocabRuUserMatches, wordRuFeedbackLine, wordRuPrimary } from "./word-ru.js";
+import { applyVocabRoundAnswer, applyVocabRoundSkip, roundLemmaKey, syncVocabRoundProgress } from "./vocab-round.js";
+import { openVocabRoundSummaryOverlay } from "./overlays.js";
 
 const VOCAB_STREAK_MULT_FROM = 5;
 
-const STREAK_TIER_CLASSES = ["vocab-streak-mult--blue", "vocab-streak-mult--orange", "vocab-streak-mult--purple"];
+/** Уровни по порогам 10 / 20 / 50 / 70 / 100: серый → синий → зелёный → жёлтый → красный (+ крупнее шрифт). */
+const STREAK_MULT_TIER_CLASSES = [
+  "vocab-streak-mult--t0",
+  "vocab-streak-mult--t1",
+  "vocab-streak-mult--t2",
+  "vocab-streak-mult--t3",
+  "vocab-streak-mult--t4",
+  "vocab-streak-mult--t5",
+];
 
 function casesLemmaDisplayLine(word) {
   const nom = word?.nominative ?? "";
@@ -19,9 +29,12 @@ function casesLemmaDisplayLine(word) {
 }
 
 function streakTierClass(n) {
-  if (n >= 15) return "vocab-streak-mult--purple";
-  if (n >= 10) return "vocab-streak-mult--orange";
-  return "vocab-streak-mult--blue";
+  if (n >= 100) return "vocab-streak-mult--t5";
+  if (n >= 70) return "vocab-streak-mult--t4";
+  if (n >= 50) return "vocab-streak-mult--t3";
+  if (n >= 20) return "vocab-streak-mult--t2";
+  if (n >= 10) return "vocab-streak-mult--t1";
+  return "vocab-streak-mult--t0";
 }
 
 function pulseVocabStreakMult(wrap) {
@@ -43,7 +56,7 @@ function syncVocabStreakMult(opts = {}) {
   const valEl = document.getElementById("vocab-streak-mult-value");
   if (!wrap || !valEl) return;
   const n = state.vocabCorrectStreak;
-  STREAK_TIER_CLASSES.forEach((c) => wrap.classList.remove(c));
+  STREAK_MULT_TIER_CLASSES.forEach((c) => wrap.classList.remove(c));
   wrap.classList.remove("vocab-streak-mult--pulse");
   if (n < VOCAB_STREAK_MULT_FROM) {
     wrap.classList.add("hidden");
@@ -65,7 +78,7 @@ export function resetVocabCorrectStreak() {
   const valEl = document.getElementById("vocab-streak-mult-value");
   wrap?.classList.add("hidden");
   wrap?.classList.remove("vocab-streak-mult--pulse");
-  STREAK_TIER_CLASSES.forEach((c) => wrap?.classList.remove(c));
+  STREAK_MULT_TIER_CLASSES.forEach((c) => wrap?.classList.remove(c));
   wrap?.setAttribute("aria-hidden", "true");
   if (valEl) valEl.textContent = "";
 }
@@ -196,7 +209,8 @@ export function showQuiz(task) {
   task.mode = inferQuizMode(task);
 
   state.currentTask = task;
-  state.shownLemmaHistory.push(lemmaKey(task.word));
+  const histKey = roundLemmaKey(task.word) || String(lemmaKey(task.word) ?? "").trim();
+  if (histKey) state.shownLemmaHistory.push(histKey);
   state.answered = false;
   resetQuizSkipButtonAppearance();
   setQuizSkipAvailable(true);
@@ -209,7 +223,10 @@ export function showQuiz(task) {
   if (task.mode === TRAIN_MODE.VOCAB) {
     setSubmitLabel(false);
     const hardcore = !!task.vocabHardcore;
-    if (!setQuizUiPhase("vocab-pending", { vocabHardcore: hardcore })) return;
+    if (!setQuizUiPhase("vocab-pending", { vocabHardcore: hardcore })) {
+      syncVocabRoundProgress();
+      return;
+    }
 
     const vocabForm = document.getElementById("vocab-answer-form");
     const vocabInput = document.getElementById("vocab-answer-input");
@@ -221,6 +238,7 @@ export function showQuiz(task) {
       els.vocabOptions?.classList.remove("hidden");
       els.feedback.classList.remove("hidden", "ok", "bad");
       els.feedback.textContent = "Нет данных для вариантов ответа. Вернитесь в меню.";
+      syncVocabRoundProgress();
       return;
     }
 
@@ -257,6 +275,7 @@ export function showQuiz(task) {
       renderVocabChoices(task.choices);
     }
     syncVocabStreakMult();
+    syncVocabRoundProgress();
     return;
   }
 
@@ -269,6 +288,7 @@ export function showQuiz(task) {
 
   els.answerInput.value = "";
   els.answerInput.focus();
+  syncVocabRoundProgress();
 }
 
 function exceptionHintHtml(word) {
@@ -309,9 +329,13 @@ export function finalizeVocabChoice(ok, expected, word, clickedBtn) {
       pulse: state.vocabCorrectStreak >= VOCAB_STREAK_MULT_FROM,
     });
   } else {
+    if (state.vocabRound) {
+      state.vocabRound.maxStreak = Math.max(state.vocabRound.maxStreak, state.vocabCorrectStreak);
+    }
     state.vocabCorrectStreak = 0;
     syncVocabStreakMult();
   }
+  applyVocabRoundAnswer(word, ok);
   els.feedback.classList.remove("ok", "bad");
   els.feedback.classList.add("hidden");
   els.feedback.textContent = "";
@@ -382,12 +406,16 @@ export function processVocabHardcoreSubmit() {
       state.vocabCorrectStreak += 1;
       saveVocabBestStreakIfHigher(state.vocabCorrectStreak);
     } else {
+      if (state.vocabRound) {
+        state.vocabRound.maxStreak = Math.max(state.vocabRound.maxStreak, state.vocabCorrectStreak);
+      }
       state.vocabCorrectStreak = 0;
     }
     showFeedback(ok, expected, word);
     syncVocabStreakMult({
       pulse: ok && state.vocabCorrectStreak >= VOCAB_STREAK_MULT_FROM,
     });
+    applyVocabRoundAnswer(word, ok);
     return;
   }
 
@@ -399,6 +427,10 @@ export function advanceVocabQuiz() {
   const task = nextVocabTask();
   if (!task) {
     resetVocabCorrectStreak();
+    if (state.vocabRound && state.vocabRound.pool.size === 0) {
+      openVocabRoundSummaryOverlay();
+      return;
+    }
     els.feedback.classList.remove("hidden", "ok", "bad");
     els.feedback.textContent = "Слов больше нет.";
     return;
@@ -423,9 +455,15 @@ export function skipCurrentWord() {
   if (!state.currentTask || state.answered) return;
   bumpWordStat(lemmaKey(state.currentTask.word), "skipped");
   if (state.currentTask.mode === TRAIN_MODE.VOCAB) {
+    applyVocabRoundSkip(state.currentTask.word);
     resetVocabCorrectStreak();
     const task = nextVocabTask();
-    if (!task) return;
+    if (!task) {
+      if (state.vocabRound && state.vocabRound.pool.size === 0) {
+        openVocabRoundSummaryOverlay();
+      }
+      return;
+    }
     showQuiz(task);
     return;
   }

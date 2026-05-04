@@ -29,12 +29,14 @@ import {
   closeSettingsOverlay,
   closeStatsOverlay,
   closeVerbsHelp,
+  closeVocabRoundSummaryOverlay,
   isCasesHelpOpen,
   isHelpHubOpen,
   isPackPromptOverlayOpen,
   isSettingsOverlayOpen,
   isStatsOverlayOpen,
   isVerbsHelpOpen,
+  isVocabRoundSummaryOpen,
   openCasesHelp,
   openHelpHub,
   openPackPromptOverlay,
@@ -60,6 +62,7 @@ import { answersMatch } from "./text-utils.js";
 import { applyTheme } from "./theme.js";
 import { nextTask, nextVocabTask } from "./word-selection.js";
 import { hasWordRu, vocabRuUserMatches, wordRuFeedbackLine } from "./word-ru.js";
+import { clearVocabRound, initVocabRound } from "./vocab-round.js";
 import {
   persistVocabDirectionsFromUiIfValid,
   readVocabDirectionsFromUi,
@@ -221,6 +224,12 @@ export function bindEvents() {
     }
     state.shownLemmaHistory = [];
     resetVocabCorrectStreak();
+    if (!initVocabRound()) {
+      if (els.vocabDirectionStepStatus) {
+        els.vocabDirectionStepStatus.textContent = "Не удалось начать раунд: нет слов с переводом.";
+      }
+      return;
+    }
     const task = nextVocabTask();
     if (!task) {
       if (els.vocabDirectionStepStatus) {
@@ -313,6 +322,7 @@ export function bindEvents() {
       return;
     }
     saveSelectedCases(keys);
+    clearVocabRound();
     state.shownLemmaHistory = [];
     const task = nextTask(keys);
     if (!task) {
@@ -397,6 +407,21 @@ export function bindEvents() {
       closePackPromptOverlay();
       return;
     }
+    if (isVocabRoundSummaryOpen()) {
+      e.preventDefault();
+      closeVocabRoundSummaryOverlay();
+      clearVocabRound();
+      els.quizShell.classList.add("hidden");
+      els.setup.classList.remove("hidden");
+      resetVocabCorrectStreak();
+      showWizardMode();
+      els.packStepStatus.textContent = "";
+      els.caseStepStatus.textContent = "";
+      if (els.vocabDirectionStepStatus) els.vocabDirectionStepStatus.textContent = "";
+      state.currentTask = null;
+      state.shownLemmaHistory = [];
+      return;
+    }
     if (isHelpHubOpen()) {
       e.preventDefault();
       closeHelpHub();
@@ -466,6 +491,8 @@ export function bindEvents() {
     closeSettingsOverlay();
     closePackPromptOverlay();
     closeHelpHub();
+    closeVocabRoundSummaryOverlay();
+    clearVocabRound();
     if (isCasesHelpOpen()) {
       closeCasesHelp();
       return;
@@ -483,5 +510,55 @@ export function bindEvents() {
     if (els.vocabDirectionStepStatus) els.vocabDirectionStepStatus.textContent = "";
     state.currentTask = null;
     state.shownLemmaHistory = [];
+  });
+
+  document.getElementById("btn-vocab-round-summary-ok")?.addEventListener("click", () => {
+    closeVocabRoundSummaryOverlay();
+    clearVocabRound();
+    els.quizShell.classList.add("hidden");
+    els.setup.classList.remove("hidden");
+    resetVocabCorrectStreak();
+    showWizardMode();
+    els.packStepStatus.textContent = "";
+    els.caseStepStatus.textContent = "";
+    if (els.vocabDirectionStepStatus) els.vocabDirectionStepStatus.textContent = "";
+    state.currentTask = null;
+    state.shownLemmaHistory = [];
+  });
+
+  document.getElementById("btn-vocab-round-summary-repeat")?.addEventListener("click", () => {
+    closeVocabRoundSummaryOverlay();
+    state.shownLemmaHistory = [];
+    resetVocabCorrectStreak();
+    if (!initVocabRound()) {
+      clearVocabRound();
+      els.quizShell.classList.add("hidden");
+      els.setup.classList.remove("hidden");
+      showWizardVocabDirection();
+      if (els.vocabDirectionStepStatus) {
+        els.vocabDirectionStepStatus.textContent = "Не удалось начать раунд: нет слов с переводом.";
+      }
+      return;
+    }
+    const task = nextVocabTask();
+    if (!task) {
+      clearVocabRound();
+      els.quizShell.classList.add("hidden");
+      els.setup.classList.remove("hidden");
+      showWizardVocabDirection();
+      if (els.vocabDirectionStepStatus) {
+        els.vocabDirectionStepStatus.textContent = readVocabDirectionsFromUi().hardcore
+          ? "Не удалось начать раунд. Проверьте наборы слов."
+          : "Не удалось составить четыре варианта ответа.";
+      }
+      return;
+    }
+    showQuiz(task);
+  });
+
+  document.getElementById("vocab-round-summary-overlay")?.addEventListener("click", (e) => {
+    if (e.target === document.getElementById("vocab-round-summary-overlay")) {
+      document.getElementById("btn-vocab-round-summary-ok")?.click();
+    }
   });
 }

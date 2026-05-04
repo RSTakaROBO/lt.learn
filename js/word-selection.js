@@ -10,6 +10,7 @@ import {
 } from "./config.js";
 import { pickRandom, pickWeightedRandom, shuffleArray } from "./random.js";
 import { state } from "./state.js";
+import { computeVocabRoundWeightForLemma, roundLemmaKey } from "./vocab-round.js";
 import { getWordStat, loadVocabDirections } from "./storage.js";
 import { comparableAnswerKey } from "./text-utils.js";
 import { hasWordRu, wordRuAcceptedList, wordRuPrimary } from "./word-ru.js";
@@ -28,11 +29,37 @@ function computeWordSelectionWeight(word) {
   return Math.max(WEIGHT_MIN, w);
 }
 
+function vocabTaskSelectionWeight(word) {
+  if (state.vocabRound) return computeVocabRoundWeightForLemma(roundLemmaKey(word));
+  return computeWordSelectionWeight(word);
+}
+
 /** Сколько слов уже показано после последнего вхождения этой леммы (0 — это последнее показанное слово). */
 function countWordsSinceLemma(lemma, history) {
   const lastIdx = history.lastIndexOf(lemma);
   if (lastIdx === -1) return Infinity;
   return history.length - 1 - lastIdx;
+}
+
+/** Кандидаты с тем же зазором, что в истории showQuiz (ключ леммы = roundLemmaKey). */
+function usableAfterLemmaGap(usableSubset) {
+  let c = usableSubset.filter(
+    (w) => countWordsSinceLemma(roundLemmaKey(w), state.shownLemmaHistory) >= MIN_GAP_BEFORE_SAME_LEMMA,
+  );
+  if (!c.length) {
+    const lastLemma =
+      state.shownLemmaHistory.length > 0
+        ? state.shownLemmaHistory[state.shownLemmaHistory.length - 1]
+        : null;
+    c =
+      lastLemma != null
+        ? usableSubset.filter((w) => roundLemmaKey(w) !== lastLemma)
+        : usableSubset.slice();
+  }
+  if (!c.length) {
+    c = usableSubset;
+  }
+  return c;
 }
 
 export function nextTask(selectedKeys) {
@@ -107,26 +134,31 @@ export function nextVocabTask() {
   const minWords = hardcore ? 1 : 4;
   if (usable.length < minWords) return null;
 
-  let candidates = usable.filter(
-    (w) => countWordsSinceLemma(lemmaKey(w), state.shownLemmaHistory) >= MIN_GAP_BEFORE_SAME_LEMMA,
-  );
+  let candidates;
 
-  if (!candidates.length) {
-    const lastLemma =
-      state.shownLemmaHistory.length > 0
-        ? state.shownLemmaHistory[state.shownLemmaHistory.length - 1]
-        : null;
-    candidates = lastLemma != null ? usable.filter((w) => lemmaKey(w) !== lastLemma) : usable.slice();
-  }
-
-  if (!candidates.length) {
-    candidates = usable;
+  if (state.vocabRound) {
+    const pool = state.vocabRound.pool;
+    const poolUsable = usable.filter((w) => pool.has(roundLemmaKey(w)));
+    if (!poolUsable.length) return null;
+    if (pool.size < MIN_GAP_BEFORE_SAME_LEMMA) {
+      candidates = poolUsable.slice();
+    } else {
+      candidates = usableAfterLemmaGap(usable);
+      let inPool = candidates.filter((w) => pool.has(roundLemmaKey(w)));
+      if (!inPool.length && pool.size > 0) {
+        inPool = usableAfterLemmaGap(poolUsable);
+      }
+      if (!inPool.length) return null;
+      candidates = inPool;
+    }
+  } else {
+    candidates = usableAfterLemmaGap(usable);
   }
 
   const dir = pickRandom(enabled);
 
   if (hardcore) {
-    const word = pickWeightedRandom(candidates, computeWordSelectionWeight);
+    const word = pickWeightedRandom(candidates, vocabTaskSelectionWeight);
     return {
       mode: TRAIN_MODE.VOCAB,
       word,
@@ -136,7 +168,7 @@ export function nextVocabTask() {
   }
 
   for (let attempt = 0; attempt < 48; attempt++) {
-    const word = pickWeightedRandom(candidates, computeWordSelectionWeight);
+    const word = pickWeightedRandom(candidates, vocabTaskSelectionWeight);
     const choices =
       dir === VOCAB_DIRECTION.LT_TO_RU
         ? buildVocabChoicesLtToRu(usable, word)

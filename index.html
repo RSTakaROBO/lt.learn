@@ -242,6 +242,17 @@
               <span id="vocab-streak-mult-value" class="vocab-streak-mult-value"></span>
             </div>
           </div>
+          <div
+            id="vocab-round-progress"
+            class="vocab-round-progress hidden"
+            role="progressbar"
+            aria-valuemin="0"
+            aria-hidden="true"
+          >
+            <div class="vocab-round-progress-track" aria-hidden="true">
+              <div id="vocab-round-progress-fill" class="vocab-round-progress-fill"></div>
+            </div>
+          </div>
           <div id="vocab-options" class="vocab-options" role="group" aria-label="Выберите перевод"></div>
           <form id="vocab-answer-form" class="vocab-answer-form hidden" autocomplete="off">
             <label class="sr-only" for="vocab-answer-input">Ваш ответ</label>
@@ -722,6 +733,26 @@
         </div>
         <div class="actions stats-close-actions">
           <button type="button" id="btn-help-hub-close" class="btn primary stats-close-btn">Закрыть</button>
+        </div>
+      </div>
+    </div>
+    <div
+      id="vocab-round-summary-overlay"
+      class="stats-overlay vocab-round-summary-overlay hidden"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="vocab-round-summary-title"
+    >
+      <div class="stats-panel widget panel vocab-round-summary-panel">
+        <h2 id="vocab-round-summary-title">Раунд завершён</h2>
+        <div id="vocab-round-summary-body" class="vocab-round-summary-body"></div>
+        <div class="actions stats-close-actions vocab-round-summary-actions">
+          <button type="button" id="btn-vocab-round-summary-repeat" class="btn ghost stats-close-btn">
+            Повторить
+          </button>
+          <button type="button" id="btn-vocab-round-summary-ok" class="btn primary stats-close-btn">
+            Ок
+          </button>
         </div>
       </div>
     </div>

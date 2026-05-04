@@ -42,24 +42,44 @@
 }
 
 .vocab-streak-mult-value {
-  font-size: clamp(1.85rem, 6.8vmin, 2.45rem);
   font-weight: 800;
   letter-spacing: -0.04em;
   line-height: 1;
   transform-origin: 100% 100%;
-  transition: color 0.2s ease;
+  transition:
+    color 0.22s ease,
+    font-size 0.22s ease;
 }
 
-.vocab-streak-mult--blue .vocab-streak-mult-value {
+/* 5–9: серый; 10+: синий → зелёный → жёлтый → красный; шрифт растёт на порогах 10, 20, 50, 70, 100 */
+.vocab-streak-mult--t0 .vocab-streak-mult-value {
+  font-size: clamp(1.72rem, 6.2vmin, 2.2rem);
+  color: #94a3b8;
+}
+
+.vocab-streak-mult--t1 .vocab-streak-mult-value {
+  font-size: clamp(1.92rem, 6.85vmin, 2.48rem);
   color: #3b82f6;
 }
 
-.vocab-streak-mult--orange .vocab-streak-mult-value {
-  color: #f97316;
+.vocab-streak-mult--t2 .vocab-streak-mult-value {
+  font-size: clamp(2.12rem, 7.45vmin, 2.78rem);
+  color: #22c55e;
 }
 
-.vocab-streak-mult--purple .vocab-streak-mult-value {
-  color: #a855f7;
+.vocab-streak-mult--t3 .vocab-streak-mult-value {
+  font-size: clamp(2.35rem, 8.15vmin, 3.08rem);
+  color: #eab308;
+}
+
+.vocab-streak-mult--t4 .vocab-streak-mult-value {
+  font-size: clamp(2.58rem, 8.85vmin, 3.42rem);
+  color: #ef4444;
+}
+
+.vocab-streak-mult--t5 .vocab-streak-mult-value {
+  font-size: clamp(2.85rem, 9.6vmin, 3.85rem);
+  color: #ef4444;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -128,6 +148,37 @@
   justify-content: center;
   overflow-x: hidden;
   overflow-y: hidden;
+}
+
+.vocab-round-progress {
+  flex: none;
+  margin: 0.05rem 0 0;
+}
+
+.vocab-round-progress-track {
+  height: 0.42rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--text) 10%, var(--surface-elevated));
+  overflow: hidden;
+  border: var(--stroke) solid var(--border);
+}
+
+.vocab-round-progress-fill {
+  height: 100%;
+  width: 0%;
+  border-radius: inherit;
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--accent) 55%, transparent),
+    color-mix(in srgb, var(--accent) 92%, var(--surface))
+  );
+  transition: width 0.35s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vocab-round-progress-fill {
+    transition: none;
+  }
 }
 
 .vocab-options {
@@ -390,8 +441,28 @@
   bottom: 0.38rem;
 }
 
-#quiz.panel.quiz--vocab-hardcore .vocab-streak-mult-value {
-  font-size: clamp(2.4rem, 8.4vmin, 3.7rem);
+#quiz.panel.quiz--vocab-hardcore .vocab-streak-mult--t0 .vocab-streak-mult-value {
+  font-size: clamp(2.05rem, 7.2vmin, 2.75rem);
+}
+
+#quiz.panel.quiz--vocab-hardcore .vocab-streak-mult--t1 .vocab-streak-mult-value {
+  font-size: clamp(2.28rem, 7.95vmin, 3.05rem);
+}
+
+#quiz.panel.quiz--vocab-hardcore .vocab-streak-mult--t2 .vocab-streak-mult-value {
+  font-size: clamp(2.48rem, 8.65vmin, 3.4rem);
+}
+
+#quiz.panel.quiz--vocab-hardcore .vocab-streak-mult--t3 .vocab-streak-mult-value {
+  font-size: clamp(2.72rem, 9.35vmin, 3.78rem);
+}
+
+#quiz.panel.quiz--vocab-hardcore .vocab-streak-mult--t4 .vocab-streak-mult-value {
+  font-size: clamp(2.98rem, 10.05vmin, 4.15rem);
+}
+
+#quiz.panel.quiz--vocab-hardcore .vocab-streak-mult--t5 .vocab-streak-mult-value {
+  font-size: clamp(3.25rem, 10.85vmin, 4.55rem);
 }
 
 #quiz.panel.quiz--vocab-hardcore > .quiz-footer-actions {

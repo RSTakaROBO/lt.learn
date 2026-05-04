@@ -4,6 +4,7 @@ import { state } from "./state.js";
 import { loadCasesShowTranslation, normalizeWordStatRow } from "./storage.js";
 import { escapeHtml } from "./text-utils.js";
 import { syncThemeRadiosFromDom } from "./theme.js";
+import { getVocabRoundSummarySnapshot } from "./vocab-round.js";
 
 export function syncSettingsTrainingCheckbox() {
   if (els.settingsCasesShowTranslation) {
@@ -12,6 +13,7 @@ export function syncSettingsTrainingCheckbox() {
 }
 
 export function openSettingsOverlay() {
+  closeVocabRoundSummaryOverlay();
   closeStatsOverlay();
   closePackPromptOverlay();
   closeHelpHub();
@@ -33,6 +35,7 @@ export function closeHelpHub() {
 }
 
 export function openHelpHub() {
+  closeVocabRoundSummaryOverlay();
   closeStatsOverlay();
   closeSettingsOverlay();
   closePackPromptOverlay();
@@ -58,6 +61,7 @@ export function isVerbsHelpOpen() {
 }
 
 export function openCasesHelp() {
+  closeVocabRoundSummaryOverlay();
   closeHelpHub();
   closeStatsOverlay();
   closeSettingsOverlay();
@@ -82,6 +86,7 @@ export function closeCasesHelp() {
 }
 
 export function openVerbsHelp() {
+  closeVocabRoundSummaryOverlay();
   closeHelpHub();
   closeStatsOverlay();
   closeSettingsOverlay();
@@ -163,6 +168,7 @@ function renderStatsScreen() {
 }
 
 export function openStatsOverlay() {
+  closeVocabRoundSummaryOverlay();
   closePackPromptOverlay();
   closeSettingsOverlay();
   closeHelpHub();
@@ -181,7 +187,86 @@ export function isStatsOverlayOpen() {
   return els.statsOverlay && !els.statsOverlay.classList.contains("hidden");
 }
 
+export function openVocabRoundSummaryOverlay() {
+  const snap = getVocabRoundSummarySnapshot();
+  closeStatsOverlay();
+  closeSettingsOverlay();
+  closePackPromptOverlay();
+  closeHelpHub();
+  const overlay = document.getElementById("vocab-round-summary-overlay");
+  const body = document.getElementById("vocab-round-summary-body");
+  if (!overlay || !body || !snap) return;
+
+  const accInner =
+    snap.accuracyPct == null
+      ? `<span class="vocab-round-summary-stat-num">—</span>`
+      : `<span class="vocab-round-summary-stat-num vocab-round-summary-stat-num--accent">${snap.accuracyPct}</span><span class="vocab-round-summary-stat-unit" aria-hidden="true">%</span>`;
+
+  const tableBlock =
+    snap.topHard.length === 0
+      ? `<p class="vocab-round-summary-empty sub">За раунд не было неверных ответов по словам.</p>`
+      : `<div class="vocab-round-summary-table-scroll">
+          <table class="vocab-round-summary-table">
+            <caption class="sr-only">Топ слов по числу ошибок</caption>
+            <thead>
+              <tr>
+                <th scope="col" class="vocab-round-summary-th vocab-round-summary-th--num">#</th>
+                <th scope="col" class="vocab-round-summary-th vocab-round-summary-th--word">Слово</th>
+                <th scope="col" class="vocab-round-summary-th vocab-round-summary-th--err">Ошибок</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${snap.topHard
+                .map(
+                  (x, i) =>
+                    `<tr>
+                      <td class="vocab-round-summary-td vocab-round-summary-td--num">${i + 1}</td>
+                      <td class="vocab-round-summary-td vocab-round-summary-td--word" lang="lt">${escapeHtml(x.lemma)}</td>
+                      <td class="vocab-round-summary-td vocab-round-summary-td--err">${x.wrong}</td>
+                    </tr>`,
+                )
+                .join("")}
+            </tbody>
+          </table>
+        </div>`;
+
+  body.innerHTML = `
+    <div class="vocab-round-summary-stats-card" aria-live="polite">
+      <div class="vocab-round-summary-stat-row">
+        <span class="vocab-round-summary-stat-label">Точность</span>
+        <div class="vocab-round-summary-stat-val">${accInner}</div>
+      </div>
+      <div class="vocab-round-summary-stat-row">
+        <span class="vocab-round-summary-stat-label">Максимальная серия</span>
+        <div class="vocab-round-summary-stat-val">
+          <span class="vocab-round-summary-stat-num vocab-round-summary-stat-num--accent">${snap.maxStreak}</span>
+        </div>
+      </div>
+    </div>
+    <div class="vocab-round-summary-section">
+      <p class="vocab-round-summary-section-title">Сложнее всего дались</p>
+      ${tableBlock}
+    </div>
+  `;
+
+  overlay.classList.remove("hidden");
+  document.body.classList.add("vocab-round-summary-modal-open");
+  document.getElementById("btn-vocab-round-summary-repeat")?.focus();
+}
+
+export function closeVocabRoundSummaryOverlay() {
+  const overlay = document.getElementById("vocab-round-summary-overlay");
+  overlay?.classList.add("hidden");
+  document.body.classList.remove("vocab-round-summary-modal-open");
+}
+
+export function isVocabRoundSummaryOpen() {
+  const overlay = document.getElementById("vocab-round-summary-overlay");
+  return !!(overlay && !overlay.classList.contains("hidden"));
+}
+
 export function openPackPromptOverlay() {
+  closeVocabRoundSummaryOverlay();
   closeStatsOverlay();
   closeSettingsOverlay();
   closeHelpHub();

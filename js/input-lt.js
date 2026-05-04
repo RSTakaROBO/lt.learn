@@ -1,5 +1,4 @@
 import { LT_SHIFT_KEY_CYCLES } from "./config.js";
-import { els } from "./dom.js";
 
 export function insertAtCaret(input, text) {
   const start = input.selectionStart ?? input.value.length;
@@ -29,7 +28,9 @@ function normalizedCycleIndex(ch, cycle) {
 
 /** Shift + буква с литовскими вариантами: цикл диакритик вместо заглавной. */
 export function handleAnswerInputShiftCycles(e) {
-  if (e.target !== els.answerInput) return;
+  const input = e.currentTarget;
+  if (!(input instanceof HTMLInputElement)) return;
+  if (input.id !== "answer-input" && input.id !== "vocab-answer-input") return;
   if (!e.shiftKey || e.ctrlKey || e.altKey || e.metaKey) return;
   if (e.isComposing) return;
   if (e.key.length !== 1 || !/[a-zA-Z]/.test(e.key)) return;
@@ -38,7 +39,6 @@ export function handleAnswerInputShiftCycles(e) {
   const cycle = LT_SHIFT_KEY_CYCLES[k];
   if (!cycle) return;
 
-  const input = els.answerInput;
   const start = input.selectionStart ?? 0;
   const end = input.selectionEnd ?? 0;
 

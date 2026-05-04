@@ -33,6 +33,14 @@
   flex-shrink: 0;
 }
 
+/* Начальный экран: без точек-этапов сверху */
+#setup:has(#step-mode:not(.hidden)) #wizard-progress {
+  display: none !important;
+  margin: 0 !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+}
+
 #setup .wizard-step:not(.hidden) {
   flex: 1;
   min-height: 0;
