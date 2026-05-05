@@ -2,31 +2,32 @@
  * Размеры и отступы (цвета — themes.css, data-theme на html).
  */
 :root {
-  --stroke: 2px;
-  --quiz-bottom-bar-clearance: 5.15rem;
-  --btn-shadow-drop: 4px;
+    --stroke: 2px;
+    --quiz-bottom-bar-clearance: 5.15rem;
+    --btn-shadow-drop: 4px;
 
-  --panel-padding: 1.25rem;
-  /* Нижний край карточек: ближе к кнопкам; запас под объёмную тень кнопок */
-  --panel-padding-bottom: calc(var(--btn-shadow-drop) + 0.5rem);
-  --panel-section-gap: 1rem;
-  --panel-scroll-pad: 6px;
-  --widget-actions-shadow-pad: calc(var(--btn-shadow-drop) + 3px);
+    --panel-padding: 1.25rem;
+    /* Нижний край карточек: ближе к кнопкам; запас под объёмную тень кнопок */
+    --panel-padding-bottom: calc(var(--btn-shadow-drop) + 0.5rem);
+    --panel-section-gap: 1rem;
+    --panel-scroll-pad: 6px;
+    --widget-actions-shadow-pad: calc(var(--btn-shadow-drop) + 3px);
 
-  --shell-max-width: 560px;
-  --shell-pad-x: 1rem;
-  --shell-pad-top: 1.5rem;
-  --shell-pad-bottom-extra: 0.75rem;
-  --shell-pad-bottom: calc(
-    var(--quiz-bottom-bar-clearance) + env(safe-area-inset-bottom, 0px) + var(--shell-pad-bottom-extra)
-  );
+    --shell-max-width: 560px;
+    --shell-pad-x: 1rem;
+    --shell-pad-top: 1.5rem;
+    --shell-pad-bottom-extra: 0.75rem;
+    --shell-pad-bottom: calc(
+        var(--quiz-bottom-bar-clearance) + env(safe-area-inset-bottom, 0px) +
+            var(--shell-pad-bottom-extra)
+    );
 
-  --radius-card: 12px;
-  --radius-table-wrap: 10px;
-  --radius-control: 8px;
-  --radius-tile: 14px;
-  --radius-char: 6px;
+    --radius-card: 12px;
+    --radius-table-wrap: 10px;
+    --radius-control: 8px;
+    --radius-tile: 14px;
+    --radius-char: 6px;
 
-  --gap-actions: 0.5rem;
-  --touch-btn-min-h: 2.75rem;
+    --gap-actions: 0.5rem;
+    --touch-btn-min-h: 2.75rem;
 }

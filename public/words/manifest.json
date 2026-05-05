@@ -1,20 +1,20 @@
 {
-  "packs": [
-    {
-      "id": "basic",
-      "files": ["common.json"]
-    },
-    {
-      "id": "home",
-      "files": ["home.json"]
-    },
-    {
-      "id": "time",
-      "files": ["time.json"]
-    },
-    {
-      "id": "food",
-      "files": ["food.json"]
-    }
-  ]
+    "packs": [
+        {
+            "id": "basic",
+            "files": ["common.json"]
+        },
+        {
+            "id": "home",
+            "files": ["home.json"]
+        },
+        {
+            "id": "time",
+            "files": ["time.json"]
+        },
+        {
+            "id": "food",
+            "files": ["food.json"]
+        }
+    ]
 }

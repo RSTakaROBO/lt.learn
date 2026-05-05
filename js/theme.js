@@ -1,41 +1,41 @@
-import { STORAGE_KEYS, THEME_IDS } from "./config.js";
-import { byId } from "./dom-ids.js";
+import { STORAGE_KEYS, THEME_IDS } from "./config.js"
+import { byId } from "./dom-ids.js"
 
 function isValidThemeId(raw) {
-  return typeof raw === "string" && THEME_IDS.includes(raw);
+    return typeof raw === "string" && THEME_IDS.includes(raw)
 }
 
 export function loadTheme() {
-  try {
-    const t = localStorage.getItem(STORAGE_KEYS.theme);
-    return isValidThemeId(t) ? t : null;
-  } catch {
-    return null;
-  }
+    try {
+        const t = localStorage.getItem(STORAGE_KEYS.theme)
+        return isValidThemeId(t) ? t : null
+    } catch {
+        return null
+    }
 }
 
 export function applyTheme(themeId) {
-  if (!isValidThemeId(themeId)) return;
-  document.documentElement.setAttribute("data-theme", themeId);
-  try {
-    localStorage.setItem(STORAGE_KEYS.theme, themeId);
-  } catch {
-    /* ignore */
-  }
-  updateThemeColorMeta();
+    if (!isValidThemeId(themeId)) return
+    document.documentElement.setAttribute("data-theme", themeId)
+    try {
+        localStorage.setItem(STORAGE_KEYS.theme, themeId)
+    } catch {
+        /* ignore */
+    }
+    updateThemeColorMeta()
 }
 
 export function updateThemeColorMeta() {
-  const meta = document.querySelector('meta[name="theme-color"]');
-  if (!meta) return;
-  const bg = getComputedStyle(document.documentElement).getPropertyValue("--bg").trim();
-  if (bg) meta.setAttribute("content", bg);
+    const meta = document.querySelector('meta[name="theme-color"]')
+    if (!meta) return
+    const bg = getComputedStyle(document.documentElement).getPropertyValue("--bg").trim()
+    if (bg) meta.setAttribute("content", bg)
 }
 
 export function syncThemeRadiosFromDom() {
-  const themePicker = byId("theme-picker");
-  if (!themePicker) return;
-  const id = loadTheme();
-  const input = id ? themePicker.querySelector(`input[name="app-theme"][value="${id}"]`) : null;
-  if (input) input.checked = true;
+    const themePicker = byId("theme-picker")
+    if (!themePicker) return
+    const id = loadTheme()
+    const input = id ? themePicker.querySelector(`input[name="app-theme"][value="${id}"]`) : null
+    if (input) input.checked = true
 }

@@ -1,105 +1,60 @@
 /** Таблица «būti» для справки по глаголам. */
+import { STR } from "../../../js/i18n/strings-ru.js"
+
 export function VerbsHelpTables() {
-  return (
-    <section className="cases-help-case-block" aria-labelledby="vh-but-present">
-      <h3 className="cases-help-table-title" id="vh-but-present">
-        <span className="cases-help-ru-case" />
-        <span lang="lt" className="cases-help-lt-sub">
-          būti
-        </span>
-      </h3>
-      <div className="cases-help-table-wrap">
-        <table className="cases-help-table cases-help-table--one-case">
-          <thead>
-            <tr>
-              <th scope="col" />
-              <th scope="col" />
-              <th scope="col" />
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <th scope="row">
+    const rowLabels = [
+        STR.help.verbsRow1,
+        STR.help.verbsRow2,
+        STR.help.verbsRow3,
+        STR.help.verbsRow4,
+        STR.help.verbsRow5,
+        STR.help.verbsRow6,
+    ]
+    const ltPersons = ["aš", "tu", "jis / ji", "mes", "jūs", "jie / jos"]
+    const affirm = ["esu", "esi", "yra", "esame", "esate", "yra"]
+    const neg = ["nesu", "nesi", "nėra", "nesame", "nesate", "nėra"]
+
+    return (
+        <section className="cases-help-case-block" aria-labelledby="vh-but-present">
+            <h3 className="cases-help-table-title" id="vh-but-present">
+                <span className="cases-help-ru-case">{STR.help.verbsPresent}</span>
                 <span lang="lt" className="cases-help-lt-sub">
-                  aš
+                    būti
                 </span>
-              </th>
-              <td>
-                <span lang="lt">esu</span>
-              </td>
-              <td>
-                <span lang="lt">nesu</span>
-              </td>
-            </tr>
-            <tr>
-              <th scope="row">
-                <span lang="lt" className="cases-help-lt-sub">
-                  tu
-                </span>
-              </th>
-              <td>
-                <span lang="lt">esi</span>
-              </td>
-              <td>
-                <span lang="lt">nesi</span>
-              </td>
-            </tr>
-            <tr>
-              <th scope="row">
-                <span lang="lt" className="cases-help-lt-sub">
-                  jis / ji
-                </span>
-              </th>
-              <td>
-                <span lang="lt">yra</span>
-              </td>
-              <td>
-                <span lang="lt">nėra</span>
-              </td>
-            </tr>
-            <tr>
-              <th scope="row">
-                <span lang="lt" className="cases-help-lt-sub">
-                  mes
-                </span>
-              </th>
-              <td>
-                <span lang="lt">esame</span>
-              </td>
-              <td>
-                <span lang="lt">nesame</span>
-              </td>
-            </tr>
-            <tr>
-              <th scope="row">
-                <span lang="lt" className="cases-help-lt-sub">
-                  jūs
-                </span>
-              </th>
-              <td>
-                <span lang="lt">esate</span>
-              </td>
-              <td>
-                <span lang="lt">nesate</span>
-              </td>
-            </tr>
-            <tr>
-              <th scope="row">
-                <span lang="lt" className="cases-help-lt-sub">
-                  jie / jos
-                </span>
-              </th>
-              <td>
-                <span lang="lt">yra</span>
-              </td>
-              <td>
-                <span lang="lt">nėra</span>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <p className="cases-help-case-note sub" />
-    </section>
-  );
+            </h3>
+            <div className="cases-help-table-wrap">
+                <table className="cases-help-table cases-help-table--one-case">
+                    <thead>
+                        <tr>
+                            <th scope="col">{STR.help.verbsColPerson}</th>
+                            <th scope="col">{STR.help.verbsColAffirm}</th>
+                            <th scope="col">{STR.help.verbsColNeg}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {ltPersons.map((person, i) => (
+                            <tr key={person}>
+                                <th scope="row">
+                                    {rowLabels[i]}{" "}
+                                    <span lang="lt" className="cases-help-lt-sub">
+                                        {person}
+                                    </span>
+                                </th>
+                                <td>
+                                    <span lang="lt">{affirm[i]}</span>
+                                </td>
+                                <td>
+                                    <span lang="lt">{neg[i]}</span>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+            <p className="cases-help-case-note sub">
+                В 3-м лице <span lang="lt">yra</span> и <span lang="lt">nėra</span> совпадают для
+                единственного и множественного числа.
+            </p>
+        </section>
+    )
 }

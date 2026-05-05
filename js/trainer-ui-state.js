@@ -1,41 +1,46 @@
-import { configureStore, createSlice } from "@reduxjs/toolkit";
-import { STORAGE_KEYS, THEME_IDS } from "./config.js";
+import { configureStore, createSlice } from "@reduxjs/toolkit"
+import { enableMapSet } from "immer"
+import { STORAGE_KEYS, THEME_IDS } from "./config.js"
+
+enableMapSet()
 
 function isValidThemeId(id) {
-  return typeof id === "string" && THEME_IDS.includes(id);
+    return typeof id === "string" && THEME_IDS.includes(id)
 }
 
 function readInitialThemeId() {
-  try {
-    const t = localStorage.getItem(STORAGE_KEYS.theme);
-    if (isValidThemeId(t)) return t;
-  } catch {
-    /* ignore */
-  }
-  return THEME_IDS[0];
+    try {
+        const t = localStorage.getItem(STORAGE_KEYS.theme)
+        if (isValidThemeId(t)) return t
+    } catch {
+        /* ignore */
+    }
+    return THEME_IDS[0]
 }
 
 function readInitialCasesShowTranslation() {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEYS.casesShowTranslation);
-    if (raw === "1") return true;
-    if (raw === "0") return false;
-  } catch {
-    /* ignore */
-  }
-  return true;
+    try {
+        const raw = localStorage.getItem(STORAGE_KEYS.casesShowTranslation)
+        if (raw === "1") return true
+        if (raw === "0") return false
+    } catch {
+        /* ignore */
+    }
+    return true
 }
 
 function readInitialSelectedPackIds() {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEYS.packs);
-    if (!raw) return [];
-    const parsed = JSON.parse(raw);
-    return Array.isArray(parsed) ? [...parsed] : [];
-  } catch {
-    return [];
-  }
+    try {
+        const raw = localStorage.getItem(STORAGE_KEYS.packs)
+        if (!raw) return []
+        const parsed = JSON.parse(raw)
+        return Array.isArray(parsed) ? [...parsed] : []
+    } catch {
+        return []
+    }
 }
+
+/** @typedef {"setup" | "quiz"} TrainerScreen */
 
 /**
  * @typedef {Object} TrainerUiOverlay
@@ -66,6 +71,7 @@ function readInitialSelectedPackIds() {
 /**
  * @typedef {Object} TrainerUiWizard
  * @property {number} step
+ * @property {{ pack: string; case: string; vocabDirection: string }} status
  */
 
 /**
@@ -78,6 +84,7 @@ function readInitialSelectedPackIds() {
  * @property {Record<string, { correct: number; wrong: number; skipped: number }>} wordStats
  * @property {number} vocabCorrectStreak
  * @property {unknown | null} vocabRound
+ * @property {{ pickedLemma: string; correctLemma: string; ok: boolean | null } | null} vocabChoice
  * @property {string[]} selectedCaseKeys
  */
 
@@ -93,6 +100,7 @@ function readInitialSelectedPackIds() {
 
 /**
  * @typedef {Object} TrainerUiState
+ * @property {TrainerScreen} screen
  * @property {TrainerUiOverlay} overlay
  * @property {TrainerUiPersisted} persisted
  * @property {VocabRoundSummarySnapshot | null} vocabRoundSummary
@@ -106,210 +114,261 @@ function readInitialSelectedPackIds() {
  *   | { type: "OVERLAY_OPEN"; name: keyof TrainerUiOverlay; snapshot?: VocabRoundSummarySnapshot | null }
  *   | { type: "OVERLAY_CLOSE"; name: keyof TrainerUiOverlay }
  *   | { type: "OVERLAY_CLOSE_ALL" }
+ *   | { type: "SCREEN_SET"; screen: TrainerScreen }
  *   | { type: "SET_THEME"; value: string }
  *   | { type: "SET_CASES_SHOW_TRANSLATION"; value: boolean }
  *   | { type: "WIZARD_SET_STEP"; step: number }
+ *   | { type: "WIZARD_SET_STATUS"; name: "pack" | "case" | "vocabDirection"; message: string }
+ *   | { type: "WIZARD_CLEAR_STATUS"; name?: "pack" | "case" | "vocabDirection" }
  * )} TrainerUiAction
  */
 
 function buildInitialState() {
-  return {
-    overlay: {
-      stats: false,
-      settings: false,
-      helpHub: false,
-      packPrompt: false,
-      vocabRound: false,
-      casesHelp: false,
-      verbsHelp: false,
-    },
-    persisted: {
-      themeId: readInitialThemeId(),
-      casesShowTranslation: readInitialCasesShowTranslation(),
-    },
-    vocabRoundSummary: null,
-    wizard: { step: 1 },
-    engine: {
-      wordBank: [],
-      currentTask: null,
-      answered: false,
-      shownLemmaHistory: [],
-      manifestCache: null,
-      wordStats: {},
-      vocabCorrectStreak: 0,
-      vocabRound: null,
-      selectedCaseKeys: [],
-    },
-    manifestUi: {
-      packRows: [],
-      selectedPackIds: readInitialSelectedPackIds(),
-    },
-  };
+    return {
+        screen: "setup",
+        overlay: {
+            stats: false,
+            settings: false,
+            helpHub: false,
+            packPrompt: false,
+            vocabRound: false,
+            casesHelp: false,
+            verbsHelp: false,
+        },
+        persisted: {
+            themeId: readInitialThemeId(),
+            casesShowTranslation: readInitialCasesShowTranslation(),
+        },
+        vocabRoundSummary: null,
+        wizard: {
+            step: 1,
+            status: {
+                pack: "",
+                case: "",
+                vocabDirection: "",
+            },
+        },
+        engine: {
+            wordBank: [],
+            currentTask: null,
+            answered: false,
+            shownLemmaHistory: [],
+            manifestCache: null,
+            wordStats: {},
+            vocabCorrectStreak: 0,
+            vocabRound: null,
+            vocabChoice: null,
+            selectedCaseKeys: [],
+        },
+        manifestUi: {
+            packRows: [],
+            selectedPackIds: readInitialSelectedPackIds(),
+        },
+    }
 }
 
 const trainerSlice = createSlice({
-  name: "trainer",
-  initialState: buildInitialState(),
-  reducers: {
-    /**
-     * Императивные изменения движка (квиз, паки, хранилище) через Immer-черновик.
-     * @param {import("@reduxjs/toolkit").PayloadAction<(e: import("immer").WritableDraft<TrainerEngine>) => void>} action
-     */
-    runEngineRecipe(state, action) {
-      action.payload(state.engine);
+    name: "trainer",
+    initialState: buildInitialState(),
+    reducers: {
+        /**
+         * Императивные изменения движка (квиз, паки, хранилище) через Immer-черновик.
+         * @param {import("@reduxjs/toolkit").PayloadAction<(e: import("immer").WritableDraft<TrainerEngine>) => void>} action
+         */
+        runEngineRecipe(state, action) {
+            action.payload(state.engine)
+        },
+        receiveTrainerUiAction(state, action) {
+            const a = /** @type {TrainerUiAction} */ (action.payload)
+            switch (a.type) {
+                case "OVERLAY_CLOSE_ALL":
+                    state.overlay.stats = false
+                    state.overlay.settings = false
+                    state.overlay.helpHub = false
+                    state.overlay.packPrompt = false
+                    state.overlay.vocabRound = false
+                    state.overlay.casesHelp = false
+                    state.overlay.verbsHelp = false
+                    state.vocabRoundSummary = null
+                    break
+                case "OVERLAY_OPEN": {
+                    const name = a.name
+                    state.overlay.stats = name === "stats"
+                    state.overlay.settings = name === "settings"
+                    state.overlay.helpHub = name === "helpHub"
+                    state.overlay.packPrompt = name === "packPrompt"
+                    state.overlay.vocabRound = name === "vocabRound"
+                    state.overlay.casesHelp = name === "casesHelp"
+                    state.overlay.verbsHelp = name === "verbsHelp"
+                    state.vocabRoundSummary =
+                        name === "vocabRound" ? (a.snapshot ?? null) : state.vocabRoundSummary
+                    break
+                }
+                case "OVERLAY_CLOSE":
+                    state.overlay[a.name] = false
+                    if (a.name === "vocabRound") state.vocabRoundSummary = null
+                    break
+                case "SCREEN_SET":
+                    state.screen = a.screen === "quiz" ? "quiz" : "setup"
+                    break
+                case "SET_THEME":
+                    state.persisted.themeId = a.value
+                    break
+                case "SET_CASES_SHOW_TRANSLATION":
+                    state.persisted.casesShowTranslation = a.value
+                    break
+                case "WIZARD_SET_STEP": {
+                    const step = Math.min(3, Math.max(1, Math.floor(Number(a.step)) || 1))
+                    state.wizard.step = step
+                    break
+                }
+                case "WIZARD_SET_STATUS": {
+                    state.wizard.status[a.name] = String(a.message ?? "")
+                    break
+                }
+                case "WIZARD_CLEAR_STATUS": {
+                    if (a.name) {
+                        state.wizard.status[a.name] = ""
+                    } else {
+                        state.wizard.status.pack = ""
+                        state.wizard.status.case = ""
+                        state.wizard.status.vocabDirection = ""
+                    }
+                    break
+                }
+                default:
+                    break
+            }
+        },
+        manifestSetPackRows(state, action) {
+            state.manifestUi.packRows = action.payload
+        },
+        manifestSetSelectedPackIds(state, action) {
+            state.manifestUi.selectedPackIds = action.payload
+        },
+        manifestClearPackRows(state) {
+            state.manifestUi.packRows = []
+        },
     },
-    receiveTrainerUiAction(state, action) {
-      const a = /** @type {TrainerUiAction} */ (action.payload);
-      switch (a.type) {
-        case "OVERLAY_CLOSE_ALL":
-          state.overlay.stats = false;
-          state.overlay.settings = false;
-          state.overlay.helpHub = false;
-          state.overlay.packPrompt = false;
-          state.overlay.vocabRound = false;
-          state.overlay.casesHelp = false;
-          state.overlay.verbsHelp = false;
-          state.vocabRoundSummary = null;
-          break;
-        case "OVERLAY_OPEN": {
-          const name = a.name;
-          state.overlay.stats = name === "stats";
-          state.overlay.settings = name === "settings";
-          state.overlay.helpHub = name === "helpHub";
-          state.overlay.packPrompt = name === "packPrompt";
-          state.overlay.vocabRound = name === "vocabRound";
-          state.overlay.casesHelp = name === "casesHelp";
-          state.overlay.verbsHelp = name === "verbsHelp";
-          state.vocabRoundSummary = name === "vocabRound" ? a.snapshot ?? null : state.vocabRoundSummary;
-          break;
-        }
-        case "OVERLAY_CLOSE":
-          state.overlay[a.name] = false;
-          if (a.name === "vocabRound") state.vocabRoundSummary = null;
-          break;
-        case "SET_THEME":
-          state.persisted.themeId = a.value;
-          break;
-        case "SET_CASES_SHOW_TRANSLATION":
-          state.persisted.casesShowTranslation = a.value;
-          break;
-        case "WIZARD_SET_STEP": {
-          const step = Math.min(3, Math.max(1, Math.floor(Number(a.step)) || 1));
-          state.wizard.step = step;
-          break;
-        }
-        default:
-          break;
-      }
-    },
-    manifestSetPackRows(state, action) {
-      state.manifestUi.packRows = action.payload;
-    },
-    manifestSetSelectedPackIds(state, action) {
-      state.manifestUi.selectedPackIds = action.payload;
-    },
-    manifestClearPackRows(state) {
-      state.manifestUi.packRows = [];
-    },
-  },
-});
+})
 
 export const {
-  runEngineRecipe,
-  receiveTrainerUiAction,
-  manifestSetPackRows,
-  manifestSetSelectedPackIds,
-  manifestClearPackRows,
-} = trainerSlice.actions;
+    runEngineRecipe,
+    receiveTrainerUiAction,
+    manifestSetPackRows,
+    manifestSetSelectedPackIds,
+    manifestClearPackRows,
+} = trainerSlice.actions
 
 /** @returns {TrainerUiState} */
 export function createTrainerUiInitialState() {
-  return trainerSlice.getInitialState();
+    return trainerSlice.getInitialState()
 }
 
 export const trainerStore = configureStore({
-  reducer: {
-    trainer: trainerSlice.reducer,
-  },
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({
-      serializableCheck: {
-        ignoredActions: [`${trainerSlice.name}/runEngineRecipe`],
-      },
-    }),
-});
+    reducer: {
+        trainer: trainerSlice.reducer,
+    },
+    middleware: (getDefaultMiddleware) =>
+        getDefaultMiddleware({
+            serializableCheck: {
+                ignoredActions: [`${trainerSlice.name}/runEngineRecipe`],
+                ignoredPaths: ["trainer.engine.vocabRound.pool"],
+            },
+        }),
+})
 
 /**
  * @param {(e: TrainerEngine) => void} recipe
  */
 export function mutateEngine(recipe) {
-  trainerStore.dispatch(runEngineRecipe(recipe));
+    trainerStore.dispatch(runEngineRecipe(recipe))
 }
 
 /** Синоним {@link mutateEngine} (мастер падежей и др.). */
-export const applyEngine = mutateEngine;
+export const applyEngine = mutateEngine
 
 /** @returns {TrainerEngine} */
 export function getEngine() {
-  return trainerStore.getState().trainer.engine;
+    return trainerStore.getState().trainer.engine
+}
+
+/** @returns {TrainerScreen} */
+export function getActiveTrainerScreen() {
+    return trainerStore.getState().trainer.screen
 }
 
 /**
  * @param {TrainerUiAction} action
  */
 export function postTrainerUiAction(action) {
-  trainerStore.dispatch(receiveTrainerUiAction(action));
+    trainerStore.dispatch(receiveTrainerUiAction(action))
+}
+
+/**
+ * @param {"pack" | "case" | "vocabDirection"} name
+ * @param {string} message
+ */
+export function setWizardStatus(name, message) {
+    postTrainerUiAction({ type: "WIZARD_SET_STATUS", name, message })
+}
+
+/**
+ * @param {"pack" | "case" | "vocabDirection"} [name]
+ */
+export function clearWizardStatus(name) {
+    postTrainerUiAction({ type: "WIZARD_CLEAR_STATUS", name })
 }
 
 export function getCheckedCaseKeys() {
-  const k = trainerStore.getState().trainer.engine.selectedCaseKeys;
-  return Array.isArray(k) ? [...k] : [];
+    const k = trainerStore.getState().trainer.engine.selectedCaseKeys
+    return Array.isArray(k) ? [...k] : []
 }
 
 export function isHelpHubOpen() {
-  return !!trainerStore.getState().trainer.overlay.helpHub;
+    return !!trainerStore.getState().trainer.overlay.helpHub
 }
 
 export function isSettingsOverlayOpen() {
-  return !!trainerStore.getState().trainer.overlay.settings;
+    return !!trainerStore.getState().trainer.overlay.settings
 }
 
 export function isCasesHelpOpen() {
-  return !!trainerStore.getState().trainer.overlay.casesHelp;
+    return !!trainerStore.getState().trainer.overlay.casesHelp
 }
 
 export function isVerbsHelpOpen() {
-  return !!trainerStore.getState().trainer.overlay.verbsHelp;
+    return !!trainerStore.getState().trainer.overlay.verbsHelp
 }
 
 export function isStatsOverlayOpen() {
-  return !!trainerStore.getState().trainer.overlay.stats;
+    return !!trainerStore.getState().trainer.overlay.stats
 }
 
 export function isPackPromptOverlayOpen() {
-  return !!trainerStore.getState().trainer.overlay.packPrompt;
+    return !!trainerStore.getState().trainer.overlay.packPrompt
 }
 
 export function isVocabRoundSummaryOpen() {
-  return !!trainerStore.getState().trainer.overlay.vocabRound;
+    return !!trainerStore.getState().trainer.overlay.vocabRound
 }
 
 export function closePackPromptOverlay() {
-  postTrainerUiAction({ type: "OVERLAY_CLOSE", name: "packPrompt" });
+    postTrainerUiAction({ type: "OVERLAY_CLOSE", name: "packPrompt" })
 }
 
 export function closeVocabRoundSummaryOverlay() {
-  postTrainerUiAction({ type: "OVERLAY_CLOSE", name: "vocabRound" });
+    postTrainerUiAction({ type: "OVERLAY_CLOSE", name: "vocabRound" })
 }
 
 export function closeCasesHelpOverlay() {
-  postTrainerUiAction({ type: "OVERLAY_CLOSE", name: "casesHelp" });
+    postTrainerUiAction({ type: "OVERLAY_CLOSE", name: "casesHelp" })
 }
 
 export function closeVerbsHelpOverlay() {
-  postTrainerUiAction({ type: "OVERLAY_CLOSE", name: "verbsHelp" });
+    postTrainerUiAction({ type: "OVERLAY_CLOSE", name: "verbsHelp" })
 }
 
 export function openPackPromptOverlay() {
-  postTrainerUiAction({ type: "OVERLAY_OPEN", name: "packPrompt" });
+    postTrainerUiAction({ type: "OVERLAY_OPEN", name: "packPrompt" })
 }

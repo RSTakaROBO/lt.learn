@@ -1,199 +1,219 @@
 /** Экран настройки (мастер): режим → наборы → (направление слов | падежи). */
-import { useEffect } from "react";
-
-import { TRAIN_MODE } from "../../../js/config.js";
-import { STR } from "../../../js/i18n/strings-ru.js";
+import { TRAIN_MODE } from "../../../js/config.js"
+import { STR } from "../../../js/i18n/strings-ru.js"
 import {
-  handlePackJsonInputChange,
-  handlePacksNextClick,
-  handleStartCasesTrainingClick,
-  handleVocabDirectionStartClick,
-} from "../../../js/setup-wizard-handlers.js";
-import { loadTrainMode, saveTrainMode } from "../../../js/storage.js";
-import { openPackPromptOverlay } from "../../../js/trainer-ui-state.js";
-import { AppFlowScreen } from "../../components/layout/AppFlowScreen.jsx";
-import { WizardCaseCheckboxes } from "../../components/setup/WizardCaseCheckboxes.jsx";
-import { WizardProgressDots } from "../../components/setup/WizardProgressDots.jsx";
-import { WizardVocabDirectionForm } from "../../components/setup/WizardVocabDirectionForm.jsx";
-import { WizardPackList } from "../../components/pack-card";
-import { Button } from "../../components/ui/Button.jsx";
-import { useTrainerApp } from "../../context/TrainerAppContext.jsx";
+    handlePackJsonInputChange,
+    handlePacksNextClick,
+    handleStartCasesTrainingClick,
+    handleVocabDirectionStartClick,
+} from "../../../js/setup-wizard-handlers.js"
+import { loadTrainMode, saveTrainMode } from "../../../js/storage.js"
+import { openPackPromptOverlay } from "../../../js/trainer-ui-state.js"
+import { AppFlowScreen } from "../../components/layout/AppFlowScreen.jsx"
+import { WizardCaseCheckboxes } from "../../components/setup/WizardCaseCheckboxes.jsx"
+import { WizardProgressDots } from "../../components/setup/WizardProgressDots.jsx"
+import { WizardVocabDirectionForm } from "../../components/setup/WizardVocabDirectionForm.jsx"
+import { WizardPackList } from "../../components/pack-card"
+import { Button } from "../../components/ui/Button.jsx"
+import { useTrainerApp } from "../../context/TrainerAppContext.jsx"
 
 function wizardStepClass(visible) {
-  return ["wizard-step", !visible && "hidden"].filter(Boolean).join(" ");
-}
-
-function syncPacksNextButtonPresentation() {
-  const btn = document.getElementById("btn-packs-next");
-  if (!(btn instanceof HTMLButtonElement)) return;
-  btn.textContent = STR.packs.next;
-  btn.classList.remove("start");
-  btn.classList.add("primary");
-  btn.setAttribute("aria-label", STR.packs.next);
+    return ["wizard-step", !visible && "hidden"].filter(Boolean).join(" ")
 }
 
 /**
- * @param {{ heightMode?: "fill"|"scroll" }} [props]
+ * @param {{ heightMode?: "fill"|"scroll"; hidden?: boolean }} [props]
  */
-export function SetupScreen({ heightMode = "fill" } = {}) {
-  const [uiState, dispatch] = useTrainerApp();
-  const step = uiState.wizard.step;
-  const trainMode = loadTrainMode() || TRAIN_MODE.CASES;
+export function SetupScreen({ heightMode = "fill", hidden = false } = {}) {
+    const [uiState, dispatch] = useTrainerApp()
+    const step = uiState.wizard.step
+    const status = uiState.wizard.status
+    const trainMode = loadTrainMode() || TRAIN_MODE.CASES
 
-  const showMode = step === 1;
-  const showPacks = step === 2;
-  const showVocabDir = step === 3 && trainMode === TRAIN_MODE.VOCAB;
-  const showCases = step === 3 && trainMode === TRAIN_MODE.CASES;
+    const showMode = step === 1
+    const showPacks = step === 2
+    const showVocabDir = step === 3 && trainMode === TRAIN_MODE.VOCAB
+    const showCases = step === 3 && trainMode === TRAIN_MODE.CASES
 
-  function goWizardStep(next) {
-    dispatch({ type: "WIZARD_SET_STEP", step: next });
-  }
+    function goWizardStep(next) {
+        dispatch({ type: "WIZARD_SET_STEP", step: next })
+    }
 
-  useEffect(() => {
-    if (step === 2) syncPacksNextButtonPresentation();
-  }, [step]);
+    return (
+        <AppFlowScreen id="setup-shell" heightMode={heightMode} className={hidden ? "hidden" : ""}>
+            <section id="setup" className="widget panel app-screen__panel">
+                <WizardProgressDots step={step} total={3} />
 
-  return (
-    <AppFlowScreen id="setup-shell" heightMode={heightMode}>
-      <section id="setup" className="widget panel app-screen__panel">
-        <WizardProgressDots step={step} total={3} />
+                <div id="step-mode" className={wizardStepClass(showMode)}>
+                    <header className="wizard-app-head">
+                        <h2 className="wizard-home-title">
+                            <span className="wizard-home-title-kicker">
+                                {STR.wizard.homeKicker}
+                            </span>
+                            <span className="wizard-home-title-em">{STR.wizard.homeEm}</span>
+                        </h2>
+                    </header>
+                    <div className="mode-picker">
+                        <div
+                            className="mode-choice-grid"
+                            role="group"
+                            aria-label={STR.wizard.exerciseTypeAria}
+                        >
+                            <Button
+                                variant="modeChoice"
+                                type="button"
+                                id="btn-mode-cases"
+                                data-train-mode="cases"
+                                className={
+                                    trainMode === TRAIN_MODE.CASES
+                                        ? "mode-choice-btn--active"
+                                        : undefined
+                                }
+                                aria-pressed={trainMode === TRAIN_MODE.CASES}
+                                onClick={() => {
+                                    saveTrainMode(TRAIN_MODE.CASES)
+                                    dispatch({ type: "WIZARD_CLEAR_STATUS" })
+                                    goWizardStep(2)
+                                }}
+                            >
+                                <span className="mode-choice-title">{STR.mode.casesTitle}</span>
+                                <span className="mode-choice-desc">{STR.mode.casesDesc}</span>
+                            </Button>
+                            <Button
+                                variant="modeChoice"
+                                type="button"
+                                id="btn-mode-vocab"
+                                data-train-mode="vocab"
+                                className={
+                                    trainMode === TRAIN_MODE.VOCAB
+                                        ? "mode-choice-btn--active"
+                                        : undefined
+                                }
+                                aria-pressed={trainMode === TRAIN_MODE.VOCAB}
+                                onClick={() => {
+                                    saveTrainMode(TRAIN_MODE.VOCAB)
+                                    dispatch({ type: "WIZARD_CLEAR_STATUS" })
+                                    goWizardStep(2)
+                                }}
+                            >
+                                <span className="mode-choice-title">{STR.mode.vocabTitle}</span>
+                                <span className="mode-choice-desc">{STR.mode.vocabDesc}</span>
+                            </Button>
+                        </div>
+                    </div>
+                </div>
 
-        <div id="step-mode" className={wizardStepClass(showMode)}>
-          <header className="wizard-app-head">
-            <h2 className="wizard-home-title">
-              <span className="wizard-home-title-kicker" />
-              <span className="wizard-home-title-em" />
-            </h2>
-          </header>
-          <div className="mode-picker">
-            <div className="mode-choice-grid" role="group">
-              <Button
-                variant="modeChoice"
-                type="button"
-                id="btn-mode-cases"
-                data-train-mode="cases"
-                className={trainMode === TRAIN_MODE.CASES ? "mode-choice-btn--active" : undefined}
-                aria-pressed={trainMode === TRAIN_MODE.CASES}
-                onClick={() => {
-                  saveTrainMode(TRAIN_MODE.CASES);
-                  goWizardStep(2);
-                  syncPacksNextButtonPresentation();
-                }}
-              >
-                <span className="mode-choice-title" />
-                <span className="mode-choice-desc" />
-              </Button>
-              <Button
-                variant="modeChoice"
-                type="button"
-                id="btn-mode-vocab"
-                data-train-mode="vocab"
-                className={trainMode === TRAIN_MODE.VOCAB ? "mode-choice-btn--active" : undefined}
-                aria-pressed={trainMode === TRAIN_MODE.VOCAB}
-                onClick={() => {
-                  saveTrainMode(TRAIN_MODE.VOCAB);
-                  goWizardStep(2);
-                  syncPacksNextButtonPresentation();
-                }}
-              >
-                <span className="mode-choice-title" />
-                <span className="mode-choice-desc" />
-              </Button>
-            </div>
-          </div>
-        </div>
+                <div id="step-packs" className={wizardStepClass(showPacks)}>
+                    <h2>{STR.wizard.packsHeading}</h2>
+                    <WizardPackList scrollWell />
+                    <p id="pack-step-status" className="status" aria-live="polite">
+                        {status.pack}
+                    </p>
+                    <div className="pack-custom-upload">
+                        <Button
+                            type="button"
+                            id="btn-pack-prompt-help"
+                            className="btn-pack-prompt-help"
+                            aria-label={STR.packs.llmPromptAria}
+                            title={STR.packs.llmPromptTitle}
+                            onClick={() => openPackPromptOverlay()}
+                        >
+                            ?
+                        </Button>
+                        <label className="btn ghost btn-pack-json-main pack-json-upload-label">
+                            <span className="pack-json-upload-label-text">
+                                {STR.packs.uploadJsonLabel}
+                            </span>
+                            <input
+                                type="file"
+                                id="pack-json-input"
+                                className="pack-json-file-input-native"
+                                accept="*/*"
+                                aria-label={STR.packs.uploadJsonAria}
+                                onChange={(e) => void handlePackJsonInputChange(e)}
+                            />
+                        </label>
+                    </div>
+                    <div className="actions wizard-pack-actions">
+                        <Button
+                            type="button"
+                            id="btn-packs-back"
+                            onClick={() => {
+                                dispatch({ type: "WIZARD_CLEAR_STATUS", name: "pack" })
+                                goWizardStep(1)
+                            }}
+                        >
+                            {STR.packs.back}
+                        </Button>
+                        <Button
+                            variant="primary"
+                            type="button"
+                            id="btn-packs-next"
+                            aria-label={STR.packs.next}
+                            onClick={() => void handlePacksNextClick()}
+                        >
+                            {STR.packs.next}
+                        </Button>
+                    </div>
+                </div>
 
-        <div id="step-packs" className={wizardStepClass(showPacks)}>
-          <h2 />
-          <WizardPackList scrollWell />
-          <p id="pack-step-status" className="status" aria-live="polite" />
-          <div className="pack-custom-upload">
-            <Button
-              type="button"
-              id="btn-pack-prompt-help"
-              className="btn-pack-prompt-help"
-              onClick={() => openPackPromptOverlay()}
-            >
-              ?
-            </Button>
-            <label className="btn ghost btn-pack-json-main pack-json-upload-label">
-              <span className="pack-json-upload-label-text" />
-              <input
-                type="file"
-                id="pack-json-input"
-                className="pack-json-file-input-native"
-                accept="*/*"
-                onChange={(e) => void handlePackJsonInputChange(e)}
-              />
-            </label>
-          </div>
-          <div className="actions wizard-pack-actions">
-            <Button
-              type="button"
-              id="btn-packs-back"
-              onClick={() => {
-                const el = document.getElementById("pack-step-status");
-                if (el) el.textContent = "";
-                goWizardStep(1);
-              }}
-            />
-            <Button
-              variant="primary"
-              type="button"
-              id="btn-packs-next"
-              onClick={() => void handlePacksNextClick()}
-            />
-          </div>
-        </div>
+                <div id="step-vocab-direction" className={wizardStepClass(showVocabDir)}>
+                    <h2 id="vocab-direction-step-title">{STR.wizard.vocabDirectionHeading}</h2>
+                    <WizardVocabDirectionForm />
+                    <p id="vocab-direction-step-status" className="status" aria-live="polite">
+                        {status.vocabDirection}
+                    </p>
+                    <div className="actions wizard-pack-actions">
+                        <Button
+                            type="button"
+                            id="btn-vocab-direction-back"
+                            onClick={() => {
+                                dispatch({ type: "WIZARD_CLEAR_STATUS", name: "vocabDirection" })
+                                goWizardStep(2)
+                            }}
+                        >
+                            {STR.packs.back}
+                        </Button>
+                        <Button
+                            variant="primary"
+                            type="button"
+                            id="btn-vocab-direction-start"
+                            aria-label={STR.packs.start}
+                            onClick={handleVocabDirectionStartClick}
+                        >
+                            {STR.packs.start}
+                        </Button>
+                    </div>
+                </div>
 
-        <div id="step-vocab-direction" className={wizardStepClass(showVocabDir)}>
-          <h2 id="vocab-direction-step-title" />
-          <WizardVocabDirectionForm />
-          <p id="vocab-direction-step-status" className="status" aria-live="polite" />
-          <div className="actions wizard-pack-actions">
-            <Button
-              type="button"
-              id="btn-vocab-direction-back"
-              onClick={() => {
-                const el = document.getElementById("vocab-direction-step-status");
-                if (el) el.textContent = "";
-                goWizardStep(2);
-                syncPacksNextButtonPresentation();
-              }}
-            />
-            <Button
-              variant="primary"
-              type="button"
-              id="btn-vocab-direction-start"
-              onClick={handleVocabDirectionStartClick}
-            />
-          </div>
-        </div>
-
-        <div id="step-cases" className={wizardStepClass(showCases)}>
-          <h2 />
-          <WizardCaseCheckboxes scrollWell />
-          <p id="case-step-status" className="status case-step-msg" aria-live="polite" />
-          <div className="actions wizard-case-actions">
-            <Button
-              type="button"
-              id="btn-cases-back"
-              onClick={() => {
-                const el = document.getElementById("case-step-status");
-                if (el) el.textContent = "";
-                goWizardStep(2);
-                syncPacksNextButtonPresentation();
-              }}
-            />
-            <Button
-              variant="primary"
-              type="button"
-              id="btn-start"
-              onClick={handleStartCasesTrainingClick}
-            />
-          </div>
-        </div>
-      </section>
-    </AppFlowScreen>
-  );
+                <div id="step-cases" className={wizardStepClass(showCases)}>
+                    <h2>{STR.wizard.casesHeading}</h2>
+                    <WizardCaseCheckboxes scrollWell />
+                    <p id="case-step-status" className="status case-step-msg" aria-live="polite">
+                        {status.case}
+                    </p>
+                    <div className="actions wizard-case-actions">
+                        <Button
+                            type="button"
+                            id="btn-cases-back"
+                            onClick={() => {
+                                dispatch({ type: "WIZARD_CLEAR_STATUS", name: "case" })
+                                goWizardStep(2)
+                            }}
+                        >
+                            {STR.packs.back}
+                        </Button>
+                        <Button
+                            variant="primary"
+                            type="button"
+                            id="btn-start"
+                            onClick={handleStartCasesTrainingClick}
+                        >
+                            {STR.packs.start}
+                        </Button>
+                    </div>
+                </div>
+            </section>
+        </AppFlowScreen>
+    )
 }

@@ -3,51 +3,51 @@
  * Родительская карточка: .pack-card--custom-user (CheckboxButton).
  */
 .pack-card--custom-user .pack-card-delete-slot {
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .pack-card-delete-btn {
-  -webkit-appearance: none;
-  appearance: none;
-  box-sizing: border-box;
-  border: none;
-  background: transparent;
-  box-shadow: none;
-  cursor: pointer;
-  border-radius: var(--radius-char);
-  color: var(--error);
-  width: var(--touch-btn-min-h);
-  height: var(--touch-btn-min-h);
-  min-width: var(--touch-btn-min-h);
-  min-height: var(--touch-btn-min-h);
-  aspect-ratio: 1;
-  padding: 0;
-  margin: 0;
-  flex-shrink: 0;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+    -webkit-appearance: none;
+    appearance: none;
+    box-sizing: border-box;
+    border: none;
+    background: transparent;
+    box-shadow: none;
+    cursor: pointer;
+    border-radius: var(--radius-char);
+    color: var(--error);
+    width: var(--touch-btn-min-h);
+    height: var(--touch-btn-min-h);
+    min-width: var(--touch-btn-min-h);
+    min-height: var(--touch-btn-min-h);
+    aspect-ratio: 1;
+    padding: 0;
+    margin: 0;
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .pack-card-delete-btn svg {
-  display: block;
-  width: 1.35rem;
-  height: 1.35rem;
+    display: block;
+    width: 1.35rem;
+    height: 1.35rem;
 }
 
 .pack-card-delete-btn:hover {
-  color: color-mix(in srgb, var(--error) 88%, var(--text));
-  background: color-mix(in srgb, var(--error) 12%, transparent);
+    color: color-mix(in srgb, var(--error) 88%, var(--text));
+    background: color-mix(in srgb, var(--error) 12%, transparent);
 }
 
 .pack-card-delete-btn:focus-visible {
-  outline: 2px solid color-mix(in srgb, var(--error) 55%, transparent);
-  outline-offset: 2px;
+    outline: 2px solid color-mix(in srgb, var(--error) 55%, transparent);
+    outline-offset: 2px;
 }
 
 .pack-card-delete-btn:active {
-  opacity: 0.88;
+    opacity: 0.88;
 }

@@ -1,78 +1,68 @@
 /**
  * Действия после раунда «Слова»: согласованы с {@link VocabRoundSummaryOverlay}.
  */
-import { STR } from "./i18n/strings-ru.js";
+import { STR } from "./i18n/strings-ru.js"
 import {
-  postTrainerUiAction,
-  closeVocabRoundSummaryOverlay,
-  mutateEngine,
-} from "./trainer-ui-state.js";
-import { byId } from "./dom-ids.js";
-import { getResolvedVocabDirections } from "./storage.js";
-import { resetVocabCorrectStreak, showQuiz } from "./quiz.js";
-import { clearVocabRound, initVocabRound } from "./vocab-round.js";
-import { nextVocabTask } from "./word-selection.js";
+    postTrainerUiAction,
+    closeVocabRoundSummaryOverlay,
+    mutateEngine,
+    clearWizardStatus,
+    setWizardStatus,
+} from "./trainer-ui-state.js"
+import { getResolvedVocabDirections } from "./storage.js"
+import { resetVocabCorrectStreak, showQuiz } from "./quiz.js"
+import { clearVocabRound, initVocabRound } from "./vocab-round.js"
+import { nextVocabTask } from "./word-selection.js"
 
 function clearSetupStatusLines() {
-  const ps = byId("pack-step-status");
-  const cs = byId("case-step-status");
-  const vs = byId("vocab-direction-step-status");
-  if (ps) ps.textContent = "";
-  if (cs) cs.textContent = "";
-  if (vs) vs.textContent = "";
+    clearWizardStatus()
 }
 
 /** «Ок» / закрытие итога: мастер, сброс раунда. */
 export function runVocabRoundSummaryOkFlow() {
-  closeVocabRoundSummaryOverlay();
-  clearVocabRound();
-  if (byId("quiz-shell")) byId("quiz-shell").classList.add("hidden");
-  if (byId("setup-shell")) byId("setup-shell").classList.remove("hidden");
-  resetVocabCorrectStreak();
-  postTrainerUiAction({ type: "WIZARD_SET_STEP", step: 1 });
-  clearSetupStatusLines();
-  mutateEngine((e) => {
-    e.currentTask = null;
-    e.shownLemmaHistory = [];
-  });
+    closeVocabRoundSummaryOverlay()
+    clearVocabRound()
+    postTrainerUiAction({ type: "SCREEN_SET", screen: "setup" })
+    resetVocabCorrectStreak()
+    postTrainerUiAction({ type: "WIZARD_SET_STEP", step: 1 })
+    clearSetupStatusLines()
+    mutateEngine((e) => {
+        e.currentTask = null
+        e.shownLemmaHistory = []
+    })
 }
 
 /** То же, что «Ок», для Escape и клика по подложке. */
 export function dismissVocabRoundSummaryToSetup() {
-  runVocabRoundSummaryOkFlow();
+    runVocabRoundSummaryOkFlow()
 }
 
 /** «Повторить» — новый раунд либо сообщение об ошибке. */
 export function runVocabRoundSummaryRepeatFlow() {
-  closeVocabRoundSummaryOverlay();
-  mutateEngine((e) => {
-    e.shownLemmaHistory = [];
-  });
-  resetVocabCorrectStreak();
-  if (!initVocabRound()) {
-    clearVocabRound();
-    if (byId("quiz-shell")) byId("quiz-shell").classList.add("hidden");
-    if (byId("setup-shell")) byId("setup-shell").classList.remove("hidden");
-    postTrainerUiAction({ type: "WIZARD_SET_STEP", step: 3 });
-    const dirStatus = byId("vocab-direction-step-status");
-    if (dirStatus) {
-      dirStatus.textContent = STR.events.roundNoWords;
+    closeVocabRoundSummaryOverlay()
+    mutateEngine((e) => {
+        e.shownLemmaHistory = []
+    })
+    resetVocabCorrectStreak()
+    if (!initVocabRound()) {
+        clearVocabRound()
+        postTrainerUiAction({ type: "SCREEN_SET", screen: "setup" })
+        postTrainerUiAction({ type: "WIZARD_SET_STEP", step: 3 })
+        setWizardStatus("vocabDirection", STR.events.roundNoWords)
+        return
     }
-    return;
-  }
-  const task = nextVocabTask();
-  if (!task) {
-    clearVocabRound();
-    if (byId("quiz-shell")) byId("quiz-shell").classList.add("hidden");
-    if (byId("setup-shell")) byId("setup-shell").classList.remove("hidden");
-    postTrainerUiAction({ type: "WIZARD_SET_STEP", step: 3 });
-    const dirStatus = byId("vocab-direction-step-status");
-    if (dirStatus) {
-      dirStatus.textContent = getResolvedVocabDirections().hardcore
-        ? STR.events.roundRepeatFail
-        : STR.events.roundRepeatChoices;
+    const task = nextVocabTask()
+    if (!task) {
+        clearVocabRound()
+        postTrainerUiAction({ type: "SCREEN_SET", screen: "setup" })
+        postTrainerUiAction({ type: "WIZARD_SET_STEP", step: 3 })
+        setWizardStatus(
+            "vocabDirection",
+            getResolvedVocabDirections().hardcore
+                ? STR.events.roundRepeatFail
+                : STR.events.roundRepeatChoices
+        )
+        return
     }
-    return;
-  }
-  showQuiz(task);
+    showQuiz(task)
 }

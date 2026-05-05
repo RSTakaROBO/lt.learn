@@ -1,106 +1,106 @@
 /* Карточка экрана: виджет / panel одинаково по языку */
 .widget,
 .panel {
-  background: var(--surface);
-  border: var(--stroke) solid var(--border);
-  border-radius: var(--radius-card);
-  padding: var(--panel-padding);
-  padding-bottom: var(--panel-padding-bottom);
+    background: var(--surface);
+    border: var(--stroke) solid var(--border);
+    border-radius: var(--radius-card);
+    padding: var(--panel-padding);
+    padding-bottom: var(--panel-padding-bottom);
 }
 
 .widget h2,
 .panel h2 {
-  font-size: 1.1rem;
-  margin: 0 0 0.35rem;
+    font-size: 1.1rem;
+    margin: 0 0 0.35rem;
 }
 
 /* Запас под тень нижнего ряда кнопок (мастер: .actions внутри .wizard-step) */
 .widget > .actions:last-child,
 .widget > .wizard-step > .actions {
-  padding-bottom: var(--widget-actions-shadow-pad);
+    padding-bottom: var(--widget-actions-shadow-pad);
 }
 
 /* Мастер: высота на экран, прокрутка списков */
 #setup.panel {
-  flex: 1;
-  min-height: 0;
-  display: flex;
-  flex-direction: column;
-  overflow-x: hidden;
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
 }
 
 #setup .wizard-progress {
-  flex-shrink: 0;
+    flex-shrink: 0;
 }
 
 /* Начальный экран: без точек-этапов сверху */
 #setup:has(#step-mode:not(.hidden)) #wizard-progress {
-  display: none !important;
-  margin: 0 !important;
-  min-height: 0 !important;
-  overflow: hidden !important;
+    display: none !important;
+    margin: 0 !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
 }
 
 #setup .wizard-step:not(.hidden) {
-  flex: 1;
-  min-height: 0;
-  display: flex;
-  flex-direction: column;
-  overflow: visible;
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: visible;
 }
 
 #setup .wizard-step:not(.hidden) > h2 {
-  flex-shrink: 0;
+    flex-shrink: 0;
 }
 
 /* Прокручиваемые списки мастера: «лоток»; полосу не показываем (везде одинаково), прокрутка колесом/жестом. */
 #setup .wizard-step:not(.hidden) > .wizard-scroll-well {
-  flex: 1 1 0;
-  min-height: 0;
-  overflow-x: hidden;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-  align-content: start;
-  overscroll-behavior-y: contain;
-  border-radius: var(--radius-card);
-  border: var(--stroke) solid var(--border);
-  background: color-mix(in srgb, var(--bg) 22%, var(--surface));
-  padding: 0.55rem 0.6rem;
-  padding-bottom: calc(var(--panel-scroll-pad) + 0.55rem);
-  scrollbar-width: none;
-  -ms-overflow-style: none;
+    flex: 1 1 0;
+    min-height: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    align-content: start;
+    overscroll-behavior-y: contain;
+    border-radius: var(--radius-card);
+    border: var(--stroke) solid var(--border);
+    background: color-mix(in srgb, var(--bg) 22%, var(--surface));
+    padding: 0.55rem 0.6rem;
+    padding-bottom: calc(var(--panel-scroll-pad) + 0.55rem);
+    scrollbar-width: none;
+    -ms-overflow-style: none;
 }
 
 #setup .wizard-step:not(.hidden) > .wizard-scroll-well::-webkit-scrollbar {
-  display: none;
-  width: 0 !important;
-  height: 0 !important;
-  appearance: none;
-  background: transparent;
+    display: none;
+    width: 0 !important;
+    height: 0 !important;
+    appearance: none;
+    background: transparent;
 }
 
 #setup .wizard-step:not(.hidden) > .mode-picker {
-  flex: 0 0 auto;
-  display: flex;
-  flex-direction: column;
-  gap: clamp(1rem, 3.5vmin, 1.35rem);
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(1rem, 3.5vmin, 1.35rem);
 }
 
 #setup #step-mode:not(.hidden) > .mode-picker > .mode-choice-grid {
-  flex: 0 0 auto;
-  overflow: visible;
-  padding-bottom: 0;
+    flex: 0 0 auto;
+    overflow: visible;
+    padding-bottom: 0;
 }
 
 #setup .wizard-step:not(.hidden) > .status {
-  flex-shrink: 0;
+    flex-shrink: 0;
 }
 
 #setup .wizard-step:not(.hidden) > .actions {
-  flex-shrink: 0;
-  margin-top: auto;
-  padding-top: var(--panel-section-gap);
-  width: 100%;
+    flex-shrink: 0;
+    margin-top: auto;
+    padding-top: var(--panel-section-gap);
+    width: 100%;
 }
 
 /*
@@ -109,14 +109,14 @@
  * схлопывание области — экран кажется пустым. Держим сетку по высоте контента.
  */
 #setup #step-vocab-direction:not(.hidden) > .vocab-direction-grid.case-grid {
-  flex: 0 1 auto;
-  flex-grow: 0;
-  min-height: unset;
-  overflow: visible;
-  padding-bottom: var(--gap-actions);
+    flex: 0 1 auto;
+    flex-grow: 0;
+    min-height: unset;
+    overflow: visible;
+    padding-bottom: var(--gap-actions);
 }
 
 #quiz.panel {
-  overflow: visible;
-  min-height: 0;
+    overflow: visible;
+    min-height: 0;
 }

@@ -1,510 +1,529 @@
 #quiz-vocab-ui:not(.hidden) {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: var(--panel-section-gap);
-  min-height: 0;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--panel-section-gap);
+    min-height: 0;
 }
 
 .vocab-answer-form {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    flex-shrink: 0;
 }
 
 /* Множитель серии ×N: правый нижний угол карточки слова (с 5 подряд верных) */
 .vocab-ru-card {
-  position: relative;
-  flex: 1;
-  min-height: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0;
-  padding: 1.05rem 1.2rem;
-  border-radius: var(--radius-card);
-  border: var(--stroke) solid var(--border);
-  background: var(--surface-elevated);
-  /* Режим «слова»: без полос прокрутки карточки — множитель и pulse через transform иначе дают scroll */
-  overflow: hidden;
+    position: relative;
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    padding: 1.05rem 1.2rem;
+    border-radius: var(--radius-card);
+    border: var(--stroke) solid var(--border);
+    background: var(--surface-elevated);
+    /* Режим «слова»: без полос прокрутки карточки — множитель и pulse через transform иначе дают scroll */
+    overflow: hidden;
 }
 
 .vocab-streak-mult {
-  position: absolute;
-  right: 0.5rem;
-  bottom: 0.45rem;
-  display: flex;
-  align-items: flex-end;
-  justify-content: flex-end;
-  pointer-events: none;
-  line-height: 1;
+    position: absolute;
+    right: 0.5rem;
+    bottom: 0.45rem;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    pointer-events: none;
+    line-height: 1;
 }
 
 /* Прогресс «3 верных подряд» по лемме в раунде — слева снизу карточки */
 .vocab-round-lemma-dots {
-  position: absolute;
-  left: 0.5rem;
-  bottom: 0.48rem;
-  display: flex;
-  align-items: center;
-  gap: 0.3rem;
-  pointer-events: none;
+    position: absolute;
+    left: 0.5rem;
+    bottom: 0.48rem;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    pointer-events: none;
 }
 
 .vocab-round-lemma-dot {
-  width: 0.36rem;
-  height: 0.36rem;
-  border-radius: 50%;
-  flex-shrink: 0;
-  background: color-mix(in srgb, var(--text) 18%, transparent);
-  box-shadow: 0 0 0 1px color-mix(in srgb, var(--border) 75%, transparent);
+    width: 0.36rem;
+    height: 0.36rem;
+    border-radius: 50%;
+    flex-shrink: 0;
+    background: color-mix(in srgb, var(--text) 18%, transparent);
+    box-shadow: 0 0 0 1px color-mix(in srgb, var(--border) 75%, transparent);
 }
 
 .vocab-round-lemma-dot.is-filled {
-  background: color-mix(in srgb, var(--accent) 78%, var(--text));
-  box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent) 35%, transparent);
+    background: color-mix(in srgb, var(--accent) 78%, var(--text));
+    box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent) 35%, transparent);
 }
 
 .vocab-streak-mult-value {
-  font-weight: 800;
-  letter-spacing: -0.04em;
-  line-height: 1;
-  transform-origin: 100% 100%;
-  transition:
-    color 0.22s ease,
-    font-size 0.22s ease;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    line-height: 1;
+    transform-origin: 100% 100%;
+    transition:
+        color 0.22s ease,
+        font-size 0.22s ease;
 }
 
 /* 5–9: серый; 10+: синий → зелёный → жёлтый → красный; шрифт растёт на порогах 10, 20, 50, 70, 100 */
 .vocab-streak-mult--t0 .vocab-streak-mult-value {
-  font-size: clamp(1.72rem, 6.2vmin, 2.2rem);
-  color: #94a3b8;
+    font-size: clamp(1.72rem, 6.2vmin, 2.2rem);
+    color: #94a3b8;
 }
 
 .vocab-streak-mult--t1 .vocab-streak-mult-value {
-  font-size: clamp(1.92rem, 6.85vmin, 2.48rem);
-  color: #3b82f6;
+    font-size: clamp(1.92rem, 6.85vmin, 2.48rem);
+    color: #3b82f6;
 }
 
 .vocab-streak-mult--t2 .vocab-streak-mult-value {
-  font-size: clamp(2.12rem, 7.45vmin, 2.78rem);
-  color: #22c55e;
+    font-size: clamp(2.12rem, 7.45vmin, 2.78rem);
+    color: #22c55e;
 }
 
 .vocab-streak-mult--t3 .vocab-streak-mult-value {
-  font-size: clamp(2.35rem, 8.15vmin, 3.08rem);
-  color: #eab308;
+    font-size: clamp(2.35rem, 8.15vmin, 3.08rem);
+    color: #eab308;
 }
 
 .vocab-streak-mult--t4 .vocab-streak-mult-value {
-  font-size: clamp(2.58rem, 8.85vmin, 3.42rem);
-  color: #ef4444;
+    font-size: clamp(2.58rem, 8.85vmin, 3.42rem);
+    color: #ef4444;
 }
 
 .vocab-streak-mult--t5 .vocab-streak-mult-value {
-  font-size: clamp(2.85rem, 9.6vmin, 3.85rem);
-  color: #ef4444;
+    font-size: clamp(2.85rem, 9.6vmin, 3.85rem);
+    color: #ef4444;
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .vocab-streak-mult--pulse .vocab-streak-mult-value {
-    animation: vocab-streak-mult-pulse 0.78s cubic-bezier(0.28, 1.55, 0.42, 1);
-  }
+    .vocab-streak-mult--pulse .vocab-streak-mult-value {
+        animation: vocab-streak-mult-pulse 0.78s cubic-bezier(0.28, 1.55, 0.42, 1);
+    }
 }
 
 @keyframes vocab-streak-mult-pulse {
-  0% {
-    transform: scale(1);
-  }
-  38% {
-    transform: scale(1.46);
-  }
-  72% {
-    transform: scale(1.08);
-  }
-  100% {
-    transform: scale(1);
-  }
+    0% {
+        transform: scale(1);
+    }
+    38% {
+        transform: scale(1.46);
+    }
+    72% {
+        transform: scale(1.08);
+    }
+    100% {
+        transform: scale(1);
+    }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .vocab-streak-mult--pulse .vocab-streak-mult-value {
-    animation: vocab-streak-mult-pulse-subtle 0.48s ease;
-  }
+    .vocab-streak-mult--pulse .vocab-streak-mult-value {
+        animation: vocab-streak-mult-pulse-subtle 0.48s ease;
+    }
 }
 
 @keyframes vocab-streak-mult-pulse-subtle {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.52;
-  }
+    0%,
+    100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.52;
+    }
 }
 
 .vocab-ru-display {
-  margin: 0;
-  text-align: center;
+    margin: 0;
+    text-align: center;
 }
 
 /* Длинные слова и ×N не должны раздувать карточку по ширине (десктоп + множитель). */
 .vocab-ru-card .vocab-ru-display {
-  max-width: 100%;
-  min-width: 0;
-  overflow-wrap: break-word;
-  word-break: break-word;
+    max-width: 100%;
+    min-width: 0;
+    overflow-wrap: break-word;
+    word-break: break-word;
 }
 
 /* Только режим «слова»: колонка — тело карточки забирает высоту, прокрутка только внутри него */
 #quiz-vocab-ui > .vocab-ru-card {
-  flex-direction: column;
-  align-items: stretch;
+    flex-direction: column;
+    align-items: stretch;
 }
 
 #quiz-vocab-ui > .vocab-ru-card > .vocab-ru-card-body {
-  flex: 1;
-  min-height: 0;
-  min-width: 0;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow-x: hidden;
-  overflow-y: hidden;
+    flex: 1;
+    min-height: 0;
+    min-width: 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow-x: hidden;
+    overflow-y: hidden;
 }
 
 .vocab-round-progress {
-  flex: none;
-  margin: 0.05rem 0 0;
+    flex: none;
+    margin: 0.05rem 0 0;
 }
 
 .vocab-round-progress-track {
-  height: 0.42rem;
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--text) 10%, var(--surface-elevated));
-  overflow: hidden;
-  border: var(--stroke) solid var(--border);
+    height: 0.42rem;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--text) 10%, var(--surface-elevated));
+    overflow: hidden;
+    border: var(--stroke) solid var(--border);
 }
 
 .vocab-round-progress-fill {
-  height: 100%;
-  width: 0%;
-  border-radius: inherit;
-  background: linear-gradient(
-    90deg,
-    color-mix(in srgb, var(--accent) 55%, transparent),
-    color-mix(in srgb, var(--accent) 92%, var(--surface))
-  );
-  transition: width 0.35s ease;
+    height: 100%;
+    width: 0%;
+    border-radius: inherit;
+    background: linear-gradient(
+        90deg,
+        color-mix(in srgb, var(--accent) 55%, transparent),
+        color-mix(in srgb, var(--accent) 92%, var(--surface))
+    );
+    transition: width 0.35s ease;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .vocab-round-progress-fill {
-    transition: none;
-  }
+    .vocab-round-progress-fill {
+        transition: none;
+    }
 }
 
 .vocab-options {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  grid-auto-rows: auto;
-  gap: clamp(0.65rem, 2.2vmin, 1rem);
-  flex: none;
-  min-height: 0;
-  justify-items: stretch;
-  margin-bottom: 0.15rem;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-auto-rows: auto;
+    gap: clamp(0.65rem, 2.2vmin, 1rem);
+    flex: none;
+    min-height: 0;
+    justify-items: stretch;
+    margin-bottom: -0.2rem;
+    padding-bottom: 0.35rem;
+    overflow-x: clip;
+    overflow-y: visible;
+    contain: paint;
 }
 
 #quiz-vocab-ui:not(.hidden) .vocab-options {
-  margin-bottom: 0;
+    margin-bottom: 0;
 }
 
 .vocab-choice {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  min-width: 0;
-  min-height: 0;
-  aspect-ratio: 1 / 1;
-  font-weight: 600;
-  font-size: clamp(1.2rem, 4.5vmin, 1.85rem);
-  line-height: 1.2;
-  text-align: center;
-  word-break: break-word;
-  overflow-y: auto;
-  overflow-x: hidden;
-  -webkit-overflow-scrolling: touch;
-  touch-action: manipulation;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-width: 0;
+    min-height: 0;
+    aspect-ratio: 1 / 1;
+    font-weight: 600;
+    font-size: clamp(1.2rem, 4.5vmin, 1.85rem);
+    line-height: 1.2;
+    text-align: center;
+    word-break: break-word;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    touch-action: manipulation;
+    transform-origin: center;
+}
+
+.quiz-shell,
+#quiz.panel.quiz--vocab,
+#quiz-vocab-ui {
+    overflow-x: clip;
 }
 
 .vocab-choice:disabled {
-  cursor: default;
+    cursor: default;
 }
 
 /* `.btn { font: inherit }` в buttons.css иначе перебивает размер */
 .btn.vocab-choice {
-  font-size: clamp(1.2rem, 4.5vmin, 1.85rem);
+    font-size: clamp(1.2rem, 4.5vmin, 1.85rem);
 }
 
 #quiz-cases-ui {
-  display: flex;
-  flex-direction: column;
-  gap: var(--panel-section-gap);
+    display: flex;
+    flex-direction: column;
+    gap: var(--panel-section-gap);
 }
 
 /* Слово в падежах — та же рамка и фон, что у карточки в режиме «слова» */
 #quiz-cases-ui .prompt > .vocab-ru-card {
-  flex: none;
-  min-height: unset;
-  overflow-x: hidden;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
+    flex: none;
+    min-height: unset;
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
 #answer-form {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
 }
 
 .prompt {
-  margin-bottom: 0;
+    margin-bottom: 0;
 }
 
 .prompt .target-line {
-  margin: 1rem 0 0;
-  font-size: 1.05rem;
-  line-height: 1.45;
+    margin: 1rem 0 0;
+    font-size: 1.05rem;
+    line-height: 1.45;
 }
 
 .prompt .target-prefix {
-  color: var(--muted);
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  margin-right: 0.35rem;
+    color: var(--muted);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-right: 0.35rem;
 }
 
 .prompt #target-case-display {
-  font-weight: 600;
+    font-weight: 600;
 }
 
 .lemma {
-  font-size: clamp(1.95rem, 5.2vmin, 2.45rem);
-  font-weight: 600;
-  margin: 0;
-  color: var(--accent);
+    font-size: clamp(1.95rem, 5.2vmin, 2.45rem);
+    font-weight: 600;
+    margin: 0;
+    color: var(--accent);
 }
 
 #answer-input,
 #vocab-answer-input {
-  width: 100%;
-  font: inherit;
-  font-size: 1.15rem;
-  padding: 0.65rem 0.85rem;
-  border-radius: var(--radius-control);
-  border: var(--stroke) solid var(--border);
-  background: var(--bg);
-  color: var(--text);
-  margin-bottom: 0;
+    width: 100%;
+    font: inherit;
+    font-size: 1.15rem;
+    padding: 0.65rem 0.85rem;
+    border-radius: var(--radius-control);
+    border: var(--stroke) solid var(--border);
+    background: var(--bg);
+    color: var(--text);
+    margin-bottom: 0;
 }
 
 #answer-input:focus,
 #vocab-answer-input:focus {
-  outline: none;
+    outline: none;
 }
 
 /* Кольцо внутри поля — не обрезается родителем при overflow */
 #answer-input:focus-visible,
 #vocab-answer-input:focus-visible {
-  outline: calc(var(--stroke) + 1px) solid var(--accent);
-  outline-offset: calc(-1 * var(--stroke) - 1px);
+    outline: calc(var(--stroke) + 1px) solid var(--accent);
+    outline-offset: calc(-1 * var(--stroke) - 1px);
 }
 
 .lt-chars {
-  display: grid;
-  grid-template-columns: repeat(9, minmax(0, 1fr));
-  column-gap: 0.4rem;
-  row-gap: 0.45rem;
-  width: 100%;
-  margin-bottom: 0;
-  padding: 0.55rem 0.35rem;
-  box-sizing: border-box;
-  border: var(--stroke) solid var(--border);
-  border-radius: var(--radius-control);
-  background: color-mix(in srgb, var(--bg) 88%, var(--surface));
+    display: grid;
+    grid-template-columns: repeat(9, minmax(0, 1fr));
+    column-gap: 0.4rem;
+    row-gap: 0.45rem;
+    width: 100%;
+    margin-bottom: 0;
+    padding: 0.55rem 0.35rem;
+    box-sizing: border-box;
+    border: var(--stroke) solid var(--border);
+    border-radius: var(--radius-control);
+    background: color-mix(in srgb, var(--bg) 88%, var(--surface));
 }
 
 .lt-char {
-  font: inherit;
-  font-size: 0.95rem;
-  font-weight: 600;
-  min-width: 0;
-  width: 100%;
-  margin: 0;
-  padding: 0.42rem 0.15rem;
-  border: none;
-  border-radius: var(--radius-char);
-  background: var(--surface);
-  color: var(--text);
-  cursor: pointer;
-  line-height: 1.2;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    font: inherit;
+    font-size: 0.95rem;
+    font-weight: 600;
+    min-width: 0;
+    width: 100%;
+    margin: 0;
+    padding: 0.42rem 0.15rem;
+    border: none;
+    border-radius: var(--radius-char);
+    background: var(--surface);
+    color: var(--text);
+    cursor: pointer;
+    line-height: 1.2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .lt-char:hover {
-  color: var(--accent);
-  background: color-mix(in srgb, var(--accent) 12%, transparent);
+    color: var(--accent);
+    background: color-mix(in srgb, var(--accent) 12%, transparent);
 }
 
 .lt-char:active {
-  transform: scale(0.97);
+    transform: scale(0.97);
 }
 
 @media (max-width: 600px) {
-  .lt-chars {
-    grid-template-columns: repeat(5, minmax(0, 1fr));
-    column-gap: 0.45rem;
-    row-gap: 0.5rem;
-    padding: 0.55rem 0.45rem;
-  }
+    .lt-chars {
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        column-gap: 0.45rem;
+        row-gap: 0.5rem;
+        padding: 0.55rem 0.45rem;
+    }
 
-  .lt-char {
-    padding: 0.48rem 0.2rem;
-    min-height: var(--touch-btn-min-h);
-    font-size: 1rem;
-  }
+    .lt-char {
+        padding: 0.48rem 0.2rem;
+        min-height: var(--touch-btn-min-h);
+        font-size: 1rem;
+    }
 }
 
 .feedback {
-  margin-top: var(--panel-section-gap);
-  padding: 0.85rem 1rem;
-  border-radius: var(--radius-control);
-  border: var(--stroke) solid var(--border);
+    margin-top: var(--panel-section-gap);
+    padding: 0.85rem 1rem;
+    border-radius: var(--radius-control);
+    border: var(--stroke) solid var(--border);
 }
 
 .feedback.ok {
-  border-color: color-mix(in srgb, var(--success) 50%, var(--border));
-  background: color-mix(in srgb, var(--success) 12%, var(--surface));
+    border-color: color-mix(in srgb, var(--success) 50%, var(--border));
+    background: color-mix(in srgb, var(--success) 12%, var(--surface));
 }
 
 .feedback.bad {
-  border-color: color-mix(in srgb, var(--error) 50%, var(--border));
-  background: color-mix(in srgb, var(--error) 12%, var(--surface));
+    border-color: color-mix(in srgb, var(--error) 50%, var(--border));
+    background: color-mix(in srgb, var(--error) 12%, var(--surface));
 }
 
 .feedback p {
-  margin: 0;
+    margin: 0;
 }
 
 .feedback .correct-form {
-  margin-top: 0.35rem;
-  font-weight: 600;
+    margin-top: 0.35rem;
+    font-weight: 600;
 }
 
 .feedback .exception-hint {
-  margin-top: 0.75rem;
-  font-size: 0.92rem;
-  font-weight: normal;
-  color: var(--muted);
+    margin-top: 0.75rem;
+    font-size: 0.92rem;
+    font-weight: normal;
+    color: var(--muted);
 }
 
 .feedback.ok .exception-hint {
-  color: color-mix(in srgb, var(--text) 72%, var(--muted));
+    color: color-mix(in srgb, var(--text) 72%, var(--muted));
 }
 
 .feedback.bad .exception-hint {
-  color: color-mix(in srgb, var(--text) 82%, var(--muted));
+    color: color-mix(in srgb, var(--text) 82%, var(--muted));
 }
 
 /* Режим «слова»: зазор между блоком задания и нижней кнопкой (margin-top: auto снимает margin у .actions) */
 #quiz.panel.quiz--vocab {
-  row-gap: var(--panel-section-gap);
+    row-gap: var(--panel-section-gap);
 }
 
 /* Режим «слова»: прижимаем «Далее» к низу панели (блок слов уже с flex: 1 в #quiz-vocab-ui) */
 #quiz.panel #feedback:not(.hidden) {
-  flex-shrink: 0;
+    flex-shrink: 0;
 }
 
 #quiz.panel.quiz--vocab > .quiz-footer-actions {
-  margin-top: auto;
-  flex-shrink: 0;
+    margin-top: auto;
+    flex-shrink: 0;
 }
 
 /* Хардкор-слова: карточка слова выше (поле ввода и буквы съедают экран — даём слову воздух), футер без «прижима к низу» */
 #quiz.panel.quiz--vocab-hardcore #quiz-vocab-ui:not(.hidden) {
-  flex: 0 1 auto;
-  gap: 0.55rem;
+    flex: 0 1 auto;
+    gap: 0.55rem;
 }
 
 #quiz.panel.quiz--vocab-hardcore #quiz-vocab-ui:not(.hidden) > .vocab-ru-card {
-  flex: 0 1 auto;
-  min-height: 0;
-  max-height: min(232vh, 88rem);
-  padding: 4rem 2.3rem;
-  overflow: hidden;
+    flex: 0 1 auto;
+    min-height: 0;
+    max-height: min(232vh, 88rem);
+    padding: 4rem 2.3rem;
+    overflow: hidden;
 }
 
-#quiz.panel.quiz--vocab-hardcore #quiz-vocab-ui:not(.hidden) > .vocab-ru-card > .vocab-ru-card-body {
-  overflow-y: auto;
+#quiz.panel.quiz--vocab-hardcore
+    #quiz-vocab-ui:not(.hidden)
+    > .vocab-ru-card
+    > .vocab-ru-card-body {
+    overflow-y: auto;
 }
 
 #quiz.panel.quiz--vocab-hardcore #quiz-vocab-ui:not(.hidden) .vocab-ru-card .lemma,
 #quiz.panel.quiz--vocab-hardcore #quiz-vocab-ui:not(.hidden) .vocab-ru-card .vocab-ru-display {
-  font-size: clamp(1.22rem, 5vmin, 1.92rem);
-  line-height: 1.3;
+    font-size: clamp(1.22rem, 5vmin, 1.92rem);
+    line-height: 1.3;
 }
 
 #quiz.panel.quiz--vocab-hardcore .vocab-streak-mult {
-  right: 0.42rem;
-  bottom: 0.38rem;
+    right: 0.42rem;
+    bottom: 0.38rem;
 }
 
 #quiz.panel.quiz--vocab-hardcore .vocab-streak-mult--t0 .vocab-streak-mult-value {
-  font-size: clamp(2.05rem, 7.2vmin, 2.75rem);
+    font-size: clamp(2.05rem, 7.2vmin, 2.75rem);
 }
 
 #quiz.panel.quiz--vocab-hardcore .vocab-streak-mult--t1 .vocab-streak-mult-value {
-  font-size: clamp(2.28rem, 7.95vmin, 3.05rem);
+    font-size: clamp(2.28rem, 7.95vmin, 3.05rem);
 }
 
 #quiz.panel.quiz--vocab-hardcore .vocab-streak-mult--t2 .vocab-streak-mult-value {
-  font-size: clamp(2.48rem, 8.65vmin, 3.4rem);
+    font-size: clamp(2.48rem, 8.65vmin, 3.4rem);
 }
 
 #quiz.panel.quiz--vocab-hardcore .vocab-streak-mult--t3 .vocab-streak-mult-value {
-  font-size: clamp(2.72rem, 9.35vmin, 3.78rem);
+    font-size: clamp(2.72rem, 9.35vmin, 3.78rem);
 }
 
 #quiz.panel.quiz--vocab-hardcore .vocab-streak-mult--t4 .vocab-streak-mult-value {
-  font-size: clamp(2.98rem, 10.05vmin, 4.15rem);
+    font-size: clamp(2.98rem, 10.05vmin, 4.15rem);
 }
 
 #quiz.panel.quiz--vocab-hardcore .vocab-streak-mult--t5 .vocab-streak-mult-value {
-  font-size: clamp(3.25rem, 10.85vmin, 4.55rem);
+    font-size: clamp(3.25rem, 10.85vmin, 4.55rem);
 }
 
 #quiz.panel.quiz--vocab-hardcore > .quiz-footer-actions {
-  margin-top: 0;
-  flex-shrink: 0;
+    margin-top: 0;
+    flex-shrink: 0;
 }
 
 #quiz.panel.quiz--vocab-hardcore #vocab-answer-form {
-  gap: 0.55rem;
+    gap: 0.55rem;
+}
+
+#quiz.panel.quiz--vocab-hardcore .quiz-footer-actions--inline {
+    margin-top: 0;
+    padding-top: 0;
 }
 
 /* Режим падежей: ответ сразу под клавиатурой литовских букв, без лишнего разрыва */
 #quiz.panel.quiz--cases #feedback:not(.hidden) {
-  margin-top: 0.55rem;
+    margin-top: 0.55rem;
 }
 
 /* Падежи: футер не уезжает вниз под клавиатуру */
 #quiz.panel.quiz--cases > .quiz-footer-actions {
-  flex-shrink: 0;
+    flex-shrink: 0;
 }

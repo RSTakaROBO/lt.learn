@@ -1,205 +1,205 @@
 {
-  "title": "Время суток и приёмы пищи",
-  "words": [
-    {
-      "nominative": "rytas",
-      "genitive": "ryto",
-      "dative": "rytui",
-      "accusative": "rytą",
-      "instrumental": "rytu",
-      "locative": "ryte",
-      "vocative": "rytai",
-      "ru": "утро"
-    },
-    {
-      "nominative": "vakaras",
-      "genitive": "vakaro",
-      "dative": "vakarui",
-      "accusative": "vakarą",
-      "instrumental": "vakaru",
-      "locative": "vakare",
-      "vocative": "vakare",
-      "ru": "вечер"
-    },
-    {
-      "nominative": "naktis",
-      "genitive": "nakties",
-      "dative": "nakčiai",
-      "accusative": "naktį",
-      "instrumental": "naktimi",
-      "locative": "naktyje",
-      "vocative": "naktie",
-      "ru": "ночь"
-    },
-    {
-      "nominative": "pusryčiai",
-      "genitive": "pusryčių",
-      "dative": "pusryčiams",
-      "accusative": "pusryčius",
-      "instrumental": "pusryčiais",
-      "locative": "pusryčiuose",
-      "vocative": "pusryčiai",
-      "ru": "завтрак"
-    },
-    {
-      "nominative": "pietūs",
-      "genitive": "pietų",
-      "dative": "pietums",
-      "accusative": "pietus",
-      "instrumental": "pietumis",
-      "locative": "pietuose",
-      "vocative": "pietūs",
-      "ru": "обед"
-    },
-    {
-      "nominative": "vakarienė",
-      "genitive": "vakarienės",
-      "dative": "vakarienei",
-      "accusative": "vakarienę",
-      "instrumental": "vakariene",
-      "locative": "vakarienėje",
-      "vocative": "vakariene",
-      "ru": "ужин"
-    },
-    {
-      "nominative": "savaitė",
-      "genitive": "savaitės",
-      "dative": "savaitei",
-      "accusative": "savaitę",
-      "instrumental": "savaite",
-      "locative": "savaitėje",
-      "vocative": "savaite",
-      "ru": "неделя"
-    },
-    {
-      "nominative": "pirmadienis",
-      "genitive": "pirmadienio",
-      "dative": "pirmadieniui",
-      "accusative": "pirmadienį",
-      "instrumental": "pirmadieniu",
-      "locative": "pirmadienyje",
-      "vocative": "pirmadieni",
-      "ru": "понедельник"
-    },
-    {
-      "nominative": "antradienis",
-      "genitive": "antradienio",
-      "dative": "antradieniui",
-      "accusative": "antradienį",
-      "instrumental": "antradieniu",
-      "locative": "antradienyje",
-      "vocative": "antradieni",
-      "ru": "вторник"
-    },
-    {
-      "nominative": "trečiadienis",
-      "genitive": "trečiadienio",
-      "dative": "trečiadieniui",
-      "accusative": "trečiadienį",
-      "instrumental": "trečiadieniu",
-      "locative": "trečiadienyje",
-      "vocative": "trečiadieni",
-      "ru": "среда"
-    },
-    {
-      "nominative": "ketvirtadienis",
-      "genitive": "ketvirtadienio",
-      "dative": "ketvirtadieniui",
-      "accusative": "ketvirtadienį",
-      "instrumental": "ketvirtadieniu",
-      "locative": "ketvirtadienyje",
-      "vocative": "ketvirtadieni",
-      "ru": "четвер"
-    },
-    {
-      "nominative": "penktadienis",
-      "genitive": "penktadienio",
-      "dative": "penktadieniui",
-      "accusative": "penktadienį",
-      "instrumental": "penktadieniu",
-      "locative": "penktadienyje",
-      "vocative": "penktadieni",
-      "ru": "пятница"
-    },
-    {
-      "nominative": "šeštadienis",
-      "genitive": "šeštadienio",
-      "dative": "šeštadieniui",
-      "accusative": "šeštadienį",
-      "instrumental": "šeštadieniu",
-      "locative": "šeštadienyje",
-      "vocative": "šeštadieni",
-      "ru": "суббота"
-    },
-    {
-      "nominative": "sekmadienis",
-      "genitive": "sekmadienio",
-      "dative": "sekmadieniui",
-      "accusative": "sekmadienį",
-      "instrumental": "sekmadieniu",
-      "locative": "sekmadienyje",
-      "vocative": "sekmadieni",
-      "ru": "воскресенье"
-    },
-    {
-      "nominative": "savaitgalis",
-      "genitive": "savaitgalio",
-      "dative": "savaitgaliui",
-      "accusative": "savaitgalį",
-      "instrumental": "savaitgaliu",
-      "locative": "savaitgalyje",
-      "vocative": "savaitgali",
-      "ru": "выходные"
-    },
-    {
-      "nominative": "mėnuo",
-      "genitive": "mėnesio",
-      "dative": "mėnesiui",
-      "accusative": "mėnesį",
-      "instrumental": "mėnesiu",
-      "locative": "mėnesyje",
-      "vocative": "mėnesi",
-      "ru": "месяц"
-    },
-    {
-      "nominative": "valanda",
-      "genitive": "valandos",
-      "dative": "valandai",
-      "accusative": "valandą",
-      "instrumental": "valanda",
-      "locative": "valandoje",
-      "vocative": "valanda",
-      "ru": "час"
-    },
-    {
-      "nominative": "minutė",
-      "genitive": "minutės",
-      "dative": "minutei",
-      "accusative": "minutę",
-      "instrumental": "minute",
-      "locative": "minutėje",
-      "vocative": "minute",
-      "ru": "минута"
-    },
-    {
-      "nominative": "ateitis",
-      "genitive": "ateities",
-      "dative": "ateičiai",
-      "accusative": "ateitį",
-      "instrumental": "ateitimi",
-      "locative": "ateityje",
-      "vocative": "ateitie",
-      "ru": "будущее"
-    },
-    {
-      "nominative": "praeitis",
-      "genitive": "praeities",
-      "dative": "praeičiai",
-      "accusative": "praeitį",
-      "instrumental": "praeitimi",
-      "locative": "praeityje",
-      "vocative": "praeitie",
-      "ru": "прошлое"
-    }
-  ]
+    "title": "Время суток и приёмы пищи",
+    "words": [
+        {
+            "nominative": "rytas",
+            "genitive": "ryto",
+            "dative": "rytui",
+            "accusative": "rytą",
+            "instrumental": "rytu",
+            "locative": "ryte",
+            "vocative": "rytai",
+            "ru": "утро"
+        },
+        {
+            "nominative": "vakaras",
+            "genitive": "vakaro",
+            "dative": "vakarui",
+            "accusative": "vakarą",
+            "instrumental": "vakaru",
+            "locative": "vakare",
+            "vocative": "vakare",
+            "ru": "вечер"
+        },
+        {
+            "nominative": "naktis",
+            "genitive": "nakties",
+            "dative": "nakčiai",
+            "accusative": "naktį",
+            "instrumental": "naktimi",
+            "locative": "naktyje",
+            "vocative": "naktie",
+            "ru": "ночь"
+        },
+        {
+            "nominative": "pusryčiai",
+            "genitive": "pusryčių",
+            "dative": "pusryčiams",
+            "accusative": "pusryčius",
+            "instrumental": "pusryčiais",
+            "locative": "pusryčiuose",
+            "vocative": "pusryčiai",
+            "ru": "завтрак"
+        },
+        {
+            "nominative": "pietūs",
+            "genitive": "pietų",
+            "dative": "pietums",
+            "accusative": "pietus",
+            "instrumental": "pietumis",
+            "locative": "pietuose",
+            "vocative": "pietūs",
+            "ru": "обед"
+        },
+        {
+            "nominative": "vakarienė",
+            "genitive": "vakarienės",
+            "dative": "vakarienei",
+            "accusative": "vakarienę",
+            "instrumental": "vakariene",
+            "locative": "vakarienėje",
+            "vocative": "vakariene",
+            "ru": "ужин"
+        },
+        {
+            "nominative": "savaitė",
+            "genitive": "savaitės",
+            "dative": "savaitei",
+            "accusative": "savaitę",
+            "instrumental": "savaite",
+            "locative": "savaitėje",
+            "vocative": "savaite",
+            "ru": "неделя"
+        },
+        {
+            "nominative": "pirmadienis",
+            "genitive": "pirmadienio",
+            "dative": "pirmadieniui",
+            "accusative": "pirmadienį",
+            "instrumental": "pirmadieniu",
+            "locative": "pirmadienyje",
+            "vocative": "pirmadieni",
+            "ru": "понедельник"
+        },
+        {
+            "nominative": "antradienis",
+            "genitive": "antradienio",
+            "dative": "antradieniui",
+            "accusative": "antradienį",
+            "instrumental": "antradieniu",
+            "locative": "antradienyje",
+            "vocative": "antradieni",
+            "ru": "вторник"
+        },
+        {
+            "nominative": "trečiadienis",
+            "genitive": "trečiadienio",
+            "dative": "trečiadieniui",
+            "accusative": "trečiadienį",
+            "instrumental": "trečiadieniu",
+            "locative": "trečiadienyje",
+            "vocative": "trečiadieni",
+            "ru": "среда"
+        },
+        {
+            "nominative": "ketvirtadienis",
+            "genitive": "ketvirtadienio",
+            "dative": "ketvirtadieniui",
+            "accusative": "ketvirtadienį",
+            "instrumental": "ketvirtadieniu",
+            "locative": "ketvirtadienyje",
+            "vocative": "ketvirtadieni",
+            "ru": "четвер"
+        },
+        {
+            "nominative": "penktadienis",
+            "genitive": "penktadienio",
+            "dative": "penktadieniui",
+            "accusative": "penktadienį",
+            "instrumental": "penktadieniu",
+            "locative": "penktadienyje",
+            "vocative": "penktadieni",
+            "ru": "пятница"
+        },
+        {
+            "nominative": "šeštadienis",
+            "genitive": "šeštadienio",
+            "dative": "šeštadieniui",
+            "accusative": "šeštadienį",
+            "instrumental": "šeštadieniu",
+            "locative": "šeštadienyje",
+            "vocative": "šeštadieni",
+            "ru": "суббота"
+        },
+        {
+            "nominative": "sekmadienis",
+            "genitive": "sekmadienio",
+            "dative": "sekmadieniui",
+            "accusative": "sekmadienį",
+            "instrumental": "sekmadieniu",
+            "locative": "sekmadienyje",
+            "vocative": "sekmadieni",
+            "ru": "воскресенье"
+        },
+        {
+            "nominative": "savaitgalis",
+            "genitive": "savaitgalio",
+            "dative": "savaitgaliui",
+            "accusative": "savaitgalį",
+            "instrumental": "savaitgaliu",
+            "locative": "savaitgalyje",
+            "vocative": "savaitgali",
+            "ru": "выходные"
+        },
+        {
+            "nominative": "mėnuo",
+            "genitive": "mėnesio",
+            "dative": "mėnesiui",
+            "accusative": "mėnesį",
+            "instrumental": "mėnesiu",
+            "locative": "mėnesyje",
+            "vocative": "mėnesi",
+            "ru": "месяц"
+        },
+        {
+            "nominative": "valanda",
+            "genitive": "valandos",
+            "dative": "valandai",
+            "accusative": "valandą",
+            "instrumental": "valanda",
+            "locative": "valandoje",
+            "vocative": "valanda",
+            "ru": "час"
+        },
+        {
+            "nominative": "minutė",
+            "genitive": "minutės",
+            "dative": "minutei",
+            "accusative": "minutę",
+            "instrumental": "minute",
+            "locative": "minutėje",
+            "vocative": "minute",
+            "ru": "минута"
+        },
+        {
+            "nominative": "ateitis",
+            "genitive": "ateities",
+            "dative": "ateičiai",
+            "accusative": "ateitį",
+            "instrumental": "ateitimi",
+            "locative": "ateityje",
+            "vocative": "ateitie",
+            "ru": "будущее"
+        },
+        {
+            "nominative": "praeitis",
+            "genitive": "praeities",
+            "dative": "praeičiai",
+            "accusative": "praeitį",
+            "instrumental": "praeitimi",
+            "locative": "praeityje",
+            "vocative": "praeitie",
+            "ru": "прошлое"
+        }
+    ]
 }

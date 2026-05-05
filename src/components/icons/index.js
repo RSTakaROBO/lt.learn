@@ -1,5 +1,5 @@
-export { QuizBarSvg } from "./QuizBarSvg.jsx";
-export { QuizBarStatsIcon } from "./QuizBarStatsIcon.jsx";
-export { QuizBarHomeIcon } from "./QuizBarHomeIcon.jsx";
-export { QuizBarHelpIcon } from "./QuizBarHelpIcon.jsx";
-export { QuizBarSettingsIcon } from "./QuizBarSettingsIcon.jsx";
+export { QuizBarSvg } from "./QuizBarSvg.jsx"
+export { QuizBarStatsIcon } from "./QuizBarStatsIcon.jsx"
+export { QuizBarHomeIcon } from "./QuizBarHomeIcon.jsx"
+export { QuizBarHelpIcon } from "./QuizBarHelpIcon.jsx"
+export { QuizBarSettingsIcon } from "./QuizBarSettingsIcon.jsx"

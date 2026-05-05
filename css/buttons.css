@@ -1,141 +1,141 @@
 .btn,
 .lt-char {
-  box-shadow: 0 var(--btn-shadow-drop) 0 0 var(--btn-shadow-depth);
+    box-shadow: 0 var(--btn-shadow-drop) 0 0 var(--btn-shadow-depth);
 }
 
 .btn {
-  -webkit-appearance: none;
-  appearance: none;
-  font: inherit;
-  font-weight: 600;
-  padding: 0.55rem 1rem;
-  border-radius: var(--radius-control);
-  border: none;
-  background: transparent;
-  color: var(--text);
-  cursor: pointer;
+    -webkit-appearance: none;
+    appearance: none;
+    font: inherit;
+    font-weight: 600;
+    padding: 0.55rem 1rem;
+    border-radius: var(--radius-control);
+    border: none;
+    background: transparent;
+    color: var(--text);
+    cursor: pointer;
 }
 
 .btn.ghost {
-  background: var(--control-ghost-bg) !important;
-  background-color: var(--control-ghost-bg) !important;
-  background-image: none !important;
-  color: var(--text) !important;
+    background: var(--control-ghost-bg) !important;
+    background-color: var(--control-ghost-bg) !important;
+    background-image: none !important;
+    color: var(--text) !important;
 }
 
 .btn.primary {
-  background: var(--accent) !important;
-  background-color: var(--accent) !important;
-  background-image: none !important;
-  color: var(--text-on-accent) !important;
-  font-weight: 600;
-  -webkit-appearance: none;
-  appearance: none;
+    background: var(--accent) !important;
+    background-color: var(--accent) !important;
+    background-image: none !important;
+    color: var(--text-on-accent) !important;
+    font-weight: 600;
+    -webkit-appearance: none;
+    appearance: none;
 }
 
 .btn.primary:hover {
-  filter: brightness(1.06);
+    filter: brightness(1.06);
 }
 
 .btn.start {
-  background: var(--success) !important;
-  background-color: var(--success) !important;
-  background-image: none !important;
-  color: var(--text-on-success) !important;
-  font-weight: 600;
-  -webkit-appearance: none;
-  appearance: none;
+    background: var(--success) !important;
+    background-color: var(--success) !important;
+    background-image: none !important;
+    color: var(--text-on-success) !important;
+    font-weight: 600;
+    -webkit-appearance: none;
+    appearance: none;
 }
 
 .btn.start:hover {
-  filter: brightness(1.06);
+    filter: brightness(1.06);
 }
 
 .btn.vocab-choice {
-  padding: 0.5rem 0.55rem;
-  border-radius: var(--radius-tile);
-  background: color-mix(in srgb, var(--text) 15%, transparent);
+    padding: 0.5rem 0.55rem;
+    border-radius: var(--radius-tile);
+    background: color-mix(in srgb, var(--text) 15%, transparent);
 }
 
 /* Ответ пользователя: кольцо по периметру внутри кнопки */
 .btn.vocab-choice.vocab-choice--picked {
-  position: relative;
-  z-index: 1;
-  box-shadow:
-    inset 0 0 0 3px var(--accent),
-    0 var(--btn-shadow-drop) 0 0 var(--btn-shadow-depth);
+    position: relative;
+    z-index: 1;
+    box-shadow:
+        inset 0 0 0 3px var(--accent),
+        0 var(--btn-shadow-drop) 0 0 var(--btn-shadow-depth);
 }
 
 .btn:disabled {
-  opacity: 0.45;
-  cursor: not-allowed;
+    opacity: 0.45;
+    cursor: not-allowed;
 }
 
 .btn.vocab-choice:disabled {
-  opacity: 1;
-  cursor: default;
+    opacity: 1;
+    cursor: default;
 }
 
 .btn.vocab-choice.vocab-choice--correct {
-  background: var(--success);
-  background-color: var(--success) !important;
-  background-image: none !important;
-  color: var(--text-on-success) !important;
-  -webkit-text-fill-color: var(--text-on-success) !important;
-  font-weight: 600;
-  outline: none;
-  cursor: pointer;
-  -webkit-appearance: none;
-  appearance: none;
+    background: var(--success);
+    background-color: var(--success) !important;
+    background-image: none !important;
+    color: var(--text-on-success) !important;
+    -webkit-text-fill-color: var(--text-on-success) !important;
+    font-weight: 600;
+    outline: none;
+    cursor: pointer;
+    -webkit-appearance: none;
+    appearance: none;
 }
 
 .btn.vocab-choice.vocab-choice--correct:hover {
-  background: var(--success);
-  background-color: var(--success) !important;
-  background-image: none !important;
-  color: var(--text-on-success) !important;
-  -webkit-text-fill-color: var(--text-on-success) !important;
-  filter: brightness(1.06);
+    background: var(--success);
+    background-color: var(--success) !important;
+    background-image: none !important;
+    color: var(--text-on-success) !important;
+    -webkit-text-fill-color: var(--text-on-success) !important;
+    filter: brightness(1.06);
 }
 
 .btn.vocab-choice.vocab-choice--picked.vocab-choice--correct:hover {
-  box-shadow:
-    inset 0 0 0 3px var(--accent),
-    0 var(--btn-shadow-drop) 0 0 var(--btn-shadow-depth);
+    box-shadow:
+        inset 0 0 0 3px var(--accent),
+        0 var(--btn-shadow-drop) 0 0 var(--btn-shadow-depth);
 }
 
 .btn.vocab-choice.vocab-choice--wrong,
 .btn.vocab-choice.vocab-choice--wrong:disabled {
-  background: var(--error);
-  background-color: var(--error) !important;
-  background-image: none !important;
-  color: var(--text-on-error) !important;
-  -webkit-text-fill-color: var(--text-on-error) !important;
-  font-weight: 600;
-  outline: none;
-  opacity: 1;
-  cursor: default;
-  -webkit-appearance: none;
-  appearance: none;
+    background: var(--error);
+    background-color: var(--error) !important;
+    background-image: none !important;
+    color: var(--text-on-error) !important;
+    -webkit-text-fill-color: var(--text-on-error) !important;
+    font-weight: 600;
+    outline: none;
+    opacity: 1;
+    cursor: default;
+    -webkit-appearance: none;
+    appearance: none;
 }
 
 .btn.vocab-choice.vocab-choice--wrong:hover {
-  background: var(--error);
-  background-color: var(--error) !important;
-  background-image: none !important;
-  color: var(--text-on-error) !important;
-  -webkit-text-fill-color: var(--text-on-error) !important;
-  filter: brightness(1.06);
+    background: var(--error);
+    background-color: var(--error) !important;
+    background-image: none !important;
+    color: var(--text-on-error) !important;
+    -webkit-text-fill-color: var(--text-on-error) !important;
+    filter: brightness(1.06);
 }
 
 .btn.vocab-choice.vocab-choice--picked.vocab-choice--wrong:hover {
-  box-shadow:
-    inset 0 0 0 3px var(--accent),
-    0 var(--btn-shadow-drop) 0 0 var(--btn-shadow-depth);
+    box-shadow:
+        inset 0 0 0 3px var(--accent),
+        0 var(--btn-shadow-drop) 0 0 var(--btn-shadow-depth);
 }
 
 .btn.ghost:hover:not(.vocab-choice--correct):not(.vocab-choice--wrong) {
-  background: color-mix(in srgb, var(--accent) 12%, var(--control-ghost-bg)) !important;
-  background-color: color-mix(in srgb, var(--accent) 12%, var(--control-ghost-bg)) !important;
-  background-image: none !important;
+    background: color-mix(in srgb, var(--accent) 12%, var(--control-ghost-bg)) !important;
+    background-color: color-mix(in srgb, var(--accent) 12%, var(--control-ghost-bg)) !important;
+    background-image: none !important;
 }

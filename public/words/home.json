@@ -1,137 +1,137 @@
 {
-  "title": "Дом и быт",
-  "words": [
-    {
-      "nominative": "stalas",
-      "genitive": "stalo",
-      "dative": "stalui",
-      "accusative": "stalą",
-      "instrumental": "stalu",
-      "locative": "stale",
-      "vocative": "stale",
-      "ru": "стол"
-    },
-    {
-      "nominative": "kėdė",
-      "genitive": "kėdės",
-      "dative": "kėdei",
-      "accusative": "kėdę",
-      "instrumental": "kėde",
-      "locative": "kėdėje",
-      "vocative": "kėde",
-      "ru": "стул"
-    },
-    {
-      "nominative": "lova",
-      "genitive": "lovos",
-      "dative": "lovai",
-      "accusative": "lovą",
-      "instrumental": "lova",
-      "locative": "lovoje",
-      "vocative": "lova",
-      "ru": "кровать"
-    },
-    {
-      "nominative": "šaldytuvas",
-      "genitive": "šaldytuvo",
-      "dative": "šaldytuvui",
-      "accusative": "šaldytuvą",
-      "instrumental": "šaldytuvu",
-      "locative": "šaldytuve",
-      "vocative": "šaldytuvai",
-      "ru": "холодильник"
-    },
-    {
-      "nominative": "lemputė",
-      "genitive": "lemputės",
-      "dative": "lemputei",
-      "accusative": "lemputę",
-      "instrumental": "lempute",
-      "locative": "lemputėje",
-      "vocative": "lempute",
-      "ru": "лампа"
-    },
-    {
-      "exception": true,
-      "exception_note_ru": "Существительное только во множественном числе (pluralia tantum); парадигма как у мн. ч., не как у одного предмета.",
-      "nominative": "durys",
-      "genitive": "durių",
-      "dative": "durims",
-      "accusative": "duris",
-      "instrumental": "durimis",
-      "locative": "duryse",
-      "vocative": "durys",
-      "ru": "дверь"
-    },
-    {
-      "nominative": "puodelis",
-      "genitive": "puodelio",
-      "dative": "puodeliui",
-      "accusative": "puodelį",
-      "instrumental": "puodeliu",
-      "locative": "puodelyje",
-      "vocative": "puodeli",
-      "ru": "чашка"
-    },
-    {
-      "nominative": "lėkštė",
-      "genitive": "lėkštės",
-      "dative": "lėkštei",
-      "accusative": "lėkštę",
-      "instrumental": "lėkšte",
-      "locative": "lėkštėje",
-      "vocative": "lėkšte",
-      "ru": "тарелка"
-    },
-    {
-      "nominative": "šaukštas",
-      "genitive": "šaukšto",
-      "dative": "šaukštui",
-      "accusative": "šaukštą",
-      "instrumental": "šaukštu",
-      "locative": "šaukšte",
-      "vocative": "šaukštai",
-      "ru": "ложка"
-    },
-    {
-      "nominative": "virtuvė",
-      "genitive": "virtuvės",
-      "dative": "virtuvei",
-      "accusative": "virtuvę",
-      "instrumental": "virtuve",
-      "locative": "virtuvėje",
-      "vocative": "virtuve",
-      "ru": "кухня"
-    },
-    {
-      "nominative": "vonia",
-      "genitive": "vonios",
-      "dative": "voniai",
-      "accusative": "vonią",
-      "instrumental": "vonia",
-      "locative": "vonioje",
-      "vocative": "vonia",
-      "ru": "ванная"
-    },
-    {
-      "nominative": "kilimas",
-      "genitive": "kilimo",
-      "dative": "kilimui",
-      "accusative": "kilimą",
-      "instrumental": "kilimu",
-      "locative": "kilime",
-      "vocative": "kilime",
-      "ru": "ковёр"
-    },
-    {
-      "nominative": "veidrodis",
-      "genitive": "veidrodžio",
-      "dative": "veidrodžiui",
-      "accusative": "veidrodį",
-      "instrumental": "veidrodžiu",
-      "locative": "veidrodyje",
-      "vocative": "veidrodi",
-      "ru": "зеркало"
-    }
-  ]
+    "title": "Дом и быт",
+    "words": [
+        {
+            "nominative": "stalas",
+            "genitive": "stalo",
+            "dative": "stalui",
+            "accusative": "stalą",
+            "instrumental": "stalu",
+            "locative": "stale",
+            "vocative": "stale",
+            "ru": "стол"
+        },
+        {
+            "nominative": "kėdė",
+            "genitive": "kėdės",
+            "dative": "kėdei",
+            "accusative": "kėdę",
+            "instrumental": "kėde",
+            "locative": "kėdėje",
+            "vocative": "kėde",
+            "ru": "стул"
+        },
+        {
+            "nominative": "lova",
+            "genitive": "lovos",
+            "dative": "lovai",
+            "accusative": "lovą",
+            "instrumental": "lova",
+            "locative": "lovoje",
+            "vocative": "lova",
+            "ru": "кровать"
+        },
+        {
+            "nominative": "šaldytuvas",
+            "genitive": "šaldytuvo",
+            "dative": "šaldytuvui",
+            "accusative": "šaldytuvą",
+            "instrumental": "šaldytuvu",
+            "locative": "šaldytuve",
+            "vocative": "šaldytuvai",
+            "ru": "холодильник"
+        },
+        {
+            "nominative": "lemputė",
+            "genitive": "lemputės",
+            "dative": "lemputei",
+            "accusative": "lemputę",
+            "instrumental": "lempute",
+            "locative": "lemputėje",
+            "vocative": "lempute",
+            "ru": "лампа"
+        },
+        {
+            "exception": true,
+            "exception_note_ru": "Существительное только во множественном числе (pluralia tantum); парадигма как у мн. ч., не как у одного предмета.",
+            "nominative": "durys",
+            "genitive": "durių",
+            "dative": "durims",
+            "accusative": "duris",
+            "instrumental": "durimis",
+            "locative": "duryse",
+            "vocative": "durys",
+            "ru": "дверь"
+        },
+        {
+            "nominative": "puodelis",
+            "genitive": "puodelio",
+            "dative": "puodeliui",
+            "accusative": "puodelį",
+            "instrumental": "puodeliu",
+            "locative": "puodelyje",
+            "vocative": "puodeli",
+            "ru": "чашка"
+        },
+        {
+            "nominative": "lėkštė",
+            "genitive": "lėkštės",
+            "dative": "lėkštei",
+            "accusative": "lėkštę",
+            "instrumental": "lėkšte",
+            "locative": "lėkštėje",
+            "vocative": "lėkšte",
+            "ru": "тарелка"
+        },
+        {
+            "nominative": "šaukštas",
+            "genitive": "šaukšto",
+            "dative": "šaukštui",
+            "accusative": "šaukštą",
+            "instrumental": "šaukštu",
+            "locative": "šaukšte",
+            "vocative": "šaukštai",
+            "ru": "ложка"
+        },
+        {
+            "nominative": "virtuvė",
+            "genitive": "virtuvės",
+            "dative": "virtuvei",
+            "accusative": "virtuvę",
+            "instrumental": "virtuve",
+            "locative": "virtuvėje",
+            "vocative": "virtuve",
+            "ru": "кухня"
+        },
+        {
+            "nominative": "vonia",
+            "genitive": "vonios",
+            "dative": "voniai",
+            "accusative": "vonią",
+            "instrumental": "vonia",
+            "locative": "vonioje",
+            "vocative": "vonia",
+            "ru": "ванная"
+        },
+        {
+            "nominative": "kilimas",
+            "genitive": "kilimo",
+            "dative": "kilimui",
+            "accusative": "kilimą",
+            "instrumental": "kilimu",
+            "locative": "kilime",
+            "vocative": "kilime",
+            "ru": "ковёр"
+        },
+        {
+            "nominative": "veidrodis",
+            "genitive": "veidrodžio",
+            "dative": "veidrodžiui",
+            "accusative": "veidrodį",
+            "instrumental": "veidrodžiu",
+            "locative": "veidrodyje",
+            "vocative": "veidrodi",
+            "ru": "зеркало"
+        }
+    ]
 }
