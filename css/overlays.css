@@ -1,138 +1,43 @@
-.stats-overlay,
-.settings-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 100;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  justify-content: flex-start;
-  padding-top: max(var(--shell-pad-top), env(safe-area-inset-top, 0px));
-  padding-right: max(var(--shell-pad-x), env(safe-area-inset-right, 0px));
-  padding-left: max(var(--shell-pad-x), env(safe-area-inset-left, 0px));
-  background: transparent;
-}
-
-.stats-overlay {
-  padding-bottom: var(--shell-pad-bottom);
-  overflow: hidden;
-}
-
-/* Настройки / промпт: длинный контент крутится всем оверлеем; полосу у края экрана не показываем */
-.settings-overlay {
-  padding-bottom: calc(env(safe-area-inset-bottom, 0px) + var(--shell-pad-bottom-extra));
-  overflow-x: hidden;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-  overscroll-behavior-y: contain;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-}
-
-.settings-overlay::-webkit-scrollbar {
-  display: none;
-  width: 0 !important;
-  height: 0 !important;
-  appearance: none;
-  background: transparent;
-}
+/* Оболочка модалок: см. css/app-screen.css (.app-screen--modal) */
 
 /* Закрытые модалки не должны перехватывать клики, если base.css / .hidden не подгрузился */
-.stats-overlay.hidden,
-.settings-overlay.hidden,
+.app-screen--modal.hidden,
 .pack-prompt-overlay.hidden,
-.help-hub-overlay.hidden,
 .vocab-round-summary-overlay.hidden {
   display: none !important;
   pointer-events: none !important;
   visibility: hidden !important;
 }
 
-body.stats-modal-open,
-body.settings-modal-open,
 body.pack-prompt-modal-open,
-body.help-hub-modal-open,
-body.vocab-round-summary-modal-open {
+body.vocab-round-summary-modal-open,
+body.help-reference-open {
   overflow-y: hidden;
 }
 
-body.stats-modal-open > .app > *:not(#stats-overlay):not(#settings-overlay):not(#pack-prompt-overlay):not(#help-hub-overlay):not(#vocab-round-summary-overlay):not(.quiz-bottom-bar),
-body.settings-modal-open > .app > *:not(#stats-overlay):not(#settings-overlay):not(#pack-prompt-overlay):not(#help-hub-overlay):not(#vocab-round-summary-overlay):not(.quiz-bottom-bar),
-body.pack-prompt-modal-open > .app > *:not(#stats-overlay):not(#settings-overlay):not(#pack-prompt-overlay):not(#help-hub-overlay):not(#vocab-round-summary-overlay):not(.quiz-bottom-bar),
-body.help-hub-modal-open > .app > *:not(#stats-overlay):not(#settings-overlay):not(#pack-prompt-overlay):not(#help-hub-overlay):not(#vocab-round-summary-overlay):not(.quiz-bottom-bar),
-body.vocab-round-summary-modal-open > .app > *:not(#stats-overlay):not(#settings-overlay):not(#pack-prompt-overlay):not(#help-hub-overlay):not(#vocab-round-summary-overlay):not(.quiz-bottom-bar) {
+body.pack-prompt-modal-open > .app > *:not(#stats-overlay):not(#settings-shell):not(#pack-prompt-overlay):not(#help-hub-shell):not(#vocab-round-summary-overlay):not(.quiz-bottom-bar),
+body.vocab-round-summary-modal-open > .app > *:not(#stats-overlay):not(#settings-shell):not(#pack-prompt-overlay):not(#help-hub-shell):not(#vocab-round-summary-overlay):not(.quiz-bottom-bar) {
   visibility: hidden;
   pointer-events: none;
 }
 
-body.stats-modal-open #stats-overlay,
-body.settings-modal-open #settings-overlay,
 body.pack-prompt-modal-open #pack-prompt-overlay,
-body.help-hub-modal-open #help-hub-overlay,
 body.vocab-round-summary-modal-open #vocab-round-summary-overlay {
   visibility: visible;
   pointer-events: auto;
 }
 
-body.stats-modal-open .quiz-bottom-bar,
-body.settings-modal-open .quiz-bottom-bar,
 body.pack-prompt-modal-open .quiz-bottom-bar,
-body.help-hub-modal-open .quiz-bottom-bar,
 body.vocab-round-summary-modal-open .quiz-bottom-bar {
   z-index: 110;
 }
 
-.stats-panel,
-.settings-panel {
-  flex: 1 1 0;
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  max-width: var(--shell-max-width);
-  min-height: 0;
-  margin: 0 auto;
-  overflow: visible;
-  background-color: var(--surface);
-}
-
-.stats-panel > h2,
-.settings-panel > h2 {
-  flex-shrink: 0;
-}
-
-.settings-overlay .settings-panel {
-  /* Панель по высоте контента — скроллит весь .settings-overlay, полоса скрыта на нём */
-  flex: 0 0 auto;
-  min-height: calc(
-    100dvh - max(var(--shell-pad-top), env(safe-area-inset-top, 0px)) -
-      calc(env(safe-area-inset-bottom, 0px) + var(--shell-pad-bottom-extra))
-  );
-}
-
-.settings-overlay .settings-theme-block {
-  flex: 0 0 auto;
-  min-height: 0;
-  overflow: visible;
-}
-
-.settings-overlay .theme-picker.case-grid {
-  flex: 0 0 auto;
-  min-height: unset;
-  overflow: visible;
-  padding-bottom: var(--panel-scroll-pad);
-}
-
-.settings-overlay .settings-panel > .stats-close-actions {
-  margin-bottom: calc(var(--quiz-bottom-bar-clearance) + env(safe-area-inset-bottom, 0px));
-}
-
 .settings-theme-block {
-  flex: 1;
-  min-height: 0;
+  flex-shrink: 0;
   display: flex;
   flex-direction: column;
   margin-top: 0.65rem;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .settings-theme-block > .sub {
@@ -337,17 +242,8 @@ body.vocab-round-summary-modal-open .quiz-bottom-bar {
   text-align: center;
 }
 
-.stats-close-actions {
-  flex-shrink: 0;
-  margin-top: auto;
-}
-
-.stats-close-actions .stats-close-btn {
-  width: 100%;
-}
-
-/* Экран промпта для LLM (кастомный JSON): как настройки — та же панель и темы */
-.pack-prompt-overlay .pack-prompt-panel {
+/* Экран промпта для LLM (кастомный JSON) */
+.pack-prompt-overlay .app-screen__panel {
   display: flex;
   flex-direction: column;
 }
@@ -372,8 +268,6 @@ body.vocab-round-summary-modal-open .quiz-bottom-bar {
 
 .pack-prompt-overlay .pack-prompt-actions {
   flex-shrink: 0;
-  margin-top: var(--panel-section-gap);
-  margin-bottom: calc(var(--quiz-bottom-bar-clearance) + env(safe-area-inset-bottom, 0px));
 }
 
 .pack-prompt-overlay .wizard-pack-actions .btn {
@@ -551,7 +445,6 @@ body.vocab-round-summary-modal-open .quiz-bottom-bar {
   display: grid !important;
   grid-template-columns: 1fr 1fr;
   gap: 0.55rem !important;
-  margin-bottom: calc(var(--quiz-bottom-bar-clearance) + env(safe-area-inset-bottom, 0px));
 }
 
 .vocab-round-summary-actions .btn {

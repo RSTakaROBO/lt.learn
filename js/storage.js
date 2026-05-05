@@ -1,6 +1,6 @@
 import { STORAGE_KEYS, STORAGE_SCHEMA_VERSION, TRAIN_MODE } from "./config.js";
 import { STR } from "./i18n/strings-ru.js";
-import { state } from "./state.js";
+import { getEngine, mutateEngine } from "./trainer-ui-state.js";
 
 /**
  * Миграции по одной ступени: ключ = целевая версия после шага (1 = первое присвоение версии схемы).
@@ -173,22 +173,25 @@ export class TrainerStorage {
 
   saveWordStatsToStorage() {
     try {
-      this._store.setItem(STORAGE_KEYS.wordStats, JSON.stringify(state.wordStats));
+      this._store.setItem(STORAGE_KEYS.wordStats, JSON.stringify(getEngine().wordStats));
     } catch {
       /* ignore */
     }
   }
 
   getWordStat(lemma) {
-    const row = state.wordStats[lemma];
+    const row = getEngine().wordStats[lemma];
     if (!row) return null;
     return normalizeWordStatRow(row);
   }
 
   bumpWordStat(lemma, field) {
     if (!lemma || !["correct", "wrong", "skipped"].includes(field)) return;
-    if (!state.wordStats[lemma]) state.wordStats[lemma] = { correct: 0, wrong: 0, skipped: 0 };
-    state.wordStats[lemma][field]++;
+    mutateEngine((e) => {
+      const ws = e.wordStats;
+      if (!ws[lemma]) ws[lemma] = { correct: 0, wrong: 0, skipped: 0 };
+      ws[lemma][field]++;
+    });
     this.saveWordStatsToStorage();
   }
 
@@ -302,5 +305,13 @@ export const loadVocabBestStreak = () => trainerStorage.loadVocabBestStreak();
 export const saveVocabBestStreakIfHigher = (streak) => trainerStorage.saveVocabBestStreakIfHigher(streak);
 export const loadVocabDirections = () => trainerStorage.loadVocabDirections();
 export const saveVocabDirections = (dirs) => trainerStorage.saveVocabDirections(dirs);
+
+/** Как в мастере до первого сохранения; для логики вне React (события, квиз). */
+export function getResolvedVocabDirections() {
+  const d = loadVocabDirections();
+  if (d) return d;
+  return { ru_to_lt: true, lt_to_ru: false, hardcore: false };
+}
+
 export const loadCasesShowTranslation = () => trainerStorage.loadCasesShowTranslation();
 export const saveCasesShowTranslation = (show) => trainerStorage.saveCasesShowTranslation(show);

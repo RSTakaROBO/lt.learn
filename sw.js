@@ -2,7 +2,7 @@
  * Кэширует оболочку и JSON-словари для офлайна и быстрого старта после установки PWA.
  * При смене списка файлов увеличьте CACHE_VERSION.
  */
-const CACHE_VERSION = "lt-trainer-v198";
+const CACHE_VERSION = "lt-trainer-v212";
 
 /** Пути относительно scope (папка, где лежит sw.js). */
 function precacheUrls(scopeUrl) {
@@ -21,31 +21,28 @@ function precacheUrls(scopeUrl) {
     rel("css/buttons.css"),
     rel("css/overlays.css"),
     rel("css/motion.css"),
-    rel("js/main.js"),
     rel("js/config.js"),
-    rel("js/state.js"),
-    rel("js/dom.js"),
+    rel("js/trainer-ui-state.js"),
+    rel("js/dom-ids.js"),
     rel("js/text-utils.js"),
     rel("js/word-validation.js"),
     rel("js/storage.js"),
     rel("js/random.js"),
     rel("js/theme.js"),
     rel("js/input-lt.js"),
-    rel("js/manifest-packs.js"),
+    rel("js/packs.js"),
     rel("js/custom-packs.js"),
+    rel("js/setup-wizard-handlers.js"),
+    rel("js/trainer-quiz-bar.js"),
     rel("js/i18n/strings-ru.js"),
     rel("js/i18n/core.js"),
     rel("js/i18n/dom.js"),
     rel("js/i18n/llm-prompt-ru.js"),
-    rel("js/custom-pack-llm-prompt.js"),
     rel("js/word-selection.js"),
     rel("js/vocab-round.js"),
     rel("js/word-ru.js"),
-    rel("js/case-selection.js"),
-    rel("js/checkbox-tile.js"),
+    rel("js/vocab-round-summary-handlers.js"),
     rel("js/quiz.js"),
-    rel("js/wizard.js"),
-    rel("js/overlays.js"),
     rel("js/events.js"),
     rel("site.webmanifest"),
     rel("icons/icon-180.png"),

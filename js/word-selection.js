@@ -9,7 +9,7 @@ import {
   WEIGHT_PER_WRONG,
 } from "./config.js";
 import { pickRandom, pickWeightedRandom, shuffleArray } from "./random.js";
-import { state } from "./state.js";
+import { getEngine } from "./trainer-ui-state.js";
 import { computeVocabRoundWeightForLemma, roundLemmaKey } from "./vocab-round.js";
 import { getWordStat, loadVocabDirections } from "./storage.js";
 import { comparableAnswerKey } from "./text-utils.js";
@@ -30,7 +30,7 @@ function computeWordSelectionWeight(word) {
 }
 
 function vocabTaskSelectionWeight(word) {
-  if (state.vocabRound) return computeVocabRoundWeightForLemma(roundLemmaKey(word));
+  if (getEngine().vocabRound) return computeVocabRoundWeightForLemma(roundLemmaKey(word));
   return computeWordSelectionWeight(word);
 }
 
@@ -44,12 +44,12 @@ function countWordsSinceLemma(lemma, history) {
 /** Кандидаты с тем же зазором, что в истории showQuiz (ключ леммы = roundLemmaKey). */
 function usableAfterLemmaGap(usableSubset) {
   let c = usableSubset.filter(
-    (w) => countWordsSinceLemma(roundLemmaKey(w), state.shownLemmaHistory) >= MIN_GAP_BEFORE_SAME_LEMMA,
+    (w) => countWordsSinceLemma(roundLemmaKey(w), getEngine().shownLemmaHistory) >= MIN_GAP_BEFORE_SAME_LEMMA,
   );
   if (!c.length) {
     const lastLemma =
-      state.shownLemmaHistory.length > 0
-        ? state.shownLemmaHistory[state.shownLemmaHistory.length - 1]
+      getEngine().shownLemmaHistory.length > 0
+        ? getEngine().shownLemmaHistory[getEngine().shownLemmaHistory.length - 1]
         : null;
     c =
       lastLemma != null
@@ -63,19 +63,19 @@ function usableAfterLemmaGap(usableSubset) {
 }
 
 export function nextTask(selectedKeys) {
-  const usable = state.wordBank.filter((w) =>
+  const usable = getEngine().wordBank.filter((w) =>
     selectedKeys.every((k) => typeof w[k] === "string" && w[k]),
   );
   if (!usable.length) return null;
 
   let candidates = usable.filter(
-    (w) => countWordsSinceLemma(lemmaKey(w), state.shownLemmaHistory) >= MIN_GAP_BEFORE_SAME_LEMMA,
+    (w) => countWordsSinceLemma(lemmaKey(w), getEngine().shownLemmaHistory) >= MIN_GAP_BEFORE_SAME_LEMMA,
   );
 
   if (!candidates.length) {
     const lastLemma =
-      state.shownLemmaHistory.length > 0
-        ? state.shownLemmaHistory[state.shownLemmaHistory.length - 1]
+      getEngine().shownLemmaHistory.length > 0
+        ? getEngine().shownLemmaHistory[getEngine().shownLemmaHistory.length - 1]
         : null;
     candidates = lastLemma != null ? usable.filter((w) => lemmaKey(w) !== lastLemma) : usable.slice();
   }
@@ -129,7 +129,7 @@ export function nextVocabTask() {
 
   const hardcore = !!dirsCfg.hardcore;
 
-  const usable = state.wordBank.filter(
+  const usable = getEngine().wordBank.filter(
     (w) => hasWordRu(w) && typeof w.nominative === "string" && w.nominative.trim(),
   );
   const minWords = hardcore ? 1 : 4;
@@ -137,8 +137,8 @@ export function nextVocabTask() {
 
   let candidates;
 
-  if (state.vocabRound) {
-    const pool = state.vocabRound.pool;
+  if (getEngine().vocabRound) {
+    const pool = getEngine().vocabRound.pool;
     const poolUsable = usable.filter((w) => pool.has(roundLemmaKey(w)));
     if (!poolUsable.length) return null;
     if (pool.size < MIN_GAP_BEFORE_SAME_LEMMA) {

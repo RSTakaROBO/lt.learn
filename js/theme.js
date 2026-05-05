@@ -1,13 +1,11 @@
 import { STORAGE_KEYS, THEME_IDS } from "./config.js";
-import { els } from "./dom.js";
+import { byId } from "./dom-ids.js";
 
 function isValidThemeId(raw) {
   return typeof raw === "string" && THEME_IDS.includes(raw);
 }
 
 export function loadTheme() {
-  const attr = document.documentElement.getAttribute("data-theme");
-  if (isValidThemeId(attr)) return attr;
   try {
     const t = localStorage.getItem(STORAGE_KEYS.theme);
     return isValidThemeId(t) ? t : null;
@@ -35,8 +33,9 @@ export function updateThemeColorMeta() {
 }
 
 export function syncThemeRadiosFromDom() {
-  if (!els.themePicker) return;
+  const themePicker = byId("theme-picker");
+  if (!themePicker) return;
   const id = loadTheme();
-  const input = id ? els.themePicker.querySelector(`input[name="app-theme"][value="${id}"]`) : null;
+  const input = id ? themePicker.querySelector(`input[name="app-theme"][value="${id}"]`) : null;
   if (input) input.checked = true;
 }

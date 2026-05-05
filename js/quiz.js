@@ -1,21 +1,21 @@
 import { CASE_ORDER, TRAIN_MODE, VOCAB_DIRECTION } from "./config.js";
 import { caseRu } from "./i18n/core.js";
 import { STR } from "./i18n/strings-ru.js";
-import { getCheckedCaseKeys } from "./case-selection.js";
-import { els, refreshQuizElements } from "./dom.js";
-import { state } from "./state.js";
+import { getCheckedCaseKeys, getEngine, mutateEngine } from "./trainer-ui-state.js";
+import { byId } from "./dom-ids.js";
 import { bumpWordStat, loadCasesShowTranslation, saveVocabBestStreakIfHigher } from "./storage.js";
 import { answersMatch, escapeHtml } from "./text-utils.js";
+import { handleAnswerInputShiftCycles, insertAtCaret } from "./input-lt.js";
 import { lemmaKey, nextTask, nextVocabTask } from "./word-selection.js";
 import { vocabRuUserMatches, wordRuFeedbackLine, wordRuPrimary } from "./word-ru.js";
 import {
   applyVocabRoundAnswer,
   applyVocabRoundSkip,
+  openVocabRoundSummaryOverlay,
   roundLemmaKey,
   syncVocabRoundLemmaDots,
   syncVocabRoundProgress,
 } from "./vocab-round.js";
-import { openVocabRoundSummaryOverlay } from "./overlays.js";
 
 const VOCAB_STREAK_MULT_FROM = 5;
 
@@ -65,7 +65,7 @@ function syncVocabStreakMult(opts = {}) {
   const wrap = document.getElementById("vocab-streak-mult");
   const valEl = document.getElementById("vocab-streak-mult-value");
   if (!wrap || !valEl) return;
-  const n = state.vocabCorrectStreak;
+  const n = getEngine().vocabCorrectStreak;
   STREAK_MULT_TIER_CLASSES.forEach((c) => wrap.classList.remove(c));
   wrap.classList.remove("vocab-streak-mult--pulse");
   if (n < VOCAB_STREAK_MULT_FROM) {
@@ -83,7 +83,9 @@ function syncVocabStreakMult(opts = {}) {
 
 /** Сброс серии слов и скрытие множителя (пропуск, меню, новая сессия). */
 export function resetVocabCorrectStreak() {
-  state.vocabCorrectStreak = 0;
+  mutateEngine((e) => {
+    e.vocabCorrectStreak = 0;
+  });
   const wrap = document.getElementById("vocab-streak-mult");
   const valEl = document.getElementById("vocab-streak-mult-value");
   wrap?.classList.add("hidden");
@@ -103,33 +105,34 @@ export function inferQuizMode(task) {
 }
 
 export function setSubmitLabel(answeredFlag) {
-  if (els.btnSubmit) els.btnSubmit.textContent = answeredFlag ? STR.quiz.next : STR.quiz.check;
+  const el = byId("btn-quiz-submit-cases");
+  if (el) el.textContent = answeredFlag ? STR.quiz.next : STR.quiz.check;
 }
 
 export function setQuizSkipAvailable(canSkip) {
-  if (els.btnSkip) els.btnSkip.disabled = !canSkip;
+  if (byId("btn-skip")) byId("btn-skip").disabled = !canSkip;
 }
 
 export function resetQuizSkipButtonAppearance() {
-  if (!els.btnSkip) return;
-  els.btnSkip.textContent = STR.quiz.skip;
-  els.btnSkip.classList.remove("primary", "start");
-  els.btnSkip.classList.add("ghost");
-  els.btnSkip.setAttribute("aria-label", STR.quiz.skip);
+  if (!byId("btn-skip")) return;
+  byId("btn-skip").textContent = STR.quiz.skip;
+  byId("btn-skip").classList.remove("primary", "start");
+  byId("btn-skip").classList.add("ghost");
+  byId("btn-skip").setAttribute("aria-label", STR.quiz.skip);
 }
 
 export function morphQuizSkipToVocabNext() {
-  if (!els.btnSkip) return;
-  els.btnSkip.textContent = STR.quiz.next;
-  els.btnSkip.disabled = false;
-  els.btnSkip.classList.remove("ghost");
-  els.btnSkip.classList.add("primary");
-  els.btnSkip.setAttribute("aria-label", STR.quiz.next);
+  if (!byId("btn-skip")) return;
+  byId("btn-skip").textContent = STR.quiz.next;
+  byId("btn-skip").disabled = false;
+  byId("btn-skip").classList.remove("ghost");
+  byId("btn-skip").classList.add("primary");
+  byId("btn-skip").setAttribute("aria-label", STR.quiz.next);
 }
 
 export function renderVocabChoices(choices) {
-  if (!els.vocabOptions) return;
-  els.vocabOptions.innerHTML = "";
+  if (!byId("vocab-options")) return;
+  byId("vocab-options").innerHTML = "";
   const list = Array.isArray(choices) ? choices : [];
   for (const lem of list) {
     const btn = document.createElement("button");
@@ -138,7 +141,7 @@ export function renderVocabChoices(choices) {
     btn.setAttribute("data-lemma", lem);
     btn.textContent = lem;
     btn.setAttribute("aria-label", lem);
-    els.vocabOptions.appendChild(btn);
+    byId("vocab-options").appendChild(btn);
   }
 }
 
@@ -155,12 +158,10 @@ function syncQuizCardLayoutMode(mode, vocabHardcore = false) {
 
 /** @returns {boolean} false только если режим «слова» запрошен, а разметки vocab в DOM нет */
 export function setQuizUiPhase(phase, opts = {}) {
-  refreshQuizElements();
-
-  const casesEl = els.quizCasesUi;
-  const vocabEl = els.quizVocabUi;
-  const sub = els.btnQuizSubmitCases;
-  const foot = els.quizFooterActions;
+  const casesEl = byId("quiz-cases-ui");
+  const vocabEl = byId("quiz-vocab-ui");
+  const sub = byId("btn-quiz-submit-cases");
+  const foot = byId("quiz-footer-actions");
 
   if (!casesEl || !sub || !foot) return false;
 
@@ -178,7 +179,7 @@ export function setQuizUiPhase(phase, opts = {}) {
 
   if (phase === "vocab-pending") {
     const vocabHardcore = !!opts.vocabHardcore;
-    if (!vocabEl || !els.vocabOptions) {
+    if (!vocabEl || !byId("vocab-options")) {
       syncQuizCardLayoutMode(null);
       casesEl.classList.add("hidden");
       vocabEl?.classList.add("hidden");
@@ -186,9 +187,9 @@ export function setQuizUiPhase(phase, opts = {}) {
       sub.classList.add("hidden");
       foot.classList.add("hidden");
       foot.classList.remove("quiz-footer--single");
-      if (els.feedback) {
-        els.feedback.classList.remove("hidden", "ok", "bad");
-        els.feedback.textContent = STR.quiz.noVocabUi;
+      if (byId("feedback")) {
+        byId("feedback").classList.remove("hidden", "ok", "bad");
+        byId("feedback").textContent = STR.quiz.noVocabUi;
       }
       return false;
     }
@@ -214,20 +215,21 @@ export function setQuizUiPhase(phase, opts = {}) {
 }
 
 export function showQuiz(task) {
-  refreshQuizElements();
   task.mode = inferQuizMode(task);
 
-  state.currentTask = task;
   const histKey = roundLemmaKey(task.word) || String(lemmaKey(task.word) ?? "").trim();
-  if (histKey) state.shownLemmaHistory.push(histKey);
-  state.answered = false;
+  mutateEngine((e) => {
+    e.currentTask = task;
+    if (histKey) e.shownLemmaHistory.push(histKey);
+    e.answered = false;
+  });
   resetQuizSkipButtonAppearance();
   setQuizSkipAvailable(true);
-  els.setup.classList.add("hidden");
-  els.quizShell.classList.remove("hidden");
-  els.feedback.classList.add("hidden");
-  els.feedback.textContent = "";
-  els.feedback.classList.remove("ok", "bad");
+  byId("setup-shell").classList.add("hidden");
+  byId("quiz-shell").classList.remove("hidden");
+  byId("feedback").classList.add("hidden");
+  byId("feedback").textContent = "";
+  byId("feedback").classList.remove("ok", "bad");
 
   if (task.mode === TRAIN_MODE.VOCAB) {
     setSubmitLabel(false);
@@ -245,9 +247,9 @@ export function showQuiz(task) {
       resetVocabCorrectStreak();
       renderVocabChoices([]);
       vocabForm?.classList.add("hidden");
-      els.vocabOptions?.classList.remove("hidden");
-      els.feedback.classList.remove("hidden", "ok", "bad");
-      els.feedback.textContent = STR.quiz.noVocabChoices;
+      byId("vocab-options")?.classList.remove("hidden");
+      byId("feedback").classList.remove("hidden", "ok", "bad");
+      byId("feedback").textContent = STR.quiz.noVocabChoices;
       syncVocabRoundLemmaDots(null);
       syncVocabRoundProgress();
       return;
@@ -255,7 +257,7 @@ export function showQuiz(task) {
 
     if (hardcore) {
       vocabForm?.classList.remove("hidden");
-      els.vocabOptions?.classList.add("hidden");
+      byId("vocab-options")?.classList.add("hidden");
       renderVocabChoices([]);
       if (vocabInput) {
         vocabInput.value = "";
@@ -263,21 +265,21 @@ export function showQuiz(task) {
       }
     } else {
       vocabForm?.classList.add("hidden");
-      els.vocabOptions?.classList.remove("hidden");
+      byId("vocab-options")?.classList.remove("hidden");
     }
 
     const dir = task.vocabDirection || VOCAB_DIRECTION.RU_TO_LT;
-    if (els.vocabRuDisplay) {
+    if (byId("vocab-ru-display")) {
       if (dir === VOCAB_DIRECTION.LT_TO_RU) {
-        els.vocabRuDisplay.textContent = (task.word.nominative || "").trim();
-        els.vocabRuDisplay.setAttribute("lang", "lt");
+        byId("vocab-ru-display").textContent = (task.word.nominative || "").trim();
+        byId("vocab-ru-display").setAttribute("lang", "lt");
       } else {
-        els.vocabRuDisplay.textContent = wordRuPrimary(task.word);
-        els.vocabRuDisplay.setAttribute("lang", "ru");
+        byId("vocab-ru-display").textContent = wordRuPrimary(task.word);
+        byId("vocab-ru-display").setAttribute("lang", "ru");
       }
     }
-    if (els.vocabOptions) {
-      els.vocabOptions.setAttribute(
+    if (byId("vocab-options")) {
+      byId("vocab-options").setAttribute(
         "aria-label",
         dir === VOCAB_DIRECTION.LT_TO_RU ? STR.quiz.vocabLtToRuAria : STR.quiz.vocabRuToLtAria,
       );
@@ -293,13 +295,13 @@ export function showQuiz(task) {
 
   setQuizUiPhase("cases");
   setSubmitLabel(false);
-  els.lemmaDisplay.textContent = casesLemmaDisplayLine(task.word);
+  byId("lemma-display").textContent = casesLemmaDisplayLine(task.word);
 
   const meta = CASE_ORDER.find((c) => c.key === task.targetCase);
-  els.targetCaseDisplay.textContent = meta ? caseRu(meta.key) : task.targetCase;
+  byId("target-case-display").textContent = meta ? caseRu(meta.key) : task.targetCase;
 
-  els.answerInput.value = "";
-  els.answerInput.focus();
+  byId("answer-input").value = "";
+  byId("answer-input").focus();
   syncVocabRoundLemmaDots(null);
   syncVocabRoundProgress();
 }
@@ -319,15 +321,15 @@ function recordQuizOutcome(word, ok) {
 
 export function showFeedback(ok, expected, word) {
   recordQuizOutcome(word, ok);
-  els.feedback.classList.remove("hidden", "ok", "bad");
+  byId("feedback").classList.remove("hidden", "ok", "bad");
   if (ok) {
-    els.feedback.classList.add("ok");
+    byId("feedback").classList.add("ok");
     const exc = exceptionHintHtml(word);
-    els.feedback.innerHTML = exc ? `<p>${escapeHtml(STR.quiz.correct)}</p>${exc}` : `<p>${escapeHtml(STR.quiz.correct)}</p>`;
+    byId("feedback").innerHTML = exc ? `<p>${escapeHtml(STR.quiz.correct)}</p>${exc}` : `<p>${escapeHtml(STR.quiz.correct)}</p>`;
   } else {
-    els.feedback.classList.add("bad");
+    byId("feedback").classList.add("bad");
     const exc = exceptionHintHtml(word);
-    els.feedback.innerHTML = `<p>${escapeHtml(STR.quiz.wrong)}</p><p class="correct-form">${escapeHtml(STR.quiz.correctIs)} <strong>${escapeHtml(expected)}</strong></p>${exc}`;
+    byId("feedback").innerHTML = `<p>${escapeHtml(STR.quiz.wrong)}</p><p class="correct-form">${escapeHtml(STR.quiz.correctIs)} <strong>${escapeHtml(expected)}</strong></p>${exc}`;
   }
 }
 
@@ -335,30 +337,34 @@ export function showFeedback(ok, expected, word) {
 export function finalizeVocabChoice(ok, expected, word, clickedBtn) {
   recordQuizOutcome(word, ok);
   if (ok) {
-    state.vocabCorrectStreak += 1;
-    saveVocabBestStreakIfHigher(state.vocabCorrectStreak);
+    mutateEngine((e) => {
+      e.vocabCorrectStreak += 1;
+    });
+    saveVocabBestStreakIfHigher(getEngine().vocabCorrectStreak);
     syncVocabStreakMult({
-      pulse: state.vocabCorrectStreak >= VOCAB_STREAK_MULT_FROM,
+      pulse: getEngine().vocabCorrectStreak >= VOCAB_STREAK_MULT_FROM,
     });
   } else {
-    if (state.vocabRound) {
-      state.vocabRound.maxStreak = Math.max(state.vocabRound.maxStreak, state.vocabCorrectStreak);
-    }
-    state.vocabCorrectStreak = 0;
+    mutateEngine((e) => {
+      if (e.vocabRound) {
+        e.vocabRound.maxStreak = Math.max(e.vocabRound.maxStreak, e.vocabCorrectStreak);
+      }
+      e.vocabCorrectStreak = 0;
+    });
     syncVocabStreakMult();
   }
   applyVocabRoundAnswer(word, ok);
-  els.feedback.classList.remove("ok", "bad");
-  els.feedback.classList.add("hidden");
-  els.feedback.textContent = "";
-  if (!els.vocabOptions) return;
-  const dir = state.currentTask?.vocabDirection || VOCAB_DIRECTION.RU_TO_LT;
+  byId("feedback").classList.remove("ok", "bad");
+  byId("feedback").classList.add("hidden");
+  byId("feedback").textContent = "";
+  if (!byId("vocab-options")) return;
+  const dir = getEngine().currentTask?.vocabDirection || VOCAB_DIRECTION.RU_TO_LT;
   const correctNom =
     typeof word?.nominative === "string" && word.nominative.trim()
       ? word.nominative.trim()
       : expected;
   const clickedLemma = clickedBtn?.getAttribute("data-lemma") ?? "";
-  els.vocabOptions.querySelectorAll(".vocab-choice").forEach((b) => {
+  byId("vocab-options").querySelectorAll(".vocab-choice").forEach((b) => {
     const lem = b.getAttribute("data-lemma") || "";
     const isExpected =
       dir === VOCAB_DIRECTION.LT_TO_RU ? vocabRuUserMatches(word, lem) : answersMatch(lem, correctNom);
@@ -379,11 +385,14 @@ export function finalizeVocabChoice(ok, expected, word, clickedBtn) {
       ? !vocabRuUserMatches(word, clickedLemma)
       : !answersMatch(clickedLemma, correctNom))
   ) {
+    const vo = byId("vocab-options");
     const wrongBtn =
       clickedBtn?.closest?.(".vocab-choice") ||
-      [...els.vocabOptions.querySelectorAll(".vocab-choice")].find((b) =>
-        answersMatch(b.getAttribute("data-lemma") || "", clickedLemma),
-      );
+      (vo
+        ? [...vo.querySelectorAll(".vocab-choice")].find((b) =>
+            answersMatch(b.getAttribute("data-lemma") || "", clickedLemma),
+          )
+        : undefined);
     wrongBtn?.classList.remove("ghost");
     wrongBtn?.classList.add("vocab-choice--wrong");
     if (wrongBtn) wrongBtn.disabled = true;
@@ -395,13 +404,13 @@ export function finalizeVocabChoice(ok, expected, word, clickedBtn) {
 
 /** Хардкор-слова: первая отправка формы — проверка; вторая — следующее слово. */
 export function processVocabHardcoreSubmit() {
-  if (!state.currentTask?.vocabHardcore || state.currentTask.mode !== TRAIN_MODE.VOCAB) return;
+  if (!getEngine().currentTask?.vocabHardcore || getEngine().currentTask.mode !== TRAIN_MODE.VOCAB) return;
   const vocabInput = document.getElementById("vocab-answer-input");
   if (!vocabInput) return;
 
-  if (!state.answered) {
-    const dir = state.currentTask.vocabDirection || VOCAB_DIRECTION.RU_TO_LT;
-    const word = state.currentTask.word;
+  if (!getEngine().answered) {
+    const dir = getEngine().currentTask.vocabDirection || VOCAB_DIRECTION.RU_TO_LT;
+    const word = getEngine().currentTask.word;
     let expected;
     let ok;
     if (dir === VOCAB_DIRECTION.LT_TO_RU) {
@@ -411,21 +420,25 @@ export function processVocabHardcoreSubmit() {
       expected = (word?.nominative || "").trim();
       ok = answersMatch(vocabInput.value, expected);
     }
-    state.answered = true;
+    mutateEngine((e) => {
+      e.answered = true;
+      if (ok) {
+        e.vocabCorrectStreak += 1;
+      } else {
+        if (e.vocabRound) {
+          e.vocabRound.maxStreak = Math.max(e.vocabRound.maxStreak, e.vocabCorrectStreak);
+        }
+        e.vocabCorrectStreak = 0;
+      }
+    });
     setSubmitLabel(true);
     setQuizSkipAvailable(false);
     if (ok) {
-      state.vocabCorrectStreak += 1;
-      saveVocabBestStreakIfHigher(state.vocabCorrectStreak);
-    } else {
-      if (state.vocabRound) {
-        state.vocabRound.maxStreak = Math.max(state.vocabRound.maxStreak, state.vocabCorrectStreak);
-      }
-      state.vocabCorrectStreak = 0;
+      saveVocabBestStreakIfHigher(getEngine().vocabCorrectStreak);
     }
     showFeedback(ok, expected, word);
     syncVocabStreakMult({
-      pulse: ok && state.vocabCorrectStreak >= VOCAB_STREAK_MULT_FROM,
+      pulse: ok && getEngine().vocabCorrectStreak >= VOCAB_STREAK_MULT_FROM,
     });
     applyVocabRoundAnswer(word, ok);
     return;
@@ -435,16 +448,16 @@ export function processVocabHardcoreSubmit() {
 }
 
 export function advanceVocabQuiz() {
-  if (!state.currentTask || state.currentTask.mode !== TRAIN_MODE.VOCAB || !state.answered) return;
+  if (!getEngine().currentTask || getEngine().currentTask.mode !== TRAIN_MODE.VOCAB || !getEngine().answered) return;
   const task = nextVocabTask();
   if (!task) {
     resetVocabCorrectStreak();
-    if (state.vocabRound && state.vocabRound.pool.size === 0) {
+    if (getEngine().vocabRound && getEngine().vocabRound.pool.size === 0) {
       openVocabRoundSummaryOverlay();
       return;
     }
-    els.feedback.classList.remove("hidden", "ok", "bad");
-    els.feedback.textContent = STR.quiz.noWordsLeft;
+    byId("feedback").classList.remove("hidden", "ok", "bad");
+    byId("feedback").textContent = STR.quiz.noWordsLeft;
     return;
   }
   showQuiz(task);
@@ -453,25 +466,25 @@ export function advanceVocabQuiz() {
 /** После переключения настройки перевода в модалке настроек — обновить подпись на активном экране падежей. */
 export function refreshCasesLemmaDisplayIfActive() {
   if (
-    !state.currentTask ||
-    state.currentTask.mode !== TRAIN_MODE.CASES ||
-    els.quizShell?.classList.contains("hidden") ||
-    !els.lemmaDisplay
+    !getEngine().currentTask ||
+    getEngine().currentTask.mode !== TRAIN_MODE.CASES ||
+    byId("quiz-shell")?.classList.contains("hidden") ||
+    !byId("lemma-display")
   ) {
     return;
   }
-  els.lemmaDisplay.textContent = casesLemmaDisplayLine(state.currentTask.word);
+  byId("lemma-display").textContent = casesLemmaDisplayLine(getEngine().currentTask.word);
 }
 
 export function skipCurrentWord() {
-  if (!state.currentTask || state.answered) return;
-  bumpWordStat(lemmaKey(state.currentTask.word), "skipped");
-  if (state.currentTask.mode === TRAIN_MODE.VOCAB) {
-    applyVocabRoundSkip(state.currentTask.word);
+  if (!getEngine().currentTask || getEngine().answered) return;
+  bumpWordStat(lemmaKey(getEngine().currentTask.word), "skipped");
+  if (getEngine().currentTask.mode === TRAIN_MODE.VOCAB) {
+    applyVocabRoundSkip(getEngine().currentTask.word);
     resetVocabCorrectStreak();
     const task = nextVocabTask();
     if (!task) {
-      if (state.vocabRound && state.vocabRound.pool.size === 0) {
+      if (getEngine().vocabRound && getEngine().vocabRound.pool.size === 0) {
         openVocabRoundSummaryOverlay();
       }
       return;
@@ -483,4 +496,107 @@ export function skipCurrentWord() {
   const task = nextTask(keys);
   if (!task) return;
   showQuiz(task);
+}
+
+/** Обработчики для {@link QuizScreen} (клики и отправка форм). */
+
+export function handleLtCharsToolbarClick(/** @type {Pick<MouseEvent, "target">} */ e, /** @type {string} */ inputId) {
+  const t = e.target;
+  if (!(t instanceof Node)) return;
+  const btn = t instanceof Element ? t.closest(".lt-char") : null;
+  const input = byId(inputId);
+  if (!btn || !(input instanceof HTMLInputElement)) return;
+  const ch = btn.getAttribute("data-char");
+  if (!ch) return;
+  insertAtCaret(input, ch);
+}
+
+export function handleMorphCasesAnswerSubmit(/** @type {Event} */ e) {
+  e.preventDefault();
+  if (!getEngine().currentTask) return;
+  if (getEngine().currentTask.mode === TRAIN_MODE.VOCAB) return;
+
+  const keys = getCheckedCaseKeys();
+  const expected = getEngine().currentTask.word[getEngine().currentTask.targetCase];
+  const answerEl = byId("answer-input");
+  if (!(answerEl instanceof HTMLInputElement)) return;
+  const user = answerEl.value;
+
+  if (!getEngine().answered) {
+    const ok = answersMatch(user, expected);
+    mutateEngine((e) => {
+      e.answered = true;
+    });
+    setSubmitLabel(true);
+    setQuizSkipAvailable(false);
+    showFeedback(ok, expected, getEngine().currentTask.word);
+    return;
+  }
+
+  const task = nextTask(keys);
+  if (!task) {
+    const fb = byId("feedback");
+    if (fb) {
+      fb.classList.remove("hidden", "ok", "bad");
+      fb.textContent = STR.quiz.noWordsLeft;
+    }
+    return;
+  }
+  showQuiz(task);
+}
+
+export function handleVocabChoicesClick(/** @type {Event} */ e) {
+  const t = e.target;
+  if (!(t instanceof Node)) return;
+  const btn = t instanceof Element ? t.closest(".vocab-choice") : null;
+  if (!btn || !getEngine().currentTask || getEngine().currentTask.mode !== TRAIN_MODE.VOCAB) return;
+
+  if (getEngine().answered) {
+    const word = getEngine().currentTask.word;
+    const dir = getEngine().currentTask.vocabDirection || VOCAB_DIRECTION.RU_TO_LT;
+    const lem = btn.getAttribute("data-lemma") || "";
+    const matches =
+      dir === VOCAB_DIRECTION.LT_TO_RU ? vocabRuUserMatches(word, lem) : answersMatch(lem, (word?.nominative || "").trim());
+    if (btn.classList.contains("vocab-choice--correct") && matches) {
+      advanceVocabQuiz();
+    }
+    return;
+  }
+
+  mutateEngine((e) => {
+    e.answered = true;
+  });
+  const dir = getEngine().currentTask.vocabDirection || VOCAB_DIRECTION.RU_TO_LT;
+  const word = getEngine().currentTask.word;
+  const lem = btn.getAttribute("data-lemma") || "";
+  const ok =
+    dir === VOCAB_DIRECTION.LT_TO_RU
+      ? vocabRuUserMatches(word, lem)
+      : answersMatch(lem, (word?.nominative || "").trim());
+  const expected =
+    dir === VOCAB_DIRECTION.LT_TO_RU ? wordRuFeedbackLine(word) : (word?.nominative || "").trim();
+  finalizeVocabChoice(ok, expected, getEngine().currentTask.word, btn);
+  morphQuizSkipToVocabNext();
+}
+
+export function handleQuizSkipButtonClick() {
+  if (getEngine().currentTask?.mode === TRAIN_MODE.VOCAB && getEngine().answered) {
+    if (getEngine().currentTask.vocabHardcore) return;
+    advanceVocabQuiz();
+    return;
+  }
+  skipCurrentWord();
+}
+
+export function handleAnswerFieldKeyDown(/** @type {KeyboardEvent} */ e) {
+  handleAnswerInputShiftCycles(e);
+}
+
+export function handleVocabAnswerFieldKeyDown(/** @type {KeyboardEvent} */ e) {
+  handleAnswerInputShiftCycles(e);
+}
+
+export function handleVocabHardcoreFormSubmit(/** @type {Event} */ e) {
+  e.preventDefault();
+  processVocabHardcoreSubmit();
 }

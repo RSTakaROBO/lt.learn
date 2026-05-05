@@ -9,16 +9,6 @@ function setTitleAttr(el, t) {
   if (el && t) el.setAttribute("title", t);
 }
 
-function fillPackCard(inputId, title, meta) {
-  const input = document.getElementById(inputId);
-  const label = input?.closest("label.pack-card");
-  if (!label) return;
-  const tEl = label.querySelector(".pack-card-title");
-  const mEl = label.querySelector(".pack-card-meta");
-  if (tEl) tEl.textContent = title;
-  if (mEl) mEl.textContent = meta;
-}
-
 function setCasesHelpTableHeaders() {
   const H = STR.help;
   document.querySelectorAll("#cases-help .cases-help-table--one-case thead tr th:nth-child(1)").forEach((th) => {
@@ -108,11 +98,8 @@ export function applyDomI18n() {
   const vd = T.vocabDirection;
   const vdirTitle = document.getElementById("vocab-direction-step-title");
   if (vdirTitle) vdirTitle.textContent = wz.vocabDirectionHeading;
-  fillPackCard("vocab-dir-ru-lt", vd.ruLtTitle, vd.ruLtMeta);
-  fillPackCard("vocab-dir-lt-ru", vd.ltRuTitle, vd.ltRuMeta);
   const hcBlock = document.querySelector(".vocab-hardcore-block");
   setAria(hcBlock, vd.hardcoreBlockAria);
-  fillPackCard("vocab-hardcore", vd.hardcoreTitle, vd.hardcoreMeta);
   const btnVdBack = document.getElementById("btn-vocab-direction-back");
   const btnVdStart = document.getElementById("btn-vocab-direction-start");
   if (btnVdBack) btnVdBack.textContent = ph.back;
@@ -179,7 +166,7 @@ export function applyDomI18n() {
     (document.getElementById("btn-verbs-help-close").textContent = H.close);
 
   const B = T.bottomBar;
-  const bb = document.querySelector(".quiz-bottom-bar");
+  const bb = document.getElementById("quiz-bottom-bar");
   setAria(bb, B.toolbarAria);
   const btnStats = document.getElementById("btn-stats");
   if (btnStats) {
@@ -216,29 +203,6 @@ export function applyDomI18n() {
   const btnHubClose = document.getElementById("btn-help-hub-close");
   if (btnHubClose) btnHubClose.textContent = HH.close;
 
-  const VR = T.vocabRound;
-  const vrs = document.getElementById("vocab-round-summary-title");
-  if (vrs) vrs.textContent = VR.summaryTitle;
-  const btnRep = document.getElementById("btn-vocab-round-summary-repeat");
-  const btnVrOk = document.getElementById("btn-vocab-round-summary-ok");
-  if (btnRep) btnRep.textContent = VR.repeat;
-  if (btnVrOk) btnVrOk.textContent = VR.ok;
-
-  const ST = T.stats;
-  const statsTitle = document.getElementById("stats-title");
-  if (statsTitle) statsTitle.textContent = ST.title;
-  const stTable = document.getElementById("stats-table");
-  if (stTable) {
-    const ths = stTable.querySelectorAll("thead th");
-    if (ths[0]) ths[0].textContent = ST.thWord;
-    if (ths[1]) ths[1].textContent = ST.thCorrect;
-    if (ths[2]) ths[2].textContent = ST.thWrong;
-  }
-  const stEmpty = document.getElementById("stats-empty");
-  if (stEmpty) stEmpty.textContent = ST.empty;
-  const btnStatsClose = document.getElementById("btn-stats-close");
-  if (btnStatsClose) btnStatsClose.textContent = ST.close;
-
   const SE = T.settings;
   const settingsH = document.getElementById("settings-title");
   if (settingsH) settingsH.textContent = SE.title;
@@ -250,13 +214,6 @@ export function applyDomI18n() {
     const titleEl = input.closest("label")?.querySelector(".case-title");
     if (titleEl && T.themes[val]) titleEl.textContent = T.themes[val];
   });
-  const transLabel = document.querySelector('label.pack-card[for="settings-cases-show-translation"]');
-  if (transLabel) {
-    const tEl = transLabel.querySelector(".pack-card-title");
-    const mEl = transLabel.querySelector(".pack-card-meta");
-    if (tEl) tEl.textContent = SE.casesTranslationTitle;
-    if (mEl) mEl.textContent = SE.casesTranslationMeta;
-  }
   const btnSetClose = document.getElementById("btn-settings-close");
   if (btnSetClose) btnSetClose.textContent = SE.close;
 

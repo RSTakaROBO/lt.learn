@@ -100,11 +100,7 @@
   border-bottom: none;
 }
 
-.cases-help-footer-actions {
-  flex-shrink: 0;
-  margin-top: auto;
-}
-
-.cases-help-footer-actions .btn {
+#cases-help .app-screen__footer .btn,
+#verbs-help .app-screen__footer .btn {
   width: 100%;
 }

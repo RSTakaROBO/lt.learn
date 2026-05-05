@@ -7,7 +7,7 @@ import {
 } from "./config.js";
 import { fmt } from "./i18n/core.js";
 import { STR } from "./i18n/strings-ru.js";
-import { state } from "./state.js";
+import { getEngine, mutateEngine, postTrainerUiAction } from "./trainer-ui-state.js";
 import { hasWordRu } from "./word-ru.js";
 
 /** Сколько верных подряд по одному слову — исключение из пула раунда. */
@@ -34,49 +34,53 @@ function ensureRoundRow(vr, lemma) {
  * @returns {boolean}
  */
 export function initVocabRound() {
-  const usable = state.wordBank.filter(
+  const usable = getEngine().wordBank.filter(
     (w) => hasWordRu(w) && typeof w.nominative === "string" && w.nominative.trim(),
   );
-  if (!usable.length) {
-    state.vocabRound = null;
-    syncVocabRoundProgress();
-    syncVocabRoundLemmaDots(null);
-    return false;
-  }
-  const pool = new Set(usable.map((w) => roundLemmaKey(w)).filter(Boolean));
-  const roundRow = {};
-  for (const w of usable) {
-    const k = roundLemmaKey(w);
-    if (k) roundRow[k] = { correct: 0, wrong: 0, skipped: 0 };
-  }
-  state.vocabRound = {
-    pool,
-    initialSize: pool.size,
-    gradedCorrect: 0,
-    gradedWrong: 0,
-    wrongByLemma: Object.create(null),
-    roundRow,
-    lemmaTowardThree: Object.create(null),
-    maxStreak: 0,
-  };
+  let success = true;
+  mutateEngine((e) => {
+    if (!usable.length) {
+      e.vocabRound = null;
+      success = false;
+      return;
+    }
+    const pool = new Set(usable.map((w) => roundLemmaKey(w)).filter(Boolean));
+    const roundRow = {};
+    for (const w of usable) {
+      const k = roundLemmaKey(w);
+      if (k) roundRow[k] = { correct: 0, wrong: 0, skipped: 0 };
+    }
+    e.vocabRound = {
+      pool,
+      initialSize: pool.size,
+      gradedCorrect: 0,
+      gradedWrong: 0,
+      wrongByLemma: Object.create(null),
+      roundRow,
+      lemmaTowardThree: Object.create(null),
+      maxStreak: 0,
+    };
+  });
   syncVocabRoundProgress();
   syncVocabRoundLemmaDots(null);
-  return true;
+  return success;
 }
 
 export function clearVocabRound() {
-  state.vocabRound = null;
+  mutateEngine((e) => {
+    e.vocabRound = null;
+  });
   syncVocabRoundProgress();
   syncVocabRoundLemmaDots(null);
 }
 
 export function isVocabRoundActive() {
-  return !!state.vocabRound;
+  return !!getEngine().vocabRound;
 }
 
 /** Вес слова в раунде (без учёта глобальной статистики). */
 export function computeVocabRoundWeightForLemma(lemma) {
-  const vr = state.vocabRound;
+  const vr = getEngine().vocabRound;
   if (!vr) {
     const z = { correct: 0, wrong: 0, skipped: 0 };
     return weightFromRoundRow(z);
@@ -96,53 +100,60 @@ function weightFromRoundRow(row) {
 
 /** Учитывает ответ по текущей карточке: серия «к 3» только по этой лемме, без сброса при смене карточки на другую. */
 export function applyVocabRoundAnswer(word, ok) {
-  const vr = state.vocabRound;
-  if (!vr) return;
   const lem = roundLemmaKey(word);
   if (!lem) return;
-  const inPool = vr.pool.has(lem);
-  if (!inPool) {
-    if (!ok) vr.lemmaTowardThree[lem] = 0;
-    const slot = vr.lemmaTowardThree[lem];
-    syncVocabRoundLemmaDots(word, typeof slot === "number" ? slot : 0);
-    return;
-  }
-  const row = ensureRoundRow(vr, lem);
-  let dotsForUi = 0;
-  if (ok) {
-    row.correct += 1;
-    vr.gradedCorrect += 1;
-    const n = (vr.lemmaTowardThree[lem] || 0) + 1;
-    vr.lemmaTowardThree[lem] = n;
-    dotsForUi = Math.min(n, VOCAB_ROUND_STREAK_TO_REMOVE);
-    if (n >= VOCAB_ROUND_STREAK_TO_REMOVE) {
-      vr.pool.delete(lem);
-      delete vr.lemmaTowardThree[lem];
-      dotsForUi = VOCAB_ROUND_STREAK_TO_REMOVE;
+  /** @type {{ dots: number }} */
+  const out = { dots: 0 };
+  mutateEngine((e) => {
+    const vr = e.vocabRound;
+    if (!vr) return;
+    const inPool = vr.pool.has(lem);
+    if (!inPool) {
+      if (!ok) vr.lemmaTowardThree[lem] = 0;
+      const slot = vr.lemmaTowardThree[lem];
+      out.dots = typeof slot === "number" ? slot : 0;
+      return;
     }
-  } else {
-    row.wrong += 1;
-    vr.gradedWrong += 1;
-    vr.lemmaTowardThree[lem] = 0;
-    dotsForUi = 0;
-    vr.wrongByLemma[lem] = (vr.wrongByLemma[lem] || 0) + 1;
-  }
-  if (ok) {
-    vr.maxStreak = Math.max(vr.maxStreak, state.vocabCorrectStreak || 0);
-  }
-  syncVocabRoundLemmaDots(word, dotsForUi);
+    const row = ensureRoundRow(vr, lem);
+    let dotsForUi = 0;
+    if (ok) {
+      row.correct += 1;
+      vr.gradedCorrect += 1;
+      const n = (vr.lemmaTowardThree[lem] || 0) + 1;
+      vr.lemmaTowardThree[lem] = n;
+      dotsForUi = Math.min(n, VOCAB_ROUND_STREAK_TO_REMOVE);
+      if (n >= VOCAB_ROUND_STREAK_TO_REMOVE) {
+        vr.pool.delete(lem);
+        delete vr.lemmaTowardThree[lem];
+        dotsForUi = VOCAB_ROUND_STREAK_TO_REMOVE;
+      }
+    } else {
+      row.wrong += 1;
+      vr.gradedWrong += 1;
+      vr.lemmaTowardThree[lem] = 0;
+      dotsForUi = 0;
+      vr.wrongByLemma[lem] = (vr.wrongByLemma[lem] || 0) + 1;
+    }
+    if (ok) {
+      vr.maxStreak = Math.max(vr.maxStreak, e.vocabCorrectStreak || 0);
+    }
+    out.dots = dotsForUi;
+  });
+  syncVocabRoundLemmaDots(word, out.dots);
   syncVocabRoundProgress();
 }
 
 export function applyVocabRoundSkip(word) {
-  const vr = state.vocabRound;
-  if (!vr) return;
   const lem = roundLemmaKey(word);
-  if (!lem || !vr.pool.has(lem)) return;
-  vr.maxStreak = Math.max(vr.maxStreak, state.vocabCorrectStreak || 0);
-  const row = ensureRoundRow(vr, lem);
-  row.skipped += 1;
-  vr.lemmaTowardThree[lem] = 0;
+  if (!lem) return;
+  mutateEngine((e) => {
+    const vr = e.vocabRound;
+    if (!vr || !vr.pool.has(lem)) return;
+    vr.maxStreak = Math.max(vr.maxStreak, e.vocabCorrectStreak || 0);
+    const row = ensureRoundRow(vr, lem);
+    row.skipped += 1;
+    vr.lemmaTowardThree[lem] = 0;
+  });
   syncVocabRoundLemmaDots(word, 0);
   syncVocabRoundProgress();
 }
@@ -155,7 +166,7 @@ export function applyVocabRoundSkip(word) {
 export function syncVocabRoundLemmaDots(word, filledOverride) {
   const wrap = document.getElementById("vocab-round-lemma-dots");
   if (!wrap) return;
-  const vr = state.vocabRound;
+  const vr = getEngine().vocabRound;
   if (!vr || !word) {
     wrap.classList.add("hidden");
     wrap.setAttribute("aria-hidden", "true");
@@ -185,7 +196,7 @@ export function syncVocabRoundProgress() {
   const wrap = document.getElementById("vocab-round-progress");
   const fill = document.getElementById("vocab-round-progress-fill");
   if (!wrap || !fill) return;
-  const vr = state.vocabRound;
+  const vr = getEngine().vocabRound;
   if (!vr || vr.initialSize <= 0) {
     wrap.classList.add("hidden");
     wrap.setAttribute("aria-hidden", "true");
@@ -209,7 +220,7 @@ export function syncVocabRoundProgress() {
 }
 
 export function getVocabRoundSummarySnapshot() {
-  const vr = state.vocabRound;
+  const vr = getEngine().vocabRound;
   if (!vr) return null;
   const graded = vr.gradedCorrect + vr.gradedWrong;
   const accuracyPct = graded > 0 ? Math.round((100 * vr.gradedCorrect) / graded) : null;
@@ -225,4 +236,11 @@ export function getVocabRoundSummarySnapshot() {
     initialSize: vr.initialSize,
     poolLeft: vr.pool.size,
   };
+}
+
+/** Итог раунда «Слова»: открыть модалку (вызывается из quiz). */
+export function openVocabRoundSummaryOverlay() {
+  const snap = getVocabRoundSummarySnapshot();
+  if (!snap) return;
+  postTrainerUiAction({ type: "OVERLAY_OPEN", name: "vocabRound", snapshot: snap });
 }

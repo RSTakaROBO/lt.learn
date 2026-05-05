@@ -151,63 +151,8 @@
 }
 
 /*
- * Пользовательский пак: корзина в одном ряду с галочкой (внутри .pack-card-face),
- * карточка по ширине как у встроенных паков.
- */
-.pack-card--custom-user .pack-card-delete-slot {
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.pack-card-delete-btn {
-  -webkit-appearance: none;
-  appearance: none;
-  box-sizing: border-box;
-  border: none;
-  background: transparent;
-  box-shadow: none;
-  cursor: pointer;
-  border-radius: var(--radius-char);
-  color: var(--error);
-  width: var(--touch-btn-min-h);
-  height: var(--touch-btn-min-h);
-  min-width: var(--touch-btn-min-h);
-  min-height: var(--touch-btn-min-h);
-  aspect-ratio: 1;
-  padding: 0;
-  margin: 0;
-  flex-shrink: 0;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.pack-card-delete-btn svg {
-  display: block;
-  width: 1.35rem;
-  height: 1.35rem;
-}
-
-.pack-card-delete-btn:hover {
-  color: color-mix(in srgb, var(--error) 88%, var(--text));
-  background: color-mix(in srgb, var(--error) 12%, transparent);
-}
-
-.pack-card-delete-btn:focus-visible {
-  outline: 2px solid color-mix(in srgb, var(--error) 55%, transparent);
-  outline-offset: 2px;
-}
-
-.pack-card-delete-btn:active {
-  opacity: 0.88;
-}
-
-/*
  * Чекбокс-карточка — единый паттерн для выбора с галочкой (наборы, падежи и др.).
- * Сборка в DOM: js/checkbox-tile.js → createCheckboxTileLabel().
- * Статическая разметка: см. index.html (настройки, направление перевода).
+ * Разметка: src/components/ui/CheckboxButton.jsx и статика в index.html (настройки и т.д.).
  */
 .pack-card {
   display: block;

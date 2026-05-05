@@ -1,0 +1,57 @@
+@import "../themes.css";
+@import "../css/tokens.css";
+@import "../css/base.css";
+@import "../css/layout.css";
+@import "../css/app-screen.css";
+@import "../css/surfaces-panel.css";
+@import "../css/lists-actions.css";
+@import "../css/reference-help.css";
+@import "../css/quiz-training.css";
+@import "../css/buttons.css";
+@import "../css/overlays.css";
+@import "../css/motion.css";
+
+/* Bridge React mount (#root) into body flex column so .app fills viewport height. */
+#root {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  width: 100%;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.quiz-bottom-bar-inner {
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  gap: 0.28rem !important;
+}
+
+.quiz-bar-btn {
+  min-width: 0 !important;
+}
+
+@media (max-width: 440px) {
+  .quiz-bottom-bar-inner {
+    gap: 0.18rem !important;
+  }
+}
+
+.react-shell {
+  padding: 1rem 1.25rem;
+  max-width: 40rem;
+}
+
+.react-shell__msg {
+  margin: 0;
+  line-height: 1.5;
+}
+
+.react-shell code {
+  font-size: 0.9em;
+}
