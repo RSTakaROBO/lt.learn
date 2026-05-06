@@ -1,3 +1,4 @@
+import { wordsFetchBase } from "./config.js"
 import { fmt } from "./i18n/core.js"
 import { STR } from "./i18n/strings-ru.js"
 import { getEngine, mutateEngine, trainerStore } from "./trainer-ui-state.js"
@@ -46,7 +47,7 @@ export function resolveFilesFromPackIds(packIds) {
 export async function loadWordsFromFiles(refs) {
     if (!Array.isArray(refs) || !refs.length) throw new Error(STR.errors.noFilesToLoad)
 
-    const base = "words/"
+    const base = wordsFetchBase()
     const all = []
     for (const ref of refs) {
         if (typeof ref === "string" && ref.startsWith("custom:")) {

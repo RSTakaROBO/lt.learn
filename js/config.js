@@ -1,5 +1,24 @@
 /** Константы приложения (без побочных эффектов). */
 
+/**
+ * Root path prefix from Vite `base` (e.g. `/lt.learn/` on GitHub Pages). Always ends with `/`.
+ * Relative `fetch("words/…")` breaks when the page URL omits a trailing slash — resolve against this instead.
+ */
+export function staticSiteRootPrefix() {
+    const raw =
+        typeof import.meta !== "undefined" &&
+        import.meta.env &&
+        typeof import.meta.env.BASE_URL === "string"
+            ? import.meta.env.BASE_URL
+            : "/"
+    return raw.endsWith("/") ? raw : `${raw}/`
+}
+
+/** Base URL for word JSON files (`public/words` → `dist/words`). */
+export function wordsFetchBase() {
+    return `${staticSiteRootPrefix()}words/`
+}
+
 export const CASE_BY_KEY = {
     nominative: { key: "nominative", lt: "vardininkas" },
     genitive: { key: "genitive", lt: "kilmininkas" },

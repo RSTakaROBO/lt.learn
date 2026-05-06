@@ -1,7 +1,7 @@
 import { fmt } from "../../js/i18n/core.js"
 import { STR } from "../../js/i18n/strings-ru.js"
 import { hydrateCustomPacksFromStorage, packDisplayTitle } from "../../js/custom-packs.js"
-import { TRAIN_MODE } from "../../js/config.js"
+import { TRAIN_MODE, wordsFetchBase } from "../../js/config.js"
 import {
     isCompleteVerbEntry,
     normalizeWordEntries,
@@ -106,7 +106,7 @@ export function isRenderablePackEntry(p) {
  * @returns {{ packs: object[]; fileMap: Map<string, object|null>; manifestForCache: object }}
  */
 export async function loadAllPacksFromManifest() {
-    const base = "words/"
+    const base = wordsFetchBase()
     const manifestRes = await fetch(`${base}manifest.json`, { cache: "no-store" })
     if (!manifestRes.ok) {
         throw new Error(
