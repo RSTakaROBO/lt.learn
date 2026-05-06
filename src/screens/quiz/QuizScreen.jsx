@@ -337,6 +337,11 @@ export function QuizScreen({ heightMode = "fill", hidden = false } = {}) {
     const skipLabel = isVocab && answered && !isHardcore ? STR.quiz.next : STR.quiz.skip
     const skipDisabled = !task || (answered && !(isVocab && !isHardcore))
     const submitLabel = answered ? STR.quiz.next : STR.quiz.check
+    const quizModeClass = isVocab
+        ? isHardcore
+            ? "quiz--vocab quiz--vocab-hardcore"
+            : "quiz--vocab"
+        : "quiz--cases"
 
     return (
         <AppFlowScreen
@@ -344,7 +349,12 @@ export function QuizScreen({ heightMode = "fill", hidden = false } = {}) {
             heightMode={heightMode}
             className={["quiz-shell", hidden && "hidden"].filter(Boolean).join(" ")}
         >
-            <section id="quiz" className="widget panel app-screen__panel">
+            <section
+                id="quiz"
+                className={["widget panel app-screen__panel", quizModeClass]
+                    .filter(Boolean)
+                    .join(" ")}
+            >
                 <div className="app-screen__body quiz-screen-body">
                     <div id="quiz-cases-ui" className={isVocab ? "hidden" : ""}>
                         <div className="prompt">

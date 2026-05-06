@@ -1,5 +1,4 @@
-import { CASE_ORDER, TRAIN_MODE, VOCAB_DIRECTION } from "./config.js"
-import { caseRu } from "./i18n/core.js"
+import { TRAIN_MODE, VOCAB_DIRECTION } from "./config.js"
 import { STR } from "./i18n/strings-ru.js"
 import {
     getActiveTrainerScreen,
@@ -71,98 +70,6 @@ export function inferQuizMode(task) {
     return TRAIN_MODE.CASES
 }
 
-export function setSubmitLabel(answeredFlag) {
-    const el = byId("btn-quiz-submit-cases")
-    if (el) el.textContent = answeredFlag ? STR.quiz.next : STR.quiz.check
-}
-
-export function setQuizSkipAvailable(canSkip) {
-    if (byId("btn-skip")) byId("btn-skip").disabled = !canSkip
-}
-
-export function resetQuizSkipButtonAppearance() {
-    if (!byId("btn-skip")) return
-    byId("btn-skip").textContent = STR.quiz.skip
-    byId("btn-skip").classList.remove("primary", "start")
-    byId("btn-skip").classList.add("ghost")
-    byId("btn-skip").setAttribute("aria-label", STR.quiz.skip)
-}
-
-export function morphQuizSkipToVocabNext() {
-    if (!byId("btn-skip")) return
-    byId("btn-skip").textContent = STR.quiz.next
-    byId("btn-skip").disabled = false
-    byId("btn-skip").classList.remove("ghost")
-    byId("btn-skip").classList.add("primary")
-    byId("btn-skip").setAttribute("aria-label", STR.quiz.next)
-}
-
-function syncQuizCardLayoutMode(mode, vocabHardcore = false) {
-    const qp = document.getElementById("quiz")
-    if (!qp) return
-    qp.classList.remove("quiz--cases", "quiz--vocab", "quiz--vocab-hardcore")
-    if (mode === "cases") qp.classList.add("quiz--cases")
-    if (mode === "vocab") {
-        qp.classList.add("quiz--vocab")
-        if (vocabHardcore) qp.classList.add("quiz--vocab-hardcore")
-    }
-}
-
-/** @returns {boolean} false только если режим «слова» запрошен, а разметки vocab в DOM нет */
-export function setQuizUiPhase(phase, opts = {}) {
-    const casesEl = byId("quiz-cases-ui")
-    const vocabEl = byId("quiz-vocab-ui")
-    const sub = byId("btn-quiz-submit-cases")
-    const foot = byId("quiz-footer-actions")
-
-    if (!casesEl || !sub || !foot) return false
-
-    if (phase === "cases") {
-        syncQuizCardLayoutMode("cases")
-        foot.classList.remove("hidden")
-        vocabEl?.classList.add("hidden")
-        casesEl.classList.remove("hidden")
-        sub.hidden = false
-        sub.classList.remove("hidden")
-        foot.classList.remove("quiz-footer--single")
-        sub.setAttribute("form", "answer-form")
-        return true
-    }
-
-    if (phase === "vocab-pending") {
-        const vocabHardcore = !!opts.vocabHardcore
-        if (!vocabEl) {
-            syncQuizCardLayoutMode(null)
-            casesEl.classList.add("hidden")
-            vocabEl?.classList.add("hidden")
-            sub.hidden = true
-            sub.classList.add("hidden")
-            foot.classList.add("hidden")
-            foot.classList.remove("quiz-footer--single")
-            setQuizFeedback({ kind: "info", message: STR.quiz.noVocabUi })
-            return false
-        }
-        syncQuizCardLayoutMode("vocab", vocabHardcore)
-        foot.classList.remove("hidden")
-        vocabEl.classList.remove("hidden")
-        casesEl.classList.add("hidden")
-        if (vocabHardcore) {
-            foot.classList.remove("quiz-footer--single")
-            sub.hidden = false
-            sub.classList.remove("hidden")
-            sub.setAttribute("form", "vocab-answer-form")
-        } else {
-            sub.hidden = true
-            sub.classList.add("hidden")
-            foot.classList.add("quiz-footer--single")
-            sub.setAttribute("form", "answer-form")
-        }
-        return true
-    }
-
-    return true
-}
-
 export function showQuiz(task) {
     task.mode = inferQuizMode(task)
     debugQuiz("showQuiz:start", {
@@ -178,71 +85,29 @@ export function showQuiz(task) {
         e.answered = false
         e.vocabChoice = null
     })
-    resetQuizSkipButtonAppearance()
-    setQuizSkipAvailable(true)
     postTrainerUiAction({ type: "SCREEN_SET", screen: "quiz" })
     clearQuizFeedback()
 
     if (task.mode === TRAIN_MODE.VOCAB) {
-        setSubmitLabel(false)
         const hardcore = !!task.vocabHardcore
-        if (!setQuizUiPhase("vocab-pending", { vocabHardcore: hardcore })) {
-            setVocabRoundLemmaDots(null)
-            return
-        }
-
-        const vocabForm = document.getElementById("vocab-answer-form")
         const vocabInput = document.getElementById("vocab-answer-input")
 
         if (!hardcore && (!Array.isArray(task.choices) || task.choices.length < 4)) {
             resetVocabCorrectStreak()
-            vocabForm?.classList.add("hidden")
-            byId("vocab-options")?.classList.remove("hidden")
             setQuizFeedback({ kind: "info", message: STR.quiz.noVocabChoices })
             setVocabRoundLemmaDots(null)
             return
         }
 
         if (hardcore) {
-            vocabForm?.classList.remove("hidden")
-            byId("vocab-options")?.classList.add("hidden")
             if (vocabInput) {
                 vocabInput.value = ""
                 vocabInput.focus()
             }
-        } else {
-            vocabForm?.classList.add("hidden")
-            byId("vocab-options")?.classList.remove("hidden")
-        }
-
-        const dir = task.vocabDirection || VOCAB_DIRECTION.RU_TO_LT
-        if (byId("vocab-ru-display")) {
-            if (dir === VOCAB_DIRECTION.LT_TO_RU) {
-                byId("vocab-ru-display").textContent = wordLemma(task.word)
-                byId("vocab-ru-display").setAttribute("lang", "lt")
-            } else {
-                byId("vocab-ru-display").textContent = wordRuPrimary(task.word)
-                byId("vocab-ru-display").setAttribute("lang", "ru")
-            }
-        }
-        if (byId("vocab-options")) {
-            byId("vocab-options").setAttribute(
-                "aria-label",
-                dir === VOCAB_DIRECTION.LT_TO_RU
-                    ? STR.quiz.vocabLtToRuAria
-                    : STR.quiz.vocabRuToLtAria
-            )
         }
         setVocabRoundLemmaDots(task.word)
         return
     }
-
-    setQuizUiPhase("cases")
-    setSubmitLabel(false)
-    byId("lemma-display").textContent = casesLemmaDisplayLine(task.word)
-
-    const meta = CASE_ORDER.find((c) => c.key === task.targetCase)
-    byId("target-case-display").textContent = meta ? caseRu(meta.key) : task.targetCase
 
     byId("answer-input").value = ""
     byId("answer-input").focus()
@@ -338,8 +203,6 @@ export function processVocabHardcoreSubmit() {
                 e.vocabStreakPulseId = 0
             }
         })
-        setSubmitLabel(true)
-        setQuizSkipAvailable(false)
         if (ok) {
             saveVocabBestStreakIfHigher(getEngine().vocabCorrectStreak)
         }
@@ -452,8 +315,6 @@ export function handleMorphCasesAnswerSubmit(/** @type {Event} */ e) {
         mutateEngine((e) => {
             e.answered = true
         })
-        setSubmitLabel(true)
-        setQuizSkipAvailable(false)
         showFeedback(ok, expected, getEngine().currentTask.word)
         return
     }
@@ -493,7 +354,6 @@ export function handleVocabChoice(lem) {
             : answersMatch(lem, wordLemma(word))
     const expected = dir === VOCAB_DIRECTION.LT_TO_RU ? wordRuFeedbackLine(word) : wordLemma(word)
     finalizeVocabChoice(ok, expected, getEngine().currentTask.word, lem)
-    morphQuizSkipToVocabNext()
 }
 
 export function handleVocabChoicesClick(/** @type {Event} */ e) {
@@ -505,9 +365,7 @@ export function handleVocabChoicesClick(/** @type {Event} */ e) {
 }
 
 export function handleQuizSkipButtonClick() {
-    debugQuiz("handleQuizSkipButtonClick:clicked", {
-        buttonDisabled: byId("btn-skip")?.disabled ?? null,
-    })
+    debugQuiz("handleQuizSkipButtonClick:clicked")
     if (getEngine().currentTask?.mode === TRAIN_MODE.VOCAB && getEngine().answered) {
         if (getEngine().currentTask.vocabHardcore) {
             debugQuiz("handleQuizSkipButtonClick:blocked-hardcore-after-answer")
