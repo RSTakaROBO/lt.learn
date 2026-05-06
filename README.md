@@ -1,48 +1,64 @@
 # LT Learn / Lithuanian trainer
 
-Веб-тренажёр (литовский язык): падежи и словарь. Сборка — **статика** (подходит для **GitHub Pages**).
+Web trainer for Lithuanian (cases and vocabulary). Static **Vite** build, suitable for **GitHub Pages**.
 
-## Требования
+## Requirements
 
-- [Node.js](https://nodejs.org/) **18+** (для `npm` и Vite)
+- [Node.js](https://nodejs.org/) **18+**
 
-## Локальный запуск
+## Install dependencies
 
 ```bash
 npm install
+```
+
+## Run locally (Vite)
+
+```bash
 npm run dev
 ```
 
-Открой в браузере адрес из терминала (обычно `http://localhost:5173/lt.learn/` — см. ниже про `base`).
+Open the URL shown in the terminal (typically `http://localhost:5173/lt.learn/`). That path matches `base` in `vite.config.js`.
 
-## Скрипты
+## Builds
 
-| Команда           | Назначение                             |
-| ----------------- | -------------------------------------- |
-| `npm run dev`     | Режим разработки (HMR)                 |
-| `npm run build`   | Production-сборка в папку `dist/`      |
-| `npm run preview` | Локальный просмотр содержимого `dist/` |
+```bash
+npm run build    # output → dist/
+npm run preview   # serve dist/ locally (default preview port in vite.config.js)
+```
 
-Словари (`public/words/`), иконки и `site.webmanifest` копируются в `dist/` автоматически из `public/`.
+Files under `public/` are copied into `dist/` during `npm run build`.
 
-## Деплой на GitHub Pages
+## Lint / formatting
 
-В `vite.config.js` задано `base: '/lt.learn/'` — путь к репозиторию на Pages:  
-`https://<user>.github.io/lt.learn/`
+Formatting is enforced with **Prettier** (there is no ESLint script).
 
-Если имя репозитория другое — измени `base` на `/<repo>/` и пересобери.
+Check without writing files:
 
-Публикация: в настройках Pages укажи источник (например GitHub Actions или ветку с содержимым `dist/`). Итоговый корень сайта должен совпадать с тем, что ожидает `base`.
+```bash
+npm run format:check
+```
 
-## Структура (важное)
+Apply formatting:
 
-- `src/` — точка входа React (Vite): `main.jsx`, `App.jsx`, агрегированные стили.
-- `css/`, `themes.css` — стили приложения (подключаются из `src/styles.css`).
-- `js/` — модуль логики старого SPA; перенос в React — в процессе.
-- `public/` — статика как есть: `words/`, `icons/`, `site.webmanifest`.
-- HTML в проекте один раз — корневой `index.html` (точка входа Vite); вся разметка приложения в `src/**/*.jsx`.
-- `sw.js` — service worker прежней схемы; с хешированными бандлами Vite его нужно обновить или заменить (например на `vite-plugin-pwa`).
+```bash
+npm run format
+```
 
-## Ограничения `file://`
+## Deploy to GitHub Pages
 
-Загрузка `words/*.json` через `fetch` при открытии файла с диска (`file://`) в браузерах часто блокируется. Для проверки используй `npm run dev` или любой локальный HTTP-сервер для каталога `dist/` после `npm run build`.
+`vite.config.js` sets `base: "/lt.learn/"`, so the app expects:
+
+`https://<username>.github.io/lt.learn/`
+
+If the repository name is different, change `base` to `/<repo-name>/` and rebuild.
+
+1. Build production assets:
+
+    ```bash
+    npm run build
+    ```
+
+2. In the GitHub repo, open **Settings → Pages** and configure the publishing source so visitors get the contents of **`dist/`** as the site (for example a workflow that uploads the `dist` artifact, or another approved Pages setup your org uses).
+
+The live URL path must stay consistent with `base`, or asset and route URLs will break.
