@@ -16,9 +16,11 @@ import {
     isVocabRoundSummaryOpen,
     postTrainerUiAction,
 } from "../../js/trainer-ui-state.js"
-import { dismissVocabRoundSummaryToSetup } from "../../js/vocab-round-summary-handlers.js"
+import { useVocabRoundSummaryActions } from "./useVocabRoundSummaryActions.js"
 
 export function useTrainerKeyboardShortcuts() {
+    const { dismissToSetup } = useVocabRoundSummaryActions()
+
     useEffect(() => {
         function handleKeyDown(e) {
             if (e.key !== "Escape") return
@@ -29,7 +31,7 @@ export function useTrainerKeyboardShortcuts() {
             }
             if (isVocabRoundSummaryOpen()) {
                 e.preventDefault()
-                dismissVocabRoundSummaryToSetup()
+                dismissToSetup()
                 return
             }
             if (isHelpHubOpen()) {
@@ -66,5 +68,5 @@ export function useTrainerKeyboardShortcuts() {
 
         document.addEventListener("keydown", handleKeyDown)
         return () => document.removeEventListener("keydown", handleKeyDown)
-    }, [])
+    }, [dismissToSetup])
 }

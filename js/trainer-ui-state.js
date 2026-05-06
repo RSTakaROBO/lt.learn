@@ -390,10 +390,6 @@ export function closePackPromptOverlay() {
     postTrainerUiAction({ type: "OVERLAY_CLOSE", name: "packPrompt" })
 }
 
-export function closeVocabRoundSummaryOverlay() {
-    postTrainerUiAction({ type: "OVERLAY_CLOSE", name: "vocabRound" })
-}
-
 export function closeCasesHelpOverlay() {
     postTrainerUiAction({ type: "OVERLAY_CLOSE", name: "casesHelp" })
 }

@@ -3,10 +3,7 @@ import { useSelector } from "react-redux"
 import { STR } from "../../../js/i18n/strings-ru.js"
 import { AppModalOverlay } from "../../components/layout/AppModalOverlay.jsx"
 import { Button } from "../../components/ui/Button.jsx"
-import {
-    runVocabRoundSummaryOkFlow,
-    runVocabRoundSummaryRepeatFlow,
-} from "../../../js/vocab-round-summary-handlers.js"
+import { useVocabRoundSummaryActions } from "../../hooks/useVocabRoundSummaryActions.js"
 
 /**
  * Итог раунда «Слова».
@@ -15,6 +12,7 @@ import {
 export function VocabRoundSummaryOverlay({ heightMode = "fill" } = {}) {
     const open = useSelector((s) => s.trainer.overlay.vocabRound)
     const snap = useSelector((s) => s.trainer.vocabRoundSummary)
+    const { closeToSetup, repeatRound } = useVocabRoundSummaryActions()
 
     const VR = STR.vocabRound
 
@@ -33,7 +31,7 @@ export function VocabRoundSummaryOverlay({ heightMode = "fill" } = {}) {
             heightMode={heightMode}
             shellClassName="vocab-round-summary-overlay"
             panelClassName="vocab-round-summary-panel"
-            onBackdropClick={runVocabRoundSummaryOkFlow}
+            onBackdropClick={closeToSetup}
             title={<h2 id="vocab-round-summary-title">{VR.summaryTitle}</h2>}
             footer={
                 <div className="app-screen__footer actions vocab-round-summary-actions">
@@ -41,7 +39,7 @@ export function VocabRoundSummaryOverlay({ heightMode = "fill" } = {}) {
                         type="button"
                         id="btn-vocab-round-summary-repeat"
                         className="stats-close-btn"
-                        onClick={runVocabRoundSummaryRepeatFlow}
+                        onClick={repeatRound}
                     >
                         {VR.repeat}
                     </Button>
@@ -50,7 +48,7 @@ export function VocabRoundSummaryOverlay({ heightMode = "fill" } = {}) {
                         type="button"
                         id="btn-vocab-round-summary-ok"
                         className="stats-close-btn"
-                        onClick={runVocabRoundSummaryOkFlow}
+                        onClick={closeToSetup}
                     >
                         {VR.ok}
                     </Button>
