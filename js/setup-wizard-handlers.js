@@ -26,9 +26,9 @@ import {
     saveVocabDirections,
 } from "./storage.js"
 import { clearVocabRound, initVocabRound } from "./vocab-round.js"
-import { wordLemma } from "./word-entry.js"
+import { isCompleteVerbEntry, wordLemma } from "./word-entry.js"
 import { hasWordRu } from "./wordTranslations.js"
-import { nextTask, nextVocabTask } from "./word-selection.js"
+import { nextTask, nextVerbTask, nextVocabTask } from "./word-selection.js"
 import { resetVocabCorrectStreak, showQuiz } from "./quiz.js"
 
 export async function handlePackJsonInputChange(/** @type {Event} */ ev) {
@@ -130,6 +130,30 @@ export async function handlePacksNextClick() {
                 return
             }
             postTrainerUiAction({ type: "WIZARD_SET_STEP", step: 3 })
+            return
+        }
+        if (loadTrainMode() === TRAIN_MODE.VERBS) {
+            const verbs = getEngine().wordBank.filter(isCompleteVerbEntry)
+            if (!verbs.length) {
+                setWizardStatus("pack", STR.events.verbsAfterPack)
+                return
+            }
+            saveSelectedPacks(ids)
+            clearVocabRound()
+            mutateEngine((e) => {
+                e.shownLemmaHistory = []
+            })
+            resetVocabCorrectStreak()
+            if (!initVocabRound(TRAIN_MODE.VERBS)) {
+                setWizardStatus("pack", STR.events.verbsAfterPack)
+                return
+            }
+            const task = nextVerbTask()
+            if (!task) {
+                setWizardStatus("pack", STR.events.verbsStartFail)
+                return
+            }
+            showQuiz(task)
             return
         }
         postTrainerUiAction({ type: "WIZARD_SET_STEP", step: 3 })

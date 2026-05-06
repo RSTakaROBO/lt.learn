@@ -1,6 +1,7 @@
 import {
     MIN_GAP_BEFORE_SAME_LEMMA,
     TRAIN_MODE,
+    VERB_FORM_KEYS,
     VOCAB_DIRECTION,
     WEIGHT_BASE,
     WEIGHT_MIN,
@@ -13,7 +14,7 @@ import { getEngine } from "./trainer-ui-state.js"
 import { computeVocabRoundWeightForLemma, roundLemmaKey } from "./vocab-round.js"
 import { getWordStat, loadVocabDirections } from "./storage.js"
 import { comparableAnswerKey } from "./text-utils.js"
-import { WORD_ENTRY_TYPE, wordLemma } from "./word-entry.js"
+import { isCompleteVerbEntry, WORD_ENTRY_TYPE, wordLemma } from "./word-entry.js"
 import { hasWordRu, wordRuAcceptedList, wordRuPrimary } from "./wordTranslations.js"
 
 export function lemmaKey(word) {
@@ -213,4 +214,39 @@ export function nextVocabTask(opts = {}) {
     }
 
     return null
+}
+
+export function nextVerbTask(opts = {}) {
+    const excludeLemma = opts.excludeLemma || null
+    const usable = getEngine().wordBank.filter(isCompleteVerbEntry)
+    if (!usable.length) return null
+
+    let candidates = usableAfterLemmaGap(usable)
+    if (getEngine().vocabRound) {
+        const pool = getEngine().vocabRound.pool
+        if (pool.size === 0) return null
+        const poolUsable = usable.filter((w) => pool.has(roundLemmaKey(w)))
+        if (!poolUsable.length) return null
+        candidates = usableAfterLemmaGap(poolUsable)
+    }
+
+    if (excludeLemma) {
+        const filtered = candidates.filter((w) => roundLemmaKey(w) !== excludeLemma)
+        if (filtered.length) {
+            candidates = filtered
+        } else {
+            const fallback = usable.filter((w) => roundLemmaKey(w) !== excludeLemma)
+            if (fallback.length) candidates = fallback
+        }
+    }
+
+    if (!candidates.length) return null
+
+    const word = pickWeightedRandom(candidates, vocabTaskSelectionWeight)
+    const hiddenVerbFormKey = pickRandom(VERB_FORM_KEYS)
+    return {
+        mode: TRAIN_MODE.VERBS,
+        word,
+        hiddenVerbFormKey,
+    }
 }

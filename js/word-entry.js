@@ -1,4 +1,4 @@
-import { CASE_KEYS } from "./config.js"
+import { CASE_KEYS, VERB_FORM_KEYS } from "./config.js"
 
 export const WORD_ENTRY_TYPE = {
     NOUN: "noun",
@@ -40,6 +40,18 @@ function normalizeNounForms(entry) {
     return forms
 }
 
+function normalizeVerbForms(entry) {
+    const source = entry && typeof entry.forms === "object" && entry.forms ? entry.forms : entry
+    const forms = {}
+    for (const key of VERB_FORM_KEYS) {
+        const fallback = key === "infinitive" ? entry?.lemma : ""
+        const value = cleanString(source?.[key]) || cleanString(fallback)
+        if (!value) return null
+        forms[key] = value
+    }
+    return forms
+}
+
 /**
  * Приводит словарную статью к внутреннему формату.
  *
@@ -49,6 +61,26 @@ function normalizeNounForms(entry) {
 export function normalizeWordEntry(raw) {
     if (!raw || typeof raw !== "object" || Array.isArray(raw)) return null
     const type = cleanString(raw.type) || WORD_ENTRY_TYPE.NOUN
+    if (type === WORD_ENTRY_TYPE.VERB) {
+        const lemma = cleanString(raw.lemma)
+        if (!lemma) return null
+        const forms = normalizeVerbForms(raw)
+        return {
+            ...raw,
+            type,
+            lemma,
+            forms: forms || raw.forms,
+            ru_list: normalizeRuList(raw),
+            ...(forms
+                ? {
+                      infinitive: forms.infinitive,
+                      present3: forms.present3,
+                      past3: forms.past3,
+                  }
+                : {}),
+        }
+    }
+
     if (type !== WORD_ENTRY_TYPE.NOUN) {
         const lemma = cleanString(raw.lemma)
         return lemma ? { ...raw, type, lemma, ru_list: normalizeRuList(raw) } : null
@@ -94,4 +126,13 @@ export function isNounEntry(entry) {
 export function isCompleteNounEntry(entry) {
     const normalized = normalizeWordEntry(entry)
     return !!normalized && normalized.type === WORD_ENTRY_TYPE.NOUN
+}
+
+export function isCompleteVerbEntry(entry) {
+    const normalized = normalizeWordEntry(entry)
+    return (
+        !!normalized &&
+        normalized.type === WORD_ENTRY_TYPE.VERB &&
+        VERB_FORM_KEYS.every((key) => typeof normalized[key] === "string" && normalized[key])
+    )
 }

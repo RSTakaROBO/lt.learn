@@ -42,7 +42,17 @@ export const THEME_IDS = ["ocean", "forest", "ember", "paper", "mist"]
 export const TRAIN_MODE = {
     CASES: "cases",
     VOCAB: "vocab",
+    VERBS: "verbs",
 }
+
+export const VERB_FORM_BY_KEY = {
+    infinitive: { key: "infinitive", label: "Инфинитив", lt: "bendratis" },
+    present3: { key: "present3", label: "3 л. наст.", lt: "esamasis laikas" },
+    past3: { key: "past3", label: "3 л. прош.", lt: "būtasis kartinis laikas" },
+}
+
+export const VERB_FORM_ORDER = Object.values(VERB_FORM_BY_KEY)
+export const VERB_FORM_KEYS = VERB_FORM_ORDER.map((form) => form.key)
 
 /** Цикл символов при Shift + эта латинская буква (нижний регистр). */
 export const LT_SHIFT_KEY_CYCLES = {

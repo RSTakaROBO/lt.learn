@@ -1,4 +1,5 @@
 import {
+    TRAIN_MODE,
     WEIGHT_BASE,
     WEIGHT_MIN,
     WEIGHT_PER_CORRECT,
@@ -6,7 +7,7 @@ import {
     WEIGHT_PER_WRONG,
 } from "./config.js"
 import { getEngine, mutateEngine, postTrainerUiAction } from "./trainer-ui-state.js"
-import { wordLemma } from "./word-entry.js"
+import { isCompleteVerbEntry, wordLemma } from "./word-entry.js"
 import { hasWordRu } from "./wordTranslations.js"
 
 /** Сколько верных подряд по одному слову — исключение из пула раунда. */
@@ -32,8 +33,11 @@ function ensureRoundRow(vr, lemma) {
  * Инициализация конечного раунда «Слова»: пул — все подходящие слова из wordBank.
  * @returns {boolean}
  */
-export function initVocabRound() {
-    const usable = getEngine().wordBank.filter((w) => hasWordRu(w) && wordLemma(w))
+export function initVocabRound(mode = TRAIN_MODE.VOCAB) {
+    const usable =
+        mode === TRAIN_MODE.VERBS
+            ? getEngine().wordBank.filter(isCompleteVerbEntry)
+            : getEngine().wordBank.filter((w) => hasWordRu(w) && wordLemma(w))
     let success = true
     mutateEngine((e) => {
         if (!usable.length) {

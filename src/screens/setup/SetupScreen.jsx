@@ -34,6 +34,7 @@ export function SetupScreen({ heightMode = "fill", hidden = false } = {}) {
     const showPacks = step === 2
     const showVocabDir = step === 3 && trainMode === TRAIN_MODE.VOCAB
     const showCases = step === 3 && trainMode === TRAIN_MODE.CASES
+    const totalSteps = trainMode === TRAIN_MODE.VERBS ? 2 : 3
 
     function goWizardStep(next) {
         dispatch({ type: "WIZARD_SET_STEP", step: next })
@@ -42,7 +43,7 @@ export function SetupScreen({ heightMode = "fill", hidden = false } = {}) {
     return (
         <AppFlowScreen id="setup-shell" heightMode={heightMode} className={hidden ? "hidden" : ""}>
             <section id="setup" className="widget panel app-screen__panel">
-                <WizardProgressDots step={step} total={3} />
+                <WizardProgressDots step={Math.min(step, totalSteps)} total={totalSteps} />
 
                 <div id="step-mode" className={wizardStepClass(showMode)}>
                     <header className="wizard-app-head">
@@ -59,6 +60,26 @@ export function SetupScreen({ heightMode = "fill", hidden = false } = {}) {
                             role="group"
                             aria-label={STR.wizard.exerciseTypeAria}
                         >
+                            <Button
+                                variant="modeChoice"
+                                type="button"
+                                id="btn-mode-vocab"
+                                data-train-mode="vocab"
+                                className={
+                                    trainMode === TRAIN_MODE.VOCAB
+                                        ? "mode-choice-btn--active"
+                                        : undefined
+                                }
+                                aria-pressed={trainMode === TRAIN_MODE.VOCAB}
+                                onClick={() => {
+                                    saveTrainMode(TRAIN_MODE.VOCAB)
+                                    dispatch({ type: "WIZARD_CLEAR_STATUS" })
+                                    goWizardStep(2)
+                                }}
+                            >
+                                <span className="mode-choice-title">{STR.mode.vocabTitle}</span>
+                                <span className="mode-choice-desc">{STR.mode.vocabDesc}</span>
+                            </Button>
                             <Button
                                 variant="modeChoice"
                                 type="button"
@@ -82,22 +103,22 @@ export function SetupScreen({ heightMode = "fill", hidden = false } = {}) {
                             <Button
                                 variant="modeChoice"
                                 type="button"
-                                id="btn-mode-vocab"
-                                data-train-mode="vocab"
+                                id="btn-mode-verbs"
+                                data-train-mode="verbs"
                                 className={
-                                    trainMode === TRAIN_MODE.VOCAB
+                                    trainMode === TRAIN_MODE.VERBS
                                         ? "mode-choice-btn--active"
                                         : undefined
                                 }
-                                aria-pressed={trainMode === TRAIN_MODE.VOCAB}
+                                aria-pressed={trainMode === TRAIN_MODE.VERBS}
                                 onClick={() => {
-                                    saveTrainMode(TRAIN_MODE.VOCAB)
+                                    saveTrainMode(TRAIN_MODE.VERBS)
                                     dispatch({ type: "WIZARD_CLEAR_STATUS" })
                                     goWizardStep(2)
                                 }}
                             >
-                                <span className="mode-choice-title">{STR.mode.vocabTitle}</span>
-                                <span className="mode-choice-desc">{STR.mode.vocabDesc}</span>
+                                <span className="mode-choice-title">{STR.mode.verbsTitle}</span>
+                                <span className="mode-choice-desc">{STR.mode.verbsDesc}</span>
                             </Button>
                         </div>
                     </div>

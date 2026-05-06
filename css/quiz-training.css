@@ -6,6 +6,14 @@
     min-height: 0;
 }
 
+#quiz-verbs-ui:not(.hidden) {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--panel-section-gap);
+    min-height: 0;
+}
+
 .vocab-answer-form {
     display: flex;
     flex-direction: column;
@@ -247,6 +255,7 @@
 
 .quiz-shell,
 #quiz.panel.quiz--vocab,
+#quiz.panel.quiz--verbs,
 #quiz-vocab-ui {
     overflow-x: clip;
 }
@@ -311,7 +320,8 @@
 }
 
 #answer-input,
-#vocab-answer-input {
+#vocab-answer-input,
+#verb-answer-input {
     width: 100%;
     font: inherit;
     font-size: 1.15rem;
@@ -324,13 +334,15 @@
 }
 
 #answer-input:focus,
-#vocab-answer-input:focus {
+#vocab-answer-input:focus,
+#verb-answer-input:focus {
     outline: none;
 }
 
 /* Кольцо внутри поля — не обрезается родителем при overflow */
 #answer-input:focus-visible,
-#vocab-answer-input:focus-visible {
+#vocab-answer-input:focus-visible,
+#verb-answer-input:focus-visible {
     outline: calc(var(--stroke) + 1px) solid var(--accent);
     outline-offset: calc(-1 * var(--stroke) - 1px);
 }
@@ -446,6 +458,80 @@
 #quiz.panel.quiz--vocab > .quiz-footer-actions {
     margin-top: auto;
     flex-shrink: 0;
+}
+
+#quiz.panel.quiz--verbs {
+    row-gap: var(--panel-section-gap);
+}
+
+#quiz.panel.quiz--verbs > .quiz-footer-actions {
+    margin-top: auto;
+    flex-shrink: 0;
+}
+
+#quiz.panel.quiz--verbs #feedback:not(.hidden) {
+    margin-top: 0.55rem;
+}
+
+#quiz-verbs-ui > .verb-forms-card {
+    flex-direction: column;
+    align-items: stretch;
+    flex: 0 1 auto;
+    padding: 2.38rem;
+}
+
+#quiz-verbs-ui > .verb-forms-card > .vocab-ru-card-body {
+    width: 100%;
+}
+
+.verb-forms-grid {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(0.55rem, 2vmin, 0.9rem);
+}
+
+.verb-form-card {
+    min-width: 0;
+    padding: 0.5rem 0.08rem;
+    border-radius: var(--radius-control);
+    border: var(--stroke) solid var(--border);
+    background: color-mix(in srgb, var(--bg) 72%, var(--surface));
+    text-align: center;
+}
+
+.verb-form-label {
+    display: block;
+    color: var(--muted);
+    font-size: 0.72rem;
+    font-weight: 700;
+    line-height: 1.2;
+    text-transform: uppercase;
+}
+
+.verb-form-value {
+    display: block;
+    margin-top: 0.92rem;
+    color: var(--accent);
+    font-size: clamp(1.05rem, 4vmin, 1.55rem);
+    font-weight: 700;
+    line-height: 1.2;
+    overflow-wrap: break-word;
+}
+
+.verb-form-card--hidden {
+    border-color: color-mix(in srgb, var(--accent) 45%, var(--border));
+    background: color-mix(in srgb, var(--accent) 10%, var(--surface-elevated));
+}
+
+.verb-form-card--hidden .verb-form-value {
+    color: var(--muted);
+}
+
+@media (max-width: 600px) {
+    .verb-forms-grid {
+        grid-template-columns: 1fr;
+    }
 }
 
 /* Хардкор-слова: карточка слова выше (поле ввода и буквы съедают экран — даём слову воздух), футер без «прижима к низу» */

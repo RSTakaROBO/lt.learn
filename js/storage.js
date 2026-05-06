@@ -137,7 +137,7 @@ export class TrainerStorage {
     loadTrainMode() {
         try {
             const m = this._store.getItem(STORAGE_KEYS.trainMode)
-            if (m === TRAIN_MODE.VOCAB || m === TRAIN_MODE.CASES) return m
+            if (m === TRAIN_MODE.VOCAB || m === TRAIN_MODE.CASES || m === TRAIN_MODE.VERBS) return m
         } catch {
             /* ignore */
         }
@@ -146,7 +146,11 @@ export class TrainerStorage {
 
     saveTrainMode(mode) {
         try {
-            if (mode === TRAIN_MODE.VOCAB || mode === TRAIN_MODE.CASES) {
+            if (
+                mode === TRAIN_MODE.VOCAB ||
+                mode === TRAIN_MODE.CASES ||
+                mode === TRAIN_MODE.VERBS
+            ) {
                 this._store.setItem(STORAGE_KEYS.trainMode, mode)
             }
         } catch {

@@ -1,11 +1,12 @@
 import { useCallback } from "react"
 
 import { STR } from "../../js/i18n/strings-ru.js"
+import { TRAIN_MODE } from "../../js/config.js"
 import { resetVocabCorrectStreak, showQuiz } from "../../js/quiz.js"
-import { getResolvedVocabDirections } from "../../js/storage.js"
+import { getResolvedVocabDirections, loadTrainMode } from "../../js/storage.js"
 import { mutateEngine } from "../../js/trainer-ui-state.js"
 import { clearVocabRound, initVocabRound } from "../../js/vocab-round.js"
-import { nextVocabTask } from "../../js/word-selection.js"
+import { nextVerbTask, nextVocabTask } from "../../js/word-selection.js"
 import { useTrainerDispatch } from "../context/TrainerAppContext.jsx"
 
 export function useVocabRoundSummaryActions() {
@@ -46,16 +47,22 @@ export function useVocabRoundSummaryActions() {
         })
         resetVocabCorrectStreak()
 
-        if (!initVocabRound()) {
-            goToSetup(3, STR.events.roundNoWords)
+        const trainMode = loadTrainMode() || TRAIN_MODE.VOCAB
+        const fallbackStep = trainMode === TRAIN_MODE.VERBS ? 2 : 3
+        if (!initVocabRound(trainMode)) {
+            goToSetup(fallbackStep, STR.events.roundNoWords)
             return
         }
 
-        const task = nextVocabTask()
+        const task = trainMode === TRAIN_MODE.VERBS ? nextVerbTask() : nextVocabTask()
         if (!task) {
+            if (trainMode === TRAIN_MODE.VERBS) {
+                goToSetup(fallbackStep, STR.events.verbsStartFail)
+                return
+            }
             const directions = getResolvedVocabDirections()
             goToSetup(
-                3,
+                fallbackStep,
                 directions.hardcore ? STR.events.roundRepeatFail : STR.events.roundRepeatChoices
             )
             return

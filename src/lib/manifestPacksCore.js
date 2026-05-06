@@ -2,15 +2,24 @@ import { fmt } from "../../js/i18n/core.js"
 import { STR } from "../../js/i18n/strings-ru.js"
 import { hydrateCustomPacksFromStorage, packDisplayTitle } from "../../js/custom-packs.js"
 import { TRAIN_MODE } from "../../js/config.js"
-import { normalizeWordEntries, WORD_ENTRY_TYPE, wordLemma } from "../../js/word-entry.js"
+import {
+    isCompleteVerbEntry,
+    normalizeWordEntries,
+    WORD_ENTRY_TYPE,
+    wordLemma,
+} from "../../js/word-entry.js"
 import { hasWordRu } from "../../js/wordTranslations.js"
 
 function countWordsInData(data, trainMode) {
     const words = normalizeWordEntries(data?.words)
-    const suitable =
-        trainMode === TRAIN_MODE.VOCAB
-            ? words.filter((word) => hasWordRu(word) && wordLemma(word)).length
-            : words.filter((word) => word.type === WORD_ENTRY_TYPE.NOUN).length
+    let suitable
+    if (trainMode === TRAIN_MODE.VOCAB) {
+        suitable = words.filter((word) => hasWordRu(word) && wordLemma(word)).length
+    } else if (trainMode === TRAIN_MODE.VERBS) {
+        suitable = words.filter(isCompleteVerbEntry).length
+    } else {
+        suitable = words.filter((word) => word.type === WORD_ENTRY_TYPE.NOUN).length
+    }
     return { total: words.length, suitable }
 }
 

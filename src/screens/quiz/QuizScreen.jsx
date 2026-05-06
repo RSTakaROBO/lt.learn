@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react"
 import { shallowEqual, useSelector } from "react-redux"
 
-import { TRAIN_MODE, VOCAB_DIRECTION } from "../../../js/config.js"
+import { TRAIN_MODE, VERB_FORM_ORDER, VOCAB_DIRECTION } from "../../../js/config.js"
 import { caseRu, fmt } from "../../../js/i18n/core.js"
 import { STR } from "../../../js/i18n/strings-ru.js"
 import { VOCAB_ROUND_STREAK_TO_REMOVE } from "../../../js/vocab-round.js"
@@ -11,6 +11,7 @@ import { Button } from "../../components/ui/Button.jsx"
 import {
     handleMorphCasesAnswerSubmit,
     handleQuizSkipButtonClick,
+    handleVerbFormSubmit,
     handleVocabChoice,
     handleVocabHardcoreFormSubmit,
 } from "../../../js/quiz.js"
@@ -78,7 +79,7 @@ function vocabPromptForTask(task) {
 }
 
 function casesPromptForTask(task, casesShowTranslation) {
-    if (!task?.word || task.mode === TRAIN_MODE.VOCAB) {
+    if (!task?.word || task.mode === TRAIN_MODE.VOCAB || task.mode === TRAIN_MODE.VERBS) {
         return { lemma: "", targetCase: "" }
     }
     const nom = wordLemma(task.word)
@@ -144,19 +145,52 @@ function VocabChoices({ task, answered, choiceState }) {
     )
 }
 
+function VerbFormsPrompt({ task }) {
+    const hiddenKey = task?.hiddenVerbFormKey
+    const word = task?.word
+
+    return (
+        <div className="verb-forms-grid" aria-label={STR.quiz.verbFormsAria}>
+            {VERB_FORM_ORDER.map((form) => {
+                const hidden = form.key === hiddenKey
+                const value = word?.[form.key] || word?.forms?.[form.key] || STR.quiz.emDash
+                return (
+                    <div
+                        key={form.key}
+                        className={["verb-form-card", hidden && "verb-form-card--hidden"]
+                            .filter(Boolean)
+                            .join(" ")}
+                    >
+                        <span className="verb-form-label">{form.label}</span>
+                        <span className="verb-form-value" lang="lt">
+                            {hidden ? STR.quiz.hiddenVerbForm : value}
+                        </span>
+                    </div>
+                )
+            })}
+        </div>
+    )
+}
+
 function QuizActionButtons({
     answered,
     isHardcore,
+    isVerbs,
     isVocab,
     skipDisabled,
     skipLabel,
     submitHidden,
     submitLabel,
 }) {
+    const submitFormId = isVerbs ? "verb-answer-form" : "answer-form"
     return (
         <>
             <Button
-                variant={isVocab && answered && !isHardcore ? "primary" : "ghost"}
+                variant={
+                    (isVocab && answered && !isHardcore) || (isVerbs && answered)
+                        ? "primary"
+                        : "ghost"
+                }
                 type="button"
                 id="btn-skip"
                 disabled={skipDisabled}
@@ -167,7 +201,7 @@ function QuizActionButtons({
             <Button
                 variant="primary"
                 type="submit"
-                form={isHardcore ? undefined : "answer-form"}
+                form={isHardcore ? undefined : submitFormId}
                 id="btn-quiz-submit-cases"
                 className={submitHidden ? "hidden" : ""}
                 hidden={submitHidden}
@@ -323,8 +357,10 @@ function VocabStreakMultiplier({ streak, pulseId }) {
 export function QuizScreen({ heightMode = "fill", hidden = false } = {}) {
     const answerInputRef = useRef(null)
     const vocabAnswerInputRef = useRef(null)
+    const verbAnswerInputRef = useRef(null)
     const [answerValue, setAnswerValue] = useState("")
     const [vocabAnswerValue, setVocabAnswerValue] = useState("")
+    const [verbAnswerValue, setVerbAnswerValue] = useState("")
     const {
         task,
         answered,
@@ -369,25 +405,37 @@ export function QuizScreen({ heightMode = "fill", hidden = false } = {}) {
     )
     const casesShowTranslation = useSelector((s) => s.trainer.persisted.casesShowTranslation)
     const isVocab = task?.mode === TRAIN_MODE.VOCAB
+    const isVerbs = task?.mode === TRAIN_MODE.VERBS
     const isHardcore = !!task?.vocabHardcore
     const vocabPrompt = vocabPromptForTask(task)
     const casesPrompt = casesPromptForTask(task, casesShowTranslation)
     const showChoices = isVocab && !isHardcore
     const submitHidden = isVocab && !isHardcore
     const footerSingle = showChoices
-    const skipLabel = isVocab && answered && !isHardcore ? STR.quiz.next : STR.quiz.skip
-    const skipDisabled = !task || (answered && !(isVocab && !isHardcore))
+    const skipLabel =
+        (isVocab && answered && !isHardcore) || (isVerbs && answered)
+            ? STR.quiz.next
+            : STR.quiz.skip
+    const skipDisabled = !task || (answered && !(isVocab && !isHardcore) && !isVerbs)
     const submitLabel = answered ? STR.quiz.next : STR.quiz.check
-    const quizModeClass = isVocab
-        ? isHardcore
-            ? "quiz--vocab quiz--vocab-hardcore"
-            : "quiz--vocab"
-        : "quiz--cases"
+    const quizModeClass = isVerbs
+        ? "quiz--verbs"
+        : isVocab
+          ? isHardcore
+              ? "quiz--vocab quiz--vocab-hardcore"
+              : "quiz--vocab"
+          : "quiz--cases"
 
     useEffect(() => {
         if (!task) {
             setAnswerValue("")
             setVocabAnswerValue("")
+            setVerbAnswerValue("")
+            return
+        }
+        if (isVerbs) {
+            setVerbAnswerValue("")
+            requestAnimationFrame(() => verbAnswerInputRef.current?.focus())
             return
         }
         if (isVocab) {
@@ -399,7 +447,7 @@ export function QuizScreen({ heightMode = "fill", hidden = false } = {}) {
         }
         setAnswerValue("")
         requestAnimationFrame(() => answerInputRef.current?.focus())
-    }, [task, isVocab, isHardcore])
+    }, [task, isVocab, isVerbs, isHardcore])
 
     return (
         <AppFlowScreen
@@ -414,7 +462,7 @@ export function QuizScreen({ heightMode = "fill", hidden = false } = {}) {
                     .join(" ")}
             >
                 <div className="app-screen__body quiz-screen-body">
-                    <div id="quiz-cases-ui" className={isVocab ? "hidden" : ""}>
+                    <div id="quiz-cases-ui" className={isVocab || isVerbs ? "hidden" : ""}>
                         <div className="prompt">
                             <div className="vocab-ru-card">
                                 <p className="lemma vocab-ru-display" id="lemma-display">
@@ -542,6 +590,7 @@ export function QuizScreen({ heightMode = "fill", hidden = false } = {}) {
                                     <QuizActionButtons
                                         answered={answered}
                                         isHardcore={isHardcore}
+                                        isVerbs={isVerbs}
                                         isVocab={isVocab}
                                         skipDisabled={skipDisabled}
                                         skipLabel={skipLabel}
@@ -550,6 +599,62 @@ export function QuizScreen({ heightMode = "fill", hidden = false } = {}) {
                                     />
                                 </div>
                             )}
+                        </form>
+                    </div>
+
+                    <div id="quiz-verbs-ui" className={isVerbs ? "" : "hidden"}>
+                        <div className="vocab-ru-card verb-forms-card">
+                            <div className="vocab-ru-card-body">
+                                <VerbFormsPrompt task={task} />
+                            </div>
+                            <VocabStreakMultiplier
+                                streak={vocabStreak}
+                                pulseId={vocabStreakPulseId}
+                            />
+                            <VocabRoundDots dots={roundDots} />
+                        </div>
+                        <VocabRoundProgress progress={roundProgress} />
+                        <form
+                            id="verb-answer-form"
+                            className="vocab-answer-form"
+                            autoComplete="off"
+                            onSubmit={(e) => {
+                                e.preventDefault()
+                                handleVerbFormSubmit(verbAnswerValue)
+                            }}
+                        >
+                            <label className="sr-only" htmlFor="verb-answer-input">
+                                {STR.quiz.answerLabel}
+                            </label>
+                            <input
+                                ref={verbAnswerInputRef}
+                                type="text"
+                                id="verb-answer-input"
+                                value={verbAnswerValue}
+                                placeholder={STR.quiz.answerPlaceholder}
+                                spellCheck={false}
+                                autoCapitalize="off"
+                                onChange={(e) => setVerbAnswerValue(e.target.value)}
+                                onKeyDown={(e) =>
+                                    handleLithuanianShiftKey(
+                                        e,
+                                        verbAnswerValue,
+                                        setVerbAnswerValue,
+                                        verbAnswerInputRef
+                                    )
+                                }
+                            />
+                            <ChartsToolbar
+                                id="verb-lt-chars"
+                                onClick={(e) =>
+                                    handleToolbarClick(
+                                        e,
+                                        verbAnswerValue,
+                                        setVerbAnswerValue,
+                                        verbAnswerInputRef
+                                    )
+                                }
+                            />
                         </form>
                     </div>
 
@@ -569,6 +674,7 @@ export function QuizScreen({ heightMode = "fill", hidden = false } = {}) {
                         <QuizActionButtons
                             answered={answered}
                             isHardcore={isHardcore}
+                            isVerbs={isVerbs}
                             isVocab={isVocab}
                             skipDisabled={skipDisabled}
                             skipLabel={skipLabel}

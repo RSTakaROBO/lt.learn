@@ -58,6 +58,7 @@ export function ManifestPacksProvider({ children }) {
                 wordCountsByMode: {
                     [TRAIN_MODE.CASES]: wordCountsForPack(pack, fileMap, TRAIN_MODE.CASES),
                     [TRAIN_MODE.VOCAB]: wordCountsForPack(pack, fileMap, TRAIN_MODE.VOCAB),
+                    [TRAIN_MODE.VERBS]: wordCountsForPack(pack, fileMap, TRAIN_MODE.VERBS),
                 },
                 safeInputId: safePackInputId(pack.id),
             }))
