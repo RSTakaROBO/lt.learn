@@ -1,5 +1,4 @@
 import { STORAGE_KEYS, THEME_IDS } from "./config.js"
-import { byId } from "./dom-ids.js"
 
 function isValidThemeId(raw) {
     return typeof raw === "string" && THEME_IDS.includes(raw)
@@ -30,12 +29,4 @@ export function updateThemeColorMeta() {
     if (!meta) return
     const bg = getComputedStyle(document.documentElement).getPropertyValue("--bg").trim()
     if (bg) meta.setAttribute("content", bg)
-}
-
-export function syncThemeRadiosFromDom() {
-    const themePicker = byId("theme-picker")
-    if (!themePicker) return
-    const id = loadTheme()
-    const input = id ? themePicker.querySelector(`input[name="app-theme"][value="${id}"]`) : null
-    if (input) input.checked = true
 }
