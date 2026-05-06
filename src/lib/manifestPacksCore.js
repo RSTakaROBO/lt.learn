@@ -2,7 +2,11 @@ import { fmt } from "../../js/i18n/core.js"
 import { STR } from "../../js/i18n/strings-ru.js"
 import { hydrateCustomPacksFromStorage, packDisplayTitle } from "../../js/custom-packs.js"
 import { formatWordCountRu } from "../../js/text-utils.js"
-import { countValidWordsInData } from "../../js/word-validation.js"
+import { normalizeWordEntries } from "../../js/word-entry.js"
+
+function countValidWordsInData(data) {
+    return normalizeWordEntries(data?.words).length
+}
 
 export function normalizeManifest(raw) {
     if (raw.packs && Array.isArray(raw.packs) && raw.packs.length) {
