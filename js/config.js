@@ -1,14 +1,17 @@
 /** Константы приложения (без побочных эффектов). */
 
-export const CASE_ORDER = [
-    { key: "nominative", lt: "vardininkas" },
-    { key: "genitive", lt: "kilmininkas" },
-    { key: "dative", lt: "naudininkas" },
-    { key: "accusative", lt: "galininkas" },
-    { key: "instrumental", lt: "įnagininkas" },
-    { key: "locative", lt: "vietininkas" },
-    { key: "vocative", lt: "šauksmininkas" },
-]
+export const CASE_BY_KEY = {
+    nominative: { key: "nominative", lt: "vardininkas" },
+    genitive: { key: "genitive", lt: "kilmininkas" },
+    dative: { key: "dative", lt: "naudininkas" },
+    accusative: { key: "accusative", lt: "galininkas" },
+    instrumental: { key: "instrumental", lt: "įnagininkas" },
+    locative: { key: "locative", lt: "vietininkas" },
+    vocative: { key: "vocative", lt: "šauksmininkas" },
+}
+
+export const CASE_ORDER = Object.values(CASE_BY_KEY)
+export const CASE_KEYS = CASE_ORDER.map((c) => c.key)
 
 export const STORAGE_KEYS = {
     /** Версия схемы данных приложения (миграции в js/storage.js). */

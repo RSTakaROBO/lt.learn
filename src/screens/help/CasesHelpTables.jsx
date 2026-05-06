@@ -1,3 +1,4 @@
+import { CASE_BY_KEY } from "../../../js/config.js"
 import { caseRu } from "../../../js/i18n/core.js"
 import { STR } from "../../../js/i18n/strings-ru.js"
 
@@ -15,11 +16,13 @@ function CaseTableHead() {
 }
 
 function CaseTitle({ caseKey, children }) {
+    const lt = children ?? CASE_BY_KEY[caseKey]?.lt ?? caseKey
+
     return (
         <>
             <span className="cases-help-ru-case">{caseRu(caseKey)}</span>
             <span lang="lt" className="cases-help-lt-sub">
-                {children}
+                {lt}
             </span>
         </>
     )
@@ -31,7 +34,7 @@ export function CasesHelpTables() {
         <>
             <section className="cases-help-case-block" aria-labelledby="ch-kil">
                 <h3 className="cases-help-table-title" id="ch-kil">
-                    <CaseTitle caseKey="genitive">kilmininkas</CaseTitle>
+                    <CaseTitle caseKey="genitive" />
                 </h3>
                 <div className="cases-help-table-wrap">
                     <table className="cases-help-table cases-help-table--one-case">
@@ -110,7 +113,7 @@ export function CasesHelpTables() {
 
             <section className="cases-help-case-block" aria-labelledby="ch-naud">
                 <h3 className="cases-help-table-title" id="ch-naud">
-                    <CaseTitle caseKey="dative">naudininkas</CaseTitle>
+                    <CaseTitle caseKey="dative" />
                 </h3>
                 <div className="cases-help-table-wrap">
                     <table className="cases-help-table cases-help-table--one-case">
@@ -189,7 +192,7 @@ export function CasesHelpTables() {
 
             <section className="cases-help-case-block" aria-labelledby="ch-gal">
                 <h3 className="cases-help-table-title" id="ch-gal">
-                    <CaseTitle caseKey="accusative">galininkas</CaseTitle>
+                    <CaseTitle caseKey="accusative" />
                 </h3>
                 <div className="cases-help-table-wrap">
                     <table className="cases-help-table cases-help-table--one-case">
@@ -268,7 +271,7 @@ export function CasesHelpTables() {
 
             <section className="cases-help-case-block" aria-labelledby="ch-inag">
                 <h3 className="cases-help-table-title" id="ch-inag">
-                    <CaseTitle caseKey="instrumental">įnagininkas</CaseTitle>
+                    <CaseTitle caseKey="instrumental" />
                 </h3>
                 <div className="cases-help-table-wrap">
                     <table className="cases-help-table cases-help-table--one-case">
@@ -347,7 +350,7 @@ export function CasesHelpTables() {
 
             <section className="cases-help-case-block" aria-labelledby="ch-viet">
                 <h3 className="cases-help-table-title" id="ch-viet">
-                    <CaseTitle caseKey="locative">vietininkas</CaseTitle>
+                    <CaseTitle caseKey="locative" />
                 </h3>
                 <div className="cases-help-table-wrap">
                     <table className="cases-help-table cases-help-table--one-case">
@@ -426,7 +429,7 @@ export function CasesHelpTables() {
 
             <section className="cases-help-case-block" aria-labelledby="ch-sauk">
                 <h3 className="cases-help-table-title" id="ch-sauk">
-                    <CaseTitle caseKey="vocative">šauksmininkas</CaseTitle>
+                    <CaseTitle caseKey="vocative" />
                 </h3>
                 <div className="cases-help-table-wrap">
                     <table className="cases-help-table cases-help-table--one-case">

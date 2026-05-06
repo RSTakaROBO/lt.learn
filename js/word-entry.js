@@ -1,12 +1,10 @@
-import { CASE_ORDER } from "./config.js"
+import { CASE_KEYS } from "./config.js"
 
 export const WORD_ENTRY_TYPE = {
     NOUN: "noun",
     VERB: "verb",
     ADJECTIVE: "adjective",
 }
-
-const CASE_KEYS = CASE_ORDER.map((c) => c.key)
 
 function cleanString(value) {
     return typeof value === "string" ? value.trim() : ""
