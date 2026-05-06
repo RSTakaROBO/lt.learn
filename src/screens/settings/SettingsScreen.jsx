@@ -2,7 +2,6 @@ import { useEffect } from "react"
 
 import { THEME_IDS } from "../../../js/config.js"
 import { STR } from "../../../js/i18n/strings-ru.js"
-import { refreshCasesLemmaDisplayIfActive } from "../../../js/quiz.js"
 import { saveCasesShowTranslation } from "../../../js/storage.js"
 import { AppFlowScreen } from "../../components/layout/AppFlowScreen.jsx"
 import { CheckboxButton } from "../../components/ui/CheckboxButton.jsx"
@@ -76,7 +75,6 @@ export function SettingsScreen({ heightMode = "fill" } = {}) {
                                     const v = e.target.checked
                                     dispatch({ type: "SET_CASES_SHOW_TRANSLATION", value: v })
                                     saveCasesShowTranslation(v)
-                                    refreshCasesLemmaDisplayIfActive()
                                 }}
                             />
                         </ListHolder>

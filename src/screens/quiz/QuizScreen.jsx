@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from "react"
 import { shallowEqual, useSelector } from "react-redux"
 
 import { TRAIN_MODE, VOCAB_DIRECTION } from "../../../js/config.js"
@@ -8,14 +9,12 @@ import { AppFlowScreen } from "../../components/layout/AppFlowScreen.jsx"
 import { ChartsToolbar } from "../../components/ui/ChartsToolbar.jsx"
 import { Button } from "../../components/ui/Button.jsx"
 import {
-    handleAnswerFieldKeyDown,
-    handleLtCharsToolbarClick,
     handleMorphCasesAnswerSubmit,
     handleQuizSkipButtonClick,
-    handleVocabAnswerFieldKeyDown,
     handleVocabChoice,
     handleVocabHardcoreFormSubmit,
 } from "../../../js/quiz.js"
+import { getLithuanianShiftCycleEdit } from "../../../js/input-lt.js"
 import { answersMatch } from "../../../js/text-utils.js"
 import { wordLemma } from "../../../js/word-entry.js"
 import { vocabRuUserMatches, wordRuPrimary } from "../../../js/word-ru.js"
@@ -29,6 +28,44 @@ function vocabStreakTierClass(n) {
     if (n >= 20) return "vocab-streak-mult--t2"
     if (n >= 10) return "vocab-streak-mult--t1"
     return "vocab-streak-mult--t0"
+}
+
+function setCaretOnNextFrame(input, caret) {
+    requestAnimationFrame(() => {
+        input.focus()
+        input.setSelectionRange(caret, caret)
+    })
+}
+
+function insertTextAtInput(input, value, setValue, text) {
+    if (!(input instanceof HTMLInputElement)) return
+    const start = input.selectionStart ?? value.length
+    const end = input.selectionEnd ?? value.length
+    const next = value.slice(0, start) + text + value.slice(end)
+    const caret = start + text.length
+    setValue(next)
+    setCaretOnNextFrame(input, caret)
+}
+
+function handleToolbarClick(e, value, setValue, inputRef) {
+    const target = e.target
+    const btn = target instanceof Element ? target.closest(".lt-char") : null
+    const ch = btn?.getAttribute("data-char")
+    if (!ch) return
+    insertTextAtInput(inputRef.current, value, setValue, ch)
+}
+
+function handleLithuanianShiftKey(e, value, setValue, inputRef) {
+    if (!e.shiftKey || e.ctrlKey || e.altKey || e.metaKey || e.isComposing) return
+    const input = inputRef.current
+    if (!(input instanceof HTMLInputElement)) return
+    const start = input.selectionStart ?? 0
+    const end = input.selectionEnd ?? 0
+    const edit = getLithuanianShiftCycleEdit(value, start, end, e.key)
+    if (!edit) return
+    e.preventDefault()
+    setValue(edit.value)
+    setCaretOnNextFrame(input, edit.caret)
 }
 
 function vocabPromptForTask(task) {
@@ -284,6 +321,10 @@ function VocabStreakMultiplier({ streak, pulseId }) {
  * @param {{ heightMode?: "fill"|"scroll"; hidden?: boolean }} [props]
  */
 export function QuizScreen({ heightMode = "fill", hidden = false } = {}) {
+    const answerInputRef = useRef(null)
+    const vocabAnswerInputRef = useRef(null)
+    const [answerValue, setAnswerValue] = useState("")
+    const [vocabAnswerValue, setVocabAnswerValue] = useState("")
     const {
         task,
         answered,
@@ -343,6 +384,23 @@ export function QuizScreen({ heightMode = "fill", hidden = false } = {}) {
             : "quiz--vocab"
         : "quiz--cases"
 
+    useEffect(() => {
+        if (!task) {
+            setAnswerValue("")
+            setVocabAnswerValue("")
+            return
+        }
+        if (isVocab) {
+            setVocabAnswerValue("")
+            if (isHardcore) {
+                requestAnimationFrame(() => vocabAnswerInputRef.current?.focus())
+            }
+            return
+        }
+        setAnswerValue("")
+        requestAnimationFrame(() => answerInputRef.current?.focus())
+    }, [task, isVocab, isHardcore])
+
     return (
         <AppFlowScreen
             id="quiz-shell"
@@ -371,23 +429,41 @@ export function QuizScreen({ heightMode = "fill", hidden = false } = {}) {
                         <form
                             id="answer-form"
                             autoComplete="off"
-                            onSubmit={handleMorphCasesAnswerSubmit}
+                            onSubmit={(e) => {
+                                e.preventDefault()
+                                handleMorphCasesAnswerSubmit(answerValue)
+                            }}
                         >
                             <label className="sr-only" htmlFor="answer-input">
                                 {STR.quiz.answerLabel}
                             </label>
                             <input
+                                ref={answerInputRef}
                                 type="text"
                                 id="answer-input"
+                                value={answerValue}
                                 placeholder={STR.quiz.answerPlaceholder}
                                 spellCheck={false}
                                 autoCapitalize="off"
-                                onKeyDown={(e) => handleAnswerFieldKeyDown(e.nativeEvent)}
+                                onChange={(e) => setAnswerValue(e.target.value)}
+                                onKeyDown={(e) =>
+                                    handleLithuanianShiftKey(
+                                        e,
+                                        answerValue,
+                                        setAnswerValue,
+                                        answerInputRef
+                                    )
+                                }
                             />
                             <ChartsToolbar
                                 id="lt-chars"
                                 onClick={(e) =>
-                                    handleLtCharsToolbarClick(e.nativeEvent, "answer-input")
+                                    handleToolbarClick(
+                                        e,
+                                        answerValue,
+                                        setAnswerValue,
+                                        answerInputRef
+                                    )
                                 }
                             />
                         </form>
@@ -424,23 +500,41 @@ export function QuizScreen({ heightMode = "fill", hidden = false } = {}) {
                                 .filter(Boolean)
                                 .join(" ")}
                             autoComplete="off"
-                            onSubmit={handleVocabHardcoreFormSubmit}
+                            onSubmit={(e) => {
+                                e.preventDefault()
+                                handleVocabHardcoreFormSubmit(vocabAnswerValue)
+                            }}
                         >
                             <label className="sr-only" htmlFor="vocab-answer-input">
                                 {STR.quiz.answerLabel}
                             </label>
                             <input
+                                ref={vocabAnswerInputRef}
                                 type="text"
                                 id="vocab-answer-input"
+                                value={vocabAnswerValue}
                                 placeholder={STR.quiz.answerPlaceholder}
                                 spellCheck={false}
                                 autoCapitalize="off"
-                                onKeyDown={(e) => handleVocabAnswerFieldKeyDown(e.nativeEvent)}
+                                onChange={(e) => setVocabAnswerValue(e.target.value)}
+                                onKeyDown={(e) =>
+                                    handleLithuanianShiftKey(
+                                        e,
+                                        vocabAnswerValue,
+                                        setVocabAnswerValue,
+                                        vocabAnswerInputRef
+                                    )
+                                }
                             />
                             <ChartsToolbar
                                 id="vocab-lt-chars"
                                 onClick={(e) =>
-                                    handleLtCharsToolbarClick(e.nativeEvent, "vocab-answer-input")
+                                    handleToolbarClick(
+                                        e,
+                                        vocabAnswerValue,
+                                        setVocabAnswerValue,
+                                        vocabAnswerInputRef
+                                    )
                                 }
                             />
                             {isHardcore && (

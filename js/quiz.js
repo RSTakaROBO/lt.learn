@@ -9,13 +9,11 @@ import {
     clearQuizFeedback,
     setQuizFeedback,
 } from "./trainer-ui-state.js"
-import { byId } from "./dom-ids.js"
-import { bumpWordStat, loadCasesShowTranslation, saveVocabBestStreakIfHigher } from "./storage.js"
+import { bumpWordStat, saveVocabBestStreakIfHigher } from "./storage.js"
 import { answersMatch } from "./text-utils.js"
 import { wordLemma } from "./word-entry.js"
-import { handleAnswerInputShiftCycles, insertAtCaret } from "./input-lt.js"
 import { lemmaKey, nextTask, nextVocabTask } from "./word-selection.js"
-import { vocabRuUserMatches, wordRuFeedbackLine, wordRuPrimary } from "./word-ru.js"
+import { vocabRuUserMatches, wordRuFeedbackLine } from "./word-ru.js"
 import {
     applyVocabRoundAnswer,
     applyVocabRoundSkip,
@@ -42,15 +40,6 @@ function debugQuiz(event, data = {}) {
     } catch {
         /* debug only */
     }
-}
-
-function casesLemmaDisplayLine(word) {
-    const nom = wordLemma(word)
-    const hint =
-        loadCasesShowTranslation() === true && wordRuPrimary(word)
-            ? ` (${wordRuPrimary(word)})`
-            : ""
-    return `${nom}${hint}`
 }
 
 /** Сброс серии слов и скрытие множителя (пропуск, меню, новая сессия). */
@@ -90,7 +79,6 @@ export function showQuiz(task) {
 
     if (task.mode === TRAIN_MODE.VOCAB) {
         const hardcore = !!task.vocabHardcore
-        const vocabInput = document.getElementById("vocab-answer-input")
 
         if (!hardcore && (!Array.isArray(task.choices) || task.choices.length < 4)) {
             resetVocabCorrectStreak()
@@ -99,18 +87,10 @@ export function showQuiz(task) {
             return
         }
 
-        if (hardcore) {
-            if (vocabInput) {
-                vocabInput.value = ""
-                vocabInput.focus()
-            }
-        }
         setVocabRoundLemmaDots(task.word)
         return
     }
 
-    byId("answer-input").value = ""
-    byId("answer-input").focus()
     setVocabRoundLemmaDots(null)
 }
 
@@ -169,14 +149,12 @@ export function finalizeVocabChoice(ok, expected, word, pickedLemma = "") {
 }
 
 /** Хардкор-слова: первая отправка формы — проверка; вторая — следующее слово. */
-export function processVocabHardcoreSubmit() {
+export function processVocabHardcoreSubmit(userInput) {
     if (
         !getEngine().currentTask?.vocabHardcore ||
         getEngine().currentTask.mode !== TRAIN_MODE.VOCAB
     )
         return
-    const vocabInput = document.getElementById("vocab-answer-input")
-    if (!vocabInput) return
 
     if (!getEngine().answered) {
         const dir = getEngine().currentTask.vocabDirection || VOCAB_DIRECTION.RU_TO_LT
@@ -185,10 +163,10 @@ export function processVocabHardcoreSubmit() {
         let ok
         if (dir === VOCAB_DIRECTION.LT_TO_RU) {
             expected = wordRuFeedbackLine(word)
-            ok = vocabRuUserMatches(word, vocabInput.value)
+            ok = vocabRuUserMatches(word, userInput)
         } else {
             expected = wordLemma(word)
-            ok = answersMatch(vocabInput.value, expected)
+            ok = answersMatch(userInput, expected)
         }
         mutateEngine((e) => {
             e.answered = true
@@ -234,19 +212,6 @@ export function advanceVocabQuiz() {
     showQuiz(task)
 }
 
-/** После переключения настройки перевода в модалке настроек — обновить подпись на активном экране падежей. */
-export function refreshCasesLemmaDisplayIfActive() {
-    if (
-        !getEngine().currentTask ||
-        getEngine().currentTask.mode !== TRAIN_MODE.CASES ||
-        getActiveTrainerScreen() !== "quiz" ||
-        !byId("lemma-display")
-    ) {
-        return
-    }
-    byId("lemma-display").textContent = casesLemmaDisplayLine(getEngine().currentTask.word)
-}
-
 export function skipCurrentWord() {
     debugQuiz("skipCurrentWord:called")
     if (!getEngine().currentTask || getEngine().answered) {
@@ -285,30 +250,12 @@ export function skipCurrentWord() {
 
 /** Обработчики для {@link QuizScreen} (клики и отправка форм). */
 
-export function handleLtCharsToolbarClick(
-    /** @type {Pick<MouseEvent, "target">} */ e,
-    /** @type {string} */ inputId
-) {
-    const t = e.target
-    if (!(t instanceof Node)) return
-    const btn = t instanceof Element ? t.closest(".lt-char") : null
-    const input = byId(inputId)
-    if (!btn || !(input instanceof HTMLInputElement)) return
-    const ch = btn.getAttribute("data-char")
-    if (!ch) return
-    insertAtCaret(input, ch)
-}
-
-export function handleMorphCasesAnswerSubmit(/** @type {Event} */ e) {
-    e.preventDefault()
+export function handleMorphCasesAnswerSubmit(user) {
     if (!getEngine().currentTask) return
     if (getEngine().currentTask.mode === TRAIN_MODE.VOCAB) return
 
     const keys = getCheckedCaseKeys()
     const expected = getEngine().currentTask.word[getEngine().currentTask.targetCase]
-    const answerEl = byId("answer-input")
-    if (!(answerEl instanceof HTMLInputElement)) return
-    const user = answerEl.value
 
     if (!getEngine().answered) {
         const ok = answersMatch(user, expected)
@@ -378,15 +325,6 @@ export function handleQuizSkipButtonClick() {
     skipCurrentWord()
 }
 
-export function handleAnswerFieldKeyDown(/** @type {KeyboardEvent} */ e) {
-    handleAnswerInputShiftCycles(e)
-}
-
-export function handleVocabAnswerFieldKeyDown(/** @type {KeyboardEvent} */ e) {
-    handleAnswerInputShiftCycles(e)
-}
-
-export function handleVocabHardcoreFormSubmit(/** @type {Event} */ e) {
-    e.preventDefault()
-    processVocabHardcoreSubmit()
+export function handleVocabHardcoreFormSubmit(userInput) {
+    processVocabHardcoreSubmit(userInput)
 }
