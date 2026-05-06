@@ -53,12 +53,19 @@ npm run format
 
 If the repository name is different, change `base` to `/<repo-name>/` and rebuild.
 
-1. Build production assets:
+### GitHub Actions (recommended)
 
-    ```bash
-    npm run build
-    ```
+This repo includes **`.github/workflows/deploy-pages.yml`**. It runs `npm ci`, `npm run build`, and uploads **`dist/`** to Pages.
 
-2. In the GitHub repo, open **Settings → Pages** and configure the publishing source so visitors get the contents of **`dist/`** as the site (for example a workflow that uploads the `dist` artifact, or another approved Pages setup your org uses).
+1. On GitHub: **Settings → Pages → Build and deployment → Source**: choose **GitHub Actions** (not “Deploy from a branch”).
+2. Remove or disable any other workflow that uses **`actions/jekyll-build-pages`**—that path publishes raw repo files (including `index.html` pointing at `/src/App.jsx`), not the Vite bundle.
+3. Push to **`main`** or **`react`** (or run the workflow manually). After **build** + **deploy** jobs succeed, the site should load hashed JS/CSS under `/lt.learn/assets/`.
+
+Local sanity check before pushing:
+
+```bash
+npm run build
+npm run preview
+```
 
 The live URL path must stay consistent with `base`, or asset and route URLs will break.
