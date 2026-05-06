@@ -6,8 +6,10 @@ import {
 } from "../icons/index.js"
 import { Button } from "../ui/Button.jsx"
 import { useTrainerApp } from "../../context/TrainerAppContext.jsx"
-import { handleQuizBarHomeClick } from "../../../js/trainer-quiz-bar.js"
 import { STR } from "../../../js/i18n/strings-ru.js"
+import { resetVocabCorrectStreak } from "../../../js/quiz.js"
+import { mutateEngine } from "../../../js/trainer-ui-state.js"
+import { clearVocabRound } from "../../../js/vocab-round.js"
 
 function barBtnClass(active) {
     return active ? "quiz-bar-btn quiz-bar-btn--active" : "quiz-bar-btn"
@@ -16,8 +18,37 @@ function barBtnClass(active) {
 /** Нижняя панель: статистика, меню, справка, настройки. */
 export function QuizBottomBar() {
     const [state, dispatch] = useTrainerApp()
-    const { stats, helpHub, settings } = state.overlay
+    const { casesHelp, helpHub, settings, stats, verbsHelp } = state.overlay
     const homeActive = !stats && !helpHub && !settings
+
+    const handleHomeClick = () => {
+        dispatch({ type: "OVERLAY_CLOSE", name: "stats" })
+        dispatch({ type: "OVERLAY_CLOSE", name: "settings" })
+        dispatch({ type: "OVERLAY_CLOSE", name: "packPrompt" })
+        dispatch({ type: "OVERLAY_CLOSE", name: "helpHub" })
+        dispatch({ type: "OVERLAY_CLOSE", name: "vocabRound" })
+        clearVocabRound()
+
+        if (casesHelp) {
+            dispatch({ type: "OVERLAY_CLOSE", name: "casesHelp" })
+            return
+        }
+
+        if (verbsHelp) {
+            dispatch({ type: "OVERLAY_CLOSE", name: "verbsHelp" })
+            return
+        }
+
+        dispatch({ type: "SCREEN_SET", screen: "setup" })
+        dispatch({ type: "WIZARD_SET_STEP", step: 1 })
+        dispatch({ type: "WIZARD_CLEAR_STATUS" })
+        dispatch({ type: "QUIZ_CLEAR_FEEDBACK" })
+        resetVocabCorrectStreak()
+        mutateEngine((engine) => {
+            engine.currentTask = null
+            engine.shownLemmaHistory = []
+        })
+    }
 
     return (
         <nav
@@ -46,7 +77,7 @@ export function QuizBottomBar() {
                     className={barBtnClass(homeActive)}
                     aria-label={STR.bottomBar.menuAria}
                     aria-current={homeActive ? "page" : undefined}
-                    onClick={handleQuizBarHomeClick}
+                    onClick={handleHomeClick}
                 >
                     <QuizBarHomeIcon />
                     <span className="quiz-bar-label">{STR.bottomBar.menu}</span>
