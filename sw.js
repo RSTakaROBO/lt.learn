@@ -2,7 +2,7 @@
  * Кэширует оболочку и JSON-словари для офлайна и быстрого старта после установки PWA.
  * При смене списка файлов увеличьте CACHE_VERSION.
  */
-const CACHE_VERSION = "lt-trainer-v220"
+const CACHE_VERSION = "lt-trainer-v221"
 
 /** Пути относительно scope (папка, где лежит sw.js). */
 function precacheUrls(scopeUrl) {
@@ -49,6 +49,7 @@ function precacheUrls(scopeUrl) {
         rel("words/home.json"),
         rel("words/time.json"),
         rel("words/food.json"),
+        rel("words/basic-verbs.json"),
     ]
 }
 
