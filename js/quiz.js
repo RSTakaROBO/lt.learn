@@ -13,7 +13,7 @@ import { bumpWordStat, saveVocabBestStreakIfHigher } from "./storage.js"
 import { answersMatch } from "./text-utils.js"
 import { wordLemma } from "./word-entry.js"
 import { lemmaKey, nextTask, nextVocabTask } from "./word-selection.js"
-import { vocabRuUserMatches, wordRuFeedbackLine } from "./word-ru.js"
+import { vocabRuUserMatches, wordRuFeedbackLine } from "./wordTranslations.js"
 import {
     applyVocabRoundAnswer,
     applyVocabRoundSkip,

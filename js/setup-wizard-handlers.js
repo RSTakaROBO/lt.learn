@@ -27,7 +27,7 @@ import {
 } from "./storage.js"
 import { clearVocabRound, initVocabRound } from "./vocab-round.js"
 import { wordLemma } from "./word-entry.js"
-import { hasWordRu } from "./word-ru.js"
+import { hasWordRu } from "./wordTranslations.js"
 import { nextTask, nextVocabTask } from "./word-selection.js"
 import { resetVocabCorrectStreak, showQuiz } from "./quiz.js"
 

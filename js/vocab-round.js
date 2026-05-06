@@ -7,7 +7,7 @@ import {
 } from "./config.js"
 import { getEngine, mutateEngine, postTrainerUiAction } from "./trainer-ui-state.js"
 import { wordLemma } from "./word-entry.js"
-import { hasWordRu } from "./word-ru.js"
+import { hasWordRu } from "./wordTranslations.js"
 
 /** Сколько верных подряд по одному слову — исключение из пула раунда. */
 export const VOCAB_ROUND_STREAK_TO_REMOVE = 3

@@ -14,7 +14,7 @@ import { computeVocabRoundWeightForLemma, roundLemmaKey } from "./vocab-round.js
 import { getWordStat, loadVocabDirections } from "./storage.js"
 import { comparableAnswerKey } from "./text-utils.js"
 import { WORD_ENTRY_TYPE, wordLemma } from "./word-entry.js"
-import { hasWordRu, wordRuAcceptedList, wordRuPrimary } from "./word-ru.js"
+import { hasWordRu, wordRuAcceptedList, wordRuPrimary } from "./wordTranslations.js"
 
 export function lemmaKey(word) {
     return wordLemma(word)
