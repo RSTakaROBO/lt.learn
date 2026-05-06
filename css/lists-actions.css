@@ -197,6 +197,26 @@
     }
 }
 
+.pack-card--disabled {
+    cursor: not-allowed;
+}
+
+.pack-card--disabled .pack-card-face {
+    background: color-mix(in srgb, var(--surface-elevated) 72%, var(--bg));
+    border-color: color-mix(in srgb, var(--border) 75%, var(--muted));
+    box-shadow: none;
+    opacity: 0.58;
+}
+
+.pack-card--disabled:hover .pack-card-face {
+    border-color: color-mix(in srgb, var(--border) 75%, var(--muted));
+}
+
+.pack-card--disabled:active .pack-card-face {
+    transform: none;
+    box-shadow: none;
+}
+
 .pack-card-input:checked + .pack-card-face {
     border-color: var(--accent);
     background: color-mix(in srgb, var(--accent) 11%, var(--surface-elevated));

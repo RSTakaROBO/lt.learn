@@ -1,3 +1,5 @@
+import { useEffect } from "react"
+
 import { TRAIN_MODE } from "../../../js/config.js"
 import { fmt } from "../../../js/i18n/core.js"
 import { STR } from "../../../js/i18n/strings-ru.js"
@@ -21,6 +23,14 @@ function wordCountLabelFromCounts(counts) {
     })
 }
 
+function wordCountsForRow(row, trainMode) {
+    return row.wordCountsByMode?.[trainMode] ?? null
+}
+
+function isPackSelectable(row, trainMode) {
+    return (wordCountsForRow(row, trainMode)?.suitable ?? 0) > 0
+}
+
 /**
  * @param {{ scrollWell?: boolean }} props
  */
@@ -28,6 +38,14 @@ export function WizardPackList({ scrollWell = true }) {
     const { packRows, selectedIds, togglePack, reloadManifestPacks } = useManifestPacks()
     const dispatch = useTrainerDispatch()
     const trainMode = loadTrainMode() || TRAIN_MODE.CASES
+
+    useEffect(() => {
+        for (const row of packRows) {
+            if (selectedIds.includes(row.pack.id) && !isPackSelectable(row, trainMode)) {
+                togglePack(row.pack.id, false)
+            }
+        }
+    }, [packRows, selectedIds, togglePack, trainMode])
 
     async function onDeleteCustomPack(e, packId) {
         e.preventDefault()
@@ -48,28 +66,34 @@ export function WizardPackList({ scrollWell = true }) {
 
     return (
         <ListHolder id="pack-list" scrollWell={scrollWell}>
-            {packRows.map((row) => (
-                <CheckboxButton
-                    key={row.pack.id}
-                    id={row.safeInputId}
-                    value={row.pack.id}
-                    title={row.title}
-                    meta={wordCountLabelFromCounts(row.wordCountsByMode?.[trainMode])}
-                    metaClassName="pack-word-count"
-                    className={row.pack.custom ? "pack-card--custom-user" : undefined}
-                    checked={selectedIds.includes(row.pack.id)}
-                    onChange={(e) => togglePack(row.pack.id, e.target.checked)}
-                    faceBeforeTick={
-                        row.pack.custom ? (
-                            <PackCardDeleteButton
-                                packId={row.pack.id}
-                                ariaLabel={fmt(STR.errors.deletePackAria, { title: row.title })}
-                                onClick={(e) => onDeleteCustomPack(e, row.pack.id)}
-                            />
-                        ) : undefined
-                    }
-                />
-            ))}
+            {packRows.map((row) => {
+                const selectable = isPackSelectable(row, trainMode)
+                return (
+                    <CheckboxButton
+                        key={row.pack.id}
+                        id={row.safeInputId}
+                        value={row.pack.id}
+                        title={row.title}
+                        meta={wordCountLabelFromCounts(wordCountsForRow(row, trainMode))}
+                        metaClassName="pack-word-count"
+                        className={row.pack.custom ? "pack-card--custom-user" : undefined}
+                        checked={selectable && selectedIds.includes(row.pack.id)}
+                        disabled={!selectable}
+                        onChange={(e) => togglePack(row.pack.id, e.target.checked)}
+                        faceBeforeTick={
+                            row.pack.custom ? (
+                                <PackCardDeleteButton
+                                    packId={row.pack.id}
+                                    ariaLabel={fmt(STR.errors.deletePackAria, {
+                                        title: row.title,
+                                    })}
+                                    onClick={(e) => onDeleteCustomPack(e, row.pack.id)}
+                                />
+                            ) : undefined
+                        }
+                    />
+                )
+            })}
         </ListHolder>
     )
 }

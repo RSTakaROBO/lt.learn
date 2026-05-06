@@ -14,6 +14,7 @@
  *   inputRef?: import("react").Ref<HTMLInputElement>;
  *   faceBeforeTick?: import("react").ReactNode;
  *   metaClassName?: string;
+ *   disabled?: boolean;
  * }} props
  */
 export function CheckboxButton({
@@ -28,16 +29,24 @@ export function CheckboxButton({
     onChange,
     inputRef,
     faceBeforeTick,
+    disabled = false,
 }) {
     const controlled = checked !== undefined
     return (
-        <label className={["pack-card", className].filter(Boolean).join(" ")} htmlFor={id}>
+        <label
+            className={["pack-card", disabled && "pack-card--disabled", className]
+                .filter(Boolean)
+                .join(" ")}
+            htmlFor={id}
+            aria-disabled={disabled ? "true" : undefined}
+        >
             <input
                 ref={inputRef}
                 type="checkbox"
                 id={id}
                 className="pack-card-input sr-only"
                 value={value}
+                disabled={disabled}
                 {...(controlled ? { checked, onChange } : { defaultChecked, onChange })}
             />
             <div className="pack-card-face">
