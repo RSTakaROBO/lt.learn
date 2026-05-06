@@ -1,11 +1,25 @@
+import { TRAIN_MODE } from "../../../js/config.js"
 import { fmt } from "../../../js/i18n/core.js"
 import { STR } from "../../../js/i18n/strings-ru.js"
-import { loadSelectedPacks, removeCustomPackById, saveSelectedPacks } from "../../../js/storage.js"
+import {
+    loadSelectedPacks,
+    loadTrainMode,
+    removeCustomPackById,
+    saveSelectedPacks,
+} from "../../../js/storage.js"
 import { useManifestPacks } from "../../context/ManifestPacksContext.jsx"
 import { useTrainerDispatch } from "../../context/TrainerAppContext.jsx"
 import { CheckboxButton } from "../ui/CheckboxButton.jsx"
 import { ListHolder } from "../ui/ListHolder.jsx"
 import { PackCardDeleteButton } from "./PackCardDeleteButton.jsx"
+
+function wordCountLabelFromCounts(counts) {
+    if (!counts) return STR.errors.countFailed
+    return fmt(STR.packs.wordCountMeta, {
+        total: counts.total,
+        suitable: counts.suitable,
+    })
+}
 
 /**
  * @param {{ scrollWell?: boolean }} props
@@ -13,6 +27,7 @@ import { PackCardDeleteButton } from "./PackCardDeleteButton.jsx"
 export function WizardPackList({ scrollWell = true }) {
     const { packRows, selectedIds, togglePack, reloadManifestPacks } = useManifestPacks()
     const dispatch = useTrainerDispatch()
+    const trainMode = loadTrainMode() || TRAIN_MODE.CASES
 
     async function onDeleteCustomPack(e, packId) {
         e.preventDefault()
@@ -39,7 +54,7 @@ export function WizardPackList({ scrollWell = true }) {
                     id={row.safeInputId}
                     value={row.pack.id}
                     title={row.title}
-                    meta={row.wordCountLabel}
+                    meta={wordCountLabelFromCounts(row.wordCountsByMode?.[trainMode])}
                     metaClassName="pack-word-count"
                     className={row.pack.custom ? "pack-card--custom-user" : undefined}
                     checked={selectedIds.includes(row.pack.id)}

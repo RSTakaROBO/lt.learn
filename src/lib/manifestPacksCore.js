@@ -1,11 +1,17 @@
 import { fmt } from "../../js/i18n/core.js"
 import { STR } from "../../js/i18n/strings-ru.js"
 import { hydrateCustomPacksFromStorage, packDisplayTitle } from "../../js/custom-packs.js"
-import { formatWordCountRu } from "../../js/text-utils.js"
-import { normalizeWordEntries } from "../../js/word-entry.js"
+import { TRAIN_MODE } from "../../js/config.js"
+import { normalizeWordEntries, WORD_ENTRY_TYPE, wordLemma } from "../../js/word-entry.js"
+import { hasWordRu } from "../../js/wordTranslations.js"
 
-function countValidWordsInData(data) {
-    return normalizeWordEntries(data?.words).length
+function countWordsInData(data, trainMode) {
+    const words = normalizeWordEntries(data?.words)
+    const suitable =
+        trainMode === TRAIN_MODE.VOCAB
+            ? words.filter((word) => hasWordRu(word) && wordLemma(word)).length
+            : words.filter((word) => word.type === WORD_ENTRY_TYPE.NOUN).length
+    return { total: words.length, suitable }
 }
 
 export function normalizeManifest(raw) {
@@ -60,13 +66,14 @@ export function safePackInputId(packId) {
     return `pack-${String(packId).replace(/[^a-zA-Z0-9_-]/g, "_")}`
 }
 
-/** Текст счётчика слов для карточки после prefetch. */
-export function wordCountLabelForPack(p, fileMap) {
+/** Счётчик слов для карточки после prefetch. */
+export function wordCountsForPack(p, fileMap, trainMode) {
     if (p.custom && Array.isArray(p.words)) {
-        return formatWordCountRu(countValidWordsInData({ words: p.words }))
+        return countWordsInData({ words: p.words }, trainMode)
     }
-    if (!p.files?.length) return "…"
-    let sum = 0
+    if (!p.files?.length) return null
+    let total = 0
+    let suitable = 0
     let ok = true
     for (const f of p.files) {
         const data = fileMap.get(f)
@@ -74,9 +81,11 @@ export function wordCountLabelForPack(p, fileMap) {
             ok = false
             break
         }
-        sum += countValidWordsInData(data)
+        const counts = countWordsInData(data, trainMode)
+        total += counts.total
+        suitable += counts.suitable
     }
-    return ok ? formatWordCountRu(sum) : STR.errors.countFailed
+    return ok ? { total, suitable } : null
 }
 
 export function isRenderablePackEntry(p) {

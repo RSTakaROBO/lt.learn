@@ -13,17 +13,18 @@ import {
     trainerStore,
 } from "../../js/trainer-ui-state.js"
 import { loadSelectedPacks, saveSelectedPacks } from "../../js/storage.js"
+import { TRAIN_MODE } from "../../js/config.js"
 import {
     isRenderablePackEntry,
     loadAllPacksFromManifest,
     safePackInputId,
-    wordCountLabelForPack,
+    wordCountsForPack,
 } from "../lib/manifestPacksCore.js"
 
 const ManifestPacksContext = createContext(null)
 
 /**
- * @typedef {{ pack: object; title: string; wordCountLabel: string; safeInputId: string }} PackRowUi
+ * @typedef {{ pack: object; title: string; wordCountsByMode: Record<string, {total: number; suitable: number}|null>; safeInputId: string }} PackRowUi
  */
 
 /**
@@ -54,7 +55,10 @@ export function ManifestPacksProvider({ children }) {
             const rows = packs.filter(isRenderablePackEntry).map((pack) => ({
                 pack,
                 title: typeof pack.title === "string" ? pack.title : "",
-                wordCountLabel: wordCountLabelForPack(pack, fileMap),
+                wordCountsByMode: {
+                    [TRAIN_MODE.CASES]: wordCountsForPack(pack, fileMap, TRAIN_MODE.CASES),
+                    [TRAIN_MODE.VOCAB]: wordCountsForPack(pack, fileMap, TRAIN_MODE.VOCAB),
+                },
                 safeInputId: safePackInputId(pack.id),
             }))
             if (!rows.length) throw new Error(STR.errors.manifestNoValidPack)

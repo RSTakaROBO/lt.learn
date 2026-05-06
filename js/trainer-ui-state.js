@@ -99,7 +99,7 @@ function readInitialSelectedPackIds() {
  */
 
 /**
- * @typedef {{ pack: object; title: string; wordCountLabel: string; safeInputId: string }} ManifestPackRowUi
+ * @typedef {{ pack: object; title: string; wordCountsByMode: Record<string, { total: number; suitable: number } | null>; safeInputId: string }} ManifestPackRowUi
  */
 
 /**

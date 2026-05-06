@@ -30,6 +30,7 @@ export const STR = {
         llmPromptTitle: "Промпт для нейросети",
         uploadJsonLabel: "Загрузить свой JSON…",
         uploadJsonAria: "Загрузить свой файл словаря JSON",
+        wordCountMeta: "Слов: {total}. Подходящих: {suitable}",
         back: "Назад",
         next: "Далее",
         start: "Начать",
@@ -223,11 +224,5 @@ export const STR = {
     main: {
         loadManifestError:
             "Ошибка: {message}. Откройте сайт через локальный сервер в папке проекта (fetch к файлам с file:// часто блокируется).",
-    },
-
-    units: {
-        words0: "{n} слов",
-        words1: "{n} слово",
-        words2: "{n} слова",
     },
 }
