@@ -7,10 +7,12 @@ import {
     getEngine,
     mutateEngine,
     postTrainerUiAction,
+    clearQuizFeedback,
+    setQuizFeedback,
 } from "./trainer-ui-state.js"
 import { byId } from "./dom-ids.js"
 import { bumpWordStat, loadCasesShowTranslation, saveVocabBestStreakIfHigher } from "./storage.js"
-import { answersMatch, escapeHtml } from "./text-utils.js"
+import { answersMatch } from "./text-utils.js"
 import { wordLemma } from "./word-entry.js"
 import { handleAnswerInputShiftCycles, insertAtCaret } from "./input-lt.js"
 import { lemmaKey, nextTask, nextVocabTask } from "./word-selection.js"
@@ -197,10 +199,7 @@ export function setQuizUiPhase(phase, opts = {}) {
             sub.classList.add("hidden")
             foot.classList.add("hidden")
             foot.classList.remove("quiz-footer--single")
-            if (byId("feedback")) {
-                byId("feedback").classList.remove("hidden", "ok", "bad")
-                byId("feedback").textContent = STR.quiz.noVocabUi
-            }
+            setQuizFeedback({ kind: "info", message: STR.quiz.noVocabUi })
             return false
         }
         syncQuizCardLayoutMode("vocab", vocabHardcore)
@@ -242,9 +241,7 @@ export function showQuiz(task) {
     resetQuizSkipButtonAppearance()
     setQuizSkipAvailable(true)
     postTrainerUiAction({ type: "SCREEN_SET", screen: "quiz" })
-    byId("feedback").classList.add("hidden")
-    byId("feedback").textContent = ""
-    byId("feedback").classList.remove("ok", "bad")
+    clearQuizFeedback()
 
     if (task.mode === TRAIN_MODE.VOCAB) {
         setSubmitLabel(false)
@@ -262,8 +259,7 @@ export function showQuiz(task) {
             resetVocabCorrectStreak()
             vocabForm?.classList.add("hidden")
             byId("vocab-options")?.classList.remove("hidden")
-            byId("feedback").classList.remove("hidden", "ok", "bad")
-            byId("feedback").textContent = STR.quiz.noVocabChoices
+            setQuizFeedback({ kind: "info", message: STR.quiz.noVocabChoices })
             syncVocabRoundLemmaDots(null)
             syncVocabRoundProgress()
             return
@@ -318,13 +314,12 @@ export function showQuiz(task) {
     syncVocabRoundProgress()
 }
 
-function exceptionHintHtml(word) {
+function exceptionNote(word) {
     const note =
         typeof word?.exception_note_ru === "string" && word.exception_note_ru.trim()
             ? word.exception_note_ru.trim()
             : ""
-    if (!note) return ""
-    return `<p class="exception-hint"><strong>${escapeHtml(STR.quiz.exceptionStrong)}</strong> ${escapeHtml(note)}</p>`
+    return note
 }
 
 function recordQuizOutcome(word, ok) {
@@ -333,19 +328,12 @@ function recordQuizOutcome(word, ok) {
 
 export function showFeedback(ok, expected, word) {
     recordQuizOutcome(word, ok)
-    byId("feedback").classList.remove("hidden", "ok", "bad")
-    if (ok) {
-        byId("feedback").classList.add("ok")
-        const exc = exceptionHintHtml(word)
-        byId("feedback").innerHTML = exc
-            ? `<p>${escapeHtml(STR.quiz.correct)}</p>${exc}`
-            : `<p>${escapeHtml(STR.quiz.correct)}</p>`
-    } else {
-        byId("feedback").classList.add("bad")
-        const exc = exceptionHintHtml(word)
-        byId("feedback").innerHTML =
-            `<p>${escapeHtml(STR.quiz.wrong)}</p><p class="correct-form">${escapeHtml(STR.quiz.correctIs)} <strong>${escapeHtml(expected)}</strong></p>${exc}`
-    }
+    setQuizFeedback({
+        kind: ok ? "ok" : "bad",
+        message: ok ? STR.quiz.correct : STR.quiz.wrong,
+        expected: ok ? "" : expected,
+        exceptionNote: exceptionNote(word),
+    })
 }
 
 /** Режим «слова»: только подсветка кнопок; подсказки про исключения не показываем. */
@@ -369,9 +357,7 @@ export function finalizeVocabChoice(ok, expected, word, pickedLemma = "") {
         syncVocabStreakMult()
     }
     applyVocabRoundAnswer(word, ok)
-    byId("feedback").classList.remove("ok", "bad")
-    byId("feedback").classList.add("hidden")
-    byId("feedback").textContent = ""
+    clearQuizFeedback()
     const dir = getEngine().currentTask?.vocabDirection || VOCAB_DIRECTION.RU_TO_LT
     const correctNom = wordLemma(word) || expected
     const correctLemma = dir === VOCAB_DIRECTION.LT_TO_RU ? wordRuFeedbackLine(word) : correctNom
@@ -447,8 +433,7 @@ export function advanceVocabQuiz() {
             openVocabRoundSummaryOverlay()
             return
         }
-        byId("feedback").classList.remove("hidden", "ok", "bad")
-        byId("feedback").textContent = STR.quiz.noWordsLeft
+        setQuizFeedback({ kind: "info", message: STR.quiz.noWordsLeft })
         return
     }
     showQuiz(task)
@@ -543,11 +528,7 @@ export function handleMorphCasesAnswerSubmit(/** @type {Event} */ e) {
 
     const task = nextTask(keys)
     if (!task) {
-        const fb = byId("feedback")
-        if (fb) {
-            fb.classList.remove("hidden", "ok", "bad")
-            fb.textContent = STR.quiz.noWordsLeft
-        }
+        setQuizFeedback({ kind: "info", message: STR.quiz.noWordsLeft })
         return
     }
     showQuiz(task)

@@ -75,6 +75,14 @@ function readInitialSelectedPackIds() {
  */
 
 /**
+ * @typedef {Object} QuizFeedback
+ * @property {"ok" | "bad" | "info"} kind
+ * @property {string} message
+ * @property {string} [expected]
+ * @property {string} [exceptionNote]
+ */
+
+/**
  * @typedef {Object} TrainerEngine
  * @property {unknown[]} wordBank
  * @property {unknown | null} currentTask
@@ -104,6 +112,7 @@ function readInitialSelectedPackIds() {
  * @property {TrainerUiOverlay} overlay
  * @property {TrainerUiPersisted} persisted
  * @property {VocabRoundSummarySnapshot | null} vocabRoundSummary
+ * @property {QuizFeedback | null} quizFeedback
  * @property {TrainerUiWizard} wizard
  * @property {TrainerEngine} engine
  * @property {TrainerPacksUi} manifestUi
@@ -120,6 +129,8 @@ function readInitialSelectedPackIds() {
  *   | { type: "WIZARD_SET_STEP"; step: number }
  *   | { type: "WIZARD_SET_STATUS"; name: "pack" | "case" | "vocabDirection"; message: string }
  *   | { type: "WIZARD_CLEAR_STATUS"; name?: "pack" | "case" | "vocabDirection" }
+ *   | { type: "QUIZ_SET_FEEDBACK"; feedback: QuizFeedback }
+ *   | { type: "QUIZ_CLEAR_FEEDBACK" }
  * )} TrainerUiAction
  */
 
@@ -140,6 +151,7 @@ function buildInitialState() {
             casesShowTranslation: readInitialCasesShowTranslation(),
         },
         vocabRoundSummary: null,
+        quizFeedback: null,
         wizard: {
             step: 1,
             status: {
@@ -236,6 +248,12 @@ const trainerSlice = createSlice({
                     }
                     break
                 }
+                case "QUIZ_SET_FEEDBACK":
+                    state.quizFeedback = a.feedback
+                    break
+                case "QUIZ_CLEAR_FEEDBACK":
+                    state.quizFeedback = null
+                    break
                 default:
                     break
             }
@@ -318,6 +336,17 @@ export function setWizardStatus(name, message) {
  */
 export function clearWizardStatus(name) {
     postTrainerUiAction({ type: "WIZARD_CLEAR_STATUS", name })
+}
+
+/**
+ * @param {QuizFeedback} feedback
+ */
+export function setQuizFeedback(feedback) {
+    postTrainerUiAction({ type: "QUIZ_SET_FEEDBACK", feedback })
+}
+
+export function clearQuizFeedback() {
+    postTrainerUiAction({ type: "QUIZ_CLEAR_FEEDBACK" })
 }
 
 export function getCheckedCaseKeys() {

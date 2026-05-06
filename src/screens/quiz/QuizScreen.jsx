@@ -129,16 +129,45 @@ function QuizActionButtons({
     )
 }
 
+function QuizFeedback({ feedback }) {
+    if (!feedback) {
+        return <div id="feedback" className="feedback hidden" aria-live="polite" />
+    }
+
+    return (
+        <div
+            id="feedback"
+            className={["feedback", feedback.kind === "info" ? "" : feedback.kind]
+                .filter(Boolean)
+                .join(" ")}
+            aria-live="polite"
+        >
+            <p>{feedback.message}</p>
+            {feedback.expected ? (
+                <p className="correct-form">
+                    {STR.quiz.correctIs} <strong>{feedback.expected}</strong>
+                </p>
+            ) : null}
+            {feedback.exceptionNote ? (
+                <p className="exception-hint">
+                    <strong>{STR.quiz.exceptionStrong}</strong> {feedback.exceptionNote}
+                </p>
+            ) : null}
+        </div>
+    )
+}
+
 /**
  * Экран тренажёра: падежи и словарь.
  * @param {{ heightMode?: "fill"|"scroll"; hidden?: boolean }} [props]
  */
 export function QuizScreen({ heightMode = "fill", hidden = false } = {}) {
-    const { task, answered, choiceState } = useSelector(
+    const { task, answered, choiceState, feedback } = useSelector(
         (s) => ({
             task: s.trainer.engine.currentTask,
             answered: s.trainer.engine.answered,
             choiceState: s.trainer.engine.vocabChoice,
+            feedback: s.trainer.quizFeedback,
         }),
         shallowEqual
     )
@@ -293,7 +322,7 @@ export function QuizScreen({ heightMode = "fill", hidden = false } = {}) {
                         </form>
                     </div>
 
-                    <div id="feedback" className="feedback hidden" aria-live="polite" />
+                    <QuizFeedback feedback={feedback} />
                 </div>
 
                 {!isHardcore && (
