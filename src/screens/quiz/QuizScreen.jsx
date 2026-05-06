@@ -14,7 +14,7 @@ import {
     handleVocabChoice,
     handleVocabHardcoreFormSubmit,
 } from "../../../js/quiz.js"
-import { getLithuanianShiftCycleEdit } from "../../../js/input-lt.js"
+import { getLithuanianShiftCycleEdit } from "../../../js/InputHelper.js"
 import { answersMatch } from "../../../js/text-utils.js"
 import { wordLemma } from "../../../js/word-entry.js"
 import { vocabRuUserMatches, wordRuPrimary } from "../../../js/word-ru.js"
