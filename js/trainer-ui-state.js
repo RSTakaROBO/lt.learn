@@ -92,6 +92,7 @@ function readInitialSelectedPackIds() {
  * @property {Record<string, { correct: number; wrong: number; skipped: number }>} wordStats
  * @property {number} vocabCorrectStreak
  * @property {unknown | null} vocabRound
+ * @property {{ lemma: string; filled: number } | null} vocabRoundDots
  * @property {{ pickedLemma: string; correctLemma: string; ok: boolean | null } | null} vocabChoice
  * @property {string[]} selectedCaseKeys
  */
@@ -169,6 +170,7 @@ function buildInitialState() {
             wordStats: {},
             vocabCorrectStreak: 0,
             vocabRound: null,
+            vocabRoundDots: null,
             vocabChoice: null,
             selectedCaseKeys: [],
         },

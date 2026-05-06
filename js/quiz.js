@@ -22,8 +22,7 @@ import {
     applyVocabRoundSkip,
     openVocabRoundSummaryOverlay,
     roundLemmaKey,
-    syncVocabRoundLemmaDots,
-    syncVocabRoundProgress,
+    setVocabRoundLemmaDots,
 } from "./vocab-round.js"
 
 const VOCAB_STREAK_MULT_FROM = 5
@@ -247,8 +246,7 @@ export function showQuiz(task) {
         setSubmitLabel(false)
         const hardcore = !!task.vocabHardcore
         if (!setQuizUiPhase("vocab-pending", { vocabHardcore: hardcore })) {
-            syncVocabRoundLemmaDots(null)
-            syncVocabRoundProgress()
+            setVocabRoundLemmaDots(null)
             return
         }
 
@@ -260,8 +258,7 @@ export function showQuiz(task) {
             vocabForm?.classList.add("hidden")
             byId("vocab-options")?.classList.remove("hidden")
             setQuizFeedback({ kind: "info", message: STR.quiz.noVocabChoices })
-            syncVocabRoundLemmaDots(null)
-            syncVocabRoundProgress()
+            setVocabRoundLemmaDots(null)
             return
         }
 
@@ -296,8 +293,7 @@ export function showQuiz(task) {
             )
         }
         syncVocabStreakMult()
-        syncVocabRoundLemmaDots(task.word)
-        syncVocabRoundProgress()
+        setVocabRoundLemmaDots(task.word)
         return
     }
 
@@ -310,8 +306,7 @@ export function showQuiz(task) {
 
     byId("answer-input").value = ""
     byId("answer-input").focus()
-    syncVocabRoundLemmaDots(null)
-    syncVocabRoundProgress()
+    setVocabRoundLemmaDots(null)
 }
 
 function exceptionNote(word) {

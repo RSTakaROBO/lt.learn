@@ -5,8 +5,6 @@ import {
     WEIGHT_PER_SKIP,
     WEIGHT_PER_WRONG,
 } from "./config.js"
-import { fmt } from "./i18n/core.js"
-import { STR } from "./i18n/strings-ru.js"
 import { getEngine, mutateEngine, postTrainerUiAction } from "./trainer-ui-state.js"
 import { wordLemma } from "./word-entry.js"
 import { hasWordRu } from "./word-ru.js"
@@ -59,18 +57,16 @@ export function initVocabRound() {
             lemmaTowardThree: Object.create(null),
             maxStreak: 0,
         }
+        e.vocabRoundDots = null
     })
-    syncVocabRoundProgress()
-    syncVocabRoundLemmaDots(null)
     return success
 }
 
 export function clearVocabRound() {
     mutateEngine((e) => {
         e.vocabRound = null
+        e.vocabRoundDots = null
     })
-    syncVocabRoundProgress()
-    syncVocabRoundLemmaDots(null)
 }
 
 export function isVocabRoundActive() {
@@ -138,8 +134,7 @@ export function applyVocabRoundAnswer(word, ok) {
         }
         out.dots = dotsForUi
     })
-    syncVocabRoundLemmaDots(word, out.dots)
-    syncVocabRoundProgress()
+    setVocabRoundLemmaDots(word, out.dots)
 }
 
 export function applyVocabRoundSkip(word) {
@@ -153,8 +148,7 @@ export function applyVocabRoundSkip(word) {
         row.skipped += 1
         vr.lemmaTowardThree[lem] = 0
     })
-    syncVocabRoundLemmaDots(word, 0)
-    syncVocabRoundProgress()
+    setVocabRoundLemmaDots(word, 0)
 }
 
 /**
@@ -162,62 +156,22 @@ export function applyVocabRoundSkip(word) {
  * @param {object | null} word
  * @param {number} [filledOverride] явное значение после ответа (например 3 в момент снятия с пула)
  */
-export function syncVocabRoundLemmaDots(word, filledOverride) {
-    const wrap = document.getElementById("vocab-round-lemma-dots")
-    if (!wrap) return
-    const vr = getEngine().vocabRound
-    if (!vr || !word) {
-        wrap.classList.add("hidden")
-        wrap.setAttribute("aria-hidden", "true")
-        wrap.removeAttribute("aria-label")
-        wrap.querySelectorAll(".vocab-round-lemma-dot").forEach((d) =>
-            d.classList.remove("is-filled")
-        )
-        return
-    }
+export function setVocabRoundLemmaDots(word, filledOverride) {
     const lem = roundLemmaKey(word)
-    let filled = 0
-    if (typeof filledOverride === "number" && Number.isFinite(filledOverride)) {
-        filled = Math.max(0, Math.min(VOCAB_ROUND_STREAK_TO_REMOVE, filledOverride))
-    } else if (lem) {
-        filled = Math.min(VOCAB_ROUND_STREAK_TO_REMOVE, vr.lemmaTowardThree[lem] || 0)
-    }
-    wrap.querySelectorAll(".vocab-round-lemma-dot").forEach((d, i) => {
-        d.classList.toggle("is-filled", i < filled)
+    mutateEngine((e) => {
+        const vr = e.vocabRound
+        if (!vr || !word || !lem) {
+            e.vocabRoundDots = null
+            return
+        }
+        let filled = 0
+        if (typeof filledOverride === "number" && Number.isFinite(filledOverride)) {
+            filled = Math.max(0, Math.min(VOCAB_ROUND_STREAK_TO_REMOVE, filledOverride))
+        } else {
+            filled = Math.min(VOCAB_ROUND_STREAK_TO_REMOVE, vr.lemmaTowardThree[lem] || 0)
+        }
+        e.vocabRoundDots = { lemma: lem, filled }
     })
-    wrap.classList.remove("hidden")
-    wrap.setAttribute("aria-hidden", "false")
-    wrap.setAttribute(
-        "aria-label",
-        fmt(STR.vocabRound.ariaDots, { filled, max: VOCAB_ROUND_STREAK_TO_REMOVE })
-    )
-}
-
-export function syncVocabRoundProgress() {
-    const wrap = document.getElementById("vocab-round-progress")
-    const fill = document.getElementById("vocab-round-progress-fill")
-    if (!wrap || !fill) return
-    const vr = getEngine().vocabRound
-    if (!vr || vr.initialSize <= 0) {
-        wrap.classList.add("hidden")
-        wrap.setAttribute("aria-hidden", "true")
-        wrap.removeAttribute("aria-valuenow")
-        wrap.removeAttribute("aria-valuemax")
-        wrap.removeAttribute("aria-label")
-        fill.style.width = "0%"
-        return
-    }
-    const done = vr.initialSize - vr.pool.size
-    const pct = Math.max(0, Math.min(100, (100 * done) / vr.initialSize))
-    fill.style.width = `${pct}%`
-    wrap.setAttribute("aria-valuenow", String(done))
-    wrap.setAttribute("aria-valuemax", String(vr.initialSize))
-    wrap.setAttribute(
-        "aria-label",
-        fmt(STR.vocabRound.ariaProgress, { done, total: vr.initialSize })
-    )
-    wrap.classList.remove("hidden")
-    wrap.setAttribute("aria-hidden", "false")
 }
 
 export function getVocabRoundSummarySnapshot() {

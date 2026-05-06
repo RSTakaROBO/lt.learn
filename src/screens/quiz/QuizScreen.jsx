@@ -1,8 +1,9 @@
 import { shallowEqual, useSelector } from "react-redux"
 
 import { TRAIN_MODE, VOCAB_DIRECTION } from "../../../js/config.js"
-import { caseRu } from "../../../js/i18n/core.js"
+import { caseRu, fmt } from "../../../js/i18n/core.js"
 import { STR } from "../../../js/i18n/strings-ru.js"
+import { VOCAB_ROUND_STREAK_TO_REMOVE } from "../../../js/vocab-round.js"
 import { AppFlowScreen } from "../../components/layout/AppFlowScreen.jsx"
 import { ChartsToolbar } from "../../components/ui/ChartsToolbar.jsx"
 import { Button } from "../../components/ui/Button.jsx"
@@ -157,17 +158,121 @@ function QuizFeedback({ feedback }) {
     )
 }
 
+function VocabRoundDots({ dots }) {
+    if (!dots) {
+        return (
+            <div
+                id="vocab-round-lemma-dots"
+                className="vocab-round-lemma-dots hidden"
+                aria-hidden="true"
+                role="img"
+            >
+                <span className="vocab-round-lemma-dot" aria-hidden="true" />
+                <span className="vocab-round-lemma-dot" aria-hidden="true" />
+                <span className="vocab-round-lemma-dot" aria-hidden="true" />
+            </div>
+        )
+    }
+
+    return (
+        <div
+            id="vocab-round-lemma-dots"
+            className="vocab-round-lemma-dots"
+            aria-hidden="false"
+            aria-label={fmt(STR.vocabRound.ariaDots, {
+                filled: dots.filled,
+                max: VOCAB_ROUND_STREAK_TO_REMOVE,
+            })}
+            role="img"
+        >
+            {Array.from({ length: VOCAB_ROUND_STREAK_TO_REMOVE }, (_, i) => (
+                <span
+                    key={i}
+                    className={["vocab-round-lemma-dot", i < dots.filled && "is-filled"]
+                        .filter(Boolean)
+                        .join(" ")}
+                    aria-hidden="true"
+                />
+            ))}
+        </div>
+    )
+}
+
+function VocabRoundProgress({ progress }) {
+    if (!progress || progress.total <= 0) {
+        return (
+            <div
+                id="vocab-round-progress"
+                className="vocab-round-progress hidden"
+                role="progressbar"
+                aria-valuemin={0}
+                aria-hidden="true"
+            >
+                <div className="vocab-round-progress-track" aria-hidden="true">
+                    <div id="vocab-round-progress-fill" className="vocab-round-progress-fill" />
+                </div>
+            </div>
+        )
+    }
+
+    return (
+        <div
+            id="vocab-round-progress"
+            className="vocab-round-progress"
+            role="progressbar"
+            aria-valuemin={0}
+            aria-valuenow={progress.done}
+            aria-valuemax={progress.total}
+            aria-hidden="false"
+            aria-label={fmt(STR.vocabRound.ariaProgress, {
+                done: progress.done,
+                total: progress.total,
+            })}
+        >
+            <div className="vocab-round-progress-track" aria-hidden="true">
+                <div
+                    id="vocab-round-progress-fill"
+                    className="vocab-round-progress-fill"
+                    style={{ width: `${progress.pct}%` }}
+                />
+            </div>
+        </div>
+    )
+}
+
 /**
  * Экран тренажёра: падежи и словарь.
  * @param {{ heightMode?: "fill"|"scroll"; hidden?: boolean }} [props]
  */
 export function QuizScreen({ heightMode = "fill", hidden = false } = {}) {
-    const { task, answered, choiceState, feedback } = useSelector(
+    const { task, answered, choiceState, feedback, roundDots, roundProgress } = useSelector(
         (s) => ({
             task: s.trainer.engine.currentTask,
             answered: s.trainer.engine.answered,
             choiceState: s.trainer.engine.vocabChoice,
             feedback: s.trainer.quizFeedback,
+            roundDots: s.trainer.engine.vocabRoundDots,
+            roundProgress: s.trainer.engine.vocabRound
+                ? {
+                      done:
+                          s.trainer.engine.vocabRound.initialSize -
+                          s.trainer.engine.vocabRound.pool.size,
+                      total: s.trainer.engine.vocabRound.initialSize,
+                      pct:
+                          s.trainer.engine.vocabRound.initialSize > 0
+                              ? Math.max(
+                                    0,
+                                    Math.min(
+                                        100,
+                                        (100 *
+                                            (s.trainer.engine.vocabRound.initialSize -
+                                                s.trainer.engine.vocabRound.pool.size)) /
+                                            s.trainer.engine.vocabRound.initialSize
+                                    )
+                                )
+                              : 0,
+                  }
+                : null,
         }),
         shallowEqual
     )
@@ -249,31 +354,9 @@ export function QuizScreen({ heightMode = "fill", hidden = false } = {}) {
                                     className="vocab-streak-mult-value"
                                 />
                             </div>
-                            <div
-                                id="vocab-round-lemma-dots"
-                                className="vocab-round-lemma-dots hidden"
-                                aria-hidden="true"
-                                role="img"
-                            >
-                                <span className="vocab-round-lemma-dot" aria-hidden="true" />
-                                <span className="vocab-round-lemma-dot" aria-hidden="true" />
-                                <span className="vocab-round-lemma-dot" aria-hidden="true" />
-                            </div>
+                            <VocabRoundDots dots={roundDots} />
                         </div>
-                        <div
-                            id="vocab-round-progress"
-                            className="vocab-round-progress hidden"
-                            role="progressbar"
-                            aria-valuemin={0}
-                            aria-hidden="true"
-                        >
-                            <div className="vocab-round-progress-track" aria-hidden="true">
-                                <div
-                                    id="vocab-round-progress-fill"
-                                    className="vocab-round-progress-fill"
-                                />
-                            </div>
-                        </div>
+                        <VocabRoundProgress progress={roundProgress} />
                         {showChoices && (
                             <VocabChoices
                                 task={task}
