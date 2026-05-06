@@ -91,6 +91,7 @@ function readInitialSelectedPackIds() {
  * @property {unknown | null} manifestCache
  * @property {Record<string, { correct: number; wrong: number; skipped: number }>} wordStats
  * @property {number} vocabCorrectStreak
+ * @property {number} vocabStreakPulseId
  * @property {unknown | null} vocabRound
  * @property {{ lemma: string; filled: number } | null} vocabRoundDots
  * @property {{ pickedLemma: string; correctLemma: string; ok: boolean | null } | null} vocabChoice
@@ -169,6 +170,7 @@ function buildInitialState() {
             manifestCache: null,
             wordStats: {},
             vocabCorrectStreak: 0,
+            vocabStreakPulseId: 0,
             vocabRound: null,
             vocabRoundDots: null,
             vocabChoice: null,

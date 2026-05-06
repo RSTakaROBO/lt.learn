@@ -45,16 +45,6 @@ function debugQuiz(event, data = {}) {
     }
 }
 
-/** Уровни по порогам 10 / 20 / 50 / 70 / 100: серый → синий → зелёный → жёлтый → красный (+ крупнее шрифт). */
-const STREAK_MULT_TIER_CLASSES = [
-    "vocab-streak-mult--t0",
-    "vocab-streak-mult--t1",
-    "vocab-streak-mult--t2",
-    "vocab-streak-mult--t3",
-    "vocab-streak-mult--t4",
-    "vocab-streak-mult--t5",
-]
-
 function casesLemmaDisplayLine(word) {
     const nom = wordLemma(word)
     const hint =
@@ -64,61 +54,12 @@ function casesLemmaDisplayLine(word) {
     return `${nom}${hint}`
 }
 
-function streakTierClass(n) {
-    if (n >= 100) return "vocab-streak-mult--t5"
-    if (n >= 70) return "vocab-streak-mult--t4"
-    if (n >= 50) return "vocab-streak-mult--t3"
-    if (n >= 20) return "vocab-streak-mult--t2"
-    if (n >= 10) return "vocab-streak-mult--t1"
-    return "vocab-streak-mult--t0"
-}
-
-function pulseVocabStreakMult(wrap) {
-    if (!wrap || wrap.classList.contains("hidden")) return
-    const valEl = wrap.querySelector(".vocab-streak-mult-value")
-    wrap.classList.remove("vocab-streak-mult--pulse")
-    void wrap.offsetWidth
-    const onEnd = () => {
-        valEl?.removeEventListener("animationend", onEnd)
-        wrap.classList.remove("vocab-streak-mult--pulse")
-    }
-    valEl?.addEventListener("animationend", onEnd)
-    wrap.classList.add("vocab-streak-mult--pulse")
-}
-
-/** Обновить множитель в карточке слова; при pulse — короткая анимация (новый верный ответ при уже видимом ×N). */
-function syncVocabStreakMult(opts = {}) {
-    const wrap = document.getElementById("vocab-streak-mult")
-    const valEl = document.getElementById("vocab-streak-mult-value")
-    if (!wrap || !valEl) return
-    const n = getEngine().vocabCorrectStreak
-    STREAK_MULT_TIER_CLASSES.forEach((c) => wrap.classList.remove(c))
-    wrap.classList.remove("vocab-streak-mult--pulse")
-    if (n < VOCAB_STREAK_MULT_FROM) {
-        wrap.classList.add("hidden")
-        wrap.setAttribute("aria-hidden", "true")
-        valEl.textContent = ""
-        return
-    }
-    valEl.textContent = `×${n}`
-    wrap.classList.add(streakTierClass(n))
-    wrap.classList.remove("hidden")
-    wrap.setAttribute("aria-hidden", "false")
-    if (opts.pulse) pulseVocabStreakMult(wrap)
-}
-
 /** Сброс серии слов и скрытие множителя (пропуск, меню, новая сессия). */
 export function resetVocabCorrectStreak() {
     mutateEngine((e) => {
         e.vocabCorrectStreak = 0
+        e.vocabStreakPulseId = 0
     })
-    const wrap = document.getElementById("vocab-streak-mult")
-    const valEl = document.getElementById("vocab-streak-mult-value")
-    wrap?.classList.add("hidden")
-    wrap?.classList.remove("vocab-streak-mult--pulse")
-    STREAK_MULT_TIER_CLASSES.forEach((c) => wrap?.classList.remove(c))
-    wrap?.setAttribute("aria-hidden", "true")
-    if (valEl) valEl.textContent = ""
 }
 
 export function inferQuizMode(task) {
@@ -292,7 +233,6 @@ export function showQuiz(task) {
                     : STR.quiz.vocabRuToLtAria
             )
         }
-        syncVocabStreakMult()
         setVocabRoundLemmaDots(task.word)
         return
     }
@@ -337,19 +277,17 @@ export function finalizeVocabChoice(ok, expected, word, pickedLemma = "") {
     if (ok) {
         mutateEngine((e) => {
             e.vocabCorrectStreak += 1
+            if (e.vocabCorrectStreak >= VOCAB_STREAK_MULT_FROM) e.vocabStreakPulseId += 1
         })
         saveVocabBestStreakIfHigher(getEngine().vocabCorrectStreak)
-        syncVocabStreakMult({
-            pulse: getEngine().vocabCorrectStreak >= VOCAB_STREAK_MULT_FROM,
-        })
     } else {
         mutateEngine((e) => {
             if (e.vocabRound) {
                 e.vocabRound.maxStreak = Math.max(e.vocabRound.maxStreak, e.vocabCorrectStreak)
             }
             e.vocabCorrectStreak = 0
+            e.vocabStreakPulseId = 0
         })
-        syncVocabStreakMult()
     }
     applyVocabRoundAnswer(word, ok)
     clearQuizFeedback()
@@ -391,11 +329,13 @@ export function processVocabHardcoreSubmit() {
             e.answered = true
             if (ok) {
                 e.vocabCorrectStreak += 1
+                if (e.vocabCorrectStreak >= VOCAB_STREAK_MULT_FROM) e.vocabStreakPulseId += 1
             } else {
                 if (e.vocabRound) {
                     e.vocabRound.maxStreak = Math.max(e.vocabRound.maxStreak, e.vocabCorrectStreak)
                 }
                 e.vocabCorrectStreak = 0
+                e.vocabStreakPulseId = 0
             }
         })
         setSubmitLabel(true)
@@ -404,9 +344,6 @@ export function processVocabHardcoreSubmit() {
             saveVocabBestStreakIfHigher(getEngine().vocabCorrectStreak)
         }
         showFeedback(ok, expected, word)
-        syncVocabStreakMult({
-            pulse: ok && getEngine().vocabCorrectStreak >= VOCAB_STREAK_MULT_FROM,
-        })
         applyVocabRoundAnswer(word, ok)
         return
     }
