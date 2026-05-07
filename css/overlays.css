@@ -250,6 +250,24 @@ body.vocab-round-summary-modal-open .quiz-bottom-bar {
     text-align: center;
 }
 
+.stats-footer-actions {
+    grid-template-columns: auto 1fr;
+}
+
+.stats-footer-actions .stats-clear-btn {
+    width: var(--touch-btn-min-h);
+    min-width: var(--touch-btn-min-h);
+    padding-left: 0;
+    padding-right: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.stats-footer-actions .stats-clear-btn svg {
+    display: block;
+}
+
 /* Экран промпта для LLM (кастомный JSON) */
 .pack-prompt-overlay .app-screen__panel {
     display: flex;

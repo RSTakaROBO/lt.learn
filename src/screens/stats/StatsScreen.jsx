@@ -4,6 +4,7 @@ import { useSelector } from "react-redux"
 import { STR } from "../../../js/i18n/strings-ru.js"
 import { clearWordStats } from "../../../js/storage.js"
 import { AppFlowScreen } from "../../components/layout/AppFlowScreen.jsx"
+import { TrashCanIcon } from "../../components/icons/index.js"
 import { Button } from "../../components/ui/Button.jsx"
 import { useTrainerDispatch } from "../../context/TrainerAppContext.jsx"
 import { aggregateWordStatsTotals, buildSortedWordStatRows } from "./wordStatsView.js"
@@ -96,12 +97,13 @@ export function StatsScreen({ heightMode = "fill" } = {}) {
                         id="btn-stats-clear"
                         className="stats-clear-btn"
                         aria-label={STR.stats.clear}
+                        title={STR.stats.clear}
                         onClick={() => {
                             if (!window.confirm(STR.stats.clearConfirm)) return
                             clearWordStats()
                         }}
                     >
-                        {STR.stats.clear}
+                        <TrashCanIcon />
                     </Button>
                     <Button
                         variant="primary"
