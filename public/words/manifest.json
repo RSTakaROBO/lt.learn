@@ -19,6 +19,10 @@
         {
             "id": "basic-verbs",
             "files": ["basic-verbs.json"]
+        },
+        {
+            "id": "ndblk_2",
+            "files": ["ndblk_2.json"]
         }
     ]
 }

@@ -183,6 +183,18 @@ export class TrainerStorage {
         }
     }
 
+    /** Сброс счётчиков по словам в хранилище и в движке (Redux). */
+    clearWordStats() {
+        try {
+            this._store.removeItem(STORAGE_KEYS.wordStats)
+        } catch {
+            /* ignore */
+        }
+        mutateEngine((e) => {
+            e.wordStats = {}
+        })
+    }
+
     getWordStat(lemma) {
         const row = getEngine().wordStats[lemma]
         if (!row) return null
@@ -305,6 +317,7 @@ export const loadPersistedWordStats = () => trainerStorage.loadPersistedWordStat
 export const saveWordStatsToStorage = () => trainerStorage.saveWordStatsToStorage()
 export const getWordStat = (lemma) => trainerStorage.getWordStat(lemma)
 export const bumpWordStat = (lemma, field) => trainerStorage.bumpWordStat(lemma, field)
+export const clearWordStats = () => trainerStorage.clearWordStats()
 export const loadVocabBestStreak = () => trainerStorage.loadVocabBestStreak()
 export const saveVocabBestStreakIfHigher = (streak) =>
     trainerStorage.saveVocabBestStreakIfHigher(streak)

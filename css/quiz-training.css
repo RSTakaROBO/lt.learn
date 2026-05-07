@@ -14,6 +14,10 @@
     min-height: 0;
 }
 
+#quiz.panel > .quiz-screen-body {
+    flex: 0 1 auto;
+}
+
 .vocab-answer-form {
     display: flex;
     flex-direction: column;
@@ -405,7 +409,7 @@
 }
 
 .feedback {
-    margin-top: var(--panel-section-gap);
+    margin-top: 0.55rem;
     padding: 0.85rem 1rem;
     border-radius: var(--radius-control);
     border: var(--stroke) solid var(--border);
@@ -450,23 +454,18 @@
     row-gap: var(--panel-section-gap);
 }
 
-/* Режим «слова»: прижимаем «Далее» к низу панели (блок слов уже с flex: 1 в #quiz-vocab-ui) */
 #quiz.panel #feedback:not(.hidden) {
     flex-shrink: 0;
 }
 
-#quiz.panel.quiz--vocab > .quiz-footer-actions {
-    margin-top: auto;
+#quiz.panel > .quiz-footer-actions {
+    margin-top: 0.85rem;
+    padding-top: 0;
     flex-shrink: 0;
 }
 
 #quiz.panel.quiz--verbs {
     row-gap: var(--panel-section-gap);
-}
-
-#quiz.panel.quiz--verbs > .quiz-footer-actions {
-    margin-top: auto;
-    flex-shrink: 0;
 }
 
 #quiz.panel.quiz--verbs #feedback:not(.hidden) {
@@ -607,9 +606,4 @@
 /* Режим падежей: ответ сразу под клавиатурой литовских букв, без лишнего разрыва */
 #quiz.panel.quiz--cases #feedback:not(.hidden) {
     margin-top: 0.55rem;
-}
-
-/* Падежи: футер не уезжает вниз под клавиатуру */
-#quiz.panel.quiz--cases > .quiz-footer-actions {
-    flex-shrink: 0;
 }

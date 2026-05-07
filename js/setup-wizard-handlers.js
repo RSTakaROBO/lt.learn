@@ -26,10 +26,12 @@ import {
     saveVocabDirections,
 } from "./storage.js"
 import { clearVocabRound, initVocabRound } from "./vocab-round.js"
-import { isCompleteVerbEntry, wordLemma } from "./word-entry.js"
-import { hasWordRu } from "./wordTranslations.js"
-import { nextTask, nextVerbTask, nextVocabTask } from "./word-selection.js"
 import { resetVocabCorrectStreak, showQuiz } from "./quiz.js"
+import { nextCasesTask } from "../src/screens/quiz/cases/casesTask.js"
+import { isVocabTrainingWord } from "../src/screens/quiz/vocab/vocabWords.js"
+import { nextVocabTask } from "../src/screens/quiz/vocab/vocabTask.js"
+import { isVerbsTrainingWord } from "../src/screens/quiz/verbs/verbsWords.js"
+import { nextVerbTask } from "../src/screens/quiz/verbs/verbsTask.js"
 
 export async function handlePackJsonInputChange(/** @type {Event} */ ev) {
     const target = ev.target
@@ -68,7 +70,7 @@ export function handleVocabDirectionStartClick() {
         return
     }
     saveVocabDirections(dirsTry)
-    const withHint = getEngine().wordBank.filter((w) => hasWordRu(w) && wordLemma(w))
+    const withHint = getEngine().wordBank.filter(isVocabTrainingWord)
     const dirsNow = getResolvedVocabDirections()
     const needChoices = !dirsNow.hardcore && withHint.length < 4
     const needAny = dirsNow.hardcore && withHint.length < 1
@@ -120,7 +122,7 @@ export async function handlePacksNextClick() {
         clearWizardStatus("pack")
         clearWizardStatus("case")
         if (loadTrainMode() === TRAIN_MODE.VOCAB) {
-            const withHint = getEngine().wordBank.filter((w) => hasWordRu(w) && wordLemma(w))
+            const withHint = getEngine().wordBank.filter(isVocabTrainingWord)
             const hardcore = getResolvedVocabDirections().hardcore
             if ((!hardcore && withHint.length < 4) || (hardcore && withHint.length < 1)) {
                 setWizardStatus(
@@ -133,7 +135,7 @@ export async function handlePacksNextClick() {
             return
         }
         if (loadTrainMode() === TRAIN_MODE.VERBS) {
-            const verbs = getEngine().wordBank.filter(isCompleteVerbEntry)
+            const verbs = getEngine().wordBank.filter(isVerbsTrainingWord)
             if (!verbs.length) {
                 setWizardStatus("pack", STR.events.verbsAfterPack)
                 return
@@ -184,7 +186,7 @@ export function handleStartCasesTrainingClick() {
     mutateEngine((e) => {
         e.shownLemmaHistory = []
     })
-    const task = nextTask(keys)
+    const task = nextCasesTask(keys)
     if (!task) {
         setWizardStatus("case", STR.events.noMatchingWords)
         return

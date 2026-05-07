@@ -1,27 +1,7 @@
-import { fmt } from "../../js/i18n/core.js"
-import { STR } from "../../js/i18n/strings-ru.js"
-import { hydrateCustomPacksFromStorage, packDisplayTitle } from "../../js/custom-packs.js"
-import { TRAIN_MODE, wordsFetchBase } from "../../js/config.js"
-import {
-    isCompleteVerbEntry,
-    normalizeWordEntries,
-    WORD_ENTRY_TYPE,
-    wordLemma,
-} from "../../js/word-entry.js"
-import { hasWordRu } from "../../js/wordTranslations.js"
-
-function countWordsInData(data, trainMode) {
-    const words = normalizeWordEntries(data?.words)
-    let suitable
-    if (trainMode === TRAIN_MODE.VOCAB) {
-        suitable = words.filter((word) => hasWordRu(word) && wordLemma(word)).length
-    } else if (trainMode === TRAIN_MODE.VERBS) {
-        suitable = words.filter(isCompleteVerbEntry).length
-    } else {
-        suitable = words.filter((word) => word.type === WORD_ENTRY_TYPE.NOUN).length
-    }
-    return { total: words.length, suitable }
-}
+import { wordsFetchBase } from "../../../js/config.js"
+import { hydrateCustomPacksFromStorage, packDisplayTitle } from "../../../js/custom-packs.js"
+import { fmt } from "../../../js/i18n/core.js"
+import { STR } from "../../../js/i18n/strings-ru.js"
 
 export function normalizeManifest(raw) {
     if (raw.packs && Array.isArray(raw.packs) && raw.packs.length) {
@@ -33,10 +13,10 @@ export function normalizeManifest(raw) {
 /** Загружает каждый JSON словарь один раз (пути из всех паков). */
 export async function prefetchPackWordFiles(base, packs) {
     const uniqueFiles = new Set()
-    for (const p of packs) {
-        if (!p?.files) continue
-        for (const f of p.files) {
-            if (typeof f === "string" && f) uniqueFiles.add(f)
+    for (const pack of packs) {
+        if (!pack?.files) continue
+        for (const file of pack.files) {
+            if (typeof file === "string" && file) uniqueFiles.add(file)
         }
     }
     const map = new Map()
@@ -44,10 +24,11 @@ export async function prefetchPackWordFiles(base, packs) {
         [...uniqueFiles].map(async (file) => {
             try {
                 const res = await fetch(`${base}${file}`)
-                if (!res.ok)
+                if (!res.ok) {
                     throw new Error(
                         fmt(STR.errors.fileBadStatus, { ref: file, status: res.status })
                     )
+                }
                 map.set(file, await res.json())
             } catch {
                 map.set(file, null)
@@ -59,15 +40,15 @@ export async function prefetchPackWordFiles(base, packs) {
 
 /** Заголовок встроенного пака из `title` первого файла словаря; у пользовательских — из записи. */
 export function attachPackTitlesFromFiles(packs, fileMap) {
-    for (const p of packs) {
-        if (p?.custom && Array.isArray(p.words)) {
-            p.title = packDisplayTitle(p)
+    for (const pack of packs) {
+        if (pack?.custom && Array.isArray(pack.words)) {
+            pack.title = packDisplayTitle(pack)
             continue
         }
-        if (!p?.files?.length) continue
-        const first = p.files[0]
-        const data = fileMap.get(first)
-        p.title = packDisplayTitle(data)
+        if (!pack?.files?.length) continue
+        const firstFile = pack.files[0]
+        const data = fileMap.get(firstFile)
+        pack.title = packDisplayTitle(data)
     }
 }
 
@@ -75,30 +56,8 @@ export function safePackInputId(packId) {
     return `pack-${String(packId).replace(/[^a-zA-Z0-9_-]/g, "_")}`
 }
 
-/** Счётчик слов для карточки после prefetch. */
-export function wordCountsForPack(p, fileMap, trainMode) {
-    if (p.custom && Array.isArray(p.words)) {
-        return countWordsInData({ words: p.words }, trainMode)
-    }
-    if (!p.files?.length) return null
-    let total = 0
-    let suitable = 0
-    let ok = true
-    for (const f of p.files) {
-        const data = fileMap.get(f)
-        if (data == null) {
-            ok = false
-            break
-        }
-        const counts = countWordsInData(data, trainMode)
-        total += counts.total
-        suitable += counts.suitable
-    }
-    return ok ? { total, suitable } : null
-}
-
-export function isRenderablePackEntry(p) {
-    return !!(p && typeof p.id === "string" && p.id && Array.isArray(p.files))
+export function isRenderablePackEntry(pack) {
+    return !!(pack && typeof pack.id === "string" && pack.id && Array.isArray(pack.files))
 }
 
 /**

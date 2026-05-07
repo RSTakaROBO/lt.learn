@@ -1,5 +1,6 @@
 /** Экран настройки (мастер): режим → наборы → (направление слов | падежи). */
 import { TRAIN_MODE } from "../../../js/config.js"
+import { APP_VERSION } from "../../../js/app-version.js"
 import { STR } from "../../../js/i18n/strings-ru.js"
 import {
     handlePackJsonInputChange,
@@ -122,6 +123,10 @@ export function SetupScreen({ heightMode = "fill", hidden = false } = {}) {
                             </Button>
                         </div>
                     </div>
+                    <p className="wizard-home-version">
+                        <span className="wizard-home-version__label">{STR.app.versionLabel}</span>{" "}
+                        <span className="wizard-home-version__value">{APP_VERSION}</span>
+                    </p>
                 </div>
 
                 <div id="step-packs" className={wizardStepClass(showPacks)}>

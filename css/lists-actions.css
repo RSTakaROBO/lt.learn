@@ -284,6 +284,93 @@
     opacity: 1;
 }
 
+.pack-preview-screen {
+    gap: 0.75rem;
+}
+
+.pack-preview-sub {
+    margin: -0.25rem 0 0;
+}
+
+.pack-preview-body {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+/* Полоса прокрутки скрыта (колесо / жест / тач), как у списков мастера */
+#pack-preview .pack-preview-body {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+#pack-preview .pack-preview-body::-webkit-scrollbar {
+    display: none;
+    width: 0 !important;
+    height: 0 !important;
+    appearance: none;
+    background: transparent;
+}
+
+.pack-preview-section {
+    display: grid;
+    gap: 0.55rem;
+}
+
+.pack-preview-h {
+    margin: 0;
+    font-size: 1rem;
+}
+
+/* Без overflow-y: auto — иначе колёсико цепляется за «пустой» скроллбокс и не доходит до .app-screen__body */
+.pack-preview-table-scroll {
+    overflow-x: auto;
+    overflow-y: visible;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-card);
+    background: var(--panel-soft);
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.pack-preview-table-scroll::-webkit-scrollbar {
+    display: none;
+    width: 0 !important;
+    height: 0 !important;
+    appearance: none;
+    background: transparent;
+}
+
+.pack-preview-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 18rem;
+}
+
+.pack-preview-table th,
+.pack-preview-table td {
+    padding: 0.7rem 0.8rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+}
+
+.pack-preview-table th {
+    font-size: 0.78rem;
+    color: var(--muted);
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.pack-preview-table tr:last-child td {
+    border-bottom: none;
+}
+
+.pack-preview-empty {
+    margin: 0;
+    color: var(--muted);
+}
+
 .mode-choice-grid {
     display: grid;
     grid-template-columns: 1fr;

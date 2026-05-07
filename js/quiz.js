@@ -11,9 +11,6 @@ import {
 } from "./trainer-ui-state.js"
 import { bumpWordStat, saveVocabBestStreakIfHigher } from "./storage.js"
 import { answersMatch } from "./text-utils.js"
-import { wordLemma } from "./word-entry.js"
-import { lemmaKey, nextTask, nextVerbTask, nextVocabTask } from "./word-selection.js"
-import { vocabRuUserMatches, wordRuFeedbackLine } from "./wordTranslations.js"
 import {
     applyVocabRoundAnswer,
     applyVocabRoundSkip,
@@ -21,6 +18,15 @@ import {
     roundLemmaKey,
     setVocabRoundLemmaDots,
 } from "./vocab-round.js"
+import { nextCasesTask } from "../src/screens/quiz/cases/casesTask.js"
+import { nextVocabTask } from "../src/screens/quiz/vocab/vocabTask.js"
+import {
+    vocabLemma,
+    vocabRuFeedbackLine,
+    vocabRuUserMatches,
+} from "../src/screens/quiz/vocab/vocabWords.js"
+import { nextVerbTask } from "../src/screens/quiz/verbs/verbsTask.js"
+import { lemmaKey } from "../src/screens/quiz/shared/quizTaskSelection.js"
 
 const VOCAB_STREAK_MULT_FROM = 5
 const QUIZ_DEBUG_KEY = "lt-debug-quiz"
@@ -150,8 +156,8 @@ export function finalizeVocabChoice(ok, expected, word, pickedLemma = "") {
     applyVocabRoundAnswer(word, ok)
     clearQuizFeedback()
     const dir = getEngine().currentTask?.vocabDirection || VOCAB_DIRECTION.RU_TO_LT
-    const correctNom = wordLemma(word) || expected
-    const correctLemma = dir === VOCAB_DIRECTION.LT_TO_RU ? wordRuFeedbackLine(word) : correctNom
+    const correctNom = vocabLemma(word) || expected
+    const correctLemma = dir === VOCAB_DIRECTION.LT_TO_RU ? vocabRuFeedbackLine(word) : correctNom
     mutateEngine((e) => {
         e.vocabChoice = {
             pickedLemma,
@@ -175,10 +181,10 @@ export function processVocabHardcoreSubmit(userInput) {
         let expected
         let ok
         if (dir === VOCAB_DIRECTION.LT_TO_RU) {
-            expected = wordRuFeedbackLine(word)
+            expected = vocabRuFeedbackLine(word)
             ok = vocabRuUserMatches(word, userInput)
         } else {
-            expected = wordLemma(word)
+            expected = vocabLemma(word)
             ok = answersMatch(userInput, expected)
         }
         mutateEngine((e) => {
@@ -291,7 +297,7 @@ export function skipCurrentWord() {
         return
     }
     const keys = getCheckedCaseKeys()
-    const task = nextTask(keys)
+    const task = nextCasesTask(keys)
     if (!task) return
     showQuiz(task)
 }
@@ -315,7 +321,7 @@ export function handleMorphCasesAnswerSubmit(user) {
         return
     }
 
-    const task = nextTask(keys)
+    const task = nextCasesTask(keys)
     if (!task) {
         setQuizFeedback({ kind: "info", message: STR.quiz.noWordsLeft })
         return
@@ -332,7 +338,7 @@ export function handleVocabChoice(lem) {
         const matches =
             dir === VOCAB_DIRECTION.LT_TO_RU
                 ? vocabRuUserMatches(word, lem)
-                : answersMatch(lem, wordLemma(word))
+                : answersMatch(lem, vocabLemma(word))
         if (matches) {
             advanceVocabQuiz()
         }
@@ -347,8 +353,8 @@ export function handleVocabChoice(lem) {
     const ok =
         dir === VOCAB_DIRECTION.LT_TO_RU
             ? vocabRuUserMatches(word, lem)
-            : answersMatch(lem, wordLemma(word))
-    const expected = dir === VOCAB_DIRECTION.LT_TO_RU ? wordRuFeedbackLine(word) : wordLemma(word)
+            : answersMatch(lem, vocabLemma(word))
+    const expected = dir === VOCAB_DIRECTION.LT_TO_RU ? vocabRuFeedbackLine(word) : vocabLemma(word)
     finalizeVocabChoice(ok, expected, getEngine().currentTask.word, lem)
 }
 

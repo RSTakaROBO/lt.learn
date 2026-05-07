@@ -1,5 +1,5 @@
-import { createContext, useCallback, useContext, useEffect } from "react"
-import { useDispatch, useSelector } from "react-redux"
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react"
+import { shallowEqual, useDispatch, useSelector } from "react-redux"
 
 import { fmt } from "../../js/i18n/core.js"
 import { STR } from "../../js/i18n/strings-ru.js"
@@ -18,20 +18,24 @@ import {
     isRenderablePackEntry,
     loadAllPacksFromManifest,
     safePackInputId,
-    wordCountsForPack,
-} from "../lib/manifestPacksCore.js"
+} from "./manifestPacks/manifestPacksLoader.js"
+import { wordsForPackPreview } from "./manifestPacks/packPreviewRows.js"
+import { wordCountsForPack } from "./manifestPacks/packWordCounts.js"
 
 const ManifestPacksContext = createContext(null)
 
 /**
- * @typedef {{ pack: object; title: string; wordCountsByMode: Record<string, {total: number; suitable: number}|null>; safeInputId: string }} PackRowUi
+ * @typedef {{ pack: object; title: string; wordCountsByMode: Record<string, {total: number; suitable: number}|null>; safeInputId: string; previewRows: { type: string; lemma: string; translation: string }[] }} PackRowUi
  */
 
 /**
  * @returns {{
  *   packRows: PackRowUi[];
  *   selectedIds: string[];
+ *   previewPackRow: PackRowUi | null;
  *   togglePack: (id: string, checked: boolean) => void;
+ *   openPackPreview: (id: string) => void;
+ *   closePackPreview: () => void;
  *   reloadManifestPacks: () => Promise<boolean>;
  * }}
  */
@@ -45,6 +49,14 @@ export function ManifestPacksProvider({ children }) {
     const dispatch = useDispatch()
     const packRows = useSelector((s) => s.trainer.manifestUi.packRows)
     const selectedIds = useSelector((s) => s.trainer.manifestUi.selectedPackIds)
+    const screen = useSelector((s) => s.trainer.screen)
+    const overlay = useSelector((s) => s.trainer.overlay, shallowEqual)
+    const wizardStep = useSelector((s) => s.trainer.wizard.step)
+    const [previewPackId, setPreviewPackId] = useState("")
+    const previewPackRow = useMemo(
+        () => packRows.find((row) => row.pack.id === previewPackId) || null,
+        [packRows, previewPackId]
+    )
 
     const runLoad = useCallback(async () => {
         try {
@@ -61,6 +73,7 @@ export function ManifestPacksProvider({ children }) {
                     [TRAIN_MODE.VERBS]: wordCountsForPack(pack, fileMap, TRAIN_MODE.VERBS),
                 },
                 safeInputId: safePackInputId(pack.id),
+                previewRows: wordsForPackPreview(pack, fileMap),
             }))
             if (!rows.length) throw new Error(STR.errors.manifestNoValidPack)
             dispatch(manifestSetPackRows(rows))
@@ -70,6 +83,7 @@ export function ManifestPacksProvider({ children }) {
             mutateEngine((e) => {
                 e.manifestCache = null
             })
+            setPreviewPackId("")
             dispatch(manifestClearPackRows())
             const message = err instanceof Error ? err.message : String(err)
             dispatch(
@@ -107,10 +121,29 @@ export function ManifestPacksProvider({ children }) {
         return () => setReloadManifestPacksImpl(async () => false)
     }, [runLoad])
 
+    /** Предпросмотр пака только на шаге выбора наборов; любой другой экран/оверлей его закрывает */
+    useEffect(() => {
+        if (!previewPackId) return
+        if (screen !== "setup") {
+            setPreviewPackId("")
+            return
+        }
+        if (Object.values(overlay).some(Boolean)) {
+            setPreviewPackId("")
+            return
+        }
+        if (wizardStep !== 2) {
+            setPreviewPackId("")
+        }
+    }, [screen, overlay, wizardStep, previewPackId])
+
     const value = {
         packRows,
         selectedIds,
+        previewPackRow,
         togglePack,
+        openPackPreview: setPreviewPackId,
+        closePackPreview: () => setPreviewPackId(""),
         reloadManifestPacks: runLoad,
     }
 

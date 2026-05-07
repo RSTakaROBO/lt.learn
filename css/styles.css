@@ -1,15 +1,15 @@
 @import "../themes.css";
-@import "../css/tokens.css";
-@import "../css/base.css";
-@import "../css/layout.css";
-@import "../css/app-screen.css";
-@import "../css/surfaces-panel.css";
-@import "../css/lists-actions.css";
-@import "../css/reference-help.css";
-@import "../css/quiz-training.css";
-@import "../css/buttons.css";
-@import "../css/overlays.css";
-@import "../css/motion.css";
+@import "./tokens.css";
+@import "./base.css";
+@import "./layout.css";
+@import "./app-screen.css";
+@import "./surfaces-panel.css";
+@import "./lists-actions.css";
+@import "./reference-help.css";
+@import "./quiz-training.css";
+@import "./buttons.css";
+@import "./overlays.css";
+@import "./motion.css";
 
 /* Bridge React mount (#root) into body flex column so .app fills viewport height. */
 #root {

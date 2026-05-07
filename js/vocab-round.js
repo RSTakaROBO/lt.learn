@@ -7,8 +7,12 @@ import {
     WEIGHT_PER_WRONG,
 } from "./config.js"
 import { getEngine, mutateEngine, postTrainerUiAction } from "./trainer-ui-state.js"
-import { isCompleteVerbEntry, wordLemma } from "./word-entry.js"
-import { hasWordRu } from "./wordTranslations.js"
+import { isVocabTrainingWord } from "../src/screens/quiz/vocab/vocabWords.js"
+import { isVerbsTrainingWord } from "../src/screens/quiz/verbs/verbsWords.js"
+
+function cleanString(value) {
+    return typeof value === "string" ? value.trim() : ""
+}
 
 /** Сколько верных подряд по одному слову — исключение из пула раунда. */
 export const VOCAB_ROUND_STREAK_TO_REMOVE = 3
@@ -21,7 +25,7 @@ export const VOCAB_ROUND_STREAK_TO_REMOVE = 3
  * Обнуляется счётчик только при неверном ответе по этой лемме или при пропуске карточки.
  */
 export function roundLemmaKey(word) {
-    return wordLemma(word)
+    return cleanString(word?.lemma || word?.nominative)
 }
 
 function ensureRoundRow(vr, lemma) {
@@ -36,8 +40,8 @@ function ensureRoundRow(vr, lemma) {
 export function initVocabRound(mode = TRAIN_MODE.VOCAB) {
     const usable =
         mode === TRAIN_MODE.VERBS
-            ? getEngine().wordBank.filter(isCompleteVerbEntry)
-            : getEngine().wordBank.filter((w) => hasWordRu(w) && wordLemma(w))
+            ? getEngine().wordBank.filter(isVerbsTrainingWord)
+            : getEngine().wordBank.filter(isVocabTrainingWord)
     let success = true
     mutateEngine((e) => {
         if (!usable.length) {

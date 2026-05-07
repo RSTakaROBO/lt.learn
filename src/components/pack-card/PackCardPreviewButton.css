@@ -1,0 +1,49 @@
+.pack-card-preview-slot {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pack-card-preview-btn {
+    -webkit-appearance: none;
+    appearance: none;
+    box-sizing: border-box;
+    border: none;
+    background: transparent;
+    box-shadow: none;
+    cursor: pointer;
+    border-radius: var(--radius-char);
+    color: var(--muted);
+    width: var(--touch-btn-min-h);
+    height: var(--touch-btn-min-h);
+    min-width: var(--touch-btn-min-h);
+    min-height: var(--touch-btn-min-h);
+    aspect-ratio: 1;
+    padding: 0;
+    margin: 0;
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pack-card-preview-btn svg {
+    display: block;
+    width: 1.35rem;
+    height: 1.35rem;
+}
+
+.pack-card-preview-btn:hover {
+    color: var(--accent);
+    background: color-mix(in srgb, var(--accent) 12%, transparent);
+}
+
+.pack-card-preview-btn:focus-visible {
+    outline: 2px solid color-mix(in srgb, var(--accent) 55%, transparent);
+    outline-offset: 2px;
+}
+
+.pack-card-preview-btn:active {
+    opacity: 0.88;
+}

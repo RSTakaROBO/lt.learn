@@ -6,8 +6,9 @@ import { resetVocabCorrectStreak, showQuiz } from "../../js/quiz.js"
 import { getResolvedVocabDirections, loadTrainMode } from "../../js/storage.js"
 import { mutateEngine } from "../../js/trainer-ui-state.js"
 import { clearVocabRound, initVocabRound } from "../../js/vocab-round.js"
-import { nextVerbTask, nextVocabTask } from "../../js/word-selection.js"
 import { useTrainerDispatch } from "../context/TrainerAppContext.jsx"
+import { nextVocabTask } from "../screens/quiz/vocab/vocabTask.js"
+import { nextVerbTask } from "../screens/quiz/verbs/verbsTask.js"
 
 export function useVocabRoundSummaryActions() {
     const dispatch = useTrainerDispatch()

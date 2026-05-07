@@ -1,14 +1,9 @@
 import { useEffect, useState } from "react"
 
-import { LLM_CUSTOM_PACK_PROMPT as CUSTOM_PACK_LLM_PROMPT } from "../../../js/i18n/llm-prompt-ru.js"
-
-import { STR } from "../../../js/i18n/strings-ru.js"
-
-import { AppModalOverlay } from "../../components/layout/AppModalOverlay.jsx"
-
-import { Button } from "../../components/ui/Button.jsx"
-
-import { useTrainerApp } from "../../context/TrainerAppContext.jsx"
+import { STR } from "../../../../js/i18n/strings-ru.js"
+import { AppModalOverlay } from "../../../components/layout/AppModalOverlay.jsx"
+import { Button } from "../../../components/ui/Button.jsx"
+import { useTrainerApp } from "../../../context/TrainerAppContext.jsx"
 
 /**
  * Окно с текстом промпта для LLM.
@@ -98,7 +93,7 @@ export function PackPromptOverlay({ heightMode = "fill" } = {}) {
                 <textarea
                     id="pack-prompt-text"
                     className="pack-prompt-textarea"
-                    value={CUSTOM_PACK_LLM_PROMPT}
+                    value={STR.packPrompt.llmPrompt}
                     readOnly
                     spellCheck={false}
                     rows={14}

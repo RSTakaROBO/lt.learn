@@ -14,6 +14,7 @@ import { useTrainerDispatch } from "../../context/TrainerAppContext.jsx"
 import { CheckboxButton } from "../ui/CheckboxButton.jsx"
 import { ListHolder } from "../ui/ListHolder.jsx"
 import { PackCardDeleteButton } from "./PackCardDeleteButton.jsx"
+import { PackCardPreviewButton } from "./PackCardPreviewButton.jsx"
 
 function wordCountLabelFromCounts(counts) {
     if (!counts) return STR.errors.countFailed
@@ -35,7 +36,8 @@ function isPackSelectable(row, trainMode) {
  * @param {{ scrollWell?: boolean }} props
  */
 export function WizardPackList({ scrollWell = true }) {
-    const { packRows, selectedIds, togglePack, reloadManifestPacks } = useManifestPacks()
+    const { packRows, selectedIds, togglePack, reloadManifestPacks, openPackPreview } =
+        useManifestPacks()
     const dispatch = useTrainerDispatch()
     const trainMode = loadTrainMode() || TRAIN_MODE.CASES
 
@@ -64,6 +66,12 @@ export function WizardPackList({ scrollWell = true }) {
         }
     }
 
+    function onPreviewPack(e, packId) {
+        e.preventDefault()
+        e.stopPropagation()
+        openPackPreview(packId)
+    }
+
     return (
         <ListHolder id="pack-list" scrollWell={scrollWell}>
             {packRows.map((row) => {
@@ -81,15 +89,24 @@ export function WizardPackList({ scrollWell = true }) {
                         disabled={!selectable}
                         onChange={(e) => togglePack(row.pack.id, e.target.checked)}
                         faceBeforeTick={
-                            row.pack.custom ? (
-                                <PackCardDeleteButton
+                            <>
+                                <PackCardPreviewButton
                                     packId={row.pack.id}
-                                    ariaLabel={fmt(STR.errors.deletePackAria, {
+                                    ariaLabel={fmt(STR.packs.previewAria, {
                                         title: row.title,
                                     })}
-                                    onClick={(e) => onDeleteCustomPack(e, row.pack.id)}
+                                    onClick={(e) => onPreviewPack(e, row.pack.id)}
                                 />
-                            ) : undefined
+                                {row.pack.custom ? (
+                                    <PackCardDeleteButton
+                                        packId={row.pack.id}
+                                        ariaLabel={fmt(STR.errors.deletePackAria, {
+                                            title: row.title,
+                                        })}
+                                        onClick={(e) => onDeleteCustomPack(e, row.pack.id)}
+                                    />
+                                ) : null}
+                            </>
                         }
                     />
                 )

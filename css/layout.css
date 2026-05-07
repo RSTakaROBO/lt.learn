@@ -23,6 +23,18 @@
     min-height: 0;
 }
 
+/* Предпросмотр набора: один скролл внутри приложения, без прокрутки документа */
+html:has(#pack-preview-shell) {
+    overflow: hidden;
+    height: 100dvh;
+}
+
+html:has(#pack-preview-shell) body {
+    overflow: hidden;
+    height: 100%;
+    max-height: 100dvh;
+}
+
 .cases-help-shell:not(.hidden),
 .verbs-help-shell:not(.hidden) {
     position: fixed;
@@ -52,6 +64,13 @@
 }
 
 #setup-shell:not(.hidden) > #setup {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+}
+
+#pack-preview-shell:not(.hidden) > #pack-preview {
     flex: 1;
     display: flex;
     flex-direction: column;

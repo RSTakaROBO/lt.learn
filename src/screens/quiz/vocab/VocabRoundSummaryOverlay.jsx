@@ -1,9 +1,10 @@
 import { useEffect } from "react"
 import { useSelector } from "react-redux"
-import { STR } from "../../../js/i18n/strings-ru.js"
-import { AppModalOverlay } from "../../components/layout/AppModalOverlay.jsx"
-import { Button } from "../../components/ui/Button.jsx"
-import { useVocabRoundSummaryActions } from "../../hooks/useVocabRoundSummaryActions.js"
+
+import { STR } from "../../../../js/i18n/strings-ru.js"
+import { AppModalOverlay } from "../../../components/layout/AppModalOverlay.jsx"
+import { Button } from "../../../components/ui/Button.jsx"
+import { useVocabRoundSummaryActions } from "../../../hooks/useVocabRoundSummaryActions.js"
 
 /**
  * Итог раунда «Слова».

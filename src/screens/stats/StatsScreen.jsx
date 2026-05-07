@@ -1,16 +1,18 @@
 import { useEffect, useMemo } from "react"
 import { useSelector } from "react-redux"
+
 import { STR } from "../../../js/i18n/strings-ru.js"
+import { clearWordStats } from "../../../js/storage.js"
 import { AppFlowScreen } from "../../components/layout/AppFlowScreen.jsx"
 import { Button } from "../../components/ui/Button.jsx"
 import { useTrainerDispatch } from "../../context/TrainerAppContext.jsx"
-import { aggregateWordStatsTotals, buildSortedWordStatRows } from "../../utils/wordStatsView.js"
+import { aggregateWordStatsTotals, buildSortedWordStatRows } from "./wordStatsView.js"
 
 /**
  * Статистика по словам: обычный экран в потоке приложения (как мастер / квиз).
  * @param {{ heightMode?: "fill"|"scroll" }} [props]
  */
-export function StatsOverlay({ heightMode = "fill" } = {}) {
+export function StatsScreen({ heightMode = "fill" } = {}) {
     const dispatch = useTrainerDispatch()
     const open = useSelector((s) => s.trainer.overlay.stats)
     const wordStats = useSelector((s) => s.trainer.engine.wordStats)
@@ -88,7 +90,19 @@ export function StatsOverlay({ heightMode = "fill" } = {}) {
                         )}
                     </div>
                 </div>
-                <div className="app-screen__footer actions app-screen__footer--single">
+                <div className="app-screen__footer actions wizard-pack-actions stats-footer-actions">
+                    <Button
+                        type="button"
+                        id="btn-stats-clear"
+                        className="stats-clear-btn"
+                        aria-label={STR.stats.clear}
+                        onClick={() => {
+                            if (!window.confirm(STR.stats.clearConfirm)) return
+                            clearWordStats()
+                        }}
+                    >
+                        {STR.stats.clear}
+                    </Button>
                     <Button
                         variant="primary"
                         id="btn-stats-close"

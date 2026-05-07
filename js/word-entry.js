@@ -118,21 +118,3 @@ export function wordLemma(entry) {
     const normalized = normalizeWordEntry(entry)
     return cleanString(normalized?.lemma || normalized?.nominative)
 }
-
-export function isNounEntry(entry) {
-    return normalizeWordEntry(entry)?.type === WORD_ENTRY_TYPE.NOUN
-}
-
-export function isCompleteNounEntry(entry) {
-    const normalized = normalizeWordEntry(entry)
-    return !!normalized && normalized.type === WORD_ENTRY_TYPE.NOUN
-}
-
-export function isCompleteVerbEntry(entry) {
-    const normalized = normalizeWordEntry(entry)
-    return (
-        !!normalized &&
-        normalized.type === WORD_ENTRY_TYPE.VERB &&
-        VERB_FORM_KEYS.every((key) => typeof normalized[key] === "string" && normalized[key])
-    )
-}
