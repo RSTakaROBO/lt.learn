@@ -1,6 +1,7 @@
 import { STR } from "../../../../js/i18n/strings-ru.js"
 import { AppFlowScreen } from "../../../components/layout/AppFlowScreen.jsx"
 import { Button } from "../../../components/ui/Button.jsx"
+import { DataTable } from "../../../components/ui/DataTable.jsx"
 import { useManifestPacks } from "../../../context/ManifestPacksContext.jsx"
 
 const PART_OF_SPEECH_ORDER = ["noun", "verb", "adjective", "other"]
@@ -55,22 +56,28 @@ export function PackPreviewScreen({ heightMode = "fill" } = {}) {
                                     {partOfSpeechLabel(group.type)}
                                 </h3>
                                 <div className="pack-preview-table-scroll">
-                                    <table className="pack-preview-table">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col">{STR.packPreview.thLemma}</th>
-                                                <th scope="col">{STR.packPreview.thTranslation}</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {group.rows.map((row, index) => (
-                                                <tr key={`${row.type}-${row.lemma}-${index}`}>
-                                                    <td lang="lt">{row.lemma}</td>
-                                                    <td>{row.translation || STR.quiz.emDash}</td>
-                                                </tr>
-                                            ))}
-                                        </tbody>
-                                    </table>
+                                    <DataTable
+                                        variant="plain"
+                                        caption={`${partOfSpeechLabel(group.type)}: ${STR.packPreview.thLemma}, ${STR.packPreview.thTranslation}`}
+                                        columns={[
+                                            {
+                                                key: "lemma",
+                                                header: STR.packPreview.thLemma,
+                                                highlight: true,
+                                                lang: "lt",
+                                            },
+                                            {
+                                                key: "translation",
+                                                header: STR.packPreview.thTranslation,
+                                            },
+                                        ]}
+                                        rows={group.rows.map((row, index) => ({
+                                            lemma: row.lemma,
+                                            translation: row.translation || STR.quiz.emDash,
+                                            rowKey: `${group.type}-${row.lemma}-${index}`,
+                                        }))}
+                                        getRowKey={(row) => row.rowKey}
+                                    />
                                 </div>
                             </section>
                         ))

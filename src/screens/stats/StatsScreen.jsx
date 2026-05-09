@@ -6,6 +6,7 @@ import { clearWordStats } from "../../../js/storage.js"
 import { AppFlowScreen } from "../../components/layout/AppFlowScreen.jsx"
 import { TrashCanIcon } from "../../components/icons/index.js"
 import { Button } from "../../components/ui/Button.jsx"
+import { DataTable } from "../../components/ui/DataTable.jsx"
 import { useTrainerDispatch } from "../../context/TrainerAppContext.jsx"
 import { aggregateWordStatsTotals, buildSortedWordStatRows } from "./wordStatsView.js"
 
@@ -24,7 +25,8 @@ export function StatsScreen({ heightMode = "fill" } = {}) {
     )
     const rows = useMemo(() => buildSortedWordStatRows(wordStats), [open, wordStats])
     const graded = correct + wrong
-    const pctLabel = graded > 0 ? `${Math.round((100 * correct) / graded)}%` : STR.quiz.emDash
+    const total = correct + wrong + skipped
+    const accuracyPct = graded > 0 ? Math.round((100 * correct) / graded) : null
 
     useEffect(() => {
         if (!open) return
@@ -47,22 +49,57 @@ export function StatsScreen({ heightMode = "fill" } = {}) {
                 </h2>
                 <div className="app-screen__body app-screen__body--stats">
                     <div className="stats-summary">
-                        <div className="stats-summary-grid">
-                            <div className="stats-sum-cell">
-                                <span className="stats-sum-label">{STR.stats.sumCorrect}</span>
-                                <span className="stats-sum-val">{correct}</span>
+                        <div
+                            className="vocab-round-summary-stats-card stats-summary-card"
+                            aria-live="polite"
+                        >
+                            <div className="vocab-round-summary-hero-stat">
+                                <span className="vocab-round-summary-section-title">
+                                    {STR.stats.sumPercent}
+                                </span>
+                                <div className="vocab-round-summary-stat-val vocab-round-summary-stat-val--hero">
+                                    <span className="vocab-round-summary-stat-num vocab-round-summary-stat-num--hero vocab-round-summary-stat-num--accent">
+                                        {accuracyPct == null ? STR.quiz.emDash : accuracyPct}
+                                    </span>
+                                    {accuracyPct == null ? null : (
+                                        <span
+                                            className="vocab-round-summary-stat-unit"
+                                            aria-hidden="true"
+                                        >
+                                            {STR.vocabRound.percentUnit}
+                                        </span>
+                                    )}
+                                </div>
                             </div>
-                            <div className="stats-sum-cell">
-                                <span className="stats-sum-label">{STR.stats.sumWrong}</span>
-                                <span className="stats-sum-val">{wrong}</span>
-                            </div>
-                            <div className="stats-sum-cell">
-                                <span className="stats-sum-label">{STR.stats.sumSkipped}</span>
-                                <span className="stats-sum-val">{skipped}</span>
-                            </div>
-                            <div className="stats-sum-cell">
-                                <span className="stats-sum-label">{STR.stats.sumPercent}</span>
-                                <span className="stats-sum-val">{pctLabel}</span>
+                            <div className="vocab-round-summary-stat-grid">
+                                <div className="vocab-round-summary-stat-tile">
+                                    <span className="vocab-round-summary-stat-label">
+                                        {STR.stats.sumCorrect}
+                                    </span>
+                                    <strong className="vocab-round-summary-stat-ok">
+                                        {correct}
+                                    </strong>
+                                </div>
+                                <div className="vocab-round-summary-stat-tile">
+                                    <span className="vocab-round-summary-stat-label">
+                                        {STR.stats.sumWrong}
+                                    </span>
+                                    <strong className="vocab-round-summary-stat-bad">
+                                        {wrong}
+                                    </strong>
+                                </div>
+                                <div className="vocab-round-summary-stat-tile">
+                                    <span className="vocab-round-summary-stat-label">
+                                        {STR.stats.sumSkipped}
+                                    </span>
+                                    <strong>{skipped}</strong>
+                                </div>
+                                <div className="vocab-round-summary-stat-tile">
+                                    <span className="vocab-round-summary-stat-label">
+                                        {STR.stats.sumTotal}
+                                    </span>
+                                    <strong>{total}</strong>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -70,24 +107,22 @@ export function StatsScreen({ heightMode = "fill" } = {}) {
                         {rows.length === 0 ? (
                             <p className="stats-empty">{STR.stats.empty}</p>
                         ) : (
-                            <table className="stats-table">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">{STR.stats.thWord}</th>
-                                        <th scope="col">{STR.stats.thCorrect}</th>
-                                        <th scope="col">{STR.stats.thWrong}</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {rows.map((r) => (
-                                        <tr key={r.lemma}>
-                                            <td lang="lt">{r.lemma}</td>
-                                            <td>{r.correct}</td>
-                                            <td>{r.wrong}</td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
+                            <DataTable
+                                variant="plain"
+                                caption={STR.stats.tableCaption}
+                                columns={[
+                                    {
+                                        key: "lemma",
+                                        header: STR.stats.thWord,
+                                        highlight: true,
+                                        lang: "lt",
+                                    },
+                                    { key: "correct", header: STR.stats.thCorrect, narrow: true },
+                                    { key: "wrong", header: STR.stats.thWrong, narrow: true },
+                                ]}
+                                rows={rows}
+                                getRowKey={(row) => row.lemma}
+                            />
                         )}
                     </div>
                 </div>

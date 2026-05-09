@@ -1,0 +1,76 @@
+/* Универсальная таблица (экраны статистики, итог раунда и т.д.). */
+
+.data-table-scroll {
+    width: 100%;
+    max-width: 100%;
+    margin-inline: 0;
+    border-radius: var(--radius-control);
+    border: var(--stroke) solid var(--border);
+    overflow: hidden;
+    background: color-mix(in srgb, var(--surface-elevated) 88%, transparent);
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+}
+
+.data-table__th {
+    padding: 0.55rem 0.65rem;
+    font-weight: 600;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: color-mix(in srgb, var(--text) 72%, var(--accent));
+    background: color-mix(in srgb, var(--accent) 20%, var(--surface-elevated));
+    border-bottom: var(--stroke) solid color-mix(in srgb, var(--accent) 28%, var(--border));
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    box-shadow: 0 var(--stroke) 0 color-mix(in srgb, var(--border) 85%, var(--accent));
+}
+
+.data-table__th--narrow {
+    text-align: center;
+    white-space: nowrap;
+}
+
+.data-table__th--leading {
+    text-align: left;
+}
+
+.data-table__td {
+    padding: 0.62rem 0.65rem;
+    vertical-align: middle;
+    border-bottom: var(--stroke) solid var(--border);
+    color: var(--text);
+}
+
+.data-table__td--narrow {
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+    color: color-mix(in srgb, var(--text) 88%, var(--muted));
+}
+
+.data-table__td--highlight {
+    text-align: left;
+    font-weight: 600;
+    font-size: 1.02rem;
+    word-break: break-word;
+}
+
+.data-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+@media (hover: hover) {
+    .data-table tbody tr:hover td {
+        background: color-mix(in srgb, var(--accent) 7%, transparent);
+    }
+}
+
+.stats-table-wrap .data-table {
+    background: transparent;
+}

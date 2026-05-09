@@ -69,11 +69,11 @@
     overscroll-behavior-y: contain;
 }
 
-/* Статистика: сетка и блок таблицы с липким thead — скролл внутри .stats-table-wrap */
+/* Статистика: сводка фиксирована, таблица — flex + внутренний скролл (полоса скрыта в overlays) */
 .app-screen__body--stats {
     display: flex;
     flex-direction: column;
-    overflow: hidden;
+    overflow: visible;
 }
 
 .app-screen__body--stats > .stats-summary {
@@ -157,12 +157,6 @@
     overflow: visible;
 }
 
-.app-screen--modal.app-screen--height-scroll .app-screen__body--stats > .stats-table-wrap {
-    flex: none;
-    min-height: 0;
-    overflow: visible;
-}
-
 .app-screen--modal.app-screen--height-scroll .app-screen__body--nested {
     display: block;
     overflow: visible;
@@ -212,12 +206,6 @@
 
 .app-screen--flow.app-screen--height-scroll .app-screen__body--stats {
     display: block;
-    overflow: visible;
-}
-
-.app-screen--flow.app-screen--height-scroll .app-screen__body--stats > .stats-table-wrap {
-    flex: none;
-    min-height: 0;
     overflow: visible;
 }
 

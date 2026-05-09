@@ -1,0 +1,70 @@
+{
+    "title": "Вопросительные слова",
+    "words": [
+        {
+            "nominative": "kas",
+            "genitive": "ko",
+            "dative": "kam",
+            "accusative": "ką",
+            "instrumental": "kuo",
+            "locative": "kame",
+            "vocative": "kas",
+            "ru": ["кто", "что"]
+        },
+        {
+            "type": "adverb",
+            "lemma": "kur",
+            "ru": ["где", "куда"]
+        },
+        {
+            "type": "adverb",
+            "lemma": "kada",
+            "ru": "когда"
+        },
+        {
+            "type": "adverb",
+            "lemma": "kaip",
+            "ru": "как"
+        },
+        {
+            "type": "adverb",
+            "lemma": "kodėl",
+            "ru": "почему"
+        },
+        {
+            "type": "adverb",
+            "lemma": "kiek",
+            "ru": "сколько"
+        },
+        {
+            "type": "adverb",
+            "lemma": "ar",
+            "ru": "ли"
+        },
+        {
+            "nominative": "koks",
+            "genitive": "kokio",
+            "dative": "kokiam",
+            "accusative": "kokį",
+            "instrumental": "kokiu",
+            "locative": "kokiame",
+            "vocative": "koki",
+            "ru": "какой"
+        },
+        {
+            "nominative": "kuris",
+            "genitive": "kurio",
+            "dative": "kuriam",
+            "accusative": "kurį",
+            "instrumental": "kuriu",
+            "locative": "kuriame",
+            "vocative": "kuri",
+            "ru": "который"
+        },
+        {
+            "type": "adverb",
+            "lemma": "iškur",
+            "ru": "откуда"
+        }
+    ]
+}

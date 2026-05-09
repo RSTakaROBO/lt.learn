@@ -205,7 +205,7 @@
     background: color-mix(in srgb, var(--surface-elevated) 72%, var(--bg));
     border-color: color-mix(in srgb, var(--border) 75%, var(--muted));
     box-shadow: none;
-    opacity: 0.58;
+    opacity: 0.38;
 }
 
 .pack-card--disabled:hover .pack-card-face {
@@ -219,10 +219,24 @@
 
 .pack-card-input:checked + .pack-card-face {
     border-color: var(--accent);
-    background: color-mix(in srgb, var(--accent) 11%, var(--surface-elevated));
+    background: color-mix(in srgb, var(--accent) 31%, var(--surface-elevated));
     box-shadow:
         0 0 0 1px color-mix(in srgb, var(--accent) 38%, transparent),
         0 var(--btn-shadow-drop) 0 0 var(--btn-shadow-depth);
+}
+
+/* CheckboxButton: плоская карточка, без тени как у .btn внизу экрана */
+.pack-card--flat .pack-card-face {
+    box-shadow: none;
+}
+
+.pack-card--flat:active .pack-card-face {
+    transform: none;
+    box-shadow: none;
+}
+
+.pack-card--flat .pack-card-input:checked + .pack-card-face {
+    box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent) 38%, transparent);
 }
 
 .pack-card-main {
@@ -341,29 +355,12 @@
     background: transparent;
 }
 
-.pack-preview-table {
-    width: 100%;
-    border-collapse: collapse;
+.pack-preview-table-scroll .data-table {
     min-width: 18rem;
 }
 
-.pack-preview-table th,
-.pack-preview-table td {
-    padding: 0.7rem 0.8rem;
-    text-align: left;
-    border-bottom: 1px solid var(--border);
+.pack-preview-table-scroll .data-table__td {
     vertical-align: top;
-}
-
-.pack-preview-table th {
-    font-size: 0.78rem;
-    color: var(--muted);
-    font-weight: 700;
-    text-transform: uppercase;
-}
-
-.pack-preview-table tr:last-child td {
-    border-bottom: none;
 }
 
 .pack-preview-empty {
@@ -489,6 +486,10 @@
     box-shadow:
         0 0 0 1px color-mix(in srgb, var(--error) 32%, transparent),
         0 var(--btn-shadow-drop) 0 0 var(--btn-shadow-depth);
+}
+
+.vocab-hardcore-block .pack-card--flat .pack-card-input:checked + .pack-card-face {
+    box-shadow: 0 0 0 1px color-mix(in srgb, var(--error) 32%, transparent);
 }
 
 .vocab-hardcore-block .pack-card-title {

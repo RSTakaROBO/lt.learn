@@ -134,11 +134,10 @@
 }
 
 /*
- * Шаг «Направление перевода»: здесь мало контента (2 чекбокса). Общее правило
- * > .case-grid { flex: 1 1 0; min-height: 0 } в части WebView/Android даёт
- * схлопывание области — экран кажется пустым. Держим сетку по высоте контента.
+ * Шаг «Направление перевода»: мало контента — без .wizard-scroll-well (рамка-лоток
+ * только для длинных списков). Не даём промежуточной колонке съедать flex-рост.
  */
-#setup #step-vocab-direction:not(.hidden) > .vocab-direction-grid.case-grid {
+#setup #step-vocab-direction:not(.hidden) > .vocab-direction-grid {
     flex: 0 1 auto;
     flex-grow: 0;
     min-height: unset;

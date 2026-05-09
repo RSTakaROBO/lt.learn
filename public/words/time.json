@@ -1,5 +1,5 @@
 {
-    "title": "Время суток и приёмы пищи",
+    "title": "Время",
     "words": [
         {
             "nominative": "rytas",
@@ -162,6 +162,16 @@
             "ru": "месяц"
         },
         {
+            "nominative": "metai",
+            "genitive": "metų",
+            "dative": "metams",
+            "accusative": "metus",
+            "instrumental": "metais",
+            "locative": "metuose",
+            "vocative": "metai",
+            "ru": "год"
+        },
+        {
             "nominative": "valanda",
             "genitive": "valandos",
             "dative": "valandai",
@@ -182,24 +192,94 @@
             "ru": "минута"
         },
         {
-            "nominative": "ateitis",
-            "genitive": "ateities",
-            "dative": "ateičiai",
-            "accusative": "ateitį",
-            "instrumental": "ateitimi",
-            "locative": "ateityje",
-            "vocative": "ateitie",
-            "ru": "будущее"
+            "nominative": "laikas",
+            "genitive": "laiko",
+            "dative": "laikui",
+            "accusative": "laiką",
+            "instrumental": "laiku",
+            "locative": "laike",
+            "vocative": "laike",
+            "ru": "время"
         },
         {
-            "nominative": "praeitis",
-            "genitive": "praeities",
-            "dative": "praeičiai",
-            "accusative": "praeitį",
-            "instrumental": "praeitimi",
-            "locative": "praeityje",
-            "vocative": "praeitie",
-            "ru": "прошлое"
+            "type": "adverb",
+            "lemma": "visada",
+            "ru": "всегда"
+        },
+        {
+            "type": "adverb",
+            "lemma": "niekada",
+            "ru": "никогда"
+        },
+        {
+            "type": "adverb",
+            "lemma": "kartais",
+            "ru": "иногда"
+        },
+        {
+            "type": "adverb",
+            "lemma": "rytoj",
+            "ru": "завтра"
+        },
+        {
+            "type": "adverb",
+            "lemma": "dabar",
+            "ru": "сейчас"
+        },
+        {
+            "type": "adverb",
+            "lemma": "kasdien",
+            "ru": "каждый день"
+        },
+        {
+            "type": "adverb",
+            "lemma": "vakar",
+            "ru": "вчера"
+        },
+        {
+            "type": "adverb",
+            "lemma": "retai",
+            "ru": "редко"
+        },
+        {
+            "nominative": "pavasaris",
+            "genitive": "pavasario",
+            "dative": "pavasariui",
+            "accusative": "pavasarį",
+            "instrumental": "pavasariu",
+            "locative": "pavasaryje",
+            "vocative": "pavasari",
+            "ru": "весна"
+        },
+        {
+            "nominative": "vasara",
+            "genitive": "vasaros",
+            "dative": "vasarai",
+            "accusative": "vasarą",
+            "instrumental": "vasara",
+            "locative": "vasaroje",
+            "vocative": "vasara",
+            "ru": "лето"
+        },
+        {
+            "nominative": "ruduo",
+            "genitive": "rudens",
+            "dative": "rudeniui",
+            "accusative": "rudenį",
+            "instrumental": "rudeniu",
+            "locative": "rudenyje",
+            "vocative": "rudenie",
+            "ru": "осень"
+        },
+        {
+            "nominative": "žiema",
+            "genitive": "žiemos",
+            "dative": "žiemai",
+            "accusative": "žiemą",
+            "instrumental": "žiema",
+            "locative": "žiemoje",
+            "vocative": "žiema",
+            "ru": "зима"
         }
     ]
 }

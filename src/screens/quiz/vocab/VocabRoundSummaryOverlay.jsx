@@ -5,6 +5,7 @@ import { STR } from "../../../../js/i18n/strings-ru.js"
 import { getVocabRoundSummarySnapshot } from "../../../../js/vocab-round.js"
 import { AppModalOverlay } from "../../../components/layout/AppModalOverlay.jsx"
 import { Button } from "../../../components/ui/Button.jsx"
+import { DataTable } from "../../../components/ui/DataTable.jsx"
 import { useVocabRoundSummaryActions } from "../../../hooks/useVocabRoundSummaryActions.js"
 
 /**
@@ -93,6 +94,12 @@ export function VocabRoundSummaryOverlay({ heightMode = "fill" } = {}) {
                                 </div>
                                 <div className="vocab-round-summary-stat-tile">
                                     <span className="vocab-round-summary-stat-label">
+                                        {VR.statMaxStreak}
+                                    </span>
+                                    <strong>×{displaySnap.maxStreak ?? 0}</strong>
+                                </div>
+                                <div className="vocab-round-summary-stat-tile">
+                                    <span className="vocab-round-summary-stat-label">
                                         {VR.statCorrect}
                                     </span>
                                     <strong className="vocab-round-summary-stat-ok">
@@ -107,55 +114,27 @@ export function VocabRoundSummaryOverlay({ heightMode = "fill" } = {}) {
                                         {displaySnap.wrong ?? 0}
                                     </strong>
                                 </div>
-                                <div className="vocab-round-summary-stat-tile">
-                                    <span className="vocab-round-summary-stat-label">
-                                        {VR.statMaxStreak}
-                                    </span>
-                                    <strong>{displaySnap.maxStreak}</strong>
-                                </div>
                             </div>
                         </div>
-                        <div className="vocab-round-summary-section">
+                        <div className="vocab-round-summary-section vocab-round-summary-section--hard">
                             <p className="vocab-round-summary-section-title">{VR.sectionHard}</p>
                             {displaySnap.topHard.length === 0 ? (
                                 <p className="vocab-round-summary-empty sub">{VR.noWrongWords}</p>
                             ) : (
-                                <div className="vocab-round-summary-table-scroll">
-                                    <table className="vocab-round-summary-table">
-                                        <caption className="sr-only">{VR.tableCaption}</caption>
-                                        <thead>
-                                            <tr>
-                                                <th
-                                                    scope="col"
-                                                    className="vocab-round-summary-th vocab-round-summary-th--word"
-                                                >
-                                                    {VR.thWord}
-                                                </th>
-                                                <th
-                                                    scope="col"
-                                                    className="vocab-round-summary-th vocab-round-summary-th--err"
-                                                >
-                                                    {VR.thErr}
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {displaySnap.topHard.map((x) => (
-                                                <tr key={x.lemma}>
-                                                    <td
-                                                        className="vocab-round-summary-td vocab-round-summary-td--word"
-                                                        lang="lt"
-                                                    >
-                                                        {x.lemma}
-                                                    </td>
-                                                    <td className="vocab-round-summary-td vocab-round-summary-td--err">
-                                                        {x.wrong}
-                                                    </td>
-                                                </tr>
-                                            ))}
-                                        </tbody>
-                                    </table>
-                                </div>
+                                <DataTable
+                                    caption={VR.tableCaption}
+                                    columns={[
+                                        {
+                                            key: "lemma",
+                                            header: VR.thWord,
+                                            highlight: true,
+                                            lang: "lt",
+                                        },
+                                        { key: "wrong", header: VR.thErr, narrow: true },
+                                    ]}
+                                    rows={displaySnap.topHard}
+                                    getRowKey={(row) => row.lemma}
+                                />
                             )}
                         </div>
                     </div>

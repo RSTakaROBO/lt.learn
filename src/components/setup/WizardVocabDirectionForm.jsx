@@ -30,7 +30,6 @@ export function WizardVocabDirectionForm() {
     return (
         <>
             <ListHolder
-                scrollWell
                 className="vocab-direction-grid"
                 role="group"
                 aria-labelledby="vocab-direction-step-title"

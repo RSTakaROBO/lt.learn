@@ -5,12 +5,13 @@ import { STR } from "../../../../js/i18n/strings-ru.js"
 import { handleVerbFormSubmit } from "../../../../js/quiz.js"
 import {
     LithuanianInput,
+    QuizFeedback,
     VocabRoundDots,
     VocabRoundProgress,
     VocabStreakMultiplier,
 } from "../shared/index.js"
 
-function VerbFormsPrompt({ task }) {
+function VerbFormsPrompt({ answered, task }) {
     const hiddenKey = task?.hiddenVerbFormKey
     const word = task?.word
 
@@ -19,6 +20,7 @@ function VerbFormsPrompt({ task }) {
             {VERB_FORM_ORDER.map((form) => {
                 const hidden = form.key === hiddenKey
                 const value = word?.[form.key] || word?.forms?.[form.key] || STR.quiz.emDash
+                const showPrompt = hidden && !answered
                 return (
                     <div
                         key={form.key}
@@ -27,8 +29,8 @@ function VerbFormsPrompt({ task }) {
                             .join(" ")}
                     >
                         <span className="verb-form-label">{form.label}</span>
-                        <span className="verb-form-value" lang="lt">
-                            {hidden ? STR.quiz.hiddenVerbForm : value}
+                        <span className="verb-form-value" lang={showPrompt ? undefined : "lt"}>
+                            {showPrompt ? STR.quiz.hiddenVerbForm : value}
                         </span>
                     </div>
                 )
@@ -37,9 +39,19 @@ function VerbFormsPrompt({ task }) {
     )
 }
 
-export function VerbsQuiz({ isActive, pulseId, roundDots, roundProgress, streak, task }) {
+export function VerbsQuiz({
+    answered,
+    feedback,
+    isActive,
+    pulseId,
+    roundDots,
+    roundProgress,
+    streak,
+    task,
+}) {
     const inputRef = useRef(null)
     const [answerValue, setAnswerValue] = useState("")
+    const feedbackKind = feedback?.kind === "ok" || feedback?.kind === "bad" ? feedback.kind : ""
 
     useEffect(() => {
         if (!isActive) return
@@ -49,9 +61,24 @@ export function VerbsQuiz({ isActive, pulseId, roundDots, roundProgress, streak,
 
     return (
         <div id="quiz-verbs-ui" className={isActive ? "" : "hidden"}>
-            <div className="vocab-ru-card verb-forms-card">
+            <div
+                className={[
+                    "vocab-ru-card verb-forms-card",
+                    feedbackKind && `vocab-ru-card--${feedbackKind}`,
+                ]
+                    .filter(Boolean)
+                    .join(" ")}
+            >
                 <div className="vocab-ru-card-body">
-                    <VerbFormsPrompt task={task} />
+                    <VerbFormsPrompt answered={answered} task={task} />
+                    <QuizFeedback
+                        className="vocab-card-feedback"
+                        feedback={feedback}
+                        id="verbs-card-feedback"
+                        reserveSpace
+                        showExpected={false}
+                        showExceptionNote={false}
+                    />
                 </div>
                 <VocabStreakMultiplier streak={streak} pulseId={pulseId} />
                 <VocabRoundDots dots={roundDots} />

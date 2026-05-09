@@ -1,5 +1,5 @@
 /**
- * Крупная кнопка-чекбокс (карточка): классы `.pack-card` из `css/lists-actions.css`.
+ * Крупная кнопка-чекбокс (карточка): `.pack-card.pack-card--flat` — без объёмной тени у нижних кнопок.
  * Универсальный вариант для мастера и настроек. Список наборов — {@link WizardPackList} (`components/pack-card`).
  *
  * @param {{
@@ -34,7 +34,12 @@ export function CheckboxButton({
     const controlled = checked !== undefined
     return (
         <label
-            className={["pack-card", disabled && "pack-card--disabled", className]
+            className={[
+                "pack-card",
+                "pack-card--flat",
+                disabled && "pack-card--disabled",
+                className,
+            ]
                 .filter(Boolean)
                 .join(" ")}
             htmlFor={id}

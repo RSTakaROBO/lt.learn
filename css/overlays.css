@@ -85,161 +85,33 @@ body.vocab-round-summary-modal-open .quiz-bottom-bar {
 
 .stats-summary {
     flex-shrink: 0;
-    margin: var(--panel-section-gap) 0;
+    margin-bottom: var(--panel-section-gap);
 }
 
-.stats-summary-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.65rem 1rem;
-}
-
-@media (min-width: 440px) {
-    .stats-summary-grid {
-        grid-template-columns: repeat(4, 1fr);
-    }
-}
-
-.stats-sum-cell {
-    display: flex;
-    flex-direction: column;
-    gap: 0.15rem;
-}
-
-.stats-sum-label {
-    font-size: 0.72rem;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    color: var(--muted);
-}
-
-.stats-sum-val {
-    font-size: 1.2rem;
-    font-weight: 600;
+/* Карточка сводки на экране словарной статистики — те же стили, что итог раунда */
+.stats-summary-card {
+    margin-top: 0.15rem;
 }
 
 .stats-table-wrap {
-    flex: 1 1 0;
-    min-height: 0;
-    overflow-x: hidden;
-    overflow-y: auto;
     margin-bottom: var(--panel-section-gap);
     border: var(--stroke) solid var(--border);
     border-radius: var(--radius-control);
     background: transparent;
+    overflow-x: hidden;
+    overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     overscroll-behavior-y: contain;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
 }
 
-/*
- * Сенсорные экраны: системная/псевдо-полоса часто даёт белый прямоугольник без скруглений (особенно iOS WebKit).
- * Прокрутка пальцем сохраняется — полосу не показываем.
- */
-@media (pointer: coarse) {
-    .stats-table-wrap {
-        scrollbar-width: none;
-        -ms-overflow-style: none;
-    }
-
-    .stats-table-wrap::-webkit-scrollbar {
-        display: none;
-        width: 0 !important;
-        height: 0 !important;
-        appearance: none;
-        background: transparent;
-    }
-}
-
-/*
- * Десктоп (мышь / точный стилус): только ползунок — тонкая скруглённая полоска без стрелок (Windows Chrome/Edge/Safari).
- * Прозрачный трек = не «колба» у края панели.
- */
-@media (pointer: fine) {
-    .stats-table-wrap {
-        scrollbar-width: thin;
-        scrollbar-color: color-mix(in srgb, var(--muted) 52%, var(--border)) transparent;
-    }
-
-    .stats-table-wrap::-webkit-scrollbar {
-        width: 6px;
-        height: 6px;
-        background: transparent;
-    }
-
-    .stats-table-wrap::-webkit-scrollbar-button,
-    .stats-table-wrap::-webkit-scrollbar-button:single-button {
-        display: none !important;
-        width: 0 !important;
-        height: 0 !important;
-    }
-
-    .stats-table-wrap::-webkit-scrollbar-corner {
-        background: transparent;
-    }
-
-    .stats-table-wrap::-webkit-scrollbar-track {
-        background: transparent;
-        margin-block: 8px;
-        margin-inline: 2px;
-        border-radius: 999px;
-    }
-
-    .stats-table-wrap::-webkit-scrollbar-thumb {
-        border-radius: 999px;
-        border: 2px solid transparent;
-        background-clip: padding-box;
-        background-color: color-mix(in srgb, var(--muted) 46%, var(--border));
-        box-shadow: none;
-    }
-
-    .stats-table-wrap::-webkit-scrollbar-thumb:hover {
-        background-color: color-mix(in srgb, var(--muted) 68%, var(--border));
-    }
-
-    .stats-table-wrap::-webkit-scrollbar-thumb:active {
-        background-color: color-mix(in srgb, var(--muted) 82%, var(--border));
-    }
-}
-
-.stats-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 0.88rem;
-    background-color: transparent;
-}
-
-.stats-table th,
-.stats-table td {
-    padding: 0.45rem 0.55rem;
-    border-bottom: var(--stroke) solid var(--border);
-    text-align: right;
-    background-color: transparent;
-}
-
-.stats-table th:first-child,
-.stats-table td:first-child {
-    text-align: left;
-}
-
-.stats-table thead th {
-    position: sticky;
-    top: 0;
-    z-index: 1;
-    background-color: var(--surface);
-    font-weight: 600;
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 0.03em;
-    color: var(--muted);
-    box-shadow: 0 var(--stroke) 0 var(--border);
-}
-
-.stats-table tbody tr:last-child td {
-    border-bottom: none;
-}
-
-.stats-table tbody tr:hover td {
-    background-color: color-mix(in srgb, var(--accent) 6%, var(--surface));
+.stats-table-wrap::-webkit-scrollbar {
+    display: none;
+    width: 0 !important;
+    height: 0 !important;
+    appearance: none;
+    background: transparent;
 }
 
 .stats-empty {
@@ -371,7 +243,6 @@ body.vocab-round-summary-modal-open .quiz-bottom-bar {
             calc(env(safe-area-inset-bottom, 0px) + var(--shell-pad-bottom-extra)) -
             var(--quiz-bottom-bar-clearance) - 0.75rem
     );
-    max-width: 26rem;
     margin-inline: auto;
 }
 
@@ -421,11 +292,23 @@ body.vocab-round-summary-modal-open .quiz-bottom-bar {
 
 .vocab-round-summary-hero-stat {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
-    gap: 0.15rem;
-    padding: 0.25rem 0 0.65rem;
+    justify-content: space-between;
+    gap: 0.75rem;
+    width: 100%;
+    padding: 0.35rem 0 0.65rem;
     border-bottom: var(--stroke) solid color-mix(in srgb, var(--border) 72%, transparent);
+}
+
+.vocab-round-summary-hero-stat > .vocab-round-summary-section-title {
+    flex: 0 1 auto;
+    text-align: left;
+    line-height: 1.2;
+}
+
+.vocab-round-summary-hero-stat > .vocab-round-summary-stat-val {
+    flex: 0 0 auto;
 }
 
 .vocab-round-summary-stat-grid {
@@ -508,6 +391,19 @@ body.vocab-round-summary-modal-open .quiz-bottom-bar {
     gap: 0.65rem;
 }
 
+.vocab-round-summary-section--hard {
+    align-items: stretch;
+    text-align: left;
+}
+
+.vocab-round-summary-section--hard .vocab-round-summary-section-title {
+    align-self: flex-start;
+}
+
+.vocab-round-summary-section--hard .vocab-round-summary-empty {
+    max-width: none;
+}
+
 .vocab-round-summary-actions {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -537,72 +433,4 @@ body.vocab-round-summary-modal-open .quiz-bottom-bar {
     margin: 0;
     max-width: 18rem;
     line-height: 1.45;
-}
-
-.vocab-round-summary-table-scroll {
-    width: 100%;
-    max-width: min(100%, 22rem);
-    margin: 0 auto;
-    border-radius: var(--radius-control);
-    border: var(--stroke) solid var(--border);
-    overflow: hidden;
-    background: color-mix(in srgb, var(--surface-elevated) 88%, transparent);
-}
-
-.vocab-round-summary-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 0.95rem;
-}
-
-.vocab-round-summary-th {
-    padding: 0.55rem 0.65rem;
-    font-weight: 600;
-    font-size: 0.72rem;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    color: var(--muted);
-    background: color-mix(in srgb, var(--surface) 70%, transparent);
-    border-bottom: var(--stroke) solid var(--border);
-}
-
-.vocab-round-summary-th--err {
-    width: 3rem;
-    text-align: center;
-}
-
-.vocab-round-summary-th--word {
-    text-align: center;
-}
-
-.vocab-round-summary-td {
-    padding: 0.62rem 0.65rem;
-    vertical-align: middle;
-    border-bottom: var(--stroke) solid var(--border);
-    color: var(--text);
-}
-
-.vocab-round-summary-td--num,
-.vocab-round-summary-td--err {
-    text-align: center;
-    font-variant-numeric: tabular-nums;
-    font-weight: 600;
-    color: color-mix(in srgb, var(--text) 88%, var(--muted));
-}
-
-.vocab-round-summary-td--word {
-    text-align: center;
-    font-weight: 600;
-    font-size: 1.02rem;
-    word-break: break-word;
-}
-
-.vocab-round-summary-table tbody tr:last-child td {
-    border-bottom: none;
-}
-
-@media (hover: hover) {
-    .vocab-round-summary-table tbody tr:hover td {
-        background: color-mix(in srgb, var(--accent) 7%, transparent);
-    }
 }

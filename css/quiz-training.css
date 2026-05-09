@@ -204,7 +204,8 @@
 }
 
 #quiz-vocab-ui .vocab-card-feedback,
-#quiz-cases-ui .vocab-card-feedback {
+#quiz-cases-ui .vocab-card-feedback,
+#quiz-verbs-ui .vocab-card-feedback {
     margin-top: 0;
     padding: 0;
     border: 0;
@@ -214,12 +215,23 @@
 }
 
 #quiz-vocab-ui .vocab-card-feedback .correct-form,
-#quiz-cases-ui .vocab-card-feedback .correct-form {
+#quiz-cases-ui .vocab-card-feedback .correct-form,
+#quiz-verbs-ui .vocab-card-feedback .correct-form {
     margin-top: 0.25rem;
 }
 
+#quiz-verbs-ui .vocab-card-feedback.feedback--icons-only,
+#quiz-verbs-ui .vocab-card-feedback.feedback--placeholder-icons-only {
+    min-height: calc(1lh + 0.15rem);
+}
+
+#quiz-verbs-ui .vocab-card-feedback.feedback--placeholder-icons-only > p {
+    visibility: hidden;
+}
+
 #quiz-vocab-ui .vocab-card-feedback.feedback--placeholder,
-#quiz-cases-ui .vocab-card-feedback.feedback--placeholder {
+#quiz-cases-ui .vocab-card-feedback.feedback--placeholder,
+#quiz-verbs-ui .vocab-card-feedback.feedback--placeholder {
     visibility: hidden;
 }
 
@@ -410,7 +422,7 @@
     row-gap: 0.45rem;
     width: 100%;
     margin-bottom: 0;
-    padding: 0.55rem 0.35rem;
+    padding: 0.55rem 0.55rem 0.85rem;
     box-sizing: border-box;
     border: var(--stroke) solid var(--border);
     border-radius: var(--radius-control);
@@ -520,10 +532,6 @@
     row-gap: var(--panel-section-gap);
 }
 
-#quiz.panel.quiz--verbs #feedback:not(.hidden) {
-    margin-top: 0.55rem;
-}
-
 #quiz-verbs-ui > .verb-forms-card {
     flex-direction: column;
     align-items: stretch;
@@ -533,6 +541,10 @@
 
 #quiz-verbs-ui > .verb-forms-card > .vocab-ru-card-body {
     width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.7rem;
 }
 
 .verb-forms-grid {

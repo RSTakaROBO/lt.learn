@@ -144,6 +144,7 @@ export const STR = {
 
     stats: {
         title: "Статистика",
+        tableCaption: "Слова: верно и неверно",
         thWord: "Слово",
         thCorrect: "Верно",
         thWrong: "Неверно",
@@ -151,6 +152,7 @@ export const STR = {
         sumCorrect: "Верно",
         sumWrong: "Неверно",
         sumSkipped: "Пропущено",
+        sumTotal: "Всего",
         sumPercent: "Процент верных",
         close: "Закрыть",
         clear: "Очистить статистику",

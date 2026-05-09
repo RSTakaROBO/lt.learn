@@ -127,6 +127,8 @@ export function QuizScreen({ heightMode = "fill", hidden = false } = {}) {
                         />
 
                         <VerbsQuiz
+                            answered={answered}
+                            feedback={isVerbs ? feedback : null}
                             isActive={isVerbs}
                             pulseId={vocabStreakPulseId}
                             roundDots={roundDots}
@@ -165,7 +167,6 @@ export function QuizScreen({ heightMode = "fill", hidden = false } = {}) {
                             />
                         </div>
                     )}
-                    {!isHardcore && !isVocab && !isCases && <QuizFeedback feedback={feedback} />}
                 </section>
             </AppFlowScreen>
             <ConfirmDialogOverlay
