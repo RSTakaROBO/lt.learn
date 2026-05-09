@@ -2,6 +2,7 @@ import { useEffect } from "react"
 import { useSelector } from "react-redux"
 
 import { STR } from "../../../../js/i18n/strings-ru.js"
+import { getVocabRoundSummarySnapshot } from "../../../../js/vocab-round.js"
 import { AppModalOverlay } from "../../../components/layout/AppModalOverlay.jsx"
 import { Button } from "../../../components/ui/Button.jsx"
 import { useVocabRoundSummaryActions } from "../../../hooks/useVocabRoundSummaryActions.js"
@@ -14,6 +15,7 @@ export function VocabRoundSummaryOverlay({ heightMode = "fill" } = {}) {
     const open = useSelector((s) => s.trainer.overlay.vocabRound)
     const snap = useSelector((s) => s.trainer.vocabRoundSummary)
     const { closeToSetup, repeatRound } = useVocabRoundSummaryActions()
+    const displaySnap = snap ?? (open ? getVocabRoundSummarySnapshot() : null)
 
     const VR = STR.vocabRound
 
@@ -57,47 +59,65 @@ export function VocabRoundSummaryOverlay({ heightMode = "fill" } = {}) {
             }
         >
             <div className="app-screen__body app-screen__body--nested">
-                {snap ? (
+                {displaySnap ? (
                     <div className="vocab-round-summary-body">
                         <div className="vocab-round-summary-stats-card" aria-live="polite">
-                            <div className="vocab-round-summary-stat-row">
-                                <span className="vocab-round-summary-stat-label">
+                            <div className="vocab-round-summary-hero-stat">
+                                <span className="vocab-round-summary-section-title">
                                     {VR.statAccuracy}
                                 </span>
-                                <div className="vocab-round-summary-stat-val">
-                                    {snap.accuracyPct == null ? (
-                                        <span className="vocab-round-summary-stat-num">
-                                            {STR.quiz.emDash}
+                                <div className="vocab-round-summary-stat-val vocab-round-summary-stat-val--hero">
+                                    <span className="vocab-round-summary-stat-num vocab-round-summary-stat-num--hero vocab-round-summary-stat-num--accent">
+                                        {displaySnap.accuracyPct == null
+                                            ? STR.quiz.emDash
+                                            : displaySnap.accuracyPct}
+                                    </span>
+                                    {displaySnap.accuracyPct == null ? null : (
+                                        <span
+                                            className="vocab-round-summary-stat-unit"
+                                            aria-hidden="true"
+                                        >
+                                            {VR.percentUnit}
                                         </span>
-                                    ) : (
-                                        <>
-                                            <span className="vocab-round-summary-stat-num vocab-round-summary-stat-num--accent">
-                                                {snap.accuracyPct}
-                                            </span>
-                                            <span
-                                                className="vocab-round-summary-stat-unit"
-                                                aria-hidden="true"
-                                            >
-                                                {VR.percentUnit}
-                                            </span>
-                                        </>
                                     )}
                                 </div>
                             </div>
-                            <div className="vocab-round-summary-stat-row">
-                                <span className="vocab-round-summary-stat-label">
-                                    {VR.statMaxStreak}
-                                </span>
-                                <div className="vocab-round-summary-stat-val">
-                                    <span className="vocab-round-summary-stat-num vocab-round-summary-stat-num--accent">
-                                        {snap.maxStreak}
+                            <div className="vocab-round-summary-stat-grid">
+                                <div className="vocab-round-summary-stat-tile">
+                                    <span className="vocab-round-summary-stat-label">
+                                        {VR.statAnswered}
                                     </span>
+                                    <strong>
+                                        {displaySnap.stages ?? displaySnap.answered ?? 0}
+                                    </strong>
+                                </div>
+                                <div className="vocab-round-summary-stat-tile">
+                                    <span className="vocab-round-summary-stat-label">
+                                        {VR.statCorrect}
+                                    </span>
+                                    <strong className="vocab-round-summary-stat-ok">
+                                        {displaySnap.correct ?? 0}
+                                    </strong>
+                                </div>
+                                <div className="vocab-round-summary-stat-tile">
+                                    <span className="vocab-round-summary-stat-label">
+                                        {VR.statWrong}
+                                    </span>
+                                    <strong className="vocab-round-summary-stat-bad">
+                                        {displaySnap.wrong ?? 0}
+                                    </strong>
+                                </div>
+                                <div className="vocab-round-summary-stat-tile">
+                                    <span className="vocab-round-summary-stat-label">
+                                        {VR.statMaxStreak}
+                                    </span>
+                                    <strong>{displaySnap.maxStreak}</strong>
                                 </div>
                             </div>
                         </div>
                         <div className="vocab-round-summary-section">
                             <p className="vocab-round-summary-section-title">{VR.sectionHard}</p>
-                            {snap.topHard.length === 0 ? (
+                            {displaySnap.topHard.length === 0 ? (
                                 <p className="vocab-round-summary-empty sub">{VR.noWrongWords}</p>
                             ) : (
                                 <div className="vocab-round-summary-table-scroll">
@@ -105,12 +125,6 @@ export function VocabRoundSummaryOverlay({ heightMode = "fill" } = {}) {
                                         <caption className="sr-only">{VR.tableCaption}</caption>
                                         <thead>
                                             <tr>
-                                                <th
-                                                    scope="col"
-                                                    className="vocab-round-summary-th vocab-round-summary-th--num"
-                                                >
-                                                    {VR.thNum}
-                                                </th>
                                                 <th
                                                     scope="col"
                                                     className="vocab-round-summary-th vocab-round-summary-th--word"
@@ -126,11 +140,8 @@ export function VocabRoundSummaryOverlay({ heightMode = "fill" } = {}) {
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {snap.topHard.map((x, i) => (
+                                            {displaySnap.topHard.map((x) => (
                                                 <tr key={x.lemma}>
-                                                    <td className="vocab-round-summary-td vocab-round-summary-td--num">
-                                                        {i + 1}
-                                                    </td>
                                                     <td
                                                         className="vocab-round-summary-td vocab-round-summary-td--word"
                                                         lang="lt"
@@ -148,7 +159,11 @@ export function VocabRoundSummaryOverlay({ heightMode = "fill" } = {}) {
                             )}
                         </div>
                     </div>
-                ) : null}
+                ) : (
+                    <div className="vocab-round-summary-body">
+                        <p className="vocab-round-summary-empty sub">{VR.noSummaryData}</p>
+                    </div>
+                )}
             </div>
         </AppModalOverlay>
     )

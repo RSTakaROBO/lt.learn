@@ -186,6 +186,7 @@ export function getVocabRoundSummarySnapshot() {
     const vr = getEngine().vocabRound
     if (!vr) return null
     const graded = vr.gradedCorrect + vr.gradedWrong
+    const skipped = Object.values(vr.roundRow).reduce((sum, row) => sum + (row.skipped || 0), 0)
     const accuracyPct = graded > 0 ? Math.round((100 * vr.gradedCorrect) / graded) : null
     const topHard = Object.entries(vr.wrongByLemma)
         .filter(([, n]) => n > 0)
@@ -194,6 +195,10 @@ export function getVocabRoundSummarySnapshot() {
         .map(([lemma, wrong]) => ({ lemma, wrong }))
     return {
         accuracyPct,
+        stages: graded + skipped,
+        answered: graded,
+        correct: vr.gradedCorrect,
+        wrong: vr.gradedWrong,
         maxStreak: vr.maxStreak,
         topHard,
         initialSize: vr.initialSize,

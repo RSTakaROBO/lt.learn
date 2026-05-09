@@ -5,7 +5,7 @@ import { TRAIN_MODE } from "../../../../js/config.js"
 import { caseRu } from "../../../../js/i18n/core.js"
 import { STR } from "../../../../js/i18n/strings-ru.js"
 import { handleMorphCasesAnswerSubmit } from "../../../../js/quiz.js"
-import { LithuanianInput } from "../shared/index.js"
+import { LithuanianInput, QuizFeedback } from "../shared/index.js"
 import { casesLemma, casesRuPrimary } from "./casesWords.js"
 
 function casesPromptForTask(task, casesShowTranslation) {
@@ -21,11 +21,12 @@ function casesPromptForTask(task, casesShowTranslation) {
     }
 }
 
-export function CasesQuiz({ isActive, task }) {
+export function CasesQuiz({ feedback, isActive, task }) {
     const inputRef = useRef(null)
     const [answerValue, setAnswerValue] = useState("")
     const casesShowTranslation = useSelector((s) => s.trainer.persisted.casesShowTranslation)
     const casesPrompt = casesPromptForTask(task, casesShowTranslation)
+    const feedbackKind = feedback?.kind === "ok" || feedback?.kind === "bad" ? feedback.kind : ""
 
     useEffect(() => {
         if (!isActive) return
@@ -36,15 +37,25 @@ export function CasesQuiz({ isActive, task }) {
     return (
         <div id="quiz-cases-ui" className={isActive ? "" : "hidden"}>
             <div className="prompt">
-                <div className="vocab-ru-card">
+                <div
+                    className={["vocab-ru-card", feedbackKind && `vocab-ru-card--${feedbackKind}`]
+                        .filter(Boolean)
+                        .join(" ")}
+                >
                     <p className="lemma vocab-ru-display" id="lemma-display">
                         {casesPrompt.lemma}
                     </p>
+                    <p className="target-line">
+                        <span className="target-prefix">{STR.quiz.targetCasePrefix}</span>
+                        <span id="target-case-display">{casesPrompt.targetCase}</span>
+                    </p>
+                    <QuizFeedback
+                        className="vocab-card-feedback cases-card-feedback"
+                        feedback={feedback}
+                        id="cases-card-feedback"
+                        reserveSpace
+                    />
                 </div>
-                <p className="target-line">
-                    <span className="target-prefix">{STR.quiz.targetCasePrefix}</span>
-                    <span id="target-case-display">{casesPrompt.targetCase}</span>
-                </p>
             </div>
             <form
                 id="answer-form"

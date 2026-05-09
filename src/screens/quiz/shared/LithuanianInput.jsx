@@ -1,4 +1,4 @@
-import { forwardRef } from "react"
+import { forwardRef, useRef } from "react"
 
 import { getLithuanianShiftCycleEdit } from "../../../../js/InputHelper.js"
 import { STR } from "../../../../js/i18n/strings-ru.js"
@@ -21,11 +21,28 @@ function insertTextAtInput(input, value, setValue, text) {
     setCaretOnNextFrame(input, caret)
 }
 
-function handleToolbarClick(e, value, setValue, input) {
+function toolbarCharFromEvent(e) {
     const target = e.target
     const btn = target instanceof Element ? target.closest(".lt-char") : null
-    const ch = btn?.getAttribute("data-char")
+    return btn?.getAttribute("data-char") || ""
+}
+
+function handleToolbarPointerDown(e, value, setValue, input, skipNextClickRef) {
+    const ch = toolbarCharFromEvent(e)
     if (!ch) return
+    e.preventDefault()
+    skipNextClickRef.current = true
+    insertTextAtInput(input, value, setValue, ch)
+}
+
+function handleToolbarClick(e, value, setValue, input, skipNextClickRef) {
+    const ch = toolbarCharFromEvent(e)
+    if (!ch) return
+    if (skipNextClickRef.current) {
+        skipNextClickRef.current = false
+        e.preventDefault()
+        return
+    }
     insertTextAtInput(input, value, setValue, ch)
 }
 
@@ -45,6 +62,8 @@ export const LithuanianInput = forwardRef(function LithuanianInput(
     { inputId, toolbarId, value, onValueChange, label = STR.quiz.answerLabel },
     ref
 ) {
+    const skipNextToolbarClickRef = useRef(false)
+
     return (
         <>
             <label className="sr-only" htmlFor={inputId}>
@@ -63,7 +82,24 @@ export const LithuanianInput = forwardRef(function LithuanianInput(
             />
             <ChartsToolbar
                 id={toolbarId}
-                onClick={(e) => handleToolbarClick(e, value, onValueChange, ref.current)}
+                onClick={(e) =>
+                    handleToolbarClick(
+                        e,
+                        value,
+                        onValueChange,
+                        ref.current,
+                        skipNextToolbarClickRef
+                    )
+                }
+                onPointerDown={(e) =>
+                    handleToolbarPointerDown(
+                        e,
+                        value,
+                        onValueChange,
+                        ref.current,
+                        skipNextToolbarClickRef
+                    )
+                }
             />
         </>
     )

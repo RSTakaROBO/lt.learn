@@ -42,6 +42,14 @@ export const STR = {
         start: "Начать",
     },
 
+    confirm: {
+        cancel: "Отмена",
+        finish: "Завершить",
+        finishRoundTitle: "Завершить урок?",
+        finishRoundMessage:
+            "Раунд остановится сейчас, и откроется статистика по уже пройденным ответам.",
+    },
+
     vocabDirection: {
         ruLtTitle: "С русского на литовский",
         ruLtMeta: "Подсказка по-русски — выберите слово на литовском",
@@ -70,8 +78,8 @@ export const STR = {
             "Не удалось открыть режим «Слова». Обновите страницу или очистите данные сайта / кэш приложения.",
         noVocabChoices: "Нет данных для вариантов ответа. Вернитесь в меню.",
         noWordsLeft: "Слов больше нет.",
-        correct: "Верно",
-        wrong: "Неверно",
+        correct: "💯",
+        wrong: "💥",
         correctIs: "Правильно:",
         exceptionStrong: "Исключение:",
         emDash: "—",
@@ -114,15 +122,19 @@ export const STR = {
     },
 
     vocabRound: {
-        summaryTitle: "Раунд завершён",
+        summaryTitle: "Статистика",
         repeat: "Повторить",
         ok: "Ок",
         ariaDots: "Верно подряд по этому слову в раунде: {filled} из {max}",
         ariaProgress: "Убрано из пула {done} из {total} слов",
         statAccuracy: "Точность",
-        statMaxStreak: "Максимальная серия",
+        statAnswered: "Этапов",
+        statCorrect: "Верно",
+        statWrong: "Неверно",
+        statMaxStreak: "Макc. серия",
         sectionHard: "Сложнее всего дались",
         noWrongWords: "За раунд не было неверных ответов по словам.",
+        noSummaryData: "Данных раунда пока нет.",
         tableCaption: "Топ слов по числу ошибок",
         thNum: "#",
         thWord: "Слово",

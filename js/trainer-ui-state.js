@@ -62,6 +62,10 @@ function readInitialSelectedPackIds() {
 /**
  * @typedef {Object} VocabRoundSummarySnapshot
  * @property {number | null} accuracyPct
+ * @property {number} stages
+ * @property {number} answered
+ * @property {number} correct
+ * @property {number} wrong
  * @property {number} maxStreak
  * @property {{ lemma: string; wrong: number }[]} topHard
  * @property {number} initialSize
@@ -217,7 +221,9 @@ const trainerSlice = createSlice({
                     state.overlay.casesHelp = name === "casesHelp"
                     state.overlay.verbsHelp = name === "verbsHelp"
                     state.vocabRoundSummary =
-                        name === "vocabRound" ? (a.snapshot ?? null) : state.vocabRoundSummary
+                        name === "vocabRound"
+                            ? (a.snapshot ?? state.vocabRoundSummary)
+                            : state.vocabRoundSummary
                     break
                 }
                 case "OVERLAY_CLOSE":

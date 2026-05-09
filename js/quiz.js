@@ -125,13 +125,13 @@ function recordQuizOutcome(word, ok) {
     bumpWordStat(lemmaKey(word), ok ? "correct" : "wrong")
 }
 
-export function showFeedback(ok, expected, word) {
+export function showFeedback(ok, expected, word, { showExceptionNote = true } = {}) {
     recordQuizOutcome(word, ok)
     setQuizFeedback({
         kind: ok ? "ok" : "bad",
         message: ok ? STR.quiz.correct : STR.quiz.wrong,
         expected: ok ? "" : expected,
-        exceptionNote: exceptionNote(word),
+        exceptionNote: showExceptionNote ? exceptionNote(word) : "",
     })
 }
 
@@ -203,7 +203,7 @@ export function processVocabHardcoreSubmit(userInput) {
         if (ok) {
             saveVocabBestStreakIfHigher(getEngine().vocabCorrectStreak)
         }
-        showFeedback(ok, expected, word)
+        showFeedback(ok, expected, word, { showExceptionNote: false })
         applyVocabRoundAnswer(word, ok)
         return
     }

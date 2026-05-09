@@ -11,6 +11,7 @@ import { answersMatch } from "../../../../js/text-utils.js"
 import {
     LithuanianInput,
     QuizActionButtons,
+    QuizFeedback,
     VocabRoundDots,
     VocabRoundProgress,
     VocabStreakMultiplier,
@@ -81,7 +82,10 @@ function VocabChoices({ task, answered, choiceState }) {
 export function VocabQuiz({
     answered,
     choiceState,
+    feedback,
+    finishLabel,
     isActive,
+    onFinish,
     pulseId,
     roundDots,
     roundProgress,
@@ -90,6 +94,7 @@ export function VocabQuiz({
     streak,
     submitHidden,
     submitLabel,
+    showFinish,
     task,
 }) {
     const inputRef = useRef(null)
@@ -97,6 +102,7 @@ export function VocabQuiz({
     const isHardcore = !!task?.vocabHardcore
     const prompt = vocabPromptForTask(task)
     const showChoices = isActive && !isHardcore
+    const feedbackKind = feedback?.kind === "ok" || feedback?.kind === "bad" ? feedback.kind : ""
 
     useEffect(() => {
         if (!isActive) return
@@ -108,11 +114,21 @@ export function VocabQuiz({
 
     return (
         <div id="quiz-vocab-ui" className={isActive ? "" : "hidden"}>
-            <div className="vocab-ru-card">
+            <div
+                className={["vocab-ru-card", feedbackKind && `vocab-ru-card--${feedbackKind}`]
+                    .filter(Boolean)
+                    .join(" ")}
+            >
                 <div className="vocab-ru-card-body">
                     <p className="lemma vocab-ru-display" id="vocab-ru-display" lang={prompt.lang}>
                         {prompt.text}
                     </p>
+                    <QuizFeedback
+                        className="vocab-card-feedback"
+                        feedback={feedback}
+                        id="vocab-card-feedback"
+                        reserveSpace={isHardcore}
+                    />
                 </div>
                 <VocabStreakMultiplier streak={streak} pulseId={pulseId} />
                 <VocabRoundDots dots={roundDots} />
@@ -144,7 +160,11 @@ export function VocabQuiz({
                             isHardcore={isHardcore}
                             isVerbs={false}
                             isVocab={isActive}
+                            finishLabel={finishLabel}
+                            onFinish={onFinish}
                             onSkip={handleQuizSkipButtonClick}
+                            showFinish={showFinish}
+                            showSkip={false}
                             skipDisabled={skipDisabled}
                             skipLabel={skipLabel}
                             submitHidden={submitHidden}

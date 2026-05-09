@@ -6,7 +6,7 @@ const CHARS = ["ą", "č", "ę", "ė", "į", "š", "ų", "ū", "ž"]
 
 /** Панель литовских букв над полем ввода (два места: падежи и вокаб-хардкор). */
 export const ChartsToolbar = forwardRef(function ChartsToolbar(
-    { id, className = "lt-chars", onClick },
+    { id, className = "lt-chars", onClick, onPointerDown },
     ref
 ) {
     return (
@@ -17,6 +17,7 @@ export const ChartsToolbar = forwardRef(function ChartsToolbar(
             role="toolbar"
             aria-label={STR.quiz.ltCharsToolbarAria}
             onClick={onClick}
+            onPointerDown={onPointerDown}
         >
             {CHARS.map((ch) => (
                 <Button variant="charTile" key={ch} type="button" data-char={ch} title={ch}>
