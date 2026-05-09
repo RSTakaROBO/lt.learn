@@ -24,7 +24,14 @@ function buildVocabChoicesRuToLt(usable, word) {
     if (picks.length < 3) return null
     const distractors = picks.map((w) => vocabLemma(w)).filter(Boolean)
     if (distractors.length < 3) return null
-    return shuffleArray([correct, ...distractors])
+    const entries = shuffleArray([word, ...picks])
+    const choiceReveals = {}
+    const choices = entries.map((w) => {
+        const choice = vocabLemma(w)
+        choiceReveals[choice] = vocabRuPrimary(w)
+        return choice
+    })
+    return { choices, choiceReveals }
 }
 
 function buildVocabChoicesLtToRu(usable, word) {
@@ -43,7 +50,19 @@ function buildVocabChoicesLtToRu(usable, word) {
         if (distractorHints.length >= 3) break
     }
     if (distractorHints.length < 3) return null
-    return shuffleArray([correct, ...distractorHints])
+    const entries = shuffleArray([
+        { choice: correct, reveal: vocabLemma(word) },
+        ...distractorHints.map((choice) => {
+            const source = others.find((w) => vocabRuPrimary(w) === choice)
+            return { choice, reveal: source ? vocabLemma(source) : "" }
+        }),
+    ])
+    const choiceReveals = {}
+    const choices = entries.map((entry) => {
+        choiceReveals[entry.choice] = entry.reveal
+        return entry.choice
+    })
+    return { choices, choiceReveals }
 }
 
 function usableIgnoringExcludedLemma(usable, excludeLemma) {
@@ -120,15 +139,16 @@ export function nextVocabTask(opts = {}) {
 
     for (let attempt = 0; attempt < 48; attempt++) {
         const word = pickWeightedRandom(candidates, vocabTaskSelectionWeight)
-        const choices =
+        const choicesResult =
             dir === VOCAB_DIRECTION.LT_TO_RU
                 ? buildVocabChoicesLtToRu(usable, word)
                 : buildVocabChoicesRuToLt(usable, word)
-        if (choices) {
+        if (choicesResult) {
             return {
                 mode: TRAIN_MODE.VOCAB,
                 word,
-                choices,
+                choices: choicesResult.choices,
+                choiceReveals: choicesResult.choiceReveals,
                 vocabDirection: dir,
                 vocabHardcore: false,
             }

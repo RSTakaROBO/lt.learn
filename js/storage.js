@@ -283,6 +283,27 @@ export class TrainerStorage {
             /* ignore */
         }
     }
+
+    /** @returns {boolean|null} */
+    loadVocabShowWrongTranslation() {
+        try {
+            const raw = this._store.getItem(STORAGE_KEYS.vocabShowWrongTranslation)
+            if (raw === null) return null
+            if (raw === "1") return true
+            if (raw === "0") return false
+            return null
+        } catch {
+            return null
+        }
+    }
+
+    saveVocabShowWrongTranslation(show) {
+        try {
+            this._store.setItem(STORAGE_KEYS.vocabShowWrongTranslation, show ? "1" : "0")
+        } catch {
+            /* ignore */
+        }
+    }
 }
 
 export const trainerStorage = new TrainerStorage()
@@ -333,3 +354,6 @@ export function getResolvedVocabDirections() {
 
 export const loadCasesShowTranslation = () => trainerStorage.loadCasesShowTranslation()
 export const saveCasesShowTranslation = (show) => trainerStorage.saveCasesShowTranslation(show)
+export const loadVocabShowWrongTranslation = () => trainerStorage.loadVocabShowWrongTranslation()
+export const saveVocabShowWrongTranslation = (show) =>
+    trainerStorage.saveVocabShowWrongTranslation(show)

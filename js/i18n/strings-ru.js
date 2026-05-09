@@ -164,6 +164,9 @@ export const STR = {
         themePickerAria: "Цветовая тема",
         casesTranslationTitle: "Отображать перевод при изучении падежей",
         casesTranslationMeta: "Русский перевод в скобках под литовским словом",
+        vocabWrongTranslationTitle: "Показывать неправильное слово",
+        vocabWrongTranslationMeta:
+            "В режиме выбора карточек показывать перевод выбранного неверного варианта",
         close: "Закрыть",
     },
 

@@ -18,7 +18,6 @@
     background: color-mix(in srgb, var(--text) 56%, transparent);
     overflow: hidden;
 }
-1
 
 /* Карточка по центру; в режиме height-scroll лимит не задаём — скролл на оболочке */
 .app-screen--modal .app-screen__panel {

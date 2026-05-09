@@ -27,6 +27,7 @@ export function QuizScreen({ heightMode = "fill", hidden = false } = {}) {
         roundProgress,
         vocabStreak,
         vocabStreakPulseId,
+        vocabShowWrongTranslation,
     } = useSelector(
         (s) => ({
             task: s.trainer.engine.currentTask,
@@ -36,6 +37,7 @@ export function QuizScreen({ heightMode = "fill", hidden = false } = {}) {
             roundDots: s.trainer.engine.vocabRoundDots,
             vocabStreak: s.trainer.engine.vocabCorrectStreak,
             vocabStreakPulseId: s.trainer.engine.vocabStreakPulseId,
+            vocabShowWrongTranslation: s.trainer.persisted.vocabShowWrongTranslation,
             roundProgress: s.trainer.engine.vocabRound
                 ? {
                       done:
@@ -120,6 +122,7 @@ export function QuizScreen({ heightMode = "fill", hidden = false } = {}) {
                             submitHidden={submitHidden}
                             submitLabel={submitLabel}
                             showFinish={showFinish}
+                            showWrongTranslation={vocabShowWrongTranslation}
                             task={task}
                         />
 

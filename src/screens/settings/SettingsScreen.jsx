@@ -2,7 +2,7 @@ import { useEffect } from "react"
 
 import { THEME_IDS } from "../../../js/config.js"
 import { STR } from "../../../js/i18n/strings-ru.js"
-import { saveCasesShowTranslation } from "../../../js/storage.js"
+import { saveCasesShowTranslation, saveVocabShowWrongTranslation } from "../../../js/storage.js"
 import { AppFlowScreen } from "../../components/layout/AppFlowScreen.jsx"
 import { CheckboxButton } from "../../components/ui/CheckboxButton.jsx"
 import { ListHolder } from "../../components/ui/ListHolder.jsx"
@@ -16,7 +16,7 @@ import { useTrainerApp } from "../../context/TrainerAppContext.jsx"
 export function SettingsScreen({ heightMode = "fill" } = {}) {
     const [state, dispatch] = useTrainerApp()
     const open = state.overlay.settings
-    const { themeId, casesShowTranslation } = state.persisted
+    const { themeId, casesShowTranslation, vocabShowWrongTranslation } = state.persisted
 
     useEffect(() => {
         if (!open) return
@@ -75,6 +75,20 @@ export function SettingsScreen({ heightMode = "fill" } = {}) {
                                     const v = e.target.checked
                                     dispatch({ type: "SET_CASES_SHOW_TRANSLATION", value: v })
                                     saveCasesShowTranslation(v)
+                                }}
+                            />
+                            <CheckboxButton
+                                id="settings-vocab-show-wrong-translation"
+                                title={STR.settings.vocabWrongTranslationTitle}
+                                meta={STR.settings.vocabWrongTranslationMeta}
+                                checked={vocabShowWrongTranslation}
+                                onChange={(e) => {
+                                    const v = e.target.checked
+                                    dispatch({
+                                        type: "SET_VOCAB_SHOW_WRONG_TRANSLATION",
+                                        value: v,
+                                    })
+                                    saveVocabShowWrongTranslation(v)
                                 }}
                             />
                         </ListHolder>

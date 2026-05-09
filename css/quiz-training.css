@@ -274,8 +274,10 @@
 
 .vocab-choice {
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
+    gap: 0.24rem;
     width: 100%;
     min-width: 0;
     min-height: 0;
@@ -288,6 +290,22 @@
     overflow: hidden;
     touch-action: manipulation;
     transform-origin: center;
+}
+
+.vocab-choice-main,
+.vocab-choice-reveal {
+    display: block;
+    max-width: 100%;
+    min-width: 0;
+    overflow-wrap: break-word;
+    word-break: break-word;
+}
+
+.vocab-choice-reveal {
+    font-size: 0.72em;
+    line-height: 1.15;
+    font-weight: 600;
+    opacity: 0.86;
 }
 
 .quiz-shell,

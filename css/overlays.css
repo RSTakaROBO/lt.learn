@@ -366,7 +366,11 @@ body.vocab-round-summary-modal-open .quiz-bottom-bar {
 .vocab-round-summary-panel {
     display: flex;
     flex-direction: column;
-    height: calc(100dvh - var(--quiz-bottom-bar-clearance) - 1.5rem);
+    height: calc(
+        100dvh - max(var(--shell-pad-top), env(safe-area-inset-top, 0px)) -
+            calc(env(safe-area-inset-bottom, 0px) + var(--shell-pad-bottom-extra)) -
+            var(--quiz-bottom-bar-clearance) - 0.75rem
+    );
     max-width: 26rem;
     margin-inline: auto;
 }
@@ -379,7 +383,7 @@ body.vocab-round-summary-modal-open .quiz-bottom-bar {
 .vocab-round-summary-panel > .app-screen__body--nested {
     flex: 1 1 auto;
     min-height: 0;
-    overflow: visible;
+    overflow: hidden;
 }
 
 .vocab-round-summary-body {
@@ -394,7 +398,7 @@ body.vocab-round-summary-modal-open .quiz-bottom-bar {
     display: flex;
     flex-direction: column;
     gap: 1.35rem;
-    margin: 0.35rem 0 var(--panel-section-gap);
+    margin: 0.35rem 0 0;
 }
 
 .vocab-round-summary-body::-webkit-scrollbar {

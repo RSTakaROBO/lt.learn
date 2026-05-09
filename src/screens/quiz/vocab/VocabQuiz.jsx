@@ -46,7 +46,7 @@ function vocabChoiceClass(lem, task, answered, choiceState) {
     return classes.join(" ")
 }
 
-function VocabChoices({ task, answered, choiceState }) {
+function VocabChoices({ task, answered, choiceState, showWrongTranslation }) {
     const choices = Array.isArray(task?.choices) ? task.choices : []
     const dir = task?.vocabDirection || VOCAB_DIRECTION.RU_TO_LT
     const ariaLabel =
@@ -61,6 +61,9 @@ function VocabChoices({ task, answered, choiceState }) {
                             ? vocabRuUserMatches(task.word, lem)
                             : answersMatch(lem, vocabLemma(task.word))
                         : false
+                const pickedWrong =
+                    answered && !correct && choiceState?.pickedLemma === lem && showWrongTranslation
+                const reveal = pickedWrong ? task?.choiceReveals?.[lem] || "" : ""
                 return (
                     <button
                         key={lem}
@@ -71,7 +74,8 @@ function VocabChoices({ task, answered, choiceState }) {
                         aria-label={lem}
                         onClick={() => handleVocabChoice(lem)}
                     >
-                        {lem}
+                        <span className="vocab-choice-main">{lem}</span>
+                        {reveal ? <span className="vocab-choice-reveal">{reveal}</span> : null}
                     </button>
                 )
             })}
@@ -95,6 +99,7 @@ export function VocabQuiz({
     submitHidden,
     submitLabel,
     showFinish,
+    showWrongTranslation,
     task,
 }) {
     const inputRef = useRef(null)
@@ -135,7 +140,12 @@ export function VocabQuiz({
             </div>
             <VocabRoundProgress progress={roundProgress} />
             {showChoices && (
-                <VocabChoices task={task} answered={answered} choiceState={choiceState} />
+                <VocabChoices
+                    task={task}
+                    answered={answered}
+                    choiceState={choiceState}
+                    showWrongTranslation={showWrongTranslation}
+                />
             )}
             <form
                 id="vocab-answer-form"
