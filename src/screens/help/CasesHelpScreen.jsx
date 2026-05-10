@@ -1,10 +1,11 @@
-import { useEffect } from "react"
+import { useRef } from "react"
 
-import { CasesHelpTables } from "./CasesHelpTables.jsx"
-import { STR } from "../../../js/i18n/strings-ru.js"
-import { AppFlowScreen } from "../../components/layout/AppFlowScreen.jsx"
-import { Button } from "../../components/ui/Button.jsx"
-import { useTrainerApp } from "../../context/TrainerAppContext.jsx"
+import { CasesHelpTables } from "src/screens/help/CasesHelpTables.jsx"
+import { STR } from "js/i18n/strings-ru.js"
+import { AppFlowScreen } from "src/components/layout/AppFlowScreen.jsx"
+import { Button } from "src/components/ui/Button.jsx"
+import { useTrainerApp } from "src/context/TrainerAppContext.jsx"
+import { useHelpScreenOpenEffect } from "src/hooks/useHelpScreenOpenEffect.js"
 
 /**
  * @param {{ heightMode?: "fill"|"scroll" }} [props]
@@ -12,22 +13,15 @@ import { useTrainerApp } from "../../context/TrainerAppContext.jsx"
 export function CasesHelpScreen({ heightMode = "fill" } = {}) {
     const [uiState, dispatch] = useTrainerApp()
     const open = uiState.overlay.casesHelp
+    const shellRef = useRef(null)
+    const titleRef = useRef(null)
+    const scrollBlockRef = useRef(null)
 
-    useEffect(() => {
-        if (!open) return
-        const shell = document.getElementById("cases-help-shell")
-        const block = shell?.querySelector(".cases-help-scroll-block")
-        if (block instanceof HTMLElement) block.scrollTop = 0
-        if (shell) shell.scrollTop = 0
-        document.documentElement.scrollTop = 0
-        document.body.scrollTop = 0
-        requestAnimationFrame(() => {
-            document.getElementById("cases-help-title")?.focus({ preventScroll: true })
-        })
-    }, [open])
+    useHelpScreenOpenEffect({ open, shellRef, scrollBlockRef, titleRef })
 
     return (
         <AppFlowScreen
+            ref={shellRef}
             id="cases-help-shell"
             heightMode={heightMode}
             className={["cases-help-shell", !open && "hidden"].filter(Boolean).join(" ")}
@@ -37,17 +31,16 @@ export function CasesHelpScreen({ heightMode = "fill" } = {}) {
                 className="app-screen__panel widget panel"
                 aria-labelledby="cases-help-title"
             >
-                <h2 id="cases-help-title" tabIndex={-1}>
+                <h2 ref={titleRef} id="cases-help-title" tabIndex={-1}>
                     {STR.help.casesTitle}
                 </h2>
-                <div className="app-screen__body cases-help-scroll-block">
+                <div ref={scrollBlockRef} className="app-screen__body cases-help-scroll-block">
                     <CasesHelpTables />
                 </div>
                 <div className="app-screen__footer actions">
                     <Button
                         variant="primary"
                         type="button"
-                        id="btn-cases-help-close"
                         onClick={() => dispatch({ type: "OVERLAY_CLOSE", name: "casesHelp" })}
                     >
                         {STR.help.close}

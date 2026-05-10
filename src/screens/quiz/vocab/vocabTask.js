@@ -1,20 +1,20 @@
-import { MIN_GAP_BEFORE_SAME_LEMMA, TRAIN_MODE, VOCAB_DIRECTION } from "../../../../js/config.js"
-import { pickRandom, pickWeightedRandom, shuffleArray } from "../../../../js/random.js"
-import { loadVocabDirections } from "../../../../js/storage.js"
-import { comparableAnswerKey } from "../../../../js/text-utils.js"
-import { getEngine } from "../../../../js/trainer-ui-state.js"
-import { roundLemmaKey } from "../../../../js/vocab-round.js"
+import { MIN_GAP_BEFORE_SAME_LEMMA, TRAIN_MODE, VOCAB_DIRECTION } from "js/config.js"
+import { pickRandom, pickWeightedRandom, shuffleArray } from "js/random.js"
+import { loadVocabDirections } from "js/storage.js"
+import { comparableAnswerKey } from "js/text-utils.js"
+import { getEngine } from "js/trainer-ui-state.js"
+import { roundLemmaKey } from "js/vocab-round.js"
 import {
     lemmaKey,
     usableAfterLemmaGap,
     vocabTaskSelectionWeight,
-} from "../shared/quizTaskSelection.js"
+} from "src/screens/quiz/shared/quizTaskSelection.js"
 import {
     isVocabTrainingWord,
     vocabLemma,
     vocabRuAcceptedList,
     vocabRuPrimary,
-} from "./vocabWords.js"
+} from "src/screens/quiz/vocab/vocabWords.js"
 
 function buildVocabChoicesRuToLt(usable, word) {
     const correct = vocabLemma(word)

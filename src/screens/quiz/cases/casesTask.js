@@ -1,8 +1,11 @@
-import { TRAIN_MODE } from "../../../../js/config.js"
-import { pickRandom, pickWeightedRandom } from "../../../../js/random.js"
-import { getEngine } from "../../../../js/trainer-ui-state.js"
-import { computeWordSelectionWeight, usableAfterLemmaGap } from "../shared/quizTaskSelection.js"
-import { isCasesTrainingWord } from "./casesWords.js"
+import { TRAIN_MODE } from "js/config.js"
+import { pickRandom, pickWeightedRandom } from "js/random.js"
+import { getEngine } from "js/trainer-ui-state.js"
+import {
+    computeWordSelectionWeight,
+    usableAfterLemmaGap,
+} from "src/screens/quiz/shared/quizTaskSelection.js"
+import { isCasesTrainingWord } from "src/screens/quiz/cases/casesWords.js"
 
 export function nextCasesTask(selectedKeys) {
     const usable = getEngine().wordBank.filter((word) => isCasesTrainingWord(word, selectedKeys))

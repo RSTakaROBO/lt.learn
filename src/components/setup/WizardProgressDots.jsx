@@ -1,5 +1,5 @@
 import { forwardRef } from "react"
-import { STR } from "../../../js/i18n/strings-ru.js"
+import { STR } from "js/i18n/strings-ru.js"
 
 /**
  * Индикатор шага мастера (кружки). Состояние шага — из глобального стейта (`TrainerAppContext`).

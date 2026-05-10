@@ -1,14 +1,18 @@
-import { useEffect, useMemo } from "react"
+import { useMemo, useRef } from "react"
 import { useSelector } from "react-redux"
 
-import { STR } from "../../../js/i18n/strings-ru.js"
-import { clearWordStats } from "../../../js/storage.js"
-import { AppFlowScreen } from "../../components/layout/AppFlowScreen.jsx"
-import { TrashCanIcon } from "../../components/icons/index.js"
-import { Button } from "../../components/ui/Button.jsx"
-import { DataTable } from "../../components/ui/DataTable.jsx"
-import { useTrainerDispatch } from "../../context/TrainerAppContext.jsx"
-import { aggregateWordStatsTotals, buildSortedWordStatRows } from "./wordStatsView.js"
+import { STR } from "js/i18n/strings-ru.js"
+import { clearWordStats } from "js/storage.js"
+import { AppFlowScreen } from "src/components/layout/AppFlowScreen.jsx"
+import { TrashCanIcon } from "src/components/icons/index.js"
+import { Button } from "src/components/ui/Button.jsx"
+import { DataTable } from "src/components/ui/DataTable.jsx"
+import { useTrainerDispatch } from "src/context/TrainerAppContext.jsx"
+import { useAutoFocusOnOpen } from "src/hooks/useAutoFocusOnOpen.js"
+import {
+    aggregateWordStatsTotals,
+    buildSortedWordStatRows,
+} from "src/screens/stats/wordStatsView.js"
 
 /**
  * Статистика по словам: обычный экран в потоке приложения (как мастер / квиз).
@@ -18,6 +22,7 @@ export function StatsScreen({ heightMode = "fill" } = {}) {
     const dispatch = useTrainerDispatch()
     const open = useSelector((s) => s.trainer.overlay.stats)
     const wordStats = useSelector((s) => s.trainer.engine.wordStats)
+    const closeButtonRef = useRef(null)
 
     const { correct, wrong, skipped } = useMemo(
         () => aggregateWordStatsTotals(wordStats),
@@ -28,10 +33,7 @@ export function StatsScreen({ heightMode = "fill" } = {}) {
     const total = correct + wrong + skipped
     const accuracyPct = graded > 0 ? Math.round((100 * correct) / graded) : null
 
-    useEffect(() => {
-        if (!open) return
-        requestAnimationFrame(() => document.getElementById("btn-stats-close")?.focus())
-    }, [open])
+    useAutoFocusOnOpen(closeButtonRef, open)
 
     return (
         <AppFlowScreen
@@ -129,7 +131,6 @@ export function StatsScreen({ heightMode = "fill" } = {}) {
                 <div className="app-screen__footer actions wizard-pack-actions stats-footer-actions">
                     <Button
                         type="button"
-                        id="btn-stats-clear"
                         className="stats-clear-btn"
                         aria-label={STR.stats.clear}
                         title={STR.stats.clear}
@@ -141,8 +142,8 @@ export function StatsScreen({ heightMode = "fill" } = {}) {
                         <TrashCanIcon />
                     </Button>
                     <Button
+                        ref={closeButtonRef}
                         variant="primary"
-                        id="btn-stats-close"
                         className="stats-close-btn"
                         onClick={() => dispatch({ type: "OVERLAY_CLOSE", name: "stats" })}
                     >

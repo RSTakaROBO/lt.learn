@@ -1,13 +1,13 @@
 import { useRef } from "react"
 
-import { Button } from "../../../components/ui/Button.jsx"
+import { Button } from "src/components/ui/Button.jsx"
 
 function isPrimaryPointer(e) {
     return e.button == null || e.button === 0
 }
 
-function submitFromButton(button, fallbackFormId) {
-    const form = button.form || (fallbackFormId ? document.getElementById(fallbackFormId) : null)
+function submitFromButton(button) {
+    const form = button.form
     if (!(form instanceof HTMLFormElement)) return
     if (typeof form.requestSubmit === "function") {
         if (button.form === form) {
@@ -41,7 +41,7 @@ export function QuizActionButtons({
     return (
         <>
             {showFinish ? (
-                <Button variant="ghost" type="button" id="btn-finish-round" onClick={onFinish}>
+                <Button variant="ghost" type="button" onClick={onFinish}>
                     {finishLabel}
                 </Button>
             ) : null}
@@ -53,7 +53,6 @@ export function QuizActionButtons({
                             : "ghost"
                     }
                     type="button"
-                    id="btn-skip"
                     disabled={skipDisabled}
                     onPointerDown={(e) => {
                         if (!isPrimaryPointer(e)) return
@@ -77,14 +76,13 @@ export function QuizActionButtons({
                 variant="primary"
                 type="submit"
                 form={isHardcore ? undefined : submitFormId}
-                id="btn-quiz-submit-cases"
                 className={submitHidden ? "hidden" : ""}
                 hidden={submitHidden}
                 onPointerDown={(e) => {
                     if (!isPrimaryPointer(e) || submitHidden) return
                     e.preventDefault()
                     skipNextSubmitClickRef.current = true
-                    submitFromButton(e.currentTarget, isHardcore ? "" : submitFormId)
+                    submitFromButton(e.currentTarget)
                 }}
                 onClick={(e) => {
                     if (!skipNextSubmitClickRef.current) return

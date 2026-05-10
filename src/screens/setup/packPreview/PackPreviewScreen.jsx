@@ -1,8 +1,8 @@
-import { STR } from "../../../../js/i18n/strings-ru.js"
-import { AppFlowScreen } from "../../../components/layout/AppFlowScreen.jsx"
-import { Button } from "../../../components/ui/Button.jsx"
-import { DataTable } from "../../../components/ui/DataTable.jsx"
-import { useManifestPacks } from "../../../context/ManifestPacksContext.jsx"
+import { STR } from "js/i18n/strings-ru.js"
+import { AppFlowScreen } from "src/components/layout/AppFlowScreen.jsx"
+import { Button } from "src/components/ui/Button.jsx"
+import { DataTable } from "src/components/ui/DataTable.jsx"
+import { useManifestPacks } from "src/context/ManifestPacksContext.jsx"
 
 const PART_OF_SPEECH_ORDER = ["noun", "verb", "adjective", "other"]
 
@@ -84,12 +84,7 @@ export function PackPreviewScreen({ heightMode = "fill" } = {}) {
                     )}
                 </div>
                 <div className="app-screen__footer actions app-screen__footer--single">
-                    <Button
-                        variant="primary"
-                        type="button"
-                        id="btn-pack-preview-close"
-                        onClick={closePackPreview}
-                    >
+                    <Button variant="primary" type="button" onClick={closePackPreview}>
                         {STR.packPreview.close}
                     </Button>
                 </div>

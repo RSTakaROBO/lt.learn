@@ -1,12 +1,12 @@
 import { useEffect, useRef, useState } from "react"
 import { useSelector } from "react-redux"
 
-import { TRAIN_MODE } from "../../../../js/config.js"
-import { caseRu } from "../../../../js/i18n/core.js"
-import { STR } from "../../../../js/i18n/strings-ru.js"
-import { handleMorphCasesAnswerSubmit } from "../../../../js/quiz.js"
-import { LithuanianInput, QuizFeedback } from "../shared/index.js"
-import { casesLemma, casesRuPrimary } from "./casesWords.js"
+import { TRAIN_MODE } from "js/config.js"
+import { caseRu } from "js/i18n/core.js"
+import { STR } from "js/i18n/strings-ru.js"
+import { handleMorphCasesAnswerSubmit } from "js/quiz.js"
+import { LithuanianInput, QuizFeedback } from "src/screens/quiz/shared/index.js"
+import { casesLemma, casesRuPrimary } from "src/screens/quiz/cases/casesWords.js"
 
 function casesPromptForTask(task, casesShowTranslation) {
     if (!task?.word || task.mode === TRAIN_MODE.VOCAB || task.mode === TRAIN_MODE.VERBS) {

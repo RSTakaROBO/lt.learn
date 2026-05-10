@@ -1,6 +1,6 @@
-import { fmt } from "../../../../js/i18n/core.js"
-import { STR } from "../../../../js/i18n/strings-ru.js"
-import { VOCAB_ROUND_STREAK_TO_REMOVE } from "../../../../js/vocab-round.js"
+import { fmt } from "js/i18n/core.js"
+import { STR } from "js/i18n/strings-ru.js"
+import { VOCAB_ROUND_STREAK_TO_REMOVE } from "js/vocab-round.js"
 
 export function VocabRoundDots({ dots }) {
     if (!dots) {

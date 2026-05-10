@@ -1,5 +1,5 @@
-import { normalizeWordEntries } from "../../../js/word-entry.js"
-import { vocabRuFeedbackLine } from "../../screens/quiz/vocab/vocabWords.js"
+import { normalizeWordEntries } from "js/word-entry.js"
+import { vocabRuFeedbackLine } from "src/screens/quiz/vocab/vocabWords.js"
 
 function cleanString(value) {
     return typeof value === "string" ? value.trim() : ""

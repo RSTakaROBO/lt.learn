@@ -1,9 +1,10 @@
-import { useEffect } from "react"
-import { AppFlowScreen } from "../../components/layout/AppFlowScreen.jsx"
-import { Button } from "../../components/ui/Button.jsx"
-import { useTrainerApp } from "../../context/TrainerAppContext.jsx"
-import { postTrainerUiAction } from "../../../js/trainer-ui-state.js"
-import { STR } from "../../../js/i18n/strings-ru.js"
+import { useRef } from "react"
+import { AppFlowScreen } from "src/components/layout/AppFlowScreen.jsx"
+import { Button } from "src/components/ui/Button.jsx"
+import { useTrainerApp } from "src/context/TrainerAppContext.jsx"
+import { useAutoFocusOnOpen } from "src/hooks/useAutoFocusOnOpen.js"
+import { postTrainerUiAction } from "js/trainer-ui-state.js"
+import { STR } from "js/i18n/strings-ru.js"
 
 /**
  * Хаб «Справка»: переход к таблицам падежей / глаголам.
@@ -12,11 +13,9 @@ import { STR } from "../../../js/i18n/strings-ru.js"
 export function HelpHubScreen({ heightMode = "fill" } = {}) {
     const [state, dispatch] = useTrainerApp()
     const open = state.overlay.helpHub
+    const closeButtonRef = useRef(null)
 
-    useEffect(() => {
-        if (!open) return
-        requestAnimationFrame(() => document.getElementById("btn-help-hub-close")?.focus())
-    }, [open])
+    useAutoFocusOnOpen(closeButtonRef, open)
 
     return (
         <AppFlowScreen
@@ -36,7 +35,6 @@ export function HelpHubScreen({ heightMode = "fill" } = {}) {
                     <div className="help-hub-actions">
                         <Button
                             type="button"
-                            id="btn-help-hub-cases"
                             onClick={() =>
                                 postTrainerUiAction({ type: "OVERLAY_OPEN", name: "casesHelp" })
                             }
@@ -45,7 +43,6 @@ export function HelpHubScreen({ heightMode = "fill" } = {}) {
                         </Button>
                         <Button
                             type="button"
-                            id="btn-help-hub-verbs"
                             onClick={() =>
                                 postTrainerUiAction({ type: "OVERLAY_OPEN", name: "verbsHelp" })
                             }
@@ -58,9 +55,9 @@ export function HelpHubScreen({ heightMode = "fill" } = {}) {
                 </div>
                 <div className="app-screen__footer actions app-screen__footer--single">
                     <Button
+                        ref={closeButtonRef}
                         variant="primary"
                         type="button"
-                        id="btn-help-hub-close"
                         className="stats-close-btn"
                         onClick={() => dispatch({ type: "OVERLAY_CLOSE", name: "helpHub" })}
                     >

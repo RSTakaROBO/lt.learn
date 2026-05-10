@@ -1,15 +1,15 @@
 import { useEffect, useRef, useState } from "react"
 
-import { VERB_FORM_ORDER } from "../../../../js/config.js"
-import { STR } from "../../../../js/i18n/strings-ru.js"
-import { handleVerbFormSubmit } from "../../../../js/quiz.js"
+import { VERB_FORM_ORDER } from "js/config.js"
+import { STR } from "js/i18n/strings-ru.js"
+import { handleVerbFormSubmit } from "js/quiz.js"
 import {
     LithuanianInput,
     QuizFeedback,
     VocabRoundDots,
     VocabRoundProgress,
     VocabStreakMultiplier,
-} from "../shared/index.js"
+} from "src/screens/quiz/shared/index.js"
 
 function VerbFormsPrompt({ answered, task }) {
     const hiddenKey = task?.hiddenVerbFormKey

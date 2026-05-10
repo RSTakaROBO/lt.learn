@@ -1,4 +1,4 @@
-@import "../themes.css";
+@import "./themes.css";
 @import "./tokens.css";
 @import "./base.css";
 @import "./utilities.css";

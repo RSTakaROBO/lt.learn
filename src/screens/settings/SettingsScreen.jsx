@@ -1,13 +1,14 @@
-import { useEffect } from "react"
+import { useRef } from "react"
 
-import { THEME_IDS } from "../../../js/config.js"
-import { STR } from "../../../js/i18n/strings-ru.js"
-import { saveCasesShowTranslation, saveVocabShowWrongTranslation } from "../../../js/storage.js"
-import { AppFlowScreen } from "../../components/layout/AppFlowScreen.jsx"
-import { CardList } from "../../components/ui/CardList.jsx"
-import { CheckboxButton } from "../../components/ui/CheckboxButton.jsx"
-import { Button } from "../../components/ui/Button.jsx"
-import { useTrainerApp } from "../../context/TrainerAppContext.jsx"
+import { THEME_IDS } from "js/config.js"
+import { STR } from "js/i18n/strings-ru.js"
+import { saveCasesShowTranslation, saveVocabShowWrongTranslation } from "js/storage.js"
+import { AppFlowScreen } from "src/components/layout/AppFlowScreen.jsx"
+import { CardList } from "src/components/ui/CardList.jsx"
+import { CheckboxButton } from "src/components/ui/CheckboxButton.jsx"
+import { Button } from "src/components/ui/Button.jsx"
+import { useTrainerApp } from "src/context/TrainerAppContext.jsx"
+import { useAutoFocusOnOpen } from "src/hooks/useAutoFocusOnOpen.js"
 
 /**
  * Настройки: тема и опции тренировки.
@@ -17,11 +18,9 @@ export function SettingsScreen({ heightMode = "fill" } = {}) {
     const [state, dispatch] = useTrainerApp()
     const open = state.overlay.settings
     const { themeId, casesShowTranslation, vocabShowWrongTranslation } = state.persisted
+    const closeButtonRef = useRef(null)
 
-    useEffect(() => {
-        if (!open) return
-        requestAnimationFrame(() => document.getElementById("btn-settings-close")?.focus())
-    }, [open])
+    useAutoFocusOnOpen(closeButtonRef, open)
 
     return (
         <AppFlowScreen
@@ -96,9 +95,9 @@ export function SettingsScreen({ heightMode = "fill" } = {}) {
                 </div>
                 <div className="app-screen__footer actions app-screen__footer--single">
                     <Button
+                        ref={closeButtonRef}
                         variant="primary"
                         type="button"
-                        id="btn-settings-close"
                         className="stats-close-btn"
                         onClick={() => dispatch({ type: "OVERLAY_CLOSE", name: "settings" })}
                     >

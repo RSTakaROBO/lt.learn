@@ -1,11 +1,11 @@
 import { useCallback, useState } from "react"
 
-import { STR } from "../../../js/i18n/strings-ru.js"
-import { loadVocabDirections, saveVocabDirections } from "../../../js/storage.js"
-import { useTrainerDispatch } from "../../context/TrainerAppContext.jsx"
-import { CardList } from "../ui/CardList.jsx"
-import { CheckboxButton } from "../ui/CheckboxButton.jsx"
-import { ChoiceGroup } from "../ui/ChoiceGroup.jsx"
+import { STR } from "js/i18n/strings-ru.js"
+import { loadVocabDirections, saveVocabDirections } from "js/storage.js"
+import { useTrainerDispatch } from "src/context/TrainerAppContext.jsx"
+import { CardList } from "src/components/ui/CardList.jsx"
+import { CheckboxButton } from "src/components/ui/CheckboxButton.jsx"
+import { ChoiceGroup } from "src/components/ui/ChoiceGroup.jsx"
 
 const defaultDirs = () => ({ ru_to_lt: true, lt_to_ru: false, hardcore: false })
 

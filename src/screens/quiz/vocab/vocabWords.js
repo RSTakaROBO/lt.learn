@@ -1,4 +1,4 @@
-import { comparableAnswerKey } from "../../../../js/text-utils.js"
+import { comparableAnswerKey } from "js/text-utils.js"
 
 function cleanString(value) {
     return typeof value === "string" ? value.trim() : ""

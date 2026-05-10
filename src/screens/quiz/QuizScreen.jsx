@@ -1,16 +1,16 @@
 import { useState } from "react"
 import { shallowEqual, useSelector } from "react-redux"
 
-import { TRAIN_MODE } from "../../../js/config.js"
-import { STR } from "../../../js/i18n/strings-ru.js"
-import { AppFlowScreen } from "../../components/layout/AppFlowScreen.jsx"
-import { handleQuizSkipButtonClick } from "../../../js/quiz.js"
-import { openVocabRoundSummaryOverlay } from "../../../js/vocab-round.js"
-import { ConfirmDialogOverlay } from "../../components/ui/ConfirmDialogOverlay.jsx"
-import { QuizActionButtons, QuizFeedback } from "./shared/index.js"
-import { CasesQuiz } from "./cases/CasesQuiz.jsx"
-import { VocabQuiz } from "./vocab/VocabQuiz.jsx"
-import { VerbsQuiz } from "./verbs/VerbsQuiz.jsx"
+import { TRAIN_MODE } from "js/config.js"
+import { STR } from "js/i18n/strings-ru.js"
+import { AppFlowScreen } from "src/components/layout/AppFlowScreen.jsx"
+import { handleQuizSkipButtonClick } from "js/quiz.js"
+import { openVocabRoundSummaryOverlay } from "js/vocab-round.js"
+import { ConfirmDialogOverlay } from "src/components/ui/ConfirmDialogOverlay.jsx"
+import { QuizActionButtons, QuizFeedback } from "src/screens/quiz/shared/index.js"
+import { CasesQuiz } from "src/screens/quiz/cases/CasesQuiz.jsx"
+import { VocabQuiz } from "src/screens/quiz/vocab/VocabQuiz.jsx"
+import { VerbsQuiz } from "src/screens/quiz/verbs/VerbsQuiz.jsx"
 
 /**
  * Экран тренажёра: падежи и словарь.

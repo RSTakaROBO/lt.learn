@@ -1,6 +1,6 @@
 import { useEffect } from "react"
 
-import { skipCurrentWord } from "../../js/quiz.js"
+import { skipCurrentWord } from "js/quiz.js"
 import {
     closeCasesHelpOverlay,
     closePackPromptOverlay,
@@ -15,8 +15,8 @@ import {
     isVerbsHelpOpen,
     isVocabRoundSummaryOpen,
     postTrainerUiAction,
-} from "../../js/trainer-ui-state.js"
-import { useVocabRoundSummaryActions } from "./useVocabRoundSummaryActions.js"
+} from "js/trainer-ui-state.js"
+import { useVocabRoundSummaryActions } from "src/hooks/useVocabRoundSummaryActions.js"
 
 export function useTrainerKeyboardShortcuts() {
     const { dismissToSetup } = useVocabRoundSummaryActions()

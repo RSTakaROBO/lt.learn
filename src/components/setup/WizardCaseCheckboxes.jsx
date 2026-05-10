@@ -1,12 +1,12 @@
 import { useLayoutEffect, useState } from "react"
 
-import { CASE_ORDER } from "../../../js/config.js"
-import { caseRu } from "../../../js/i18n/core.js"
-import { applyEngine } from "../../../js/trainer-ui-state.js"
-import { loadSelectedCases, saveSelectedCases } from "../../../js/storage.js"
-import { useTrainerDispatch } from "../../context/TrainerAppContext.jsx"
-import { CardList } from "../ui/CardList.jsx"
-import { CheckboxButton } from "../ui/CheckboxButton.jsx"
+import { CASE_ORDER } from "js/config.js"
+import { caseRu } from "js/i18n/core.js"
+import { applyEngine } from "js/trainer-ui-state.js"
+import { loadSelectedCases, saveSelectedCases } from "js/storage.js"
+import { useTrainerDispatch } from "src/context/TrainerAppContext.jsx"
+import { CardList } from "src/components/ui/CardList.jsx"
+import { CheckboxButton } from "src/components/ui/CheckboxButton.jsx"
 
 const selectableCases = CASE_ORDER.filter((c) => c.key !== "nominative")
 

@@ -1,4 +1,4 @@
-import { VERB_FORM_KEYS } from "../../../../js/config.js"
+import { VERB_FORM_KEYS } from "js/config.js"
 
 export function isVerbsTrainingWord(word) {
     return (

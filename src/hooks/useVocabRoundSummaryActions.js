@@ -1,14 +1,14 @@
 import { useCallback } from "react"
 
-import { STR } from "../../js/i18n/strings-ru.js"
-import { TRAIN_MODE } from "../../js/config.js"
-import { resetVocabCorrectStreak, showQuiz } from "../../js/quiz.js"
-import { getResolvedVocabDirections, loadTrainMode } from "../../js/storage.js"
-import { mutateEngine } from "../../js/trainer-ui-state.js"
-import { clearVocabRound, initVocabRound } from "../../js/vocab-round.js"
-import { useTrainerDispatch } from "../context/TrainerAppContext.jsx"
-import { nextVocabTask } from "../screens/quiz/vocab/vocabTask.js"
-import { nextVerbTask } from "../screens/quiz/verbs/verbsTask.js"
+import { STR } from "js/i18n/strings-ru.js"
+import { TRAIN_MODE } from "js/config.js"
+import { resetVocabCorrectStreak, showQuiz } from "js/quiz.js"
+import { getResolvedVocabDirections, loadTrainMode } from "js/storage.js"
+import { mutateEngine } from "js/trainer-ui-state.js"
+import { clearVocabRound, initVocabRound } from "js/vocab-round.js"
+import { useTrainerDispatch } from "src/context/TrainerAppContext.jsx"
+import { nextVocabTask } from "src/screens/quiz/vocab/vocabTask.js"
+import { nextVerbTask } from "src/screens/quiz/verbs/verbsTask.js"
 
 export function useVocabRoundSummaryActions() {
     const dispatch = useTrainerDispatch()

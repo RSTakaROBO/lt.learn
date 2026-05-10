@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 
-import { STR } from "../../../../js/i18n/strings-ru.js"
-import { AppModalOverlay } from "../../../components/layout/AppModalOverlay.jsx"
-import { Button } from "../../../components/ui/Button.jsx"
-import { useTrainerApp } from "../../../context/TrainerAppContext.jsx"
+import { STR } from "js/i18n/strings-ru.js"
+import { AppModalOverlay } from "src/components/layout/AppModalOverlay.jsx"
+import { Button } from "src/components/ui/Button.jsx"
+import { useTrainerApp } from "src/context/TrainerAppContext.jsx"
+import { useAutoFocusOnOpen } from "src/hooks/useAutoFocusOnOpen.js"
 
 /**
  * Окно с текстом промпта для LLM.
@@ -14,17 +15,19 @@ export function PackPromptOverlay({ heightMode = "fill" } = {}) {
     const open = state.overlay.packPrompt
     const closePackPrompt = () => dispatch({ type: "OVERLAY_CLOSE", name: "packPrompt" })
     const [copyLabel, setCopyLabel] = useState(STR.packPrompt.copy)
+    const titleRef = useRef(null)
+    const textareaRef = useRef(null)
+    const titleFocusOptions = useMemo(() => ({ preventScroll: true }), [])
+
+    useAutoFocusOnOpen(titleRef, open, titleFocusOptions)
 
     useEffect(() => {
         if (!open) return
         setCopyLabel(STR.packPrompt.copy)
-        requestAnimationFrame(() =>
-            document.getElementById("pack-prompt-title")?.focus({ preventScroll: true })
-        )
     }, [open])
 
     async function handleCopy() {
-        const ta = document.getElementById("pack-prompt-text")
+        const ta = textareaRef.current
         if (!(ta instanceof HTMLTextAreaElement)) return
         const label = STR.packPrompt.copy
         const fail = () => {
@@ -65,21 +68,16 @@ export function PackPromptOverlay({ heightMode = "fill" } = {}) {
             panelClassName="pack-prompt-panel"
             onBackdropClick={closePackPrompt}
             title={
-                <h2 id="pack-prompt-title" tabIndex={-1}>
+                <h2 ref={titleRef} id="pack-prompt-title" tabIndex={-1}>
                     {STR.packPrompt.title}
                 </h2>
             }
             footer={
                 <div className="app-screen__footer actions wizard-pack-actions pack-prompt-actions">
-                    <Button type="button" id="btn-pack-prompt-copy" onClick={handleCopy}>
+                    <Button type="button" onClick={handleCopy}>
                         {copyLabel}
                     </Button>
-                    <Button
-                        variant="primary"
-                        type="button"
-                        id="btn-pack-prompt-close"
-                        onClick={closePackPrompt}
-                    >
+                    <Button variant="primary" type="button" onClick={closePackPrompt}>
                         {STR.packPrompt.close}
                     </Button>
                 </div>
@@ -91,6 +89,7 @@ export function PackPromptOverlay({ heightMode = "fill" } = {}) {
                     {STR.packPrompt.textareaLabel}
                 </label>
                 <textarea
+                    ref={textareaRef}
                     id="pack-prompt-text"
                     className="pack-prompt-textarea"
                     value={STR.packPrompt.llmPrompt}

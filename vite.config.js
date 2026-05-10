@@ -14,6 +14,12 @@ export default defineConfig({
         __APP_VERSION__: JSON.stringify(typeof pkg.version === "string" ? pkg.version : "0.0.0"),
     },
     plugins: [react()],
+    resolve: {
+        alias: {
+            src: path.resolve(__dirname, "src"),
+            js: path.resolve(__dirname, "js"),
+        },
+    },
     base: "/lt.learn/",
     server: {
         host: true,

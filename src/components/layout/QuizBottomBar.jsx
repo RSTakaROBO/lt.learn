@@ -3,13 +3,13 @@ import {
     QuizBarHomeIcon,
     QuizBarSettingsIcon,
     QuizBarStatsIcon,
-} from "../icons/index.js"
-import { Button } from "../ui/Button.jsx"
-import { useTrainerApp } from "../../context/TrainerAppContext.jsx"
-import { STR } from "../../../js/i18n/strings-ru.js"
-import { resetVocabCorrectStreak } from "../../../js/quiz.js"
-import { mutateEngine } from "../../../js/trainer-ui-state.js"
-import { clearVocabRound } from "../../../js/vocab-round.js"
+} from "src/components/icons/index.js"
+import { Button } from "src/components/ui/Button.jsx"
+import { useTrainerApp } from "src/context/TrainerAppContext.jsx"
+import { STR } from "js/i18n/strings-ru.js"
+import { resetVocabCorrectStreak } from "js/quiz.js"
+import { mutateEngine } from "js/trainer-ui-state.js"
+import { clearVocabRound } from "js/vocab-round.js"
 
 function barBtnClass(active) {
     return active ? "quiz-bar-btn quiz-bar-btn--active" : "quiz-bar-btn"
@@ -61,7 +61,6 @@ export function QuizBottomBar() {
                 <Button
                     variant="quizBar"
                     type="button"
-                    id="btn-stats"
                     className={barBtnClass(stats)}
                     aria-label={STR.bottomBar.statsAria}
                     aria-current={stats ? "page" : undefined}
@@ -73,7 +72,6 @@ export function QuizBottomBar() {
                 <Button
                     variant="quizBar"
                     type="button"
-                    id="btn-back-setup"
                     className={barBtnClass(homeActive)}
                     aria-label={STR.bottomBar.menuAria}
                     aria-current={homeActive ? "page" : undefined}
@@ -85,7 +83,6 @@ export function QuizBottomBar() {
                 <Button
                     variant="quizBar"
                     type="button"
-                    id="btn-help-hub"
                     className={barBtnClass(helpHub)}
                     aria-label={STR.bottomBar.helpAria}
                     aria-current={helpHub ? "page" : undefined}
@@ -97,7 +94,6 @@ export function QuizBottomBar() {
                 <Button
                     variant="quizBar"
                     type="button"
-                    id="btn-settings"
                     className={barBtnClass(settings)}
                     aria-label={STR.bottomBar.settingsAria}
                     aria-current={settings ? "page" : undefined}

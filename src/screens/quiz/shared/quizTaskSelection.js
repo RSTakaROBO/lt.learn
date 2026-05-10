@@ -5,10 +5,10 @@ import {
     WEIGHT_PER_CORRECT,
     WEIGHT_PER_SKIP,
     WEIGHT_PER_WRONG,
-} from "../../../../js/config.js"
-import { getWordStat } from "../../../../js/storage.js"
-import { getEngine } from "../../../../js/trainer-ui-state.js"
-import { computeVocabRoundWeightForLemma, roundLemmaKey } from "../../../../js/vocab-round.js"
+} from "js/config.js"
+import { getWordStat } from "js/storage.js"
+import { getEngine } from "js/trainer-ui-state.js"
+import { computeVocabRoundWeightForLemma, roundLemmaKey } from "js/vocab-round.js"
 
 function cleanString(value) {
     return typeof value === "string" ? value.trim() : ""

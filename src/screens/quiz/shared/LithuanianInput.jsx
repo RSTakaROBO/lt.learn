@@ -1,8 +1,8 @@
 import { forwardRef, useRef } from "react"
 
-import { getLithuanianShiftCycleEdit } from "../../../../js/InputHelper.js"
-import { STR } from "../../../../js/i18n/strings-ru.js"
-import { ChartsToolbar } from "../../../components/ui/ChartsToolbar.jsx"
+import { getLithuanianShiftCycleEdit } from "js/InputHelper.js"
+import { STR } from "js/i18n/strings-ru.js"
+import { ChartsToolbar } from "src/components/ui/ChartsToolbar.jsx"
 
 function setCaretOnNextFrame(input, caret) {
     requestAnimationFrame(() => {

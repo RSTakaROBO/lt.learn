@@ -1,13 +1,13 @@
 import { useEffect, useRef, useState } from "react"
 
-import { VOCAB_DIRECTION } from "../../../../js/config.js"
-import { STR } from "../../../../js/i18n/strings-ru.js"
+import { VOCAB_DIRECTION } from "js/config.js"
+import { STR } from "js/i18n/strings-ru.js"
 import {
     handleQuizSkipButtonClick,
     handleVocabChoice,
     handleVocabHardcoreFormSubmit,
-} from "../../../../js/quiz.js"
-import { answersMatch } from "../../../../js/text-utils.js"
+} from "js/quiz.js"
+import { answersMatch } from "js/text-utils.js"
 import {
     LithuanianInput,
     QuizActionButtons,
@@ -15,8 +15,12 @@ import {
     VocabRoundDots,
     VocabRoundProgress,
     VocabStreakMultiplier,
-} from "../shared/index.js"
-import { vocabLemma, vocabRuPrimary, vocabRuUserMatches } from "./vocabWords.js"
+} from "src/screens/quiz/shared/index.js"
+import {
+    vocabLemma,
+    vocabRuPrimary,
+    vocabRuUserMatches,
+} from "src/screens/quiz/vocab/vocabWords.js"
 
 function vocabPromptForTask(task) {
     if (!task?.word) return { text: "", lang: undefined }

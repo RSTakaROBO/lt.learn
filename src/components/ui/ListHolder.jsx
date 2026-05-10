@@ -1,4 +1,4 @@
-import { CardList } from "./CardList.jsx"
+import { CardList } from "src/components/ui/CardList.jsx"
 
 /**
  * @deprecated Используй CardList: имя точнее описывает визуальный контракт.

@@ -1,2 +1,2 @@
-export { PackCardDeleteButton } from "./PackCardDeleteButton.jsx"
-export { WizardPackList } from "./WizardPackList.jsx"
+export { PackCardDeleteButton } from "src/components/pack-card/PackCardDeleteButton.jsx"
+export { WizardPackList } from "src/components/pack-card/WizardPackList.jsx"

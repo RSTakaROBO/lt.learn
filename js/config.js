@@ -78,10 +78,10 @@ export const VERB_FORM_KEYS = VERB_FORM_ORDER.map((form) => form.key)
 export const LT_SHIFT_KEY_CYCLES = {
     a: ["a", "ą"],
     c: ["c", "č"],
-    e: ["e", "ę", "ė"],
+    e: ["e", "ė", "ę"],
     i: ["i", "į"],
     s: ["s", "š"],
-    u: ["u", "ų", "ū"],
+    u: ["u", "ū", "ų"],
     z: ["z", "ž"],
 }
 

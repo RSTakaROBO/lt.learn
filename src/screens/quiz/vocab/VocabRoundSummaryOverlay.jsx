@@ -1,12 +1,13 @@
-import { useEffect } from "react"
+import { useRef } from "react"
 import { useSelector } from "react-redux"
 
-import { STR } from "../../../../js/i18n/strings-ru.js"
-import { getVocabRoundSummarySnapshot } from "../../../../js/vocab-round.js"
-import { AppModalOverlay } from "../../../components/layout/AppModalOverlay.jsx"
-import { Button } from "../../../components/ui/Button.jsx"
-import { DataTable } from "../../../components/ui/DataTable.jsx"
-import { useVocabRoundSummaryActions } from "../../../hooks/useVocabRoundSummaryActions.js"
+import { STR } from "js/i18n/strings-ru.js"
+import { getVocabRoundSummarySnapshot } from "js/vocab-round.js"
+import { AppModalOverlay } from "src/components/layout/AppModalOverlay.jsx"
+import { Button } from "src/components/ui/Button.jsx"
+import { DataTable } from "src/components/ui/DataTable.jsx"
+import { useAutoFocusOnOpen } from "src/hooks/useAutoFocusOnOpen.js"
+import { useVocabRoundSummaryActions } from "src/hooks/useVocabRoundSummaryActions.js"
 
 /**
  * Итог раунда «Слова».
@@ -17,15 +18,11 @@ export function VocabRoundSummaryOverlay({ heightMode = "fill" } = {}) {
     const snap = useSelector((s) => s.trainer.vocabRoundSummary)
     const { closeToSetup, repeatRound } = useVocabRoundSummaryActions()
     const displaySnap = snap ?? (open ? getVocabRoundSummarySnapshot() : null)
+    const repeatButtonRef = useRef(null)
 
     const VR = STR.vocabRound
 
-    useEffect(() => {
-        if (!open) return
-        requestAnimationFrame(() =>
-            document.getElementById("btn-vocab-round-summary-repeat")?.focus()
-        )
-    }, [open])
+    useAutoFocusOnOpen(repeatButtonRef, open)
 
     return (
         <AppModalOverlay
@@ -40,8 +37,8 @@ export function VocabRoundSummaryOverlay({ heightMode = "fill" } = {}) {
             footer={
                 <div className="app-screen__footer actions vocab-round-summary-actions">
                     <Button
+                        ref={repeatButtonRef}
                         type="button"
-                        id="btn-vocab-round-summary-repeat"
                         className="stats-close-btn"
                         onClick={repeatRound}
                     >
@@ -50,7 +47,6 @@ export function VocabRoundSummaryOverlay({ heightMode = "fill" } = {}) {
                     <Button
                         variant="primary"
                         type="button"
-                        id="btn-vocab-round-summary-ok"
                         className="stats-close-btn"
                         onClick={closeToSetup}
                     >

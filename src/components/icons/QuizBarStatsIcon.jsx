@@ -1,4 +1,4 @@
-import { QuizBarSvg } from "./QuizBarSvg.jsx"
+import { QuizBarSvg } from "src/components/icons/QuizBarSvg.jsx"
 
 export function QuizBarStatsIcon({ className }) {
     return (

@@ -1,20 +1,20 @@
 import { useEffect } from "react"
 
-import { TRAIN_MODE } from "../../../js/config.js"
-import { fmt } from "../../../js/i18n/core.js"
-import { STR } from "../../../js/i18n/strings-ru.js"
+import { TRAIN_MODE } from "js/config.js"
+import { fmt } from "js/i18n/core.js"
+import { STR } from "js/i18n/strings-ru.js"
 import {
     loadSelectedPacks,
     loadTrainMode,
     removeCustomPackById,
     saveSelectedPacks,
-} from "../../../js/storage.js"
-import { useManifestPacks } from "../../context/ManifestPacksContext.jsx"
-import { useTrainerDispatch } from "../../context/TrainerAppContext.jsx"
-import { CardList } from "../ui/CardList.jsx"
-import { CheckboxButton } from "../ui/CheckboxButton.jsx"
-import { PackCardDeleteButton } from "./PackCardDeleteButton.jsx"
-import { PackCardPreviewButton } from "./PackCardPreviewButton.jsx"
+} from "js/storage.js"
+import { useManifestPacks } from "src/context/ManifestPacksContext.jsx"
+import { useTrainerDispatch } from "src/context/TrainerAppContext.jsx"
+import { CardList } from "src/components/ui/CardList.jsx"
+import { CheckboxButton } from "src/components/ui/CheckboxButton.jsx"
+import { PackCardDeleteButton } from "src/components/pack-card/PackCardDeleteButton.jsx"
+import { PackCardPreviewButton } from "src/components/pack-card/PackCardPreviewButton.jsx"
 
 function wordCountLabelFromCounts(counts) {
     if (!counts) return STR.errors.countFailed

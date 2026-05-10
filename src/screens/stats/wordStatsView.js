@@ -1,4 +1,4 @@
-import { normalizeWordStatRow } from "../../../js/storage.js"
+import { normalizeWordStatRow } from "js/storage.js"
 
 /**
  * @param {Record<string, unknown>} wordStats

@@ -1,7 +1,8 @@
-import { useEffect } from "react"
+import { useRef } from "react"
 
-import { AppModalOverlay } from "../layout/AppModalOverlay.jsx"
-import { Button } from "./Button.jsx"
+import { useAutoFocusOnOpen } from "src/hooks/useAutoFocusOnOpen.js"
+import { AppModalOverlay } from "src/components/layout/AppModalOverlay.jsx"
+import { Button } from "src/components/ui/Button.jsx"
 
 /**
  * Общий confirm-попап в стиле приложения.
@@ -28,12 +29,9 @@ export function ConfirmDialogOverlay({
     onConfirm,
 }) {
     const titleId = `${id}-title`
-    const cancelId = `${id}-cancel`
+    const cancelButtonRef = useRef(null)
 
-    useEffect(() => {
-        if (!open) return
-        requestAnimationFrame(() => document.getElementById(cancelId)?.focus())
-    }, [cancelId, open])
+    useAutoFocusOnOpen(cancelButtonRef, open)
 
     return (
         <AppModalOverlay
@@ -46,15 +44,10 @@ export function ConfirmDialogOverlay({
             title={<h2 id={titleId}>{title}</h2>}
             footer={
                 <div className="app-screen__footer actions confirm-dialog-actions">
-                    <Button type="button" id={cancelId} onClick={onCancel}>
+                    <Button ref={cancelButtonRef} type="button" onClick={onCancel}>
                         {cancelLabel}
                     </Button>
-                    <Button
-                        variant="primary"
-                        type="button"
-                        id={`${id}-confirm`}
-                        onClick={onConfirm}
-                    >
+                    <Button variant="primary" type="button" onClick={onConfirm}>
                         {confirmLabel}
                     </Button>
                 </div>

@@ -1,9 +1,9 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react"
 import { shallowEqual, useDispatch, useSelector } from "react-redux"
 
-import { fmt } from "../../js/i18n/core.js"
-import { STR } from "../../js/i18n/strings-ru.js"
-import { setReloadManifestPacksImpl } from "../../js/packs.js"
+import { fmt } from "js/i18n/core.js"
+import { STR } from "js/i18n/strings-ru.js"
+import { setReloadManifestPacksImpl } from "js/packs.js"
 import {
     manifestClearPackRows,
     manifestSetPackRows,
@@ -11,16 +11,16 @@ import {
     mutateEngine,
     receiveTrainerUiAction,
     trainerStore,
-} from "../../js/trainer-ui-state.js"
-import { loadSelectedPacks, saveSelectedPacks } from "../../js/storage.js"
-import { TRAIN_MODE } from "../../js/config.js"
+} from "js/trainer-ui-state.js"
+import { loadSelectedPacks, saveSelectedPacks } from "js/storage.js"
+import { TRAIN_MODE } from "js/config.js"
 import {
     isRenderablePackEntry,
     loadAllPacksFromManifest,
     safePackInputId,
-} from "./manifestPacks/manifestPacksLoader.js"
-import { wordsForPackPreview } from "./manifestPacks/packPreviewRows.js"
-import { wordCountsForPack } from "./manifestPacks/packWordCounts.js"
+} from "src/context/manifestPacks/manifestPacksLoader.js"
+import { wordsForPackPreview } from "src/context/manifestPacks/packPreviewRows.js"
+import { wordCountsForPack } from "src/context/manifestPacks/packWordCounts.js"
 
 const ManifestPacksContext = createContext(null)
 

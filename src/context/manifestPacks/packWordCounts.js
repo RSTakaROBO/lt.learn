@@ -1,8 +1,8 @@
-import { TRAIN_MODE } from "../../../js/config.js"
-import { normalizeWordEntries } from "../../../js/word-entry.js"
-import { isCasesTrainingWord } from "../../screens/quiz/cases/casesWords.js"
-import { isVocabTrainingWord } from "../../screens/quiz/vocab/vocabWords.js"
-import { isVerbsTrainingWord } from "../../screens/quiz/verbs/verbsWords.js"
+import { TRAIN_MODE } from "js/config.js"
+import { normalizeWordEntries } from "js/word-entry.js"
+import { isCasesTrainingWord } from "src/screens/quiz/cases/casesWords.js"
+import { isVocabTrainingWord } from "src/screens/quiz/vocab/vocabWords.js"
+import { isVerbsTrainingWord } from "src/screens/quiz/verbs/verbsWords.js"
 
 function countWordsInData(data, trainMode) {
     const words = normalizeWordEntries(data?.words)

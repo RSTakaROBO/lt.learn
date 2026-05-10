@@ -1,5 +1,5 @@
-import { fmt } from "../../../../js/i18n/core.js"
-import { STR } from "../../../../js/i18n/strings-ru.js"
+import { fmt } from "js/i18n/core.js"
+import { STR } from "js/i18n/strings-ru.js"
 
 export function VocabRoundProgress({ progress }) {
     if (!progress || progress.total <= 0) {

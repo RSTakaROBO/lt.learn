@@ -1,6 +1,6 @@
 import { forwardRef } from "react"
-import { STR } from "../../../js/i18n/strings-ru.js"
-import { Button } from "./Button.jsx"
+import { STR } from "js/i18n/strings-ru.js"
+import { Button } from "src/components/ui/Button.jsx"
 
 const CHARS = ["ą", "č", "ę", "ė", "į", "š", "ų", "ū", "ž"]
 

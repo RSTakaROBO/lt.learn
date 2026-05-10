@@ -1,9 +1,12 @@
-import { TRAIN_MODE, VERB_FORM_KEYS } from "../../../../js/config.js"
-import { pickRandom, pickWeightedRandom } from "../../../../js/random.js"
-import { getEngine } from "../../../../js/trainer-ui-state.js"
-import { roundLemmaKey } from "../../../../js/vocab-round.js"
-import { usableAfterLemmaGap, vocabTaskSelectionWeight } from "../shared/quizTaskSelection.js"
-import { isVerbsTrainingWord } from "./verbsWords.js"
+import { TRAIN_MODE, VERB_FORM_KEYS } from "js/config.js"
+import { pickRandom, pickWeightedRandom } from "js/random.js"
+import { getEngine } from "js/trainer-ui-state.js"
+import { roundLemmaKey } from "js/vocab-round.js"
+import {
+    usableAfterLemmaGap,
+    vocabTaskSelectionWeight,
+} from "src/screens/quiz/shared/quizTaskSelection.js"
+import { isVerbsTrainingWord } from "src/screens/quiz/verbs/verbsWords.js"
 
 export function nextVerbTask(opts = {}) {
     const excludeLemma = opts.excludeLemma || null

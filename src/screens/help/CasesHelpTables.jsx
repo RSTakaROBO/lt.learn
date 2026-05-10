@@ -1,6 +1,6 @@
-import { CASE_BY_KEY } from "../../../js/config.js"
-import { caseRu } from "../../../js/i18n/core.js"
-import { STR } from "../../../js/i18n/strings-ru.js"
+import { CASE_BY_KEY } from "js/config.js"
+import { caseRu } from "js/i18n/core.js"
+import { STR } from "js/i18n/strings-ru.js"
 
 /** Заголовки таблицы окончаний. */
 function CaseTableHead() {

@@ -1,22 +1,22 @@
 /** Экран настройки (мастер): режим → наборы → (направление слов | падежи). */
-import { TRAIN_MODE } from "../../../js/config.js"
-import { APP_VERSION } from "../../../js/app-version.js"
-import { STR } from "../../../js/i18n/strings-ru.js"
+import { TRAIN_MODE } from "js/config.js"
+import { APP_VERSION } from "js/app-version.js"
+import { STR } from "js/i18n/strings-ru.js"
 import {
     handlePackJsonInputChange,
     handlePacksNextClick,
     handleStartCasesTrainingClick,
     handleVocabDirectionStartClick,
-} from "../../../js/setup-wizard-handlers.js"
-import { loadTrainMode, saveTrainMode } from "../../../js/storage.js"
-import { openPackPromptOverlay } from "../../../js/trainer-ui-state.js"
-import { AppFlowScreen } from "../../components/layout/AppFlowScreen.jsx"
-import { WizardCaseCheckboxes } from "../../components/setup/WizardCaseCheckboxes.jsx"
-import { WizardProgressDots } from "../../components/setup/WizardProgressDots.jsx"
-import { WizardVocabDirectionForm } from "../../components/setup/WizardVocabDirectionForm.jsx"
-import { WizardPackList } from "../../components/pack-card"
-import { Button } from "../../components/ui/Button.jsx"
-import { useTrainerApp } from "../../context/TrainerAppContext.jsx"
+} from "js/setup-wizard-handlers.js"
+import { loadTrainMode, saveTrainMode } from "js/storage.js"
+import { openPackPromptOverlay } from "js/trainer-ui-state.js"
+import { AppFlowScreen } from "src/components/layout/AppFlowScreen.jsx"
+import { WizardCaseCheckboxes } from "src/components/setup/WizardCaseCheckboxes.jsx"
+import { WizardProgressDots } from "src/components/setup/WizardProgressDots.jsx"
+import { WizardVocabDirectionForm } from "src/components/setup/WizardVocabDirectionForm.jsx"
+import { WizardPackList } from "src/components/pack-card"
+import { Button } from "src/components/ui/Button.jsx"
+import { useTrainerApp } from "src/context/TrainerAppContext.jsx"
 
 function wizardStepClass(visible) {
     return ["wizard-step", !visible && "hidden"].filter(Boolean).join(" ")
@@ -64,7 +64,6 @@ export function SetupScreen({ heightMode = "fill", hidden = false } = {}) {
                             <Button
                                 variant="modeChoice"
                                 type="button"
-                                id="btn-mode-vocab"
                                 data-train-mode="vocab"
                                 className={
                                     trainMode === TRAIN_MODE.VOCAB
@@ -84,7 +83,6 @@ export function SetupScreen({ heightMode = "fill", hidden = false } = {}) {
                             <Button
                                 variant="modeChoice"
                                 type="button"
-                                id="btn-mode-cases"
                                 data-train-mode="cases"
                                 className={
                                     trainMode === TRAIN_MODE.CASES
@@ -104,7 +102,6 @@ export function SetupScreen({ heightMode = "fill", hidden = false } = {}) {
                             <Button
                                 variant="modeChoice"
                                 type="button"
-                                id="btn-mode-verbs"
                                 data-train-mode="verbs"
                                 className={
                                     trainMode === TRAIN_MODE.VERBS
@@ -138,7 +135,6 @@ export function SetupScreen({ heightMode = "fill", hidden = false } = {}) {
                     <div className="pack-custom-upload">
                         <Button
                             type="button"
-                            id="btn-pack-prompt-help"
                             className="btn-pack-prompt-help"
                             aria-label={STR.packs.llmPromptAria}
                             title={STR.packs.llmPromptTitle}
@@ -163,7 +159,6 @@ export function SetupScreen({ heightMode = "fill", hidden = false } = {}) {
                     <div className="actions wizard-pack-actions">
                         <Button
                             type="button"
-                            id="btn-packs-back"
                             onClick={() => {
                                 dispatch({ type: "WIZARD_CLEAR_STATUS", name: "pack" })
                                 goWizardStep(1)
@@ -174,7 +169,6 @@ export function SetupScreen({ heightMode = "fill", hidden = false } = {}) {
                         <Button
                             variant="primary"
                             type="button"
-                            id="btn-packs-next"
                             aria-label={STR.packs.next}
                             onClick={() => void handlePacksNextClick()}
                         >
@@ -192,7 +186,6 @@ export function SetupScreen({ heightMode = "fill", hidden = false } = {}) {
                     <div className="actions wizard-pack-actions">
                         <Button
                             type="button"
-                            id="btn-vocab-direction-back"
                             onClick={() => {
                                 dispatch({ type: "WIZARD_CLEAR_STATUS", name: "vocabDirection" })
                                 goWizardStep(2)
@@ -203,7 +196,6 @@ export function SetupScreen({ heightMode = "fill", hidden = false } = {}) {
                         <Button
                             variant="primary"
                             type="button"
-                            id="btn-vocab-direction-start"
                             aria-label={STR.packs.start}
                             onClick={handleVocabDirectionStartClick}
                         >
@@ -221,7 +213,6 @@ export function SetupScreen({ heightMode = "fill", hidden = false } = {}) {
                     <div className="actions wizard-case-actions">
                         <Button
                             type="button"
-                            id="btn-cases-back"
                             onClick={() => {
                                 dispatch({ type: "WIZARD_CLEAR_STATUS", name: "case" })
                                 goWizardStep(2)
@@ -232,7 +223,6 @@ export function SetupScreen({ heightMode = "fill", hidden = false } = {}) {
                         <Button
                             variant="primary"
                             type="button"
-                            id="btn-start"
                             onClick={handleStartCasesTrainingClick}
                         >
                             {STR.packs.start}

@@ -1,4 +1,4 @@
-import { STR } from "../../../../js/i18n/strings-ru.js"
+import { STR } from "js/i18n/strings-ru.js"
 
 export function QuizFeedback({
     className = "",

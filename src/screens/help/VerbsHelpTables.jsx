@@ -1,5 +1,5 @@
 /** Таблица «būti» для справки по глаголам. */
-import { STR } from "../../../js/i18n/strings-ru.js"
+import { STR } from "js/i18n/strings-ru.js"
 
 export function VerbsHelpTables() {
     const rowLabels = [

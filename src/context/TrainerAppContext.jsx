@@ -1,11 +1,11 @@
 import { createContext, useCallback, useContext, useEffect, useLayoutEffect } from "react"
 import { Provider, useDispatch, useSelector } from "react-redux"
-import { receiveTrainerUiAction, trainerStore } from "../../js/trainer-ui-state.js"
-import { applyTheme } from "../../js/theme.js"
+import { receiveTrainerUiAction, trainerStore } from "js/trainer-ui-state.js"
+import { applyTheme } from "js/theme.js"
 
 const TrainerAppContext = createContext(null)
 
-/** @returns {[import("../../js/trainer-ui-state.js").TrainerUiState, import("react").Dispatch<any>]} */
+/** @returns {[import("js/trainer-ui-state.js").TrainerUiState, import("react").Dispatch<any>]} */
 export function useTrainerApp() {
     const v = useContext(TrainerAppContext)
     if (!v) throw new Error("useTrainerApp вне TrainerAppProvider")
@@ -16,7 +16,7 @@ function TrainerAppBridge({ children }) {
     const state = useSelector((s) => s.trainer)
     const dispatchRedux = useDispatch()
     const dispatch = useCallback(
-        (/** @type {import("../../js/trainer-ui-state.js").TrainerUiAction} */ action) => {
+        (/** @type {import("js/trainer-ui-state.js").TrainerUiAction} */ action) => {
             dispatchRedux(receiveTrainerUiAction(action))
         },
         [dispatchRedux]
@@ -56,12 +56,12 @@ export function TrainerAppProvider({ children }) {
 
 /**
  * Dispatch legacy UI actions into Redux without subscribing to full trainer state.
- * @returns {import("react").Dispatch<import("../../js/trainer-ui-state.js").TrainerUiAction>}
+ * @returns {import("react").Dispatch<import("js/trainer-ui-state.js").TrainerUiAction>}
  */
 export function useTrainerDispatch() {
     const dispatchRedux = useDispatch()
     return useCallback(
-        (/** @type {import("../../js/trainer-ui-state.js").TrainerUiAction} */ action) => {
+        (/** @type {import("js/trainer-ui-state.js").TrainerUiAction} */ action) => {
             dispatchRedux(receiveTrainerUiAction(action))
         },
         [dispatchRedux]
