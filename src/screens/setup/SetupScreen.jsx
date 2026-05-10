@@ -12,7 +12,6 @@ import { loadTrainMode, saveTrainMode } from "js/storage.js"
 import { openPackPromptOverlay } from "js/trainer-ui-state.js"
 import { AppFlowScreen } from "src/components/layout/AppFlowScreen.jsx"
 import { WizardCaseCheckboxes } from "src/components/setup/WizardCaseCheckboxes.jsx"
-import { WizardProgressDots } from "src/components/setup/WizardProgressDots.jsx"
 import { WizardVocabDirectionForm } from "src/components/setup/WizardVocabDirectionForm.jsx"
 import { WizardPackList } from "src/components/pack-card"
 import { Button } from "src/components/ui/Button.jsx"
@@ -35,7 +34,6 @@ export function SetupScreen({ heightMode = "fill", hidden = false } = {}) {
     const showPacks = step === 2
     const showVocabDir = step === 3 && trainMode === TRAIN_MODE.VOCAB
     const showCases = step === 3 && trainMode === TRAIN_MODE.CASES
-    const totalSteps = trainMode === TRAIN_MODE.VERBS ? 2 : 3
 
     function goWizardStep(next) {
         dispatch({ type: "WIZARD_SET_STEP", step: next })
@@ -44,8 +42,6 @@ export function SetupScreen({ heightMode = "fill", hidden = false } = {}) {
     return (
         <AppFlowScreen id="setup-shell" heightMode={heightMode} className={hidden ? "hidden" : ""}>
             <section id="setup" className="widget panel app-screen__panel">
-                <WizardProgressDots step={Math.min(step, totalSteps)} total={totalSteps} />
-
                 <div id="step-mode" className={wizardStepClass(showMode)}>
                     <header className="wizard-app-head">
                         <h2 className="wizard-home-title">

@@ -12,7 +12,6 @@ export const STR = {
     },
 
     wizard: {
-        stagesAria: "Этапы настройки",
         homeKicker: "Ни дня без",
         homeEm: "литовского",
         exerciseTypeAria: "Тип упражнения",

@@ -141,13 +141,6 @@
         transform: scale(0.992);
     }
 
-    .wizard-dot {
-        transition:
-            transform var(--motion-medium) var(--motion-ease-spring),
-            background 0.28s ease,
-            box-shadow 0.28s ease;
-    }
-
     .vocab-ru-card {
         transition:
             border-color 0.22s ease,

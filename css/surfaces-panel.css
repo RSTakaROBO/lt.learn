@@ -1,11 +1,12 @@
 /* Карточка экрана: виджет / panel одинаково по языку */
 .widget,
 .panel {
-    background: var(--surface);
-    border: var(--stroke) solid var(--border);
+    background: color-mix(in srgb, var(--surface) 94%, var(--bg));
+    border: 1px solid color-mix(in srgb, var(--border) 84%, transparent);
     border-radius: var(--radius-card);
     padding: var(--panel-padding);
     padding-bottom: var(--panel-padding-bottom);
+    box-shadow: 0 1px 0 color-mix(in srgb, var(--text) 5%, transparent) inset;
 }
 
 .widget h2,
@@ -38,18 +39,6 @@
     overflow-x: hidden;
 }
 
-#setup .wizard-progress {
-    flex-shrink: 0;
-}
-
-/* Начальный экран: без точек-этапов сверху */
-#setup:has(#step-mode:not(.hidden)) #wizard-progress {
-    display: none !important;
-    margin: 0 !important;
-    min-height: 0 !important;
-    overflow: hidden !important;
-}
-
 #setup .wizard-step:not(.hidden) {
     flex: 1;
     min-height: 0;
@@ -72,8 +61,8 @@
     align-content: start;
     overscroll-behavior-y: contain;
     border-radius: var(--radius-card);
-    border: var(--stroke) solid var(--border);
-    background: color-mix(in srgb, var(--bg) 22%, var(--surface));
+    border: 1px solid color-mix(in srgb, var(--border) 78%, transparent);
+    background: color-mix(in srgb, var(--bg) 28%, var(--surface));
     padding: 0.55rem 0.6rem;
     padding-bottom: calc(var(--panel-scroll-pad) + 0.55rem);
 }

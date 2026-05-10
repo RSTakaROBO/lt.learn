@@ -36,8 +36,8 @@
     margin: 0;
     padding: 1.05rem 1.2rem;
     border-radius: var(--radius-card);
-    border: var(--stroke) solid var(--border);
-    background: var(--surface-elevated);
+    border: 1px solid color-mix(in srgb, var(--border) 84%, transparent);
+    background: color-mix(in srgb, var(--surface-elevated) 90%, var(--surface));
     /* Режим «слова»: без полос прокрутки карточки — множитель и pulse через transform иначе дают scroll */
     overflow: hidden;
 }
@@ -243,9 +243,9 @@
 .vocab-round-progress-track {
     height: 0.42rem;
     border-radius: 999px;
-    background: color-mix(in srgb, var(--text) 10%, var(--surface-elevated));
+    background: color-mix(in srgb, var(--bg) 52%, var(--surface-elevated));
     overflow: hidden;
-    border: var(--stroke) solid var(--border);
+    border: 1px solid color-mix(in srgb, var(--border) 80%, transparent);
 }
 
 .vocab-round-progress-fill {
@@ -395,10 +395,13 @@
     font-size: 1.15rem;
     padding: 0.65rem 0.85rem;
     border-radius: var(--radius-control);
-    border: var(--stroke) solid var(--border);
-    background: var(--bg);
+    border: 1px solid color-mix(in srgb, var(--border) 88%, transparent);
+    background: color-mix(in srgb, var(--bg) 78%, var(--surface));
     color: var(--text);
     margin-bottom: 0;
+    transition:
+        border-color 0.15s ease,
+        background 0.15s ease;
 }
 
 #answer-input:focus,
@@ -412,7 +415,8 @@
 #vocab-answer-input:focus-visible,
 #verb-answer-input:focus-visible {
     outline: calc(var(--stroke) + 1px) solid var(--accent);
-    outline-offset: calc(-1 * var(--stroke) - 1px);
+    outline-offset: -2px;
+    background: color-mix(in srgb, var(--bg) 64%, var(--surface));
 }
 
 .lt-chars {
@@ -424,9 +428,9 @@
     margin-bottom: 0;
     padding: 0.55rem 0.55rem 0.85rem;
     box-sizing: border-box;
-    border: var(--stroke) solid var(--border);
+    border: 1px solid color-mix(in srgb, var(--border) 82%, transparent);
     border-radius: var(--radius-control);
-    background: color-mix(in srgb, var(--bg) 88%, var(--surface));
+    background: color-mix(in srgb, var(--bg) 82%, var(--surface));
 }
 
 .lt-char {
@@ -437,9 +441,9 @@
     width: 100%;
     margin: 0;
     padding: 0.42rem 0.15rem;
-    border: none;
+    border: 1px solid color-mix(in srgb, var(--border) 72%, transparent);
     border-radius: var(--radius-char);
-    background: var(--surface);
+    background: color-mix(in srgb, var(--surface) 84%, var(--surface-elevated));
     color: var(--text);
     cursor: pointer;
     line-height: 1.2;
@@ -450,7 +454,8 @@
 
 .lt-char:hover {
     color: var(--accent);
-    background: color-mix(in srgb, var(--accent) 12%, transparent);
+    border-color: color-mix(in srgb, var(--accent) 42%, var(--border));
+    background: color-mix(in srgb, var(--accent) 11%, var(--surface));
 }
 
 .lt-char:active {
@@ -476,7 +481,7 @@
     margin-top: 0.55rem;
     padding: 0.85rem 1rem;
     border-radius: var(--radius-control);
-    border: var(--stroke) solid var(--border);
+    border: 1px solid color-mix(in srgb, var(--border) 84%, transparent);
 }
 
 .feedback.ok {
@@ -558,8 +563,8 @@
     min-width: 0;
     padding: 0.5rem 0.08rem;
     border-radius: var(--radius-control);
-    border: var(--stroke) solid var(--border);
-    background: color-mix(in srgb, var(--bg) 72%, var(--surface));
+    border: 1px solid color-mix(in srgb, var(--border) 82%, transparent);
+    background: color-mix(in srgb, var(--bg) 70%, var(--surface));
     text-align: center;
 }
 

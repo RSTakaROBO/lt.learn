@@ -5,9 +5,9 @@
     max-width: 100%;
     margin-inline: 0;
     border-radius: var(--radius-control);
-    border: var(--stroke) solid var(--border);
+    border: 1px solid color-mix(in srgb, var(--border) 82%, transparent);
     overflow: hidden;
-    background: color-mix(in srgb, var(--surface-elevated) 88%, transparent);
+    background: color-mix(in srgb, var(--surface-elevated) 74%, var(--surface));
 }
 
 .data-table {
@@ -23,12 +23,12 @@
     text-transform: uppercase;
     letter-spacing: 0.04em;
     color: color-mix(in srgb, var(--text) 72%, var(--accent));
-    background: color-mix(in srgb, var(--accent) 20%, var(--surface-elevated));
-    border-bottom: var(--stroke) solid color-mix(in srgb, var(--accent) 28%, var(--border));
+    background: color-mix(in srgb, var(--accent) 13%, var(--surface-elevated));
+    border-bottom: 1px solid color-mix(in srgb, var(--accent) 28%, var(--border));
     position: sticky;
     top: 0;
     z-index: 1;
-    box-shadow: 0 var(--stroke) 0 color-mix(in srgb, var(--border) 85%, var(--accent));
+    box-shadow: 0 1px 0 color-mix(in srgb, var(--border) 85%, var(--accent));
 }
 
 .data-table__th--narrow {
@@ -43,7 +43,7 @@
 .data-table__td {
     padding: 0.62rem 0.65rem;
     vertical-align: middle;
-    border-bottom: var(--stroke) solid var(--border);
+    border-bottom: 1px solid color-mix(in srgb, var(--border) 78%, transparent);
     color: var(--text);
 }
 

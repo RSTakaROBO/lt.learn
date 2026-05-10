@@ -91,6 +91,7 @@
 }
 
 .mode-choice-btn {
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -104,11 +105,11 @@
     font-weight: 600;
     line-height: 1.25;
     border-radius: var(--radius-control);
-    border: var(--stroke) solid var(--border);
-    background: var(--surface-elevated);
+    border: 1px solid color-mix(in srgb, var(--border) 84%, transparent);
+    background: color-mix(in srgb, var(--surface-elevated) 86%, var(--surface));
     color: var(--text);
     cursor: pointer;
-    box-shadow: 0 var(--btn-shadow-drop) 0 0 var(--btn-shadow-depth);
+    box-shadow: none;
     transition:
         border-color 0.15s ease,
         box-shadow 0.15s ease,
@@ -131,12 +132,11 @@
 
 .mode-choice-btn:hover {
     border-color: color-mix(in srgb, var(--accent) 55%, var(--border));
-    box-shadow: 0 var(--btn-shadow-drop) 0 0 var(--btn-shadow-depth);
+    background: color-mix(in srgb, var(--surface-elevated) 92%, var(--accent));
 }
 
 .mode-choice-btn:active {
     transform: scale(0.99);
-    box-shadow: 0 calc(var(--btn-shadow-drop) - 1px) 0 0 var(--btn-shadow-depth);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -147,10 +147,19 @@
 
 .mode-choice-btn--active {
     border-color: var(--accent);
-    box-shadow:
-        0 0 0 1px color-mix(in srgb, var(--accent) 42%, transparent),
-        0 var(--btn-shadow-drop) 0 0 var(--btn-shadow-depth);
-    background: color-mix(in srgb, var(--accent) 12%, var(--surface-elevated));
+    box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent) 42%, transparent);
+    background: color-mix(in srgb, var(--accent) 15%, var(--surface-elevated));
+}
+
+.mode-choice-btn--active::before {
+    content: "";
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 0.28rem;
+    border-radius: inherit;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    background: var(--accent);
 }
 
 .vocab-direction-grid {
@@ -202,9 +211,7 @@
 .vocab-hardcore-block .pack-card-input:checked + .pack-card-face {
     border-color: color-mix(in srgb, var(--error) 68%, var(--border));
     background: color-mix(in srgb, var(--error) 16%, var(--surface-elevated));
-    box-shadow:
-        0 0 0 1px color-mix(in srgb, var(--error) 32%, transparent),
-        0 var(--btn-shadow-drop) 0 0 var(--btn-shadow-depth);
+    box-shadow: 0 0 0 1px color-mix(in srgb, var(--error) 32%, transparent);
 }
 
 .vocab-hardcore-block .pack-card--flat .pack-card-input:checked + .pack-card-face {
@@ -231,14 +238,6 @@
 
 .vocab-hardcore-block .pack-card-input:checked + .pack-card-face .pack-card-tick::after {
     border-color: var(--text-on-error);
-}
-
-.wizard-progress {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 0.7rem;
-    margin-bottom: calc(var(--panel-section-gap) + 0.35rem);
 }
 
 /* Шапка приложения на первом шаге мастера */
@@ -308,23 +307,6 @@
         opacity: 1;
         transform: translateY(0);
     }
-}
-
-.wizard-dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background: color-mix(in srgb, var(--muted) 55%, var(--border));
-    transition:
-        transform 0.2s ease,
-        background 0.2s ease,
-        box-shadow 0.2s ease;
-}
-
-.wizard-dot.is-active {
-    background: var(--accent);
-    transform: scale(1.4);
-    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 35%, transparent);
 }
 
 /* Не резервируем место под сообщение, пока текста нет — список ближе к кнопкам */

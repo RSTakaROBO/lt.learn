@@ -1,6 +1,6 @@
 .btn,
 .lt-char {
-    box-shadow: 0 var(--btn-shadow-drop) 0 0 var(--btn-shadow-depth);
+    box-shadow: none;
 }
 
 .btn {
@@ -8,22 +8,29 @@
     appearance: none;
     font: inherit;
     font-weight: 600;
-    padding: 0.55rem 1rem;
+    padding: 0.6rem 1rem;
     border-radius: var(--radius-control);
-    border: none;
+    border: var(--stroke) solid transparent;
     background: transparent;
     color: var(--text);
     cursor: pointer;
+    transition:
+        border-color 0.15s ease,
+        background 0.15s ease,
+        filter 0.15s ease,
+        transform 0.12s ease;
 }
 
 .btn.ghost {
-    background: var(--control-ghost-bg) !important;
-    background-color: var(--control-ghost-bg) !important;
+    border-color: color-mix(in srgb, var(--border) 86%, transparent) !important;
+    background: color-mix(in srgb, var(--control-ghost-bg) 74%, transparent) !important;
+    background-color: color-mix(in srgb, var(--control-ghost-bg) 74%, transparent) !important;
     background-image: none !important;
     color: var(--text) !important;
 }
 
 .btn.primary {
+    border-color: color-mix(in srgb, var(--accent) 78%, var(--border)) !important;
     background: var(--accent) !important;
     background-color: var(--accent) !important;
     background-image: none !important;
@@ -37,7 +44,12 @@
     filter: brightness(1.06);
 }
 
+.btn:active {
+    transform: translateY(1px);
+}
+
 .btn.start {
+    border-color: color-mix(in srgb, var(--success) 78%, var(--border)) !important;
     background: var(--success) !important;
     background-color: var(--success) !important;
     background-image: none !important;
@@ -54,7 +66,8 @@
 .btn.vocab-choice {
     padding: 0.5rem 0.55rem;
     border-radius: var(--radius-tile);
-    background: color-mix(in srgb, var(--text) 15%, transparent);
+    border-color: color-mix(in srgb, var(--border) 82%, transparent);
+    background: color-mix(in srgb, var(--surface-elevated) 82%, transparent);
 }
 
 /* Ответ пользователя: кольцо по периметру внутри кнопки */
@@ -62,8 +75,8 @@
     position: relative;
     z-index: 1;
     box-shadow:
-        inset 0 0 0 3px var(--accent),
-        0 var(--btn-shadow-drop) 0 0 var(--btn-shadow-depth);
+        inset 0 0 0 2px var(--accent),
+        0 0 0 1px color-mix(in srgb, var(--accent) 35%, transparent);
 }
 
 .btn:disabled {
@@ -78,6 +91,7 @@
 
 .btn.vocab-choice.vocab-choice--correct {
     background: var(--success);
+    border-color: color-mix(in srgb, var(--success) 80%, var(--border)) !important;
     background-color: var(--success) !important;
     background-image: none !important;
     color: var(--text-on-success) !important;
@@ -100,13 +114,14 @@
 
 .btn.vocab-choice.vocab-choice--picked.vocab-choice--correct:hover {
     box-shadow:
-        inset 0 0 0 3px var(--accent),
-        0 var(--btn-shadow-drop) 0 0 var(--btn-shadow-depth);
+        inset 0 0 0 2px var(--accent),
+        0 0 0 1px color-mix(in srgb, var(--accent) 35%, transparent);
 }
 
 .btn.vocab-choice.vocab-choice--wrong,
 .btn.vocab-choice.vocab-choice--wrong:disabled {
     background: var(--error);
+    border-color: color-mix(in srgb, var(--error) 80%, var(--border)) !important;
     background-color: var(--error) !important;
     background-image: none !important;
     color: var(--text-on-error) !important;
@@ -130,11 +145,12 @@
 
 .btn.vocab-choice.vocab-choice--picked.vocab-choice--wrong:hover {
     box-shadow:
-        inset 0 0 0 3px var(--accent),
-        0 var(--btn-shadow-drop) 0 0 var(--btn-shadow-depth);
+        inset 0 0 0 2px var(--accent),
+        0 0 0 1px color-mix(in srgb, var(--accent) 35%, transparent);
 }
 
 .btn.ghost:hover:not(.vocab-choice--correct):not(.vocab-choice--wrong) {
+    border-color: color-mix(in srgb, var(--accent) 58%, var(--border)) !important;
     background: color-mix(in srgb, var(--accent) 12%, var(--control-ghost-bg)) !important;
     background-color: color-mix(in srgb, var(--accent) 12%, var(--control-ghost-bg)) !important;
     background-image: none !important;
