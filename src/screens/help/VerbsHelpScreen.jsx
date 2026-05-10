@@ -41,7 +41,7 @@ export function VerbsHelpScreen({ heightMode = "fill" } = {}) {
                     <Button
                         variant="primary"
                         type="button"
-                        onClick={() => dispatch({ type: "OVERLAY_CLOSE", name: "verbsHelp" })}
+                        onClick={() => dispatch({ type: "OVERLAY_OPEN", name: "helpHub" })}
                     >
                         {STR.help.close}
                     </Button>

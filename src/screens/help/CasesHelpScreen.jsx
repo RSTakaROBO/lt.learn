@@ -41,7 +41,7 @@ export function CasesHelpScreen({ heightMode = "fill" } = {}) {
                     <Button
                         variant="primary"
                         type="button"
-                        onClick={() => dispatch({ type: "OVERLAY_CLOSE", name: "casesHelp" })}
+                        onClick={() => dispatch({ type: "OVERLAY_OPEN", name: "helpHub" })}
                     >
                         {STR.help.close}
                     </Button>

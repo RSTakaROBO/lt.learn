@@ -67,7 +67,7 @@
         animation: motion-sheet-in calc(var(--motion-medium) + 0.04s) var(--motion-ease-out) both;
     }
 
-    /* Полноэкранные таблицы справки (падежи / глаголы) */
+    /* Справка: падежи / глаголы, хаб, настройки, статистика */
     .cases-help-shell:not(.hidden) #cases-help.panel,
     .verbs-help-shell:not(.hidden) #verbs-help.panel,
     .help-hub-shell:not(.hidden) #help-hub.panel,

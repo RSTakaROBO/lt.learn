@@ -413,14 +413,6 @@ export function closePackPromptOverlay() {
     postTrainerUiAction({ type: "OVERLAY_CLOSE", name: "packPrompt" })
 }
 
-export function closeCasesHelpOverlay() {
-    postTrainerUiAction({ type: "OVERLAY_CLOSE", name: "casesHelp" })
-}
-
-export function closeVerbsHelpOverlay() {
-    postTrainerUiAction({ type: "OVERLAY_CLOSE", name: "verbsHelp" })
-}
-
 export function openPackPromptOverlay() {
     postTrainerUiAction({ type: "OVERLAY_OPEN", name: "packPrompt" })
 }

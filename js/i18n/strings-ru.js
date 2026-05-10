@@ -47,6 +47,9 @@ export const STR = {
         finishRoundTitle: "Завершить урок?",
         finishRoundMessage:
             "Раунд остановится сейчас, и откроется статистика по уже пройденным ответам.",
+        leaveTrainingTitle: "Закончить тренировку?",
+        leaveTrainingMessage: "Вы вернётесь в меню настройки урока. Текущий раунд будет прерван.",
+        leaveTrainingConfirm: "Закончить",
     },
 
     vocabDirection: {

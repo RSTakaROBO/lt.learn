@@ -35,32 +35,15 @@ html:has(#pack-preview-shell) body {
     max-height: 100dvh;
 }
 
-.cases-help-shell:not(.hidden),
-.verbs-help-shell:not(.hidden) {
-    position: fixed;
-    inset: 0;
-    z-index: 50;
-    box-sizing: border-box;
-    width: 100%;
-    max-width: none;
-    margin: 0;
-    padding-top: max(var(--shell-pad-top), env(safe-area-inset-top, 0px));
-    padding-right: max(var(--shell-pad-x), env(safe-area-inset-right, 0px));
-    padding-left: max(var(--shell-pad-x), env(safe-area-inset-left, 0px));
-    padding-bottom: env(safe-area-inset-bottom, 0px);
-    background: var(--bg);
-}
-
+#help-hub-shell:not(.hidden) > #help-hub,
+#settings-shell:not(.hidden) > #settings,
+#stats-overlay:not(.hidden) > #stats,
 .cases-help-shell:not(.hidden) > #cases-help,
 .verbs-help-shell:not(.hidden) > #verbs-help {
     flex: 1;
     display: flex;
     flex-direction: column;
     min-height: 0;
-    max-width: none;
-    width: 100%;
-    margin: 0;
-    border-radius: 0;
 }
 
 #setup-shell:not(.hidden) > #setup {
@@ -78,15 +61,6 @@ html:has(#pack-preview-shell) body {
 }
 
 .quiz-shell:not(.hidden) > #quiz {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    min-height: 0;
-}
-
-#help-hub-shell:not(.hidden) > #help-hub,
-#settings-shell:not(.hidden) > #settings,
-#stats-overlay:not(.hidden) > #stats {
     flex: 1;
     display: flex;
     flex-direction: column;

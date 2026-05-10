@@ -2,9 +2,7 @@ import { useEffect } from "react"
 
 import { skipCurrentWord } from "js/quiz.js"
 import {
-    closeCasesHelpOverlay,
     closePackPromptOverlay,
-    closeVerbsHelpOverlay,
     getActiveTrainerScreen,
     getEngine,
     isCasesHelpOpen,
@@ -49,14 +47,9 @@ export function useTrainerKeyboardShortcuts() {
                 postTrainerUiAction({ type: "OVERLAY_CLOSE", name: "stats" })
                 return
             }
-            if (isCasesHelpOpen()) {
+            if (isCasesHelpOpen() || isVerbsHelpOpen()) {
                 e.preventDefault()
-                closeCasesHelpOverlay()
-                return
-            }
-            if (isVerbsHelpOpen()) {
-                e.preventDefault()
-                closeVerbsHelpOverlay()
+                postTrainerUiAction({ type: "OVERLAY_OPEN", name: "helpHub" })
                 return
             }
             if (!getEngine().currentTask || getActiveTrainerScreen() !== "quiz") {
