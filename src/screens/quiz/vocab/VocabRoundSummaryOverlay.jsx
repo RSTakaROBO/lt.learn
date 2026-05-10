@@ -61,7 +61,7 @@ export function VocabRoundSummaryOverlay({ heightMode = "fill" } = {}) {
         >
             <div className="app-screen__body app-screen__body--nested">
                 {displaySnap ? (
-                    <div className="vocab-round-summary-body">
+                    <div className="vocab-round-summary-body u-scrollbar-hidden">
                         <div className="vocab-round-summary-stats-card" aria-live="polite">
                             <div className="vocab-round-summary-hero-stat">
                                 <span className="vocab-round-summary-section-title">
@@ -139,7 +139,7 @@ export function VocabRoundSummaryOverlay({ heightMode = "fill" } = {}) {
                         </div>
                     </div>
                 ) : (
-                    <div className="vocab-round-summary-body">
+                    <div className="vocab-round-summary-body u-scrollbar-hidden">
                         <p className="vocab-round-summary-empty sub">{VR.noSummaryData}</p>
                     </div>
                 )}

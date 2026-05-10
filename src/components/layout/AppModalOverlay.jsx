@@ -40,6 +40,7 @@ export const AppModalOverlay = forwardRef(function AppModalOverlay(
                 !open && "hidden",
                 shellClassName,
                 heightMode === "scroll" && "app-screen--height-scroll",
+                heightMode === "scroll" && "u-scrollbar-hidden",
             ]
                 .filter(Boolean)
                 .join(" ")}

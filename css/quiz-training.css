@@ -616,15 +616,6 @@
     > .vocab-ru-card
     > .vocab-ru-card-body {
     overflow-y: auto;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-}
-
-#quiz.panel.quiz--vocab-hardcore
-    #quiz-vocab-ui:not(.hidden)
-    > .vocab-ru-card
-    > .vocab-ru-card-body::-webkit-scrollbar {
-    display: none;
 }
 
 #quiz.panel.quiz--vocab-hardcore #quiz-vocab-ui:not(.hidden) .vocab-ru-card .lemma,

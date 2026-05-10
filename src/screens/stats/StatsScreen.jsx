@@ -103,7 +103,7 @@ export function StatsScreen({ heightMode = "fill" } = {}) {
                             </div>
                         </div>
                     </div>
-                    <div className="stats-table-wrap">
+                    <div className="stats-table-wrap u-scrollbar-hidden">
                         {rows.length === 0 ? (
                             <p className="stats-empty">{STR.stats.empty}</p>
                         ) : (

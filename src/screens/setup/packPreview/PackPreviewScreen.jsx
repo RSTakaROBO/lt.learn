@@ -42,7 +42,7 @@ export function PackPreviewScreen({ heightMode = "fill" } = {}) {
                         String(previewPackRow.previewRows.length)
                     )}
                 </p>
-                <div className="app-screen__body pack-preview-body">
+                <div className="app-screen__body pack-preview-body u-scrollbar-hidden">
                     {groups.length === 0 ? (
                         <p className="pack-preview-empty">{STR.packPreview.empty}</p>
                     ) : (
@@ -55,7 +55,7 @@ export function PackPreviewScreen({ heightMode = "fill" } = {}) {
                                 <h3 id={`pack-preview-${group.type}`} className="pack-preview-h">
                                     {partOfSpeechLabel(group.type)}
                                 </h3>
-                                <div className="pack-preview-table-scroll">
+                                <div className="pack-preview-table-scroll u-scrollbar-hidden">
                                     <DataTable
                                         variant="plain"
                                         caption={`${partOfSpeechLabel(group.type)}: ${STR.packPreview.thLemma}, ${STR.packPreview.thTranslation}`}

@@ -11,8 +11,8 @@ import {
 } from "../../../js/storage.js"
 import { useManifestPacks } from "../../context/ManifestPacksContext.jsx"
 import { useTrainerDispatch } from "../../context/TrainerAppContext.jsx"
+import { CardList } from "../ui/CardList.jsx"
 import { CheckboxButton } from "../ui/CheckboxButton.jsx"
-import { ListHolder } from "../ui/ListHolder.jsx"
 import { PackCardDeleteButton } from "./PackCardDeleteButton.jsx"
 import { PackCardPreviewButton } from "./PackCardPreviewButton.jsx"
 
@@ -73,7 +73,7 @@ export function WizardPackList({ scrollWell = true }) {
     }
 
     return (
-        <ListHolder id="pack-list" scrollWell={scrollWell}>
+        <CardList id="pack-list" scrollWell={scrollWell}>
             {packRows.map((row) => {
                 const selectable = isPackSelectable(row, trainMode)
                 return (
@@ -111,6 +111,6 @@ export function WizardPackList({ scrollWell = true }) {
                     />
                 )
             })}
-        </ListHolder>
+        </CardList>
     )
 }

@@ -23,6 +23,7 @@ export const AppFlowScreen = forwardRef(function AppFlowScreen(
                 "app-screen app-screen--flow",
                 className,
                 heightMode === "scroll" && "app-screen--height-scroll",
+                heightMode === "scroll" && "u-scrollbar-hidden",
             ]
                 .filter(Boolean)
                 .join(" ")}

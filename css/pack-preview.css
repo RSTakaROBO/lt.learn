@@ -1,0 +1,45 @@
+.pack-preview-screen {
+    gap: 0.75rem;
+}
+
+.pack-preview-sub {
+    margin: -0.25rem 0 0;
+}
+
+.pack-preview-body {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.pack-preview-section {
+    display: grid;
+    gap: 0.55rem;
+}
+
+.pack-preview-h {
+    margin: 0;
+    font-size: 1rem;
+}
+
+/* Без overflow-y: auto — иначе колёсико цепляется за «пустой» скроллбокс и не доходит до .app-screen__body */
+.pack-preview-table-scroll {
+    overflow-x: auto;
+    overflow-y: visible;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-card);
+    background: var(--panel-soft);
+}
+
+.pack-preview-table-scroll .data-table {
+    min-width: 18rem;
+}
+
+.pack-preview-table-scroll .data-table__td {
+    vertical-align: top;
+}
+
+.pack-preview-empty {
+    margin: 0;
+    color: var(--muted);
+}

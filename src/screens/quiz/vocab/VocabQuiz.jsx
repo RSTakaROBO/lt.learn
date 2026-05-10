@@ -124,7 +124,7 @@ export function VocabQuiz({
                     .filter(Boolean)
                     .join(" ")}
             >
-                <div className="vocab-ru-card-body">
+                <div className="vocab-ru-card-body u-scrollbar-hidden">
                     <p className="lemma vocab-ru-display" id="vocab-ru-display" lang={prompt.lang}>
                         {prompt.text}
                     </p>

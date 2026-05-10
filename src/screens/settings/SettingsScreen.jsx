@@ -4,8 +4,8 @@ import { THEME_IDS } from "../../../js/config.js"
 import { STR } from "../../../js/i18n/strings-ru.js"
 import { saveCasesShowTranslation, saveVocabShowWrongTranslation } from "../../../js/storage.js"
 import { AppFlowScreen } from "../../components/layout/AppFlowScreen.jsx"
+import { CardList } from "../../components/ui/CardList.jsx"
 import { CheckboxButton } from "../../components/ui/CheckboxButton.jsx"
-import { ListHolder } from "../../components/ui/ListHolder.jsx"
 import { Button } from "../../components/ui/Button.jsx"
 import { useTrainerApp } from "../../context/TrainerAppContext.jsx"
 
@@ -65,7 +65,7 @@ export function SettingsScreen({ heightMode = "fill" } = {}) {
                         </div>
                     </div>
                     <div className="settings-training-block">
-                        <ListHolder className="settings-training-options-list">
+                        <CardList className="settings-training-options-list">
                             <CheckboxButton
                                 id="settings-cases-show-translation"
                                 title={STR.settings.casesTranslationTitle}
@@ -91,7 +91,7 @@ export function SettingsScreen({ heightMode = "fill" } = {}) {
                                     saveVocabShowWrongTranslation(v)
                                 }}
                             />
-                        </ListHolder>
+                        </CardList>
                     </div>
                 </div>
                 <div className="app-screen__footer actions app-screen__footer--single">

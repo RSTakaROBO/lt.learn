@@ -5,8 +5,8 @@ import { caseRu } from "../../../js/i18n/core.js"
 import { applyEngine } from "../../../js/trainer-ui-state.js"
 import { loadSelectedCases, saveSelectedCases } from "../../../js/storage.js"
 import { useTrainerDispatch } from "../../context/TrainerAppContext.jsx"
+import { CardList } from "../ui/CardList.jsx"
 import { CheckboxButton } from "../ui/CheckboxButton.jsx"
-import { ListHolder } from "../ui/ListHolder.jsx"
 
 const selectableCases = CASE_ORDER.filter((c) => c.key !== "nominative")
 
@@ -40,7 +40,7 @@ export function WizardCaseCheckboxes({ scrollWell = true }) {
     }
 
     return (
-        <ListHolder id="case-checkboxes" scrollWell={scrollWell}>
+        <CardList id="case-checkboxes" scrollWell={scrollWell}>
             {selectableCases.map((c) => (
                 <CheckboxButton
                     key={c.key}
@@ -52,6 +52,6 @@ export function WizardCaseCheckboxes({ scrollWell = true }) {
                     onChange={(e) => toggleKey(c.key, e.target.checked)}
                 />
             ))}
-        </ListHolder>
+        </CardList>
     )
 }

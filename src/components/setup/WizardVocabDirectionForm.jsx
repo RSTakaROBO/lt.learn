@@ -3,8 +3,9 @@ import { useCallback, useState } from "react"
 import { STR } from "../../../js/i18n/strings-ru.js"
 import { loadVocabDirections, saveVocabDirections } from "../../../js/storage.js"
 import { useTrainerDispatch } from "../../context/TrainerAppContext.jsx"
+import { CardList } from "../ui/CardList.jsx"
 import { CheckboxButton } from "../ui/CheckboxButton.jsx"
-import { ListHolder } from "../ui/ListHolder.jsx"
+import { ChoiceGroup } from "../ui/ChoiceGroup.jsx"
 
 const defaultDirs = () => ({ ru_to_lt: true, lt_to_ru: false, hardcore: false })
 
@@ -29,9 +30,8 @@ export function WizardVocabDirectionForm() {
 
     return (
         <>
-            <ListHolder
+            <ChoiceGroup
                 className="vocab-direction-grid"
-                role="group"
                 aria-labelledby="vocab-direction-step-title"
             >
                 <CheckboxButton
@@ -48,10 +48,10 @@ export function WizardVocabDirectionForm() {
                     checked={dirs.lt_to_ru}
                     onChange={(e) => commit({ lt_to_ru: e.target.checked })}
                 />
-            </ListHolder>
+            </ChoiceGroup>
             <div className="vocab-hardcore-block">
                 <div className="vocab-hardcore-divider" role="presentation" aria-hidden="true" />
-                <ListHolder className="vocab-hardcore-list">
+                <CardList className="vocab-hardcore-list">
                     <CheckboxButton
                         id="vocab-hardcore"
                         title={STR.vocabDirection.hardcoreTitle}
@@ -59,7 +59,7 @@ export function WizardVocabDirectionForm() {
                         checked={dirs.hardcore}
                         onChange={(e) => commit({ hardcore: e.target.checked })}
                     />
-                </ListHolder>
+                </CardList>
             </div>
         </>
     )
