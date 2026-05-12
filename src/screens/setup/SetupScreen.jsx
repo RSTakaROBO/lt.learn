@@ -8,13 +8,14 @@ import {
     handleStartCasesTrainingClick,
     handleVocabDirectionStartClick,
 } from "js/setup-wizard-handlers.js"
-import { loadTrainMode, saveTrainMode } from "js/storage.js"
+import { loadTrainMode, saveExcludeLearnedWords, saveTrainMode } from "js/storage.js"
 import { openPackPromptOverlay } from "js/trainer-ui-state.js"
 import { AppFlowScreen } from "src/components/layout/AppFlowScreen.jsx"
 import { WizardCaseCheckboxes } from "src/components/setup/WizardCaseCheckboxes.jsx"
 import { WizardVocabDirectionForm } from "src/components/setup/WizardVocabDirectionForm.jsx"
 import { WizardPackList } from "src/components/pack-card"
 import { Button } from "src/components/ui/Button.jsx"
+import { CheckboxButton } from "src/components/ui/CheckboxButton.jsx"
 import { useTrainerApp } from "src/context/TrainerAppContext.jsx"
 
 function wizardStepClass(visible) {
@@ -28,6 +29,7 @@ export function SetupScreen({ heightMode = "fill", hidden = false } = {}) {
     const [uiState, dispatch] = useTrainerApp()
     const step = uiState.wizard.step
     const status = uiState.wizard.status
+    const excludeLearnedWords = uiState.persisted.excludeLearnedWords
     const trainMode = loadTrainMode() || TRAIN_MODE.CASES
 
     const showMode = step === 1
@@ -125,6 +127,18 @@ export function SetupScreen({ heightMode = "fill", hidden = false } = {}) {
                 <div id="step-packs" className={wizardStepClass(showPacks)}>
                     <h2>{STR.wizard.packsHeading}</h2>
                     <WizardPackList scrollWell />
+                    <CheckboxButton
+                        id="exclude-learned-words"
+                        className="pack-learned-filter"
+                        title={STR.packs.excludeLearnedTitle}
+                        meta={STR.packs.excludeLearnedMeta}
+                        checked={excludeLearnedWords}
+                        onChange={(e) => {
+                            const next = e.target.checked
+                            saveExcludeLearnedWords(next)
+                            dispatch({ type: "SET_EXCLUDE_LEARNED_WORDS", value: next })
+                        }}
+                    />
                     <p id="pack-step-status" className="status" aria-live="polite">
                         {status.pack}
                     </p>

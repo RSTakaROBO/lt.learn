@@ -1,40 +1,51 @@
 import { TRAIN_MODE } from "js/config.js"
+import { filterLearnedWords } from "js/learned-words.js"
 import { normalizeWordEntries } from "js/word-entry.js"
 import { isCasesTrainingWord } from "src/screens/quiz/cases/casesWords.js"
 import { isVocabTrainingWord } from "src/screens/quiz/vocab/vocabWords.js"
 import { isVerbsTrainingWord } from "src/screens/quiz/verbs/verbsWords.js"
 
-function countWordsInData(data, trainMode) {
-    const words = normalizeWordEntries(data?.words)
-    let suitable
-    if (trainMode === TRAIN_MODE.VOCAB) {
-        suitable = words.filter(isVocabTrainingWord).length
-    } else if (trainMode === TRAIN_MODE.VERBS) {
-        suitable = words.filter(isVerbsTrainingWord).length
-    } else {
-        suitable = words.filter((word) => isCasesTrainingWord(word)).length
+function filterWordsByMode(words, trainMode) {
+    if (trainMode === TRAIN_MODE.VOCAB) return words.filter(isVocabTrainingWord)
+    if (trainMode === TRAIN_MODE.VERBS) return words.filter(isVerbsTrainingWord)
+    return words.filter((word) => isCasesTrainingWord(word))
+}
+
+export function countWords(words, trainMode) {
+    return {
+        total: words.length,
+        suitable: filterWordsByMode(words, trainMode).length,
     }
-    return { total: words.length, suitable }
+}
+
+export function countPackWords(
+    words,
+    trainMode,
+    { excludeLearnedWords = false, wordStats = {} } = {}
+) {
+    const modeWords = filterWordsByMode(words, trainMode)
+    const suitableWords = excludeLearnedWords ? filterLearnedWords(modeWords, wordStats) : modeWords
+    return {
+        total: words.length,
+        suitable: suitableWords.length,
+    }
+}
+
+export function wordsForPack(pack, fileMap) {
+    const words = []
+    if (pack.custom && Array.isArray(pack.words)) {
+        words.push(...normalizeWordEntries(pack.words))
+    } else if (Array.isArray(pack.files)) {
+        for (const file of pack.files) {
+            const data = fileMap.get(file)
+            words.push(...normalizeWordEntries(data?.words))
+        }
+    }
+    return words
 }
 
 /** Счётчик слов для карточки после prefetch. */
-export function wordCountsForPack(pack, fileMap, trainMode) {
-    if (pack.custom && Array.isArray(pack.words)) {
-        return countWordsInData({ words: pack.words }, trainMode)
-    }
-    if (!pack.files?.length) return null
-    let total = 0
-    let suitable = 0
-    let ok = true
-    for (const file of pack.files) {
-        const data = fileMap.get(file)
-        if (data == null) {
-            ok = false
-            break
-        }
-        const counts = countWordsInData(data, trainMode)
-        total += counts.total
-        suitable += counts.suitable
-    }
-    return ok ? { total, suitable } : null
+export function wordCountsForPackWords(words, trainMode) {
+    if (!Array.isArray(words)) return null
+    return countPackWords(words, trainMode)
 }

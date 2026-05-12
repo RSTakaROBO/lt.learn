@@ -40,6 +40,17 @@ function readInitialVocabShowWrongTranslation() {
     return false
 }
 
+function readInitialExcludeLearnedWords() {
+    try {
+        const raw = localStorage.getItem(STORAGE_KEYS.excludeLearnedWords)
+        if (raw === "1") return true
+        if (raw === "0") return false
+    } catch {
+        /* ignore */
+    }
+    return false
+}
+
 function readInitialSelectedPackIds() {
     try {
         const raw = localStorage.getItem(STORAGE_KEYS.packs)
@@ -69,6 +80,7 @@ function readInitialSelectedPackIds() {
  * @property {string} themeId
  * @property {boolean} casesShowTranslation
  * @property {boolean} vocabShowWrongTranslation
+ * @property {boolean} excludeLearnedWords
  */
 
 /**
@@ -145,6 +157,7 @@ function readInitialSelectedPackIds() {
  *   | { type: "SET_THEME"; value: string }
  *   | { type: "SET_CASES_SHOW_TRANSLATION"; value: boolean }
  *   | { type: "SET_VOCAB_SHOW_WRONG_TRANSLATION"; value: boolean }
+ *   | { type: "SET_EXCLUDE_LEARNED_WORDS"; value: boolean }
  *   | { type: "WIZARD_SET_STEP"; step: number }
  *   | { type: "WIZARD_SET_STATUS"; name: "pack" | "case" | "vocabDirection"; message: string }
  *   | { type: "WIZARD_CLEAR_STATUS"; name?: "pack" | "case" | "vocabDirection" }
@@ -169,6 +182,7 @@ function buildInitialState() {
             themeId: readInitialThemeId(),
             casesShowTranslation: readInitialCasesShowTranslation(),
             vocabShowWrongTranslation: readInitialVocabShowWrongTranslation(),
+            excludeLearnedWords: readInitialExcludeLearnedWords(),
         },
         vocabRoundSummary: null,
         quizFeedback: null,
@@ -255,6 +269,9 @@ const trainerSlice = createSlice({
                     break
                 case "SET_VOCAB_SHOW_WRONG_TRANSLATION":
                     state.persisted.vocabShowWrongTranslation = a.value
+                    break
+                case "SET_EXCLUDE_LEARNED_WORDS":
+                    state.persisted.excludeLearnedWords = a.value
                     break
                 case "WIZARD_SET_STEP": {
                     const step = Math.min(3, Math.max(1, Math.floor(Number(a.step)) || 1))

@@ -1,4 +1,5 @@
 import { useEffect } from "react"
+import { shallowEqual, useSelector } from "react-redux"
 
 import { TRAIN_MODE } from "js/config.js"
 import { fmt } from "js/i18n/core.js"
@@ -9,6 +10,7 @@ import {
     removeCustomPackById,
     saveSelectedPacks,
 } from "js/storage.js"
+import { countPackWords } from "src/context/manifestPacks/packWordCounts.js"
 import { useManifestPacks } from "src/context/ManifestPacksContext.jsx"
 import { useTrainerDispatch } from "src/context/TrainerAppContext.jsx"
 import { CardList } from "src/components/ui/CardList.jsx"
@@ -24,12 +26,14 @@ function wordCountLabelFromCounts(counts) {
     })
 }
 
-function wordCountsForRow(row, trainMode) {
-    return row.wordCountsByMode?.[trainMode] ?? null
+function wordCountsForRow(row, trainMode, excludeLearnedWords, wordStats) {
+    if (!excludeLearnedWords) return row.wordCountsByMode?.[trainMode] ?? null
+    if (!Array.isArray(row.words)) return null
+    return countPackWords(row.words, trainMode, { excludeLearnedWords, wordStats })
 }
 
-function isPackSelectable(row, trainMode) {
-    return (wordCountsForRow(row, trainMode)?.suitable ?? 0) > 0
+function isPackSelectable(row, trainMode, excludeLearnedWords, wordStats) {
+    return (wordCountsForRow(row, trainMode, excludeLearnedWords, wordStats)?.suitable ?? 0) > 0
 }
 
 /**
@@ -38,16 +42,26 @@ function isPackSelectable(row, trainMode) {
 export function WizardPackList({ scrollWell = true }) {
     const { packRows, selectedIds, togglePack, reloadManifestPacks, openPackPreview } =
         useManifestPacks()
+    const { excludeLearnedWords, wordStats } = useSelector(
+        (s) => ({
+            excludeLearnedWords: s.trainer.persisted.excludeLearnedWords,
+            wordStats: s.trainer.engine.wordStats,
+        }),
+        shallowEqual
+    )
     const dispatch = useTrainerDispatch()
     const trainMode = loadTrainMode() || TRAIN_MODE.CASES
 
     useEffect(() => {
         for (const row of packRows) {
-            if (selectedIds.includes(row.pack.id) && !isPackSelectable(row, trainMode)) {
+            if (
+                selectedIds.includes(row.pack.id) &&
+                !isPackSelectable(row, trainMode, excludeLearnedWords, wordStats)
+            ) {
                 togglePack(row.pack.id, false)
             }
         }
-    }, [packRows, selectedIds, togglePack, trainMode])
+    }, [excludeLearnedWords, packRows, selectedIds, togglePack, trainMode, wordStats])
 
     async function onDeleteCustomPack(e, packId) {
         e.preventDefault()
@@ -75,14 +89,15 @@ export function WizardPackList({ scrollWell = true }) {
     return (
         <CardList id="pack-list" scrollWell={scrollWell}>
             {packRows.map((row) => {
-                const selectable = isPackSelectable(row, trainMode)
+                const counts = wordCountsForRow(row, trainMode, excludeLearnedWords, wordStats)
+                const selectable = (counts?.suitable ?? 0) > 0
                 return (
                     <CheckboxButton
                         key={row.pack.id}
                         id={row.safeInputId}
                         value={row.pack.id}
                         title={row.title}
-                        meta={wordCountLabelFromCounts(wordCountsForRow(row, trainMode))}
+                        meta={wordCountLabelFromCounts(counts)}
                         metaClassName="pack-word-count"
                         className={row.pack.custom ? "pack-card--custom-user" : undefined}
                         checked={selectable && selectedIds.includes(row.pack.id)}

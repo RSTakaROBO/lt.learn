@@ -304,6 +304,27 @@ export class TrainerStorage {
             /* ignore */
         }
     }
+
+    /** @returns {boolean|null} */
+    loadExcludeLearnedWords() {
+        try {
+            const raw = this._store.getItem(STORAGE_KEYS.excludeLearnedWords)
+            if (raw === null) return null
+            if (raw === "1") return true
+            if (raw === "0") return false
+            return null
+        } catch {
+            return null
+        }
+    }
+
+    saveExcludeLearnedWords(exclude) {
+        try {
+            this._store.setItem(STORAGE_KEYS.excludeLearnedWords, exclude ? "1" : "0")
+        } catch {
+            /* ignore */
+        }
+    }
 }
 
 export const trainerStorage = new TrainerStorage()
@@ -357,3 +378,5 @@ export const saveCasesShowTranslation = (show) => trainerStorage.saveCasesShowTr
 export const loadVocabShowWrongTranslation = () => trainerStorage.loadVocabShowWrongTranslation()
 export const saveVocabShowWrongTranslation = (show) =>
     trainerStorage.saveVocabShowWrongTranslation(show)
+export const loadExcludeLearnedWords = () => trainerStorage.loadExcludeLearnedWords()
+export const saveExcludeLearnedWords = (exclude) => trainerStorage.saveExcludeLearnedWords(exclude)

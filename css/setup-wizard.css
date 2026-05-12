@@ -23,6 +23,10 @@
     min-height: var(--touch-btn-min-h);
 }
 
+.pack-learned-filter {
+    margin-top: 0.75rem;
+}
+
 /**
  * Android/Chromium: программный клик по «обрезанному» input часто даёт только галерею.
  * Перекрываем видимую «кнопку» нативным input — тап попадает в выбор файла напрямую.

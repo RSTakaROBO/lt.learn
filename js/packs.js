@@ -1,6 +1,8 @@
 import { wordsFetchBase } from "./config.js"
 import { fmt } from "./i18n/core.js"
 import { STR } from "./i18n/strings-ru.js"
+import { filterLearnedWords } from "./learned-words.js"
+import { loadExcludeLearnedWords } from "./storage.js"
 import { getEngine, mutateEngine, trainerStore } from "./trainer-ui-state.js"
 import { normalizeWordEntries } from "./word-entry.js"
 
@@ -66,7 +68,9 @@ export async function loadWordsFromFiles(refs) {
         all.push(...normalizeWordEntries(words))
     }
 
+    const words = loadExcludeLearnedWords() ? filterLearnedWords(all, getEngine().wordStats) : all
+
     mutateEngine((e) => {
-        e.wordBank = all
+        e.wordBank = words
     })
 }

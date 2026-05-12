@@ -36,6 +36,8 @@ export const STR = {
         uploadJsonLabel: "Загрузить свой JSON…",
         uploadJsonAria: "Загрузить свой файл словаря JSON",
         wordCountMeta: "Слов: {total}. Подходящих: {suitable}",
+        excludeLearnedTitle: "Убрать изученные слова",
+        excludeLearnedMeta: "Скрывать слова, где верных ответов минимум на 5 больше, чем неверных",
         back: "Назад",
         next: "Далее",
         start: "Начать",

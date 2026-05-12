@@ -20,12 +20,12 @@ import {
     safePackInputId,
 } from "src/context/manifestPacks/manifestPacksLoader.js"
 import { wordsForPackPreview } from "src/context/manifestPacks/packPreviewRows.js"
-import { wordCountsForPack } from "src/context/manifestPacks/packWordCounts.js"
+import { wordCountsForPackWords, wordsForPack } from "src/context/manifestPacks/packWordCounts.js"
 
 const ManifestPacksContext = createContext(null)
 
 /**
- * @typedef {{ pack: object; title: string; wordCountsByMode: Record<string, {total: number; suitable: number}|null>; safeInputId: string; previewRows: { type: string; lemma: string; translation: string }[] }} PackRowUi
+ * @typedef {{ pack: object; title: string; words: unknown[]; wordCountsByMode: Record<string, {total: number; suitable: number}|null>; safeInputId: string; previewRows: { type: string; lemma: string; translation: string }[] }} PackRowUi
  */
 
 /**
@@ -64,17 +64,21 @@ export function ManifestPacksProvider({ children }) {
             mutateEngine((e) => {
                 e.manifestCache = manifestForCache
             })
-            const rows = packs.filter(isRenderablePackEntry).map((pack) => ({
-                pack,
-                title: typeof pack.title === "string" ? pack.title : "",
-                wordCountsByMode: {
-                    [TRAIN_MODE.CASES]: wordCountsForPack(pack, fileMap, TRAIN_MODE.CASES),
-                    [TRAIN_MODE.VOCAB]: wordCountsForPack(pack, fileMap, TRAIN_MODE.VOCAB),
-                    [TRAIN_MODE.VERBS]: wordCountsForPack(pack, fileMap, TRAIN_MODE.VERBS),
-                },
-                safeInputId: safePackInputId(pack.id),
-                previewRows: wordsForPackPreview(pack, fileMap),
-            }))
+            const rows = packs.filter(isRenderablePackEntry).map((pack) => {
+                const words = wordsForPack(pack, fileMap)
+                return {
+                    pack,
+                    title: typeof pack.title === "string" ? pack.title : "",
+                    words,
+                    wordCountsByMode: {
+                        [TRAIN_MODE.CASES]: wordCountsForPackWords(words, TRAIN_MODE.CASES),
+                        [TRAIN_MODE.VOCAB]: wordCountsForPackWords(words, TRAIN_MODE.VOCAB),
+                        [TRAIN_MODE.VERBS]: wordCountsForPackWords(words, TRAIN_MODE.VERBS),
+                    },
+                    safeInputId: safePackInputId(pack.id),
+                    previewRows: wordsForPackPreview(pack, fileMap),
+                }
+            })
             if (!rows.length) throw new Error(STR.errors.manifestNoValidPack)
             dispatch(manifestSetPackRows(rows))
             dispatch(manifestSetSelectedPackIds(loadSelectedPacks() || []))

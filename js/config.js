@@ -44,6 +44,7 @@ export const STORAGE_KEYS = {
     vocabDirections: "lt-trainer-vocab-directions-v1",
     casesShowTranslation: "lt-trainer-cases-show-translation-v1",
     vocabShowWrongTranslation: "lt-trainer-vocab-show-wrong-translation-v1",
+    excludeLearnedWords: "lt-trainer-exclude-learned-words-v1",
     customPacks: "lt-trainer-custom-packs-v1",
 }
 
@@ -86,6 +87,8 @@ export const LT_SHIFT_KEY_CYCLES = {
 }
 
 export const MIN_GAP_BEFORE_SAME_LEMMA = 5
+
+export const LEARNED_WORD_CORRECT_WRONG_DELTA = 5
 
 export const WEIGHT_MIN = 0.28
 export const WEIGHT_BASE = 1
