@@ -110,7 +110,7 @@ export function showQuiz(task) {
         return
     }
 
-    setVocabRoundLemmaDots(null)
+    setVocabRoundLemmaDots(getEngine().vocabRound ? task.word : null)
 }
 
 function exceptionNote(word) {
@@ -316,13 +316,33 @@ export function handleMorphCasesAnswerSubmit(user) {
         const ok = answersMatch(user, expected)
         mutateEngine((e) => {
             e.answered = true
+            if (ok) {
+                e.vocabCorrectStreak += 1
+                if (e.vocabCorrectStreak >= VOCAB_STREAK_MULT_FROM) e.vocabStreakPulseId += 1
+            } else {
+                if (e.vocabRound) {
+                    e.vocabRound.maxStreak = Math.max(e.vocabRound.maxStreak, e.vocabCorrectStreak)
+                }
+                e.vocabCorrectStreak = 0
+                e.vocabStreakPulseId = 0
+            }
         })
+        if (ok) {
+            saveVocabBestStreakIfHigher(getEngine().vocabCorrectStreak)
+        }
         showFeedback(ok, expected, getEngine().currentTask.word)
+        applyVocabRoundAnswer(getEngine().currentTask.word, ok)
         return
     }
 
+    if (getEngine().vocabRound && getEngine().vocabRound.pool.size === 0) {
+        resetVocabCorrectStreak()
+        openVocabRoundSummaryOverlay()
+        return
+    }
     const task = nextCasesTask(keys)
     if (!task) {
+        resetVocabCorrectStreak()
         setQuizFeedback({ kind: "info", message: STR.quiz.noWordsLeft })
         return
     }

@@ -70,6 +70,8 @@ export const STR = {
         answerLabel: "Ваш ответ",
         answerPlaceholder: "Введите слово…",
         ltCharsToolbarAria: "Вставить литовскую букву",
+        ltCharsToggleShow: "Показать литовские буквы",
+        ltCharsToggleHide: "Скрыть литовские буквы",
         vocabChoicesAria: "Выберите перевод",
         skip: "Пропустить",
         check: "Проверить",
@@ -87,6 +89,7 @@ export const STR = {
         correctIs: "Правильно:",
         exceptionStrong: "Исключение:",
         emDash: "—",
+        lithuanianKeyboardHideAria: "Скрыть клавиатуру",
     },
 
     help: {
@@ -173,6 +176,8 @@ export const STR = {
         vocabWrongTranslationTitle: "Показывать неправильное слово",
         vocabWrongTranslationMeta:
             "В режиме выбора карточек показывать перевод выбранного неверного варианта",
+        casesNativeKeyboardTitle: "Нативная клавиатура",
+        casesNativeKeyboardMeta: "Стандартная клавиатура телефона вместо встроенной в приложении",
         close: "Закрыть",
     },
 

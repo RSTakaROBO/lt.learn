@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react"
+import { useEffect } from "react"
 
 import { VOCAB_DIRECTION } from "js/config.js"
 import { STR } from "js/i18n/strings-ru.js"
@@ -93,10 +93,15 @@ export function VocabQuiz({
     feedback,
     finishLabel,
     isActive,
+    lithuanianOverlayKeyboard = false,
+    onRevealLithuanianKeyboard,
     onFinish,
     pulseId,
     roundDots,
     roundProgress,
+    quizTypingAnswer,
+    quizTypingInputRef,
+    setQuizTypingAnswer,
     skipDisabled,
     skipLabel,
     streak,
@@ -106,20 +111,16 @@ export function VocabQuiz({
     showWrongTranslation,
     task,
 }) {
-    const inputRef = useRef(null)
-    const [answerValue, setAnswerValue] = useState("")
     const isHardcore = !!task?.vocabHardcore
     const prompt = vocabPromptForTask(task)
     const showChoices = isActive && !isHardcore
     const feedbackKind = feedback?.kind === "ok" || feedback?.kind === "bad" ? feedback.kind : ""
 
     useEffect(() => {
-        if (!isActive) return
-        setAnswerValue("")
-        if (isHardcore) {
-            requestAnimationFrame(() => inputRef.current?.focus())
-        }
-    }, [isActive, isHardcore, task])
+        if (!isActive || !isHardcore) return
+        if (lithuanianOverlayKeyboard) return
+        requestAnimationFrame(() => quizTypingInputRef?.current?.focus())
+    }, [isActive, isHardcore, lithuanianOverlayKeyboard, quizTypingInputRef, task])
 
     return (
         <div id="quiz-vocab-ui" className={isActive ? "" : "hidden"}>
@@ -157,18 +158,25 @@ export function VocabQuiz({
                 autoComplete="off"
                 onSubmit={(e) => {
                     e.preventDefault()
-                    handleVocabHardcoreFormSubmit(answerValue)
+                    handleVocabHardcoreFormSubmit(quizTypingAnswer)
                 }}
             >
                 <LithuanianInput
-                    ref={inputRef}
+                    ref={isActive && isHardcore ? quizTypingInputRef : undefined}
                     inputId="vocab-answer-input"
                     toolbarId="vocab-lt-chars"
-                    value={answerValue}
-                    onValueChange={setAnswerValue}
+                    value={quizTypingAnswer}
+                    onValueChange={setQuizTypingAnswer}
+                    useCustomKeyboard={lithuanianOverlayKeyboard}
+                    onRevealCustomKeyboard={
+                        lithuanianOverlayKeyboard ? onRevealLithuanianKeyboard : undefined
+                    }
                 />
                 {isHardcore && (
-                    <div className="actions quiz-answer-actions quiz-footer-actions quiz-footer-actions--inline">
+                    <div
+                        className="actions quiz-answer-actions quiz-footer-actions quiz-footer-actions--inline"
+                        id="quiz-footer-actions"
+                    >
                         <QuizActionButtons
                             answered={answered}
                             isHardcore={isHardcore}

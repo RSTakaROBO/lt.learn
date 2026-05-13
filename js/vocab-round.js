@@ -7,6 +7,7 @@ import {
     WEIGHT_PER_WRONG,
 } from "./config.js"
 import { getEngine, mutateEngine, postTrainerUiAction } from "./trainer-ui-state.js"
+import { isCasesTrainingWord } from "../src/screens/quiz/cases/casesWords.js"
 import { isVocabTrainingWord } from "../src/screens/quiz/vocab/vocabWords.js"
 import { isVerbsTrainingWord } from "../src/screens/quiz/verbs/verbsWords.js"
 
@@ -39,9 +40,13 @@ function ensureRoundRow(vr, lemma) {
  */
 export function initVocabRound(mode = TRAIN_MODE.VOCAB) {
     const usable =
-        mode === TRAIN_MODE.VERBS
-            ? getEngine().wordBank.filter(isVerbsTrainingWord)
-            : getEngine().wordBank.filter(isVocabTrainingWord)
+        mode === TRAIN_MODE.CASES
+            ? getEngine().wordBank.filter((word) =>
+                  isCasesTrainingWord(word, getEngine().selectedCaseKeys)
+              )
+            : mode === TRAIN_MODE.VERBS
+              ? getEngine().wordBank.filter(isVerbsTrainingWord)
+              : getEngine().wordBank.filter(isVocabTrainingWord)
     let success = true
     mutateEngine((e) => {
         if (!usable.length) {

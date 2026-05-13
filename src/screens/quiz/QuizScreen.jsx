@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { shallowEqual, useSelector } from "react-redux"
 
 import { TRAIN_MODE } from "js/config.js"
@@ -7,8 +7,13 @@ import { AppFlowScreen } from "src/components/layout/AppFlowScreen.jsx"
 import { handleQuizSkipButtonClick } from "js/quiz.js"
 import { openVocabRoundSummaryOverlay } from "js/vocab-round.js"
 import { ConfirmDialogOverlay } from "src/components/ui/ConfirmDialogOverlay.jsx"
-import { QuizActionButtons, QuizFeedback } from "src/screens/quiz/shared/index.js"
+import {
+    LithuanianKeyboard,
+    QuizActionButtons,
+    QuizFeedback,
+} from "src/screens/quiz/shared/index.js"
 import { CasesQuiz } from "src/screens/quiz/cases/CasesQuiz.jsx"
+import { usePreferCoarsePointer } from "src/hooks/usePreferCoarsePointer.js"
 import { VocabQuiz } from "src/screens/quiz/vocab/VocabQuiz.jsx"
 import { VerbsQuiz } from "src/screens/quiz/verbs/VerbsQuiz.jsx"
 
@@ -18,6 +23,11 @@ import { VerbsQuiz } from "src/screens/quiz/verbs/VerbsQuiz.jsx"
  */
 export function QuizScreen({ heightMode = "fill", hidden = false } = {}) {
     const [finishConfirmOpen, setFinishConfirmOpen] = useState(false)
+    const coarseTouchPreferred = usePreferCoarsePointer()
+    const [quizTypingAnswer, setQuizTypingAnswer] = useState("")
+    const [quizLtKeyboardOpen, setQuizLtKeyboardOpen] = useState(false)
+    const [quizLtKeyboardMounted, setQuizLtKeyboardMounted] = useState(false)
+    const quizTypingInputRef = useRef(null)
     const {
         task,
         answered,
@@ -28,6 +38,7 @@ export function QuizScreen({ heightMode = "fill", hidden = false } = {}) {
         vocabStreak,
         vocabStreakPulseId,
         vocabShowWrongTranslation,
+        casesUseNativeKeyboard,
     } = useSelector(
         (s) => ({
             task: s.trainer.engine.currentTask,
@@ -38,6 +49,7 @@ export function QuizScreen({ heightMode = "fill", hidden = false } = {}) {
             vocabStreak: s.trainer.engine.vocabCorrectStreak,
             vocabStreakPulseId: s.trainer.engine.vocabStreakPulseId,
             vocabShowWrongTranslation: s.trainer.persisted.vocabShowWrongTranslation,
+            casesUseNativeKeyboard: s.trainer.persisted.casesUseNativeKeyboard,
             roundProgress: s.trainer.engine.vocabRound
                 ? {
                       done:
@@ -66,6 +78,7 @@ export function QuizScreen({ heightMode = "fill", hidden = false } = {}) {
     const isVerbs = task?.mode === TRAIN_MODE.VERBS
     const isCases = !isVocab && !isVerbs
     const isHardcore = !!task?.vocabHardcore
+    const usesTypedLtQuiz = isCases || isVerbs || (isVocab && isHardcore)
     const showChoices = isVocab && !isHardcore
     const showFinish = !!roundProgress
     const showSkip = isVocab && !isHardcore
@@ -86,6 +99,26 @@ export function QuizScreen({ heightMode = "fill", hidden = false } = {}) {
               : "quiz--vocab"
           : "quiz--cases"
 
+    const lithuanianOverlayEligible = coarseTouchPreferred && !casesUseNativeKeyboard
+    const showLithuanianOverlayKeyboard = lithuanianOverlayEligible && usesTypedLtQuiz
+
+    useEffect(() => {
+        if (!casesUseNativeKeyboard) return
+        setQuizLtKeyboardOpen(false)
+    }, [casesUseNativeKeyboard])
+
+    useEffect(() => {
+        if (!usesTypedLtQuiz) setQuizLtKeyboardOpen(false)
+    }, [usesTypedLtQuiz])
+
+    useEffect(() => {
+        if (!showLithuanianOverlayKeyboard) setQuizLtKeyboardMounted(false)
+    }, [showLithuanianOverlayKeyboard])
+
+    useEffect(() => {
+        setQuizTypingAnswer("")
+    }, [task])
+
     return (
         <>
             <AppFlowScreen
@@ -95,14 +128,29 @@ export function QuizScreen({ heightMode = "fill", hidden = false } = {}) {
             >
                 <section
                     id="quiz"
-                    className={["widget panel app-screen__panel", quizModeClass]
+                    className={[
+                        "widget panel app-screen__panel",
+                        quizModeClass,
+                        showLithuanianOverlayKeyboard &&
+                            (quizLtKeyboardOpen || quizLtKeyboardMounted) &&
+                            "quiz-lt-keyboard-clearance",
+                    ]
                         .filter(Boolean)
                         .join(" ")}
                 >
                     <div className="app-screen__body quiz-screen-body">
                         <CasesQuiz
+                            answerValue={quizTypingAnswer}
                             feedback={isCases ? feedback : null}
+                            inputRef={quizTypingInputRef}
                             isActive={isCases}
+                            lithuanianOverlayKeyboard={showLithuanianOverlayKeyboard && isCases}
+                            onAnswerValueChange={setQuizTypingAnswer}
+                            onRevealLithuanianKeyboard={() => setQuizLtKeyboardOpen(true)}
+                            pulseId={vocabStreakPulseId}
+                            roundDots={roundDots}
+                            roundProgress={roundProgress}
+                            streak={vocabStreak}
                             task={task}
                         />
 
@@ -123,13 +171,23 @@ export function QuizScreen({ heightMode = "fill", hidden = false } = {}) {
                             submitLabel={submitLabel}
                             showFinish={showFinish}
                             showWrongTranslation={vocabShowWrongTranslation}
+                            lithuanianOverlayKeyboard={showLithuanianOverlayKeyboard && isHardcore}
+                            onRevealLithuanianKeyboard={() => setQuizLtKeyboardOpen(true)}
+                            quizTypingAnswer={quizTypingAnswer}
+                            quizTypingInputRef={quizTypingInputRef}
+                            setQuizTypingAnswer={setQuizTypingAnswer}
                             task={task}
                         />
 
                         <VerbsQuiz
                             answered={answered}
+                            answerValue={quizTypingAnswer}
                             feedback={isVerbs ? feedback : null}
+                            inputRef={quizTypingInputRef}
                             isActive={isVerbs}
+                            lithuanianOverlayKeyboard={showLithuanianOverlayKeyboard && isVerbs}
+                            onAnswerValueChange={setQuizTypingAnswer}
+                            onRevealLithuanianKeyboard={() => setQuizLtKeyboardOpen(true)}
                             pulseId={vocabStreakPulseId}
                             roundDots={roundDots}
                             roundProgress={roundProgress}
@@ -141,32 +199,58 @@ export function QuizScreen({ heightMode = "fill", hidden = false } = {}) {
                     </div>
 
                     {!isHardcore && (
-                        <div
-                            className={[
-                                "app-screen__footer actions quiz-answer-actions quiz-footer-actions",
-                                footerSingle && "quiz-footer--single",
-                            ]
-                                .filter(Boolean)
-                                .join(" ")}
-                            id="quiz-footer-actions"
-                        >
-                            <QuizActionButtons
-                                answered={answered}
-                                finishLabel={STR.confirm.finish}
-                                isHardcore={isHardcore}
-                                isVerbs={isVerbs}
-                                isVocab={isVocab}
-                                onFinish={() => setFinishConfirmOpen(true)}
-                                onSkip={handleQuizSkipButtonClick}
-                                showFinish={showFinish}
-                                showSkip={showSkip}
-                                skipDisabled={skipDisabled}
-                                skipLabel={skipLabel}
-                                submitHidden={submitHidden}
-                                submitLabel={submitLabel}
-                            />
+                        <div className="app-screen__footer quiz-footer-stack">
+                            <div
+                                className={[
+                                    "actions quiz-answer-actions quiz-footer-actions",
+                                    footerSingle && "quiz-footer--single",
+                                ]
+                                    .filter(Boolean)
+                                    .join(" ")}
+                                id="quiz-footer-actions"
+                            >
+                                <QuizActionButtons
+                                    answered={answered}
+                                    finishLabel={STR.confirm.finish}
+                                    isHardcore={isHardcore}
+                                    isVerbs={isVerbs}
+                                    isVocab={isVocab}
+                                    onFinish={() => setFinishConfirmOpen(true)}
+                                    onSkip={handleQuizSkipButtonClick}
+                                    showFinish={showFinish}
+                                    showSkip={showSkip}
+                                    skipDisabled={skipDisabled}
+                                    skipLabel={skipLabel}
+                                    submitHidden={submitHidden}
+                                    submitLabel={submitLabel}
+                                />
+                            </div>
+                            {(isCases || isVerbs) && showLithuanianOverlayKeyboard ? (
+                                <LithuanianKeyboard
+                                    inputRef={quizTypingInputRef}
+                                    onPresenceChange={setQuizLtKeyboardMounted}
+                                    onRequestHide={() => setQuizLtKeyboardOpen(false)}
+                                    onValueChange={setQuizTypingAnswer}
+                                    value={quizTypingAnswer}
+                                    visible={quizLtKeyboardOpen}
+                                />
+                            ) : null}
                         </div>
                     )}
+                    {isHardcore && isVocab ? (
+                        showLithuanianOverlayKeyboard ? (
+                            <div className="app-screen__footer quiz-footer-stack">
+                                <LithuanianKeyboard
+                                    inputRef={quizTypingInputRef}
+                                    onPresenceChange={setQuizLtKeyboardMounted}
+                                    onRequestHide={() => setQuizLtKeyboardOpen(false)}
+                                    onValueChange={setQuizTypingAnswer}
+                                    value={quizTypingAnswer}
+                                    visible={quizLtKeyboardOpen}
+                                />
+                            </div>
+                        ) : null
+                    ) : null}
                 </section>
             </AppFlowScreen>
             <ConfirmDialogOverlay

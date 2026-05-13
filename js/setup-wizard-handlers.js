@@ -182,13 +182,17 @@ export function handleStartCasesTrainingClick() {
         return
     }
     saveSelectedCases(keys)
-    clearVocabRound()
+    if (!initVocabRound(TRAIN_MODE.CASES)) {
+        setWizardStatus("case", STR.events.noMatchingWords)
+        return
+    }
     mutateEngine((e) => {
         e.shownLemmaHistory = []
     })
     const task = nextCasesTask(keys)
     if (!task) {
         setWizardStatus("case", STR.events.noMatchingWords)
+        clearVocabRound()
         return
     }
     clearWizardStatus("case")

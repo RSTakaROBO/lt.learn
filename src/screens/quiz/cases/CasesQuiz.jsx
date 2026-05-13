@@ -1,11 +1,17 @@
-import { useEffect, useRef, useState } from "react"
+import { useEffect } from "react"
 import { useSelector } from "react-redux"
 
 import { TRAIN_MODE } from "js/config.js"
 import { caseRu } from "js/i18n/core.js"
 import { STR } from "js/i18n/strings-ru.js"
 import { handleMorphCasesAnswerSubmit } from "js/quiz.js"
-import { LithuanianInput, QuizFeedback } from "src/screens/quiz/shared/index.js"
+import {
+    LithuanianInput,
+    QuizFeedback,
+    VocabRoundDots,
+    VocabRoundProgress,
+    VocabStreakMultiplier,
+} from "src/screens/quiz/shared/index.js"
 import { casesLemma, casesRuPrimary } from "src/screens/quiz/cases/casesWords.js"
 
 function casesPromptForTask(task, casesShowTranslation) {
@@ -21,18 +27,30 @@ function casesPromptForTask(task, casesShowTranslation) {
     }
 }
 
-export function CasesQuiz({ feedback, isActive, task }) {
-    const inputRef = useRef(null)
-    const [answerValue, setAnswerValue] = useState("")
+export function CasesQuiz({
+    answerValue,
+    feedback,
+    inputRef,
+    isActive,
+    lithuanianOverlayKeyboard = false,
+    onAnswerValueChange,
+    onRevealLithuanianKeyboard,
+    pulseId,
+    roundDots,
+    roundProgress,
+    streak,
+    task,
+}) {
     const casesShowTranslation = useSelector((s) => s.trainer.persisted.casesShowTranslation)
     const casesPrompt = casesPromptForTask(task, casesShowTranslation)
     const feedbackKind = feedback?.kind === "ok" || feedback?.kind === "bad" ? feedback.kind : ""
 
     useEffect(() => {
         if (!isActive) return
-        setAnswerValue("")
+        /* На coarse + оверлей не автофокус — клавиатура по тапу в поле. Сброс текста — в QuizScreen. */
+        if (lithuanianOverlayKeyboard) return
         requestAnimationFrame(() => inputRef.current?.focus())
-    }, [isActive, task])
+    }, [lithuanianOverlayKeyboard, inputRef, isActive, task])
 
     return (
         <div id="quiz-cases-ui" className={isActive ? "" : "hidden"}>
@@ -55,8 +73,11 @@ export function CasesQuiz({ feedback, isActive, task }) {
                         id="cases-card-feedback"
                         reserveSpace
                     />
+                    <VocabStreakMultiplier streak={streak} pulseId={pulseId} />
+                    <VocabRoundDots dots={roundDots} />
                 </div>
             </div>
+            <VocabRoundProgress progress={roundProgress} />
             <form
                 id="answer-form"
                 autoComplete="off"
@@ -66,11 +87,15 @@ export function CasesQuiz({ feedback, isActive, task }) {
                 }}
             >
                 <LithuanianInput
-                    ref={inputRef}
+                    ref={isActive ? inputRef : undefined}
                     inputId="answer-input"
                     toolbarId="lt-chars"
                     value={answerValue}
-                    onValueChange={setAnswerValue}
+                    onValueChange={onAnswerValueChange}
+                    useCustomKeyboard={lithuanianOverlayKeyboard}
+                    onRevealCustomKeyboard={
+                        lithuanianOverlayKeyboard ? onRevealLithuanianKeyboard : undefined
+                    }
                 />
             </form>
         </div>

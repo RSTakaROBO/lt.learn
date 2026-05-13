@@ -2,7 +2,11 @@ import { useRef } from "react"
 
 import { THEME_IDS } from "js/config.js"
 import { STR } from "js/i18n/strings-ru.js"
-import { saveCasesShowTranslation, saveVocabShowWrongTranslation } from "js/storage.js"
+import {
+    saveCasesShowTranslation,
+    saveCasesUseNativeKeyboard,
+    saveVocabShowWrongTranslation,
+} from "js/storage.js"
 import { AppFlowScreen } from "src/components/layout/AppFlowScreen.jsx"
 import { CardList } from "src/components/ui/CardList.jsx"
 import { CheckboxButton } from "src/components/ui/CheckboxButton.jsx"
@@ -17,7 +21,8 @@ import { useAutoFocusOnOpen } from "src/hooks/useAutoFocusOnOpen.js"
 export function SettingsScreen({ heightMode = "fill" } = {}) {
     const [state, dispatch] = useTrainerApp()
     const open = state.overlay.settings
-    const { themeId, casesShowTranslation, vocabShowWrongTranslation } = state.persisted
+    const { themeId, casesShowTranslation, casesUseNativeKeyboard, vocabShowWrongTranslation } =
+        state.persisted
     const closeButtonRef = useRef(null)
 
     useAutoFocusOnOpen(closeButtonRef, open)
@@ -74,6 +79,17 @@ export function SettingsScreen({ heightMode = "fill" } = {}) {
                                     const v = e.target.checked
                                     dispatch({ type: "SET_CASES_SHOW_TRANSLATION", value: v })
                                     saveCasesShowTranslation(v)
+                                }}
+                            />
+                            <CheckboxButton
+                                id="settings-cases-use-native-keyboard"
+                                title={STR.settings.casesNativeKeyboardTitle}
+                                meta={STR.settings.casesNativeKeyboardMeta}
+                                checked={casesUseNativeKeyboard}
+                                onChange={(e) => {
+                                    const v = e.target.checked
+                                    dispatch({ type: "SET_CASES_USE_NATIVE_KEYBOARD", value: v })
+                                    saveCasesUseNativeKeyboard(v)
                                 }}
                             />
                             <CheckboxButton

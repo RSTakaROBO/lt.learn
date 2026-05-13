@@ -25,6 +25,23 @@
     flex-shrink: 0;
 }
 
+.lithuanian-input {
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+}
+
+.lithuanian-input-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 0.45rem;
+    align-items: stretch;
+}
+
+.lithuanian-input-row--single {
+    grid-template-columns: minmax(0, 1fr);
+}
+
 /* Множитель серии ×N: правый нижний угол карточки слова (с 5 подряд верных) */
 .vocab-ru-card {
     position: relative;
@@ -204,8 +221,7 @@
 }
 
 #quiz-vocab-ui .vocab-card-feedback,
-#quiz-cases-ui .vocab-card-feedback,
-#quiz-verbs-ui .vocab-card-feedback {
+#quiz-cases-ui .vocab-card-feedback {
     margin-top: 0;
     padding: 0;
     border: 0;
@@ -215,23 +231,12 @@
 }
 
 #quiz-vocab-ui .vocab-card-feedback .correct-form,
-#quiz-cases-ui .vocab-card-feedback .correct-form,
-#quiz-verbs-ui .vocab-card-feedback .correct-form {
+#quiz-cases-ui .vocab-card-feedback .correct-form {
     margin-top: 0.25rem;
 }
 
-#quiz-verbs-ui .vocab-card-feedback.feedback--icons-only,
-#quiz-verbs-ui .vocab-card-feedback.feedback--placeholder-icons-only {
-    min-height: calc(1lh + 0.15rem);
-}
-
-#quiz-verbs-ui .vocab-card-feedback.feedback--placeholder-icons-only > p {
-    visibility: hidden;
-}
-
 #quiz-vocab-ui .vocab-card-feedback.feedback--placeholder,
-#quiz-cases-ui .vocab-card-feedback.feedback--placeholder,
-#quiz-verbs-ui .vocab-card-feedback.feedback--placeholder {
+#quiz-cases-ui .vocab-card-feedback.feedback--placeholder {
     visibility: hidden;
 }
 
@@ -342,6 +347,21 @@
     gap: var(--panel-section-gap);
 }
 
+/*
+ * Падежи: блок «Карточка → прогресс → поле» не должен занимать всю высоту колонки, иначе между
+ * полем и рядом кнопок (футер) остаётся пустота от flex-grow у .app-screen__body +
+ * margin-top: auto у .app-screen__footer.
+ */
+#quiz.panel.quiz--cases .quiz-screen-body {
+    flex: 0 1 auto;
+    min-height: 0;
+}
+
+#quiz.panel.quiz--cases > .app-screen__footer.quiz-footer-stack {
+    margin-top: 0;
+    padding-top: 0.42rem;
+}
+
 /* Слово в падежах — та же рамка и фон, что у карточки в режиме «слова» */
 #quiz-cases-ui .prompt > .vocab-ru-card {
     flex: none;
@@ -404,6 +424,36 @@
         background 0.15s ease;
 }
 
+.lt-chars-toggle {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 2.9rem;
+    min-width: 2.9rem;
+    margin: 0;
+    padding: 0;
+    border-radius: var(--radius-control);
+    border: 1px solid color-mix(in srgb, var(--border) 82%, transparent);
+    background: color-mix(in srgb, var(--surface-elevated) 82%, var(--surface));
+    color: var(--muted);
+    cursor: pointer;
+    font: inherit;
+    font-size: 1.08rem;
+    line-height: 1;
+    display: grid;
+    place-items: center;
+}
+
+.lt-chars-toggle--open {
+    color: var(--text);
+    border-color: color-mix(in srgb, var(--accent) 48%, var(--border));
+    background: color-mix(in srgb, var(--accent) 14%, var(--surface-elevated));
+}
+
+.lt-chars-toggle:hover {
+    color: var(--text);
+    border-color: color-mix(in srgb, var(--accent) 58%, var(--border));
+}
+
 #answer-input:focus,
 #vocab-answer-input:focus,
 #verb-answer-input:focus {
@@ -462,18 +512,395 @@
     transform: scale(0.97);
 }
 
+.lt-keyboard {
+    display: none;
+    flex-direction: column;
+    gap: 0.32rem;
+    padding: 0;
+    box-sizing: border-box;
+    /* Чтобы ключи второго ряда (во внутреннем flex) не брали другой процент-баз для --lt-kb-cell */
+    container-type: inline-size;
+    container-name: lt-keyboard-inline;
+    --lt-kb-gap: 0.28rem;
+    /* по умолчанию %; см. ниже про cqi — иначе вложенная полоса 9 клавиш берёт свой % и строка короче */
+    --lt-kb-cell: calc((100% - 9 * var(--lt-kb-gap)) / 10);
+}
+
+@supports (width: 1cqi) {
+    .lt-keyboard {
+        --lt-kb-cell: calc((100cqi - 9 * var(--lt-kb-gap)) / 10);
+    }
+}
+
+.lt-keyboard-row {
+    display: flex;
+    width: 100%;
+    min-width: 0;
+    gap: var(--lt-kb-gap);
+}
+
+.lt-keyboard-row--letters {
+    justify-content: flex-start;
+}
+
+.lt-keyboard-row--letters .lt-keyboard-key {
+    box-sizing: border-box;
+    width: var(--lt-kb-cell);
+    flex: 0 0 var(--lt-kb-cell);
+    min-width: 0;
+    font-size: 1.14rem;
+    font-weight: 420;
+    letter-spacing: -0.02em;
+}
+
+.lt-keyboard-row--letters .lt-keyboard-key.lt-keyboard-key--shift,
+.lt-keyboard-row--letters .lt-keyboard-key.lt-keyboard-key--backspace {
+    font-size: 1.05rem;
+    font-weight: 520;
+    letter-spacing: normal;
+}
+
+/* Третий ряд (shift · zcvbnm · ⌫): те же размеры/насыщенность букв, но без решётки 10 столбцов — shift/⌫ по-прежнему flex-grow */
+.lt-keyboard-row--letters-tail
+    .lt-keyboard-key:not(.lt-keyboard-key--shift):not(.lt-keyboard-key--backspace) {
+    font-size: 1.14rem;
+    font-weight: 420;
+    letter-spacing: -0.02em;
+}
+
+/* Верхний ряд: литовские буквы из панели ChartsToolbar (равномерно на всю ширину) */
+.lt-keyboard-diacritic-block {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+    gap: 0.16rem;
+}
+
+.lt-keyboard-row--diacritics {
+    gap: var(--lt-kb-gap);
+}
+
+.lt-keyboard-diacritic-fade-rule {
+    align-self: center;
+    width: min(58%, 15.5rem);
+    height: max(1px, 0.0625rem);
+    margin: 0;
+    border-radius: 999px;
+    flex-shrink: 0;
+    pointer-events: none;
+    background: linear-gradient(
+        90deg,
+        transparent 0%,
+        color-mix(in srgb, var(--border) 18%, transparent) 12%,
+        color-mix(in srgb, var(--border) 78%, var(--muted) 12%) 50%,
+        color-mix(in srgb, var(--border) 18%, transparent) 88%,
+        transparent 100%
+    );
+    box-shadow:
+        0 0 10px color-mix(in srgb, var(--text) 6%, transparent),
+        0 0 1px color-mix(in srgb, var(--border) 35%, transparent);
+}
+
+.lt-keyboard-row--diacritics .lt-keyboard-key--diacritic {
+    box-sizing: border-box;
+    flex: 1 1 0;
+    width: auto;
+    min-width: 0;
+    font-size: 1.12rem;
+    font-weight: 420;
+    letter-spacing: -0.02em;
+}
+
+/* Вторая буквенная строка: полклеточные заглушки краями, фиксированная средняя «полоса» из 9 клавиш */
+.lt-keyboard-row--stagger {
+    gap: 0;
+    align-items: stretch;
+}
+
+.lt-keyboard-half-stub {
+    flex: 0 0 calc((var(--lt-kb-cell) + var(--lt-kb-gap)) / 2);
+    align-self: stretch;
+    pointer-events: none;
+    flex-shrink: 0;
+}
+
+.lt-keyboard-row-letter-run {
+    display: flex;
+    flex-shrink: 0;
+    flex-grow: 0;
+    width: calc(9 * var(--lt-kb-cell) + 8 * var(--lt-kb-gap));
+    gap: var(--lt-kb-gap);
+    box-sizing: border-box;
+}
+
+.lt-keyboard-row--bottom .lt-keyboard-key {
+    min-height: 2.5rem;
+    padding-block: 0.26rem;
+    padding-inline: 0.16rem;
+}
+
+.lt-keyboard-key {
+    -webkit-appearance: none;
+    appearance: none;
+    flex: 1 1 0;
+    min-width: 0;
+    min-height: 2.85rem;
+    margin: 0;
+    padding: 0.35rem 0.18rem;
+    border-radius: var(--radius-char);
+    border: 1px solid transparent;
+    background: transparent;
+    color: var(--text);
+    cursor: pointer;
+    font: inherit;
+    font-size: 0.98rem;
+    font-weight: 520;
+    line-height: 1.1;
+    box-shadow: none;
+    transition:
+        transform 0.08s ease,
+        border-color 0.08s ease,
+        color 0.08s ease,
+        background 0.08s ease,
+        box-shadow 0.08s ease;
+}
+
+.lt-keyboard-key--space {
+    flex-grow: 4;
+    font-size: 0.9rem;
+    font-weight: 480;
+    color: var(--muted);
+}
+
+.lt-keyboard-key--shift,
+.lt-keyboard-key--backspace,
+.lt-keyboard-key--enter {
+    flex-grow: 1.4;
+    font-size: 1.05rem;
+    font-weight: 520;
+}
+
+.lt-keyboard-key--shift {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.lt-keyboard-key--enter {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1.7;
+    color: var(--accent);
+    font-weight: 560;
+}
+
+/* Размеры иконок в CSS — без атрибутов width/height у SVG (стабильно в WebView) */
+.lt-keyboard-chevron,
+.lt-keyboard-check,
+.lt-keyboard-shift {
+    display: block;
+    flex-shrink: 0;
+}
+
+.lt-keyboard-chevron {
+    width: 1.375rem;
+    height: 1.375rem;
+}
+
+.lt-keyboard-check {
+    width: 1.125rem;
+    height: 1.125rem;
+}
+
+.lt-keyboard-shift {
+    width: 1.125rem;
+    height: 1.125rem;
+}
+
+/* Нижний ряд клавиш: класс на кнопке (портал в body — надёжнее, чем селектор по родительской строке) */
+.lt-keyboard-key.lt-keyboard-key--bottom-row.lt-keyboard-key--space {
+    font-size: 1.14rem;
+    font-weight: 420;
+    letter-spacing: -0.02em;
+}
+
+.lt-keyboard-key.lt-keyboard-key--bottom-row.lt-keyboard-key--enter {
+    font-weight: 430;
+}
+
+.lt-keyboard-key--bottom-row .lt-keyboard-chevron {
+    width: 1.26rem;
+    height: 1.26rem;
+}
+
+.lt-keyboard-key--bottom-row .lt-keyboard-check {
+    width: 1.22rem;
+    height: 1.22rem;
+}
+
+.lt-keyboard-key--active {
+    color: var(--accent);
+}
+
+.lt-keyboard-key:active {
+    transform: translateY(1px) scale(0.97);
+    border-color: color-mix(in srgb, var(--accent) 62%, var(--border));
+    background: color-mix(in srgb, var(--accent) 24%, var(--surface));
+    color: var(--text);
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 28%, transparent);
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .lt-keyboard-key:hover {
+        color: var(--accent);
+    }
+
+    .lt-keyboard-key--enter:hover {
+        color: color-mix(in srgb, var(--accent) 88%, var(--text));
+    }
+}
+
 @media (max-width: 600px) {
     .lt-chars {
-        grid-template-columns: repeat(5, minmax(0, 1fr));
-        column-gap: 0.45rem;
-        row-gap: 0.5rem;
-        padding: 0.55rem 0.45rem;
+        grid-template-columns: repeat(9, minmax(0, 1fr));
+        column-gap: 0.22rem;
+        row-gap: 0;
+        padding: 0.35rem;
     }
 
     .lt-char {
-        padding: 0.48rem 0.2rem;
-        min-height: var(--touch-btn-min-h);
-        font-size: 1rem;
+        padding: 0.34rem 0.05rem;
+        min-height: 2.7rem;
+        font-size: 0.92rem;
+    }
+}
+
+@media (pointer: coarse) {
+    #quiz.panel.quiz--cases > .quiz-footer-stack,
+    #quiz.panel.quiz--verbs > .quiz-footer-stack,
+    #quiz.panel.quiz--vocab.quiz--vocab-hardcore > .quiz-footer-stack {
+        transition: padding-bottom 0.32s cubic-bezier(0.32, 0.72, 0, 1);
+    }
+
+    #quiz.panel.quiz-lt-keyboard-clearance > .quiz-footer-stack {
+        padding-bottom: calc(var(--lt-keyboard-block-clearance) + env(safe-area-inset-bottom, 0px));
+    }
+
+    /* Плашка приложения (.quiz-bottom-bar) — z-index: 40; фиксируем клавиатуру поверх неё */
+    .lt-keyboard {
+        display: flex;
+        position: fixed;
+        inset-inline: 0;
+        bottom: 0;
+        width: 100%;
+        max-width: none;
+        margin: 0;
+        z-index: 50;
+        box-sizing: border-box;
+        padding: 6px calc(env(safe-area-inset-right, 0px) + var(--lt-keyboard-edge-pad))
+            calc(env(safe-area-inset-bottom, 0px) + var(--lt-keyboard-edge-pad))
+            calc(env(safe-area-inset-left, 0px) + var(--lt-keyboard-edge-pad));
+        background: color-mix(in srgb, var(--surface) 92%, var(--bg));
+        border-top: 1px solid color-mix(in srgb, var(--border) 82%, transparent);
+        box-shadow:
+            0 -1px 0 color-mix(in srgb, var(--text) 5%, transparent) inset,
+            0 -10px 26px color-mix(in srgb, var(--bg) 58%, transparent);
+        transform: translate3d(0, 112%, 0);
+        opacity: 0.98;
+        transition:
+            transform 0.32s cubic-bezier(0.32, 0.72, 0, 1),
+            opacity 0.26s ease;
+        will-change: transform;
+        backface-visibility: hidden;
+    }
+
+    .lt-keyboard.lt-keyboard--shown {
+        transform: translate3d(0, 0, 0);
+        opacity: 1;
+        will-change: auto;
+    }
+
+    .lt-keyboard:not(.lt-keyboard--shown) {
+        pointer-events: none;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .lt-keyboard {
+            transition: none;
+        }
+    }
+
+    .lt-keyboard-key {
+        min-height: 3.05rem;
+    }
+
+    .lt-keyboard-row--letters
+        .lt-keyboard-key:not(.lt-keyboard-key--shift):not(.lt-keyboard-key--backspace) {
+        font-size: 1.2rem;
+        font-weight: 400;
+    }
+
+    .lt-keyboard-row--letters-tail
+        .lt-keyboard-key:not(.lt-keyboard-key--shift):not(.lt-keyboard-key--backspace) {
+        font-size: 1.2rem;
+        font-weight: 400;
+    }
+
+    .lt-keyboard-row--diacritics .lt-keyboard-key--diacritic {
+        font-size: 1.2rem;
+        font-weight: 400;
+    }
+
+    .lt-keyboard-diacritic-fade-rule {
+        width: min(54%, 14rem);
+        box-shadow:
+            0 0 14px color-mix(in srgb, var(--text) 7%, transparent),
+            0 0 1px color-mix(in srgb, var(--border) 40%, transparent);
+    }
+
+    .lt-keyboard-key.lt-keyboard-key--bottom-row.lt-keyboard-key--space {
+        font-size: 1.2rem;
+        font-weight: 400;
+    }
+
+    .lt-keyboard-key--bottom-row .lt-keyboard-chevron {
+        width: 1.34rem;
+        height: 1.34rem;
+    }
+
+    .lt-keyboard-key--bottom-row .lt-keyboard-check {
+        width: 1.28rem;
+        height: 1.28rem;
+    }
+
+    .lt-keyboard-row--bottom .lt-keyboard-key {
+        min-height: 2.68rem;
+        padding-block: 0.24rem;
+    }
+
+    .lt-keyboard-key--hide {
+        display: inline-flex;
+        flex-grow: 1;
+        align-items: center;
+        justify-content: center;
+        padding-inline: 0.12rem;
+    }
+
+    .lt-keyboard-chevron {
+        display: block;
+        flex-shrink: 0;
+    }
+
+    .lt-keyboard-check {
+        display: block;
+        flex-shrink: 0;
+    }
+
+    .lt-keyboard-shift {
+        display: block;
+        flex-shrink: 0;
     }
 }
 
@@ -533,23 +960,50 @@
     flex-shrink: 0;
 }
 
+.quiz-footer-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 0.38rem;
+    padding-bottom: 0;
+}
+
+.quiz-footer-stack > .quiz-footer-actions {
+    margin-top: 0;
+    padding-top: 0;
+}
+
+@media (max-width: 600px) {
+    .quiz-footer-stack {
+        gap: 0.3rem;
+        margin-bottom: -0.65rem;
+    }
+}
+
 #quiz.panel.quiz--verbs {
     row-gap: var(--panel-section-gap);
 }
 
-#quiz-verbs-ui > .verb-forms-card {
-    flex-direction: column;
-    align-items: stretch;
+/*
+ * Глаголы: без большой карточки vocab-ru-card — блок относительным для ×N и точек раунда.
+ */
+#quiz-verbs-ui > .verb-forms-block {
+    position: relative;
     flex: 0 1 auto;
-    padding: 2.38rem;
-}
-
-#quiz-verbs-ui > .verb-forms-card > .vocab-ru-card-body {
-    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: stretch;
-    gap: 0.7rem;
+    width: 100%;
+    min-width: 0;
+    min-height: 0;
+    padding: 0.15rem 0 1.4rem;
+    margin: 0;
+    border: none;
+    background: transparent;
+    overflow: visible;
+}
+
+#quiz-verbs-ui > .verb-forms-block > .verb-forms-block__main {
+    width: 100%;
 }
 
 .verb-forms-grid {
@@ -578,13 +1032,28 @@
 }
 
 .verb-form-value {
-    display: block;
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35em;
     margin-top: 0.92rem;
+    margin-inline: auto;
+    max-width: 100%;
     color: var(--accent);
     font-size: clamp(1.05rem, 4vmin, 1.55rem);
     font-weight: 700;
     line-height: 1.2;
     overflow-wrap: break-word;
+}
+
+.verb-form-value-text {
+    min-width: 0;
+}
+
+.verb-form-verdict-emoji {
+    flex-shrink: 0;
+    line-height: 1;
 }
 
 .verb-form-card--hidden {
@@ -594,6 +1063,25 @@
 
 .verb-form-card--hidden .verb-form-value {
     color: var(--muted);
+}
+
+/* Глаголы: верно / неверно — подсветка ячейки с угадываемой формой (без блока фидбека) */
+#quiz-verbs-ui .verb-form-card--hidden.verb-form-card--feedback-ok {
+    border-color: color-mix(in srgb, var(--success) 55%, var(--border));
+    background: color-mix(in srgb, var(--success) 24%, var(--surface-elevated));
+}
+
+#quiz-verbs-ui .verb-form-card--hidden.verb-form-card--feedback-ok .verb-form-value {
+    color: color-mix(in srgb, var(--success) 78%, var(--text));
+}
+
+#quiz-verbs-ui .verb-form-card--hidden.verb-form-card--feedback-bad {
+    border-color: color-mix(in srgb, var(--error) 55%, var(--border));
+    background: color-mix(in srgb, var(--error) 22%, var(--surface-elevated));
+}
+
+#quiz-verbs-ui .verb-form-card--hidden.verb-form-card--feedback-bad .verb-form-value {
+    color: color-mix(in srgb, var(--error) 82%, var(--text));
 }
 
 @media (max-width: 600px) {

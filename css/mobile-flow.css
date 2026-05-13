@@ -1,0 +1,115 @@
+@media (max-width: 560px) {
+    :root {
+        --shell-pad-x: 0.75rem;
+        --shell-pad-top: 2.1rem;
+        --panel-section-gap: 0.72rem;
+        --touch-btn-min-h: 3.1rem;
+    }
+
+    .app {
+        max-width: none;
+        padding-left: max(var(--shell-pad-x), env(safe-area-inset-left, 0px));
+        padding-right: max(var(--shell-pad-x), env(safe-area-inset-right, 0px));
+    }
+
+    .app-screen--flow > .app-screen__panel {
+        max-width: none;
+    }
+
+    .app-screen--flow > .widget,
+    .app-screen--flow > .panel {
+        padding: 0;
+        padding-bottom: 0;
+        border: 0;
+        border-radius: 0;
+        background: transparent;
+        box-shadow: none;
+    }
+
+    .widget h2,
+    .panel h2 {
+        margin-bottom: 0.45rem;
+    }
+
+    .app-screen--flow > .widget > h2:first-child,
+    .app-screen--flow > .panel > h2:first-child,
+    #setup .wizard-step:not(.hidden) > h2:first-child {
+        align-self: center;
+        position: relative;
+        margin: 0 auto 0.72rem;
+        padding: 0 1.9rem 0.48rem;
+        max-width: 100%;
+        text-align: center;
+        font-size: clamp(1.08rem, 5.2vmin, 1.32rem);
+        font-weight: 760;
+        line-height: 1.12;
+        color: var(--text);
+    }
+
+    .app-screen--flow > .widget > h2:first-child::after,
+    .app-screen--flow > .panel > h2:first-child::after,
+    #setup .wizard-step:not(.hidden) > h2:first-child::after {
+        content: "";
+        position: absolute;
+        left: 50%;
+        bottom: 0;
+        width: min(5.6rem, 54%);
+        height: 3px;
+        border-radius: 999px;
+        background: color-mix(in srgb, var(--accent) 74%, transparent);
+        transform: translateX(-50%);
+    }
+
+    #setup #step-mode:not(.hidden) .wizard-home-title {
+        padding-bottom: 0;
+    }
+
+    #setup #step-mode:not(.hidden) .wizard-home-title::after {
+        position: static;
+        transform: none;
+    }
+
+    #setup .wizard-step:not(.hidden) > .wizard-scroll-well {
+        border: 1px solid color-mix(in srgb, var(--border) 78%, transparent);
+        border-radius: var(--radius-card);
+        background: color-mix(in srgb, var(--bg) 28%, var(--surface));
+        padding: 0.5rem;
+        padding-bottom: calc(var(--panel-scroll-pad) + 0.45rem);
+    }
+
+    #setup .wizard-step:not(.hidden) > .actions {
+        padding-top: 0.72rem;
+        padding-bottom: 0;
+    }
+
+    .wizard-pack-actions,
+    .wizard-case-actions,
+    .quiz-answer-actions {
+        gap: 0.42rem;
+    }
+
+    .wizard-pack-actions .btn,
+    .wizard-case-actions .btn,
+    .quiz-answer-actions .btn,
+    .pack-custom-upload .btn-pack-json-main,
+    .pack-custom-upload .btn-pack-prompt-help {
+        min-height: var(--touch-btn-min-h);
+    }
+
+    .pack-card-list {
+        gap: 0.46rem;
+    }
+
+    .pack-card-face {
+        min-height: 2.9rem;
+        padding: 0.58rem 0.72rem;
+    }
+
+    .mode-choice-grid {
+        gap: 0.55rem;
+    }
+
+    .mode-choice-btn {
+        min-height: 4.8rem;
+    }
+}

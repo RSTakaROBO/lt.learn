@@ -86,7 +86,7 @@ html:has(#pack-preview-shell) body {
     z-index: 40;
     background: color-mix(in srgb, var(--surface) 92%, var(--bg));
     border-top: 1px solid color-mix(in srgb, var(--border) 82%, transparent);
-    padding-bottom: env(safe-area-inset-bottom, 0px);
+    padding-bottom: 0;
     box-shadow:
         0 -1px 0 color-mix(in srgb, var(--text) 5%, transparent) inset,
         0 -10px 26px color-mix(in srgb, var(--bg) 58%, transparent);

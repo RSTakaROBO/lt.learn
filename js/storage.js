@@ -285,6 +285,27 @@ export class TrainerStorage {
     }
 
     /** @returns {boolean|null} */
+    loadCasesUseNativeKeyboard() {
+        try {
+            const raw = this._store.getItem(STORAGE_KEYS.casesUseNativeKeyboard)
+            if (raw === null) return null
+            if (raw === "1") return true
+            if (raw === "0") return false
+            return null
+        } catch {
+            return null
+        }
+    }
+
+    saveCasesUseNativeKeyboard(useNative) {
+        try {
+            this._store.setItem(STORAGE_KEYS.casesUseNativeKeyboard, useNative ? "1" : "0")
+        } catch {
+            /* ignore */
+        }
+    }
+
+    /** @returns {boolean|null} */
     loadVocabShowWrongTranslation() {
         try {
             const raw = this._store.getItem(STORAGE_KEYS.vocabShowWrongTranslation)
@@ -375,6 +396,9 @@ export function getResolvedVocabDirections() {
 
 export const loadCasesShowTranslation = () => trainerStorage.loadCasesShowTranslation()
 export const saveCasesShowTranslation = (show) => trainerStorage.saveCasesShowTranslation(show)
+export const loadCasesUseNativeKeyboard = () => trainerStorage.loadCasesUseNativeKeyboard()
+export const saveCasesUseNativeKeyboard = (useNative) =>
+    trainerStorage.saveCasesUseNativeKeyboard(useNative)
 export const loadVocabShowWrongTranslation = () => trainerStorage.loadVocabShowWrongTranslation()
 export const saveVocabShowWrongTranslation = (show) =>
     trainerStorage.saveVocabShowWrongTranslation(show)

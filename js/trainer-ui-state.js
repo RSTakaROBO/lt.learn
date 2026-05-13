@@ -51,6 +51,17 @@ function readInitialExcludeLearnedWords() {
     return false
 }
 
+function readInitialCasesUseNativeKeyboard() {
+    try {
+        const raw = localStorage.getItem(STORAGE_KEYS.casesUseNativeKeyboard)
+        if (raw === "1") return true
+        if (raw === "0") return false
+    } catch {
+        /* ignore */
+    }
+    return false
+}
+
 function readInitialSelectedPackIds() {
     try {
         const raw = localStorage.getItem(STORAGE_KEYS.packs)
@@ -79,6 +90,7 @@ function readInitialSelectedPackIds() {
  * @typedef {Object} TrainerUiPersisted
  * @property {string} themeId
  * @property {boolean} casesShowTranslation
+ * @property {boolean} casesUseNativeKeyboard
  * @property {boolean} vocabShowWrongTranslation
  * @property {boolean} excludeLearnedWords
  */
@@ -156,6 +168,7 @@ function readInitialSelectedPackIds() {
  *   | { type: "SCREEN_SET"; screen: TrainerScreen }
  *   | { type: "SET_THEME"; value: string }
  *   | { type: "SET_CASES_SHOW_TRANSLATION"; value: boolean }
+ *   | { type: "SET_CASES_USE_NATIVE_KEYBOARD"; value: boolean }
  *   | { type: "SET_VOCAB_SHOW_WRONG_TRANSLATION"; value: boolean }
  *   | { type: "SET_EXCLUDE_LEARNED_WORDS"; value: boolean }
  *   | { type: "WIZARD_SET_STEP"; step: number }
@@ -181,6 +194,7 @@ function buildInitialState() {
         persisted: {
             themeId: readInitialThemeId(),
             casesShowTranslation: readInitialCasesShowTranslation(),
+            casesUseNativeKeyboard: readInitialCasesUseNativeKeyboard(),
             vocabShowWrongTranslation: readInitialVocabShowWrongTranslation(),
             excludeLearnedWords: readInitialExcludeLearnedWords(),
         },
@@ -266,6 +280,9 @@ const trainerSlice = createSlice({
                     break
                 case "SET_CASES_SHOW_TRANSLATION":
                     state.persisted.casesShowTranslation = a.value
+                    break
+                case "SET_CASES_USE_NATIVE_KEYBOARD":
+                    state.persisted.casesUseNativeKeyboard = a.value
                     break
                 case "SET_VOCAB_SHOW_WRONG_TRANSLATION":
                     state.persisted.vocabShowWrongTranslation = a.value

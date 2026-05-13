@@ -1,17 +1,16 @@
-import { useEffect, useRef, useState } from "react"
+import { useEffect } from "react"
 
 import { VERB_FORM_ORDER } from "js/config.js"
 import { STR } from "js/i18n/strings-ru.js"
 import { handleVerbFormSubmit } from "js/quiz.js"
 import {
     LithuanianInput,
-    QuizFeedback,
     VocabRoundDots,
     VocabRoundProgress,
     VocabStreakMultiplier,
 } from "src/screens/quiz/shared/index.js"
 
-function VerbFormsPrompt({ answered, task }) {
+function VerbFormsPrompt({ answered, feedbackKind, task }) {
     const hiddenKey = task?.hiddenVerbFormKey
     const word = task?.word
 
@@ -21,16 +20,44 @@ function VerbFormsPrompt({ answered, task }) {
                 const hidden = form.key === hiddenKey
                 const value = word?.[form.key] || word?.forms?.[form.key] || STR.quiz.emDash
                 const showPrompt = hidden && !answered
+                const verdictClass =
+                    answered && hidden && (feedbackKind === "ok" || feedbackKind === "bad")
+                        ? feedbackKind === "ok"
+                            ? "verb-form-card--feedback-ok"
+                            : "verb-form-card--feedback-bad"
+                        : ""
+                const showVerdictEmoji =
+                    answered && hidden && (feedbackKind === "ok" || feedbackKind === "bad")
                 return (
                     <div
                         key={form.key}
-                        className={["verb-form-card", hidden && "verb-form-card--hidden"]
+                        className={[
+                            "verb-form-card",
+                            hidden && "verb-form-card--hidden",
+                            verdictClass,
+                        ]
                             .filter(Boolean)
                             .join(" ")}
                     >
                         <span className="verb-form-label">{form.label}</span>
                         <span className="verb-form-value" lang={showPrompt ? undefined : "lt"}>
-                            {showPrompt ? STR.quiz.hiddenVerbForm : value}
+                            {showPrompt ? (
+                                STR.quiz.hiddenVerbForm
+                            ) : (
+                                <>
+                                    <span className="verb-form-value-text">{value}</span>
+                                    {showVerdictEmoji ? (
+                                        <span
+                                            className="verb-form-verdict-emoji"
+                                            aria-hidden="true"
+                                        >
+                                            {feedbackKind === "ok"
+                                                ? STR.quiz.correct
+                                                : STR.quiz.wrong}
+                                        </span>
+                                    ) : null}
+                                </>
+                            )}
                         </span>
                     </div>
                 )
@@ -41,44 +68,47 @@ function VerbFormsPrompt({ answered, task }) {
 
 export function VerbsQuiz({
     answered,
+    answerValue,
     feedback,
+    inputRef,
     isActive,
+    lithuanianOverlayKeyboard = false,
+    onAnswerValueChange,
+    onRevealLithuanianKeyboard,
     pulseId,
     roundDots,
     roundProgress,
     streak,
     task,
 }) {
-    const inputRef = useRef(null)
-    const [answerValue, setAnswerValue] = useState("")
     const feedbackKind = feedback?.kind === "ok" || feedback?.kind === "bad" ? feedback.kind : ""
+
+    let verdictAnnouncement = ""
+    if (answered && feedbackKind === "ok") verdictAnnouncement = STR.vocabRound.statCorrect
+    if (
+        answered &&
+        feedbackKind === "bad" &&
+        feedback?.expected != null &&
+        feedback.expected !== ""
+    )
+        verdictAnnouncement = `${STR.vocabRound.statWrong}. ${STR.quiz.correctIs} ${feedback.expected}`
 
     useEffect(() => {
         if (!isActive) return
-        setAnswerValue("")
-        requestAnimationFrame(() => inputRef.current?.focus())
-    }, [isActive, task])
+        if (lithuanianOverlayKeyboard) return
+        requestAnimationFrame(() => inputRef?.current?.focus())
+    }, [isActive, lithuanianOverlayKeyboard, inputRef, task])
 
     return (
         <div id="quiz-verbs-ui" className={isActive ? "" : "hidden"}>
-            <div
-                className={[
-                    "vocab-ru-card verb-forms-card",
-                    feedbackKind && `vocab-ru-card--${feedbackKind}`,
-                ]
-                    .filter(Boolean)
-                    .join(" ")}
-            >
-                <div className="vocab-ru-card-body">
-                    <VerbFormsPrompt answered={answered} task={task} />
-                    <QuizFeedback
-                        className="vocab-card-feedback"
-                        feedback={feedback}
-                        id="verbs-card-feedback"
-                        reserveSpace
-                        showExpected={false}
-                        showExceptionNote={false}
-                    />
+            <div className="verb-forms-block">
+                <div className="verb-forms-block__main">
+                    <VerbFormsPrompt answered={answered} feedbackKind={feedbackKind} task={task} />
+                    {verdictAnnouncement ? (
+                        <p className="sr-only" aria-live="polite">
+                            {verdictAnnouncement}
+                        </p>
+                    ) : null}
                 </div>
                 <VocabStreakMultiplier streak={streak} pulseId={pulseId} />
                 <VocabRoundDots dots={roundDots} />
@@ -94,11 +124,15 @@ export function VerbsQuiz({
                 }}
             >
                 <LithuanianInput
-                    ref={inputRef}
+                    ref={isActive ? inputRef : undefined}
                     inputId="verb-answer-input"
                     toolbarId="verb-lt-chars"
                     value={answerValue}
-                    onValueChange={setAnswerValue}
+                    onValueChange={onAnswerValueChange}
+                    useCustomKeyboard={lithuanianOverlayKeyboard}
+                    onRevealCustomKeyboard={
+                        lithuanianOverlayKeyboard ? onRevealLithuanianKeyboard : undefined
+                    }
                 />
             </form>
         </div>

@@ -37,7 +37,11 @@ export function QuizActionButtons({
 }) {
     const skipNextSkipClickRef = useRef(false)
     const skipNextSubmitClickRef = useRef(false)
-    const submitFormId = isVerbs ? "verb-answer-form" : "answer-form"
+    const submitFormId = isVerbs
+        ? "verb-answer-form"
+        : isVocab
+          ? "vocab-answer-form"
+          : "answer-form"
     return (
         <>
             {showFinish ? (

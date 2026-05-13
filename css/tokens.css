@@ -4,6 +4,10 @@
 :root {
     --stroke: 2px;
     --quiz-bottom-bar-clearance: 5.15rem;
+    /** Высота блока литовской клавиатуры: 5 содержательных рядов + зазоры + padding клавиатуры */
+    --lt-keyboard-block-clearance: 17rem;
+    /** Дополнительный зазор слева / справа / снизу у клавиш (к safe-area добавляется) */
+    --lt-keyboard-edge-pad: 0.42rem;
     --btn-shadow-drop: 3px;
 
     --panel-padding: 1.25rem;
@@ -17,10 +21,7 @@
     --shell-pad-x: 1rem;
     --shell-pad-top: 1.5rem;
     --shell-pad-bottom-extra: 0.75rem;
-    --shell-pad-bottom: calc(
-        var(--quiz-bottom-bar-clearance) + env(safe-area-inset-bottom, 0px) +
-            var(--shell-pad-bottom-extra)
-    );
+    --shell-pad-bottom: calc(var(--quiz-bottom-bar-clearance) + var(--shell-pad-bottom-extra));
 
     --radius-card: 8px;
     --radius-table-wrap: 8px;

@@ -1,4 +1,4 @@
-import { forwardRef, useRef } from "react"
+import { forwardRef, useEffect, useRef, useState } from "react"
 
 import { getLithuanianShiftCycleEdit } from "js/InputHelper.js"
 import { STR } from "js/i18n/strings-ru.js"
@@ -58,49 +58,140 @@ function handleLithuanianShiftKey(e, value, setValue, input) {
     setCaretOnNextFrame(input, edit.caret)
 }
 
+function refocusInput(input) {
+    if (!(input instanceof HTMLInputElement)) return
+    requestAnimationFrame(() => input.focus())
+}
+
 export const LithuanianInput = forwardRef(function LithuanianInput(
-    { inputId, toolbarId, value, onValueChange, label = STR.quiz.answerLabel },
+    {
+        inputId,
+        toolbarId,
+        value,
+        onValueChange,
+        label = STR.quiz.answerLabel,
+        useCustomKeyboard = false,
+        /** Сенсорный режим без ОС-клавы: пользовательский тап по полю показывает оверлей-клаву (родитель поднимает). */
+        onRevealCustomKeyboard,
+    },
     ref
 ) {
     const skipNextToolbarClickRef = useRef(false)
+    const [toolbarOpen, setToolbarOpen] = useState(true)
+    const [preferCustomKeyboard, setPreferCustomKeyboard] = useState(false)
+
+    useEffect(() => {
+        if (useCustomKeyboard) {
+            setPreferCustomKeyboard(
+                window.matchMedia?.("(pointer: coarse)").matches || navigator.maxTouchPoints > 0
+            )
+        } else {
+            setPreferCustomKeyboard(false)
+        }
+    }, [useCustomKeyboard])
+
+    useEffect(() => {
+        if (preferCustomKeyboard) return undefined
+        const visualViewport = window.visualViewport
+        if (!visualViewport) return undefined
+
+        function handleViewportResize() {
+            const keyboardLikelyOpen = window.innerHeight - visualViewport.height > 120
+            if (keyboardLikelyOpen) setToolbarOpen(false)
+        }
+
+        visualViewport.addEventListener("resize", handleViewportResize)
+        visualViewport.addEventListener("scroll", handleViewportResize)
+        handleViewportResize()
+        return () => {
+            visualViewport.removeEventListener("resize", handleViewportResize)
+            visualViewport.removeEventListener("scroll", handleViewportResize)
+        }
+    }, [preferCustomKeyboard])
 
     return (
-        <>
+        <div className="lithuanian-input">
             <label className="sr-only" htmlFor={inputId}>
                 {label}
             </label>
-            <input
-                ref={ref}
-                type="text"
-                id={inputId}
-                value={value}
-                placeholder={STR.quiz.answerPlaceholder}
-                spellCheck={false}
-                autoCapitalize="off"
-                onChange={(e) => onValueChange(e.target.value)}
-                onKeyDown={(e) => handleLithuanianShiftKey(e, value, onValueChange, ref.current)}
-            />
-            <ChartsToolbar
-                id={toolbarId}
-                onClick={(e) =>
-                    handleToolbarClick(
-                        e,
-                        value,
-                        onValueChange,
-                        ref.current,
-                        skipNextToolbarClickRef
-                    )
-                }
-                onPointerDown={(e) =>
-                    handleToolbarPointerDown(
-                        e,
-                        value,
-                        onValueChange,
-                        ref.current,
-                        skipNextToolbarClickRef
-                    )
-                }
-            />
-        </>
+            <div
+                className={[
+                    "lithuanian-input-row",
+                    useCustomKeyboard && "lithuanian-input-row--single",
+                ]
+                    .filter(Boolean)
+                    .join(" ")}
+            >
+                <input
+                    ref={ref}
+                    type="text"
+                    id={inputId}
+                    value={value}
+                    placeholder={STR.quiz.answerPlaceholder}
+                    spellCheck={false}
+                    autoCapitalize="off"
+                    inputMode={preferCustomKeyboard ? "none" : undefined}
+                    readOnly={preferCustomKeyboard}
+                    onPointerDown={() => {
+                        if (preferCustomKeyboard && onRevealCustomKeyboard) {
+                            onRevealCustomKeyboard()
+                            refocusInput(ref.current)
+                        }
+                    }}
+                    onChange={(e) => onValueChange(e.target.value)}
+                    onKeyDown={(e) =>
+                        handleLithuanianShiftKey(e, value, onValueChange, ref.current)
+                    }
+                />
+                {!useCustomKeyboard ? (
+                    <button
+                        type="button"
+                        className={["lt-chars-toggle", toolbarOpen && "lt-chars-toggle--open"]
+                            .filter(Boolean)
+                            .join(" ")}
+                        aria-controls={toolbarId}
+                        aria-expanded={toolbarOpen}
+                        aria-label={
+                            toolbarOpen ? STR.quiz.ltCharsToggleHide : STR.quiz.ltCharsToggleShow
+                        }
+                        title={
+                            toolbarOpen ? STR.quiz.ltCharsToggleHide : STR.quiz.ltCharsToggleShow
+                        }
+                        onPointerDown={(e) => {
+                            e.preventDefault()
+                        }}
+                        onClick={() => {
+                            setToolbarOpen((open) => !open)
+                            refocusInput(ref.current)
+                        }}
+                    >
+                        <span aria-hidden="true">š</span>
+                    </button>
+                ) : null}
+            </div>
+            {!useCustomKeyboard && toolbarOpen ? (
+                <ChartsToolbar
+                    id={toolbarId}
+                    onClick={(e) =>
+                        handleToolbarClick(
+                            e,
+                            value,
+                            onValueChange,
+                            ref.current,
+                            skipNextToolbarClickRef
+                        )
+                    }
+                    onPointerDown={(e) =>
+                        handleToolbarPointerDown(
+                            e,
+                            value,
+                            onValueChange,
+                            ref.current,
+                            skipNextToolbarClickRef
+                        )
+                    }
+                />
+            ) : null}
+        </div>
     )
 })

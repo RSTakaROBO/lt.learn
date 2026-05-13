@@ -43,6 +43,7 @@ export const STORAGE_KEYS = {
     vocabBestStreak: "lt-trainer-vocab-best-streak-v1",
     vocabDirections: "lt-trainer-vocab-directions-v1",
     casesShowTranslation: "lt-trainer-cases-show-translation-v1",
+    casesUseNativeKeyboard: "lt-trainer-cases-use-native-keyboard-v1",
     vocabShowWrongTranslation: "lt-trainer-vocab-show-wrong-translation-v1",
     excludeLearnedWords: "lt-trainer-exclude-learned-words-v1",
     customPacks: "lt-trainer-custom-packs-v1",

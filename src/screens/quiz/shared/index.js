@@ -1,4 +1,5 @@
 export { LithuanianInput } from "src/screens/quiz/shared/LithuanianInput.jsx"
+export { LithuanianKeyboard } from "src/screens/quiz/shared/LithuanianKeyboard.jsx"
 export { QuizActionButtons } from "src/screens/quiz/shared/QuizActionButtons.jsx"
 export { QuizFeedback } from "src/screens/quiz/shared/QuizFeedback.jsx"
 export { VocabRoundDots } from "src/screens/quiz/shared/VocabRoundDots.jsx"
