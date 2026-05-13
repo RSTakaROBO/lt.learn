@@ -69,8 +69,7 @@
             "instrumental": "bulve",
             "locative": "bulvėje",
             "vocative": "bulve",
-            "ru": "картофель",
-            "ru_alt": "картошка"
+            "ru": ["картофель", "картошка"]
         },
         {
             "nominative": "pomidoras",

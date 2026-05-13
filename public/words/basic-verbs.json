@@ -29,8 +29,7 @@
             "type": "verb",
             "lemma": "išeiti",
             "forms": { "infinitive": "išeiti", "present3": "išeina", "past3": "išėjo" },
-            "ru": "выходить",
-            "ru_alt": "уходить"
+            "ru": ["выходить", "уходить"]
         },
         {
             "type": "verb",
@@ -72,8 +71,7 @@
             "type": "verb",
             "lemma": "sakyti",
             "forms": { "infinitive": "sakyti", "present3": "sako", "past3": "sakė" },
-            "ru": "сказать",
-            "ru_alt": "говорить"
+            "ru": ["сказать", "говорить"]
         },
         {
             "type": "verb",
@@ -115,8 +113,7 @@
             "type": "verb",
             "lemma": "valgyti",
             "forms": { "infinitive": "valgyti", "present3": "valgo", "past3": "valgė" },
-            "ru": "есть",
-            "ru_alt": "кушать"
+            "ru": ["есть", "кушать"]
         },
         {
             "type": "verb",
@@ -146,8 +143,7 @@
             "type": "verb",
             "lemma": "reikėti",
             "forms": { "infinitive": "reikėti", "present3": "reikia", "past3": "reikėjo" },
-            "ru": "быть нужным",
-            "ru_alt": "нужно"
+            "ru": ["быть нужным", "нужно"]
         },
         {
             "type": "verb",
@@ -219,8 +215,7 @@
             "type": "verb",
             "lemma": "mėgti",
             "forms": { "infinitive": "mėgti", "present3": "mėgsta", "past3": "mėgo" },
-            "ru": "любить",
-            "ru_alt": "нравиться"
+            "ru": ["любить", "нравиться"]
         },
         {
             "type": "verb",

@@ -34,8 +34,8 @@
             "lemma": "atostogauti",
             "forms": {
                 "infinitive": "atostogauti",
-                "present_3": "atostogauja",
-                "past_3": "atostogavo"
+                "present3": "atostogauja",
+                "past3": "atostogavo"
             },
             "ru": ["отдыхать", "быть в отпуске"]
         },
@@ -44,8 +44,8 @@
             "lemma": "eiti",
             "forms": {
                 "infinitive": "eiti",
-                "present_3": "eina",
-                "past_3": "ėjo"
+                "present3": "eina",
+                "past3": "ėjo"
             },
             "ru": ["идти", "ходить"]
         },
@@ -54,8 +54,8 @@
             "lemma": "skambinti",
             "forms": {
                 "infinitive": "skambinti",
-                "present_3": "skambina",
-                "past_3": "skambino"
+                "present3": "skambina",
+                "past3": "skambino"
             },
             "ru": ["звонить"]
         },
@@ -64,8 +64,8 @@
             "lemma": "skubėti",
             "forms": {
                 "infinitive": "skubėti",
-                "present_3": "skuba",
-                "past_3": "skubėjo"
+                "present3": "skuba",
+                "past3": "skubėjo"
             },
             "ru": ["спешить"]
         },
@@ -74,19 +74,18 @@
             "lemma": "susitikti",
             "forms": {
                 "infinitive": "susitikti",
-                "present_3": "susitinka",
-                "past_3": "susitiko"
+                "present3": "susitinka",
+                "past3": "susitiko"
             },
-            "ru": ["встретиться"],
-            "ru_alt": ["встречать"]
+            "ru": ["встретиться", "встречать"]
         },
         {
             "type": "verb",
             "lemma": "važiuoti",
             "forms": {
                 "infinitive": "važiuoti",
-                "present_3": "važiuoja",
-                "past_3": "važiavo"
+                "present3": "važiuoja",
+                "past3": "važiavo"
             },
             "ru": ["ехать"]
         },
@@ -95,8 +94,8 @@
             "lemma": "vėluoti",
             "forms": {
                 "infinitive": "vėluoti",
-                "present_3": "vėluoja",
-                "past_3": "vėlavo"
+                "present3": "vėluoja",
+                "past3": "vėlavo"
             },
             "ru": ["опаздывать"]
         },
@@ -126,8 +125,7 @@
                 "locative": "senamiestyje",
                 "vocative": "senamiesti"
             },
-            "ru": ["старый город"],
-            "ru_alt": ["исторический центр"]
+            "ru": ["старый город", "исторический центр"]
         },
         {
             "type": "noun",

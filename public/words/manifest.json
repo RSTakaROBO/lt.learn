@@ -21,6 +21,10 @@
             "files": ["food.json"]
         },
         {
+            "id": "professions",
+            "files": ["professions.json"]
+        },
+        {
             "id": "basic-verbs",
             "files": ["basic-verbs.json"]
         },

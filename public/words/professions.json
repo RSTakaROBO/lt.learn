@@ -1,0 +1,805 @@
+{
+    "title": "Люди и профессии",
+    "words": [
+        {
+            "type": "noun",
+            "lemma": "žmogus",
+            "forms": {
+                "nominative": "žmogus",
+                "genitive": "žmogaus",
+                "dative": "žmogui",
+                "accusative": "žmogų",
+                "instrumental": "žmogumi",
+                "locative": "žmoguje",
+                "vocative": "žmogau"
+            },
+            "ru": ["человек"]
+        },
+        {
+            "type": "noun",
+            "lemma": "mergaitė",
+            "forms": {
+                "nominative": "mergaitė",
+                "genitive": "mergaitės",
+                "dative": "mergaitei",
+                "accusative": "mergaitę",
+                "instrumental": "mergaite",
+                "locative": "mergaitėje",
+                "vocative": "mergaite"
+            },
+            "ru": ["девочка"]
+        },
+        {
+            "type": "noun",
+            "lemma": "mergina",
+            "forms": {
+                "nominative": "mergina",
+                "genitive": "merginos",
+                "dative": "merginai",
+                "accusative": "merginą",
+                "instrumental": "mergina",
+                "locative": "merginoje",
+                "vocative": "mergina"
+            },
+            "ru": ["девушка"]
+        },
+        {
+            "type": "noun",
+            "lemma": "moteris",
+            "forms": {
+                "nominative": "moteris",
+                "genitive": "moters",
+                "dative": "moteriai",
+                "accusative": "moterį",
+                "instrumental": "moterimi",
+                "locative": "moteryje",
+                "vocative": "moterie"
+            },
+            "ru": ["женщина"],
+            "exception": true,
+            "exception_note_ru": "Особое склонение: родительный падеж — moters."
+        },
+        {
+            "type": "noun",
+            "lemma": "berniukas",
+            "forms": {
+                "nominative": "berniukas",
+                "genitive": "berniuko",
+                "dative": "berniukui",
+                "accusative": "berniuką",
+                "instrumental": "berniuku",
+                "locative": "berniuke",
+                "vocative": "berniuk"
+            },
+            "ru": ["мальчик"]
+        },
+        {
+            "type": "noun",
+            "lemma": "vaikinas",
+            "forms": {
+                "nominative": "vaikinas",
+                "genitive": "vaikino",
+                "dative": "vaikinui",
+                "accusative": "vaikiną",
+                "instrumental": "vaikinu",
+                "locative": "vaikine",
+                "vocative": "vaikine"
+            },
+            "ru": ["парень", "юноша"]
+        },
+        {
+            "type": "noun",
+            "lemma": "vyras",
+            "forms": {
+                "nominative": "vyras",
+                "genitive": "vyro",
+                "dative": "vyrui",
+                "accusative": "vyrą",
+                "instrumental": "vyru",
+                "locative": "vyre",
+                "vocative": "vyre"
+            },
+            "ru": ["мужчина", "муж"]
+        },
+        {
+            "type": "noun",
+            "lemma": "mokinys",
+            "forms": {
+                "nominative": "mokinys",
+                "genitive": "mokinio",
+                "dative": "mokiniui",
+                "accusative": "mokinį",
+                "instrumental": "mokiniu",
+                "locative": "mokinyje",
+                "vocative": "mokiny"
+            },
+            "ru": ["ученик"]
+        },
+        {
+            "type": "noun",
+            "lemma": "mokinė",
+            "forms": {
+                "nominative": "mokinė",
+                "genitive": "mokinės",
+                "dative": "mokinei",
+                "accusative": "mokinę",
+                "instrumental": "mokine",
+                "locative": "mokinėje",
+                "vocative": "mokine"
+            },
+            "ru": ["ученица"]
+        },
+        {
+            "type": "noun",
+            "lemma": "studentas",
+            "forms": {
+                "nominative": "studentas",
+                "genitive": "studento",
+                "dative": "studentui",
+                "accusative": "studentą",
+                "instrumental": "studentu",
+                "locative": "studente",
+                "vocative": "studente"
+            },
+            "ru": ["студент"]
+        },
+        {
+            "type": "noun",
+            "lemma": "studentė",
+            "forms": {
+                "nominative": "studentė",
+                "genitive": "studentės",
+                "dative": "studentei",
+                "accusative": "studentę",
+                "instrumental": "studente",
+                "locative": "studentėje",
+                "vocative": "studente"
+            },
+            "ru": ["студентка"]
+        },
+        {
+            "type": "noun",
+            "lemma": "pensininkas",
+            "forms": {
+                "nominative": "pensininkas",
+                "genitive": "pensininko",
+                "dative": "pensininkui",
+                "accusative": "pensininką",
+                "instrumental": "pensininku",
+                "locative": "pensininke",
+                "vocative": "pensininke"
+            },
+            "ru": ["пенсионер"]
+        },
+        {
+            "type": "noun",
+            "lemma": "pensininkė",
+            "forms": {
+                "nominative": "pensininkė",
+                "genitive": "pensininkės",
+                "dative": "pensininkei",
+                "accusative": "pensininkę",
+                "instrumental": "pensininke",
+                "locative": "pensininkėje",
+                "vocative": "pensininke"
+            },
+            "ru": ["пенсионерка"]
+        },
+        {
+            "type": "noun",
+            "lemma": "šokėjas",
+            "forms": {
+                "nominative": "šokėjas",
+                "genitive": "šokėjo",
+                "dative": "šokėjui",
+                "accusative": "šokėją",
+                "instrumental": "šokėju",
+                "locative": "šokėjuje",
+                "vocative": "šokėjau"
+            },
+            "ru": ["танцор"]
+        },
+        {
+            "type": "noun",
+            "lemma": "šokėja",
+            "forms": {
+                "nominative": "šokėja",
+                "genitive": "šokėjos",
+                "dative": "šokėjai",
+                "accusative": "šokėją",
+                "instrumental": "šokėja",
+                "locative": "šokėjoje",
+                "vocative": "šokėja"
+            },
+            "ru": ["танцовщица"]
+        },
+        {
+            "type": "noun",
+            "lemma": "virėjas",
+            "forms": {
+                "nominative": "virėjas",
+                "genitive": "virėjo",
+                "dative": "virėjui",
+                "accusative": "virėją",
+                "instrumental": "virėju",
+                "locative": "virėjuje",
+                "vocative": "virėjau"
+            },
+            "ru": ["повар"]
+        },
+        {
+            "type": "noun",
+            "lemma": "virėja",
+            "forms": {
+                "nominative": "virėja",
+                "genitive": "virėjos",
+                "dative": "virėjai",
+                "accusative": "virėją",
+                "instrumental": "virėja",
+                "locative": "virėjoje",
+                "vocative": "virėja"
+            },
+            "ru": ["повариха", "повар"]
+        },
+        {
+            "type": "noun",
+            "lemma": "mokytojas",
+            "forms": {
+                "nominative": "mokytojas",
+                "genitive": "mokytojo",
+                "dative": "mokytojui",
+                "accusative": "mokytoją",
+                "instrumental": "mokytoju",
+                "locative": "mokytojuje",
+                "vocative": "mokytojau"
+            },
+            "ru": ["учитель"]
+        },
+        {
+            "type": "noun",
+            "lemma": "mokytoja",
+            "forms": {
+                "nominative": "mokytoja",
+                "genitive": "mokytojos",
+                "dative": "mokytojai",
+                "accusative": "mokytoją",
+                "instrumental": "mokytoja",
+                "locative": "mokytojoje",
+                "vocative": "mokytoja"
+            },
+            "ru": ["учительница"]
+        },
+        {
+            "type": "noun",
+            "lemma": "dėstytojas",
+            "forms": {
+                "nominative": "dėstytojas",
+                "genitive": "dėstytojo",
+                "dative": "dėstytojui",
+                "accusative": "dėstytoją",
+                "instrumental": "dėstytoju",
+                "locative": "dėstytojuje",
+                "vocative": "dėstytojau"
+            },
+            "ru": ["преподаватель"]
+        },
+        {
+            "type": "noun",
+            "lemma": "dėstytoja",
+            "forms": {
+                "nominative": "dėstytoja",
+                "genitive": "dėstytojos",
+                "dative": "dėstytojai",
+                "accusative": "dėstytoją",
+                "instrumental": "dėstytoja",
+                "locative": "dėstytojoje",
+                "vocative": "dėstytoja"
+            },
+            "ru": ["преподавательница"]
+        },
+        {
+            "type": "noun",
+            "lemma": "gydytojas",
+            "forms": {
+                "nominative": "gydytojas",
+                "genitive": "gydytojo",
+                "dative": "gydytojui",
+                "accusative": "gydytoją",
+                "instrumental": "gydytoju",
+                "locative": "gydytojuje",
+                "vocative": "gydytojau"
+            },
+            "ru": ["врач", "доктор"]
+        },
+        {
+            "type": "noun",
+            "lemma": "gydytoja",
+            "forms": {
+                "nominative": "gydytoja",
+                "genitive": "gydytojos",
+                "dative": "gydytojai",
+                "accusative": "gydytoją",
+                "instrumental": "gydytoja",
+                "locative": "gydytojoje",
+                "vocative": "gydytoja"
+            },
+            "ru": ["врач", "доктор"]
+        },
+        {
+            "type": "noun",
+            "lemma": "slaugytojas",
+            "forms": {
+                "nominative": "slaugytojas",
+                "genitive": "slaugytojo",
+                "dative": "slaugytojui",
+                "accusative": "slaugytoją",
+                "instrumental": "slaugytoju",
+                "locative": "slaugytojuje",
+                "vocative": "slaugytojau"
+            },
+            "ru": ["медбрат", "медицинский брат"]
+        },
+        {
+            "type": "noun",
+            "lemma": "slaugytoja",
+            "forms": {
+                "nominative": "slaugytoja",
+                "genitive": "slaugytojos",
+                "dative": "slaugytojai",
+                "accusative": "slaugytoją",
+                "instrumental": "slaugytoja",
+                "locative": "slaugytojoje",
+                "vocative": "slaugytoja"
+            },
+            "ru": ["медсестра", "медицинская сестра"]
+        },
+        {
+            "type": "noun",
+            "lemma": "vairuotojas",
+            "forms": {
+                "nominative": "vairuotojas",
+                "genitive": "vairuotojo",
+                "dative": "vairuotojui",
+                "accusative": "vairuotoją",
+                "instrumental": "vairuotoju",
+                "locative": "vairuotojuje",
+                "vocative": "vairuotojau"
+            },
+            "ru": ["водитель"]
+        },
+        {
+            "type": "noun",
+            "lemma": "vairuotoja",
+            "forms": {
+                "nominative": "vairuotoja",
+                "genitive": "vairuotojos",
+                "dative": "vairuotojai",
+                "accusative": "vairuotoją",
+                "instrumental": "vairuotoja",
+                "locative": "vairuotojoje",
+                "vocative": "vairuotoja"
+            },
+            "ru": ["водительница", "водитель"]
+        },
+        {
+            "type": "noun",
+            "lemma": "muzikantas",
+            "forms": {
+                "nominative": "muzikantas",
+                "genitive": "muzikanto",
+                "dative": "muzikantui",
+                "accusative": "muzikantą",
+                "instrumental": "muzikantu",
+                "locative": "muzikante",
+                "vocative": "muzikante"
+            },
+            "ru": ["музыкант"]
+        },
+        {
+            "type": "noun",
+            "lemma": "muzikantė",
+            "forms": {
+                "nominative": "muzikantė",
+                "genitive": "muzikantės",
+                "dative": "muzikantei",
+                "accusative": "muzikantę",
+                "instrumental": "muzikante",
+                "locative": "muzikantėje",
+                "vocative": "muzikante"
+            },
+            "ru": ["музыкантка", "музыкант"]
+        },
+        {
+            "type": "noun",
+            "lemma": "fotografas",
+            "forms": {
+                "nominative": "fotografas",
+                "genitive": "fotografo",
+                "dative": "fotografui",
+                "accusative": "fotografą",
+                "instrumental": "fotografu",
+                "locative": "fotografe",
+                "vocative": "fotografe"
+            },
+            "ru": ["фотограф"]
+        },
+        {
+            "type": "noun",
+            "lemma": "fotografė",
+            "forms": {
+                "nominative": "fotografė",
+                "genitive": "fotografės",
+                "dative": "fotografei",
+                "accusative": "fotografę",
+                "instrumental": "fotografe",
+                "locative": "fotografėje",
+                "vocative": "fotografe"
+            },
+            "ru": ["фотограф", "фотограф-женщина"]
+        },
+        {
+            "type": "noun",
+            "lemma": "valytojas",
+            "forms": {
+                "nominative": "valytojas",
+                "genitive": "valytojo",
+                "dative": "valytojui",
+                "accusative": "valytoją",
+                "instrumental": "valytoju",
+                "locative": "valytojuje",
+                "vocative": "valytojau"
+            },
+            "ru": ["уборщик"]
+        },
+        {
+            "type": "noun",
+            "lemma": "valytoja",
+            "forms": {
+                "nominative": "valytoja",
+                "genitive": "valytojos",
+                "dative": "valytojai",
+                "accusative": "valytoją",
+                "instrumental": "valytoja",
+                "locative": "valytojoje",
+                "vocative": "valytoja"
+            },
+            "ru": ["уборщица"]
+        },
+        {
+            "type": "noun",
+            "lemma": "aktorius",
+            "forms": {
+                "nominative": "aktorius",
+                "genitive": "aktoriaus",
+                "dative": "aktoriui",
+                "accusative": "aktorių",
+                "instrumental": "aktoriumi",
+                "locative": "aktoriuje",
+                "vocative": "aktoriau"
+            },
+            "ru": ["актёр"]
+        },
+        {
+            "type": "noun",
+            "lemma": "aktorė",
+            "forms": {
+                "nominative": "aktorė",
+                "genitive": "aktorės",
+                "dative": "aktorei",
+                "accusative": "aktorę",
+                "instrumental": "aktore",
+                "locative": "aktorėje",
+                "vocative": "aktore"
+            },
+            "ru": ["актриса"]
+        },
+        {
+            "type": "noun",
+            "lemma": "dailininkas",
+            "forms": {
+                "nominative": "dailininkas",
+                "genitive": "dailininko",
+                "dative": "dailininkui",
+                "accusative": "dailininką",
+                "instrumental": "dailininku",
+                "locative": "dailininke",
+                "vocative": "dailininke"
+            },
+            "ru": ["художник"]
+        },
+        {
+            "type": "noun",
+            "lemma": "dailininkė",
+            "forms": {
+                "nominative": "dailininkė",
+                "genitive": "dailininkės",
+                "dative": "dailininkei",
+                "accusative": "dailininkę",
+                "instrumental": "dailininke",
+                "locative": "dailininkėje",
+                "vocative": "dailininke"
+            },
+            "ru": ["художница"]
+        },
+        {
+            "type": "noun",
+            "lemma": "dainininkas",
+            "forms": {
+                "nominative": "dainininkas",
+                "genitive": "dainininko",
+                "dative": "dainininkui",
+                "accusative": "dainininką",
+                "instrumental": "dainininku",
+                "locative": "dainininke",
+                "vocative": "dainininke"
+            },
+            "ru": ["певец"]
+        },
+        {
+            "type": "noun",
+            "lemma": "dainininkė",
+            "forms": {
+                "nominative": "dainininkė",
+                "genitive": "dainininkės",
+                "dative": "dainininkei",
+                "accusative": "dainininkę",
+                "instrumental": "dainininke",
+                "locative": "dainininkėje",
+                "vocative": "dainininke"
+            },
+            "ru": ["певица"]
+        },
+        {
+            "type": "noun",
+            "lemma": "sportininkas",
+            "forms": {
+                "nominative": "sportininkas",
+                "genitive": "sportininko",
+                "dative": "sportininkui",
+                "accusative": "sportininką",
+                "instrumental": "sportininku",
+                "locative": "sportininke",
+                "vocative": "sportininke"
+            },
+            "ru": ["спортсмен"]
+        },
+        {
+            "type": "noun",
+            "lemma": "sportininkė",
+            "forms": {
+                "nominative": "sportininkė",
+                "genitive": "sportininkės",
+                "dative": "sportininkei",
+                "accusative": "sportininkę",
+                "instrumental": "sportininke",
+                "locative": "sportininkėje",
+                "vocative": "sportininke"
+            },
+            "ru": ["спортсменка"]
+        },
+        {
+            "type": "noun",
+            "lemma": "mokslininkas",
+            "forms": {
+                "nominative": "mokslininkas",
+                "genitive": "mokslininko",
+                "dative": "mokslininkui",
+                "accusative": "mokslininką",
+                "instrumental": "mokslininku",
+                "locative": "mokslininke",
+                "vocative": "mokslininke"
+            },
+            "ru": ["учёный"]
+        },
+        {
+            "type": "noun",
+            "lemma": "mokslininkė",
+            "forms": {
+                "nominative": "mokslininkė",
+                "genitive": "mokslininkės",
+                "dative": "mokslininkei",
+                "accusative": "mokslininkę",
+                "instrumental": "mokslininke",
+                "locative": "mokslininkėje",
+                "vocative": "mokslininke"
+            },
+            "ru": ["учёная"]
+        },
+        {
+            "type": "noun",
+            "lemma": "darbininkas",
+            "forms": {
+                "nominative": "darbininkas",
+                "genitive": "darbininko",
+                "dative": "darbininkui",
+                "accusative": "darbininką",
+                "instrumental": "darbininku",
+                "locative": "darbininke",
+                "vocative": "darbininke"
+            },
+            "ru": ["рабочий", "работник"]
+        },
+        {
+            "type": "noun",
+            "lemma": "darbininkė",
+            "forms": {
+                "nominative": "darbininkė",
+                "genitive": "darbininkės",
+                "dative": "darbininkei",
+                "accusative": "darbininkę",
+                "instrumental": "darbininke",
+                "locative": "darbininkėje",
+                "vocative": "darbininke"
+            },
+            "ru": ["рабочая", "работница"]
+        },
+        {
+            "type": "noun",
+            "lemma": "policininkas",
+            "forms": {
+                "nominative": "policininkas",
+                "genitive": "policininko",
+                "dative": "policininkui",
+                "accusative": "policininką",
+                "instrumental": "policininku",
+                "locative": "policininke",
+                "vocative": "policininke"
+            },
+            "ru": ["полицейский"]
+        },
+        {
+            "type": "noun",
+            "lemma": "policininkė",
+            "forms": {
+                "nominative": "policininkė",
+                "genitive": "policininkės",
+                "dative": "policininkei",
+                "accusative": "policininkę",
+                "instrumental": "policininke",
+                "locative": "policininkėje",
+                "vocative": "policininke"
+            },
+            "ru": ["полицейская"]
+        },
+        {
+            "type": "noun",
+            "lemma": "ūkininkas",
+            "forms": {
+                "nominative": "ūkininkas",
+                "genitive": "ūkininko",
+                "dative": "ūkininkui",
+                "accusative": "ūkininką",
+                "instrumental": "ūkininku",
+                "locative": "ūkininke",
+                "vocative": "ūkininke"
+            },
+            "ru": ["фермер", "хозяин"]
+        },
+        {
+            "type": "noun",
+            "lemma": "ūkininkė",
+            "forms": {
+                "nominative": "ūkininkė",
+                "genitive": "ūkininkės",
+                "dative": "ūkininkei",
+                "accusative": "ūkininkę",
+                "instrumental": "ūkininke",
+                "locative": "ūkininkėje",
+                "vocative": "ūkininke"
+            },
+            "ru": ["фермерша", "фермер"]
+        },
+        {
+            "type": "noun",
+            "lemma": "siuvėjas",
+            "forms": {
+                "nominative": "siuvėjas",
+                "genitive": "siuvėjo",
+                "dative": "siuvėjui",
+                "accusative": "siuvėją",
+                "instrumental": "siuvėju",
+                "locative": "siuvėjuje",
+                "vocative": "siuvėjau"
+            },
+            "ru": ["портной"]
+        },
+        {
+            "type": "noun",
+            "lemma": "siuvėja",
+            "forms": {
+                "nominative": "siuvėja",
+                "genitive": "siuvėjos",
+                "dative": "siuvėjai",
+                "accusative": "siuvėją",
+                "instrumental": "siuvėja",
+                "locative": "siuvėjoje",
+                "vocative": "siuvėja"
+            },
+            "ru": ["швея", "портниха"]
+        },
+        {
+            "type": "noun",
+            "lemma": "kirpėjas",
+            "forms": {
+                "nominative": "kirpėjas",
+                "genitive": "kirpėjo",
+                "dative": "kirpėjui",
+                "accusative": "kirpėją",
+                "instrumental": "kirpėju",
+                "locative": "kirpėjuje",
+                "vocative": "kirpėjau"
+            },
+            "ru": ["парикмахер"]
+        },
+        {
+            "type": "noun",
+            "lemma": "kirpėja",
+            "forms": {
+                "nominative": "kirpėja",
+                "genitive": "kirpėjos",
+                "dative": "kirpėjai",
+                "accusative": "kirpėją",
+                "instrumental": "kirpėja",
+                "locative": "kirpėjoje",
+                "vocative": "kirpėja"
+            },
+            "ru": ["парикмахерша", "парикмахер"]
+        },
+        {
+            "type": "noun",
+            "lemma": "padavėjas",
+            "forms": {
+                "nominative": "padavėjas",
+                "genitive": "padavėjo",
+                "dative": "padavėjui",
+                "accusative": "padavėją",
+                "instrumental": "padavėju",
+                "locative": "padavėjuje",
+                "vocative": "padavėjau"
+            },
+            "ru": ["официант"]
+        },
+        {
+            "type": "noun",
+            "lemma": "padavėja",
+            "forms": {
+                "nominative": "padavėja",
+                "genitive": "padavėjos",
+                "dative": "padavėjai",
+                "accusative": "padavėją",
+                "instrumental": "padavėja",
+                "locative": "padavėjoje",
+                "vocative": "padavėja"
+            },
+            "ru": ["официантка"]
+        },
+        {
+            "type": "noun",
+            "lemma": "pardavėjas",
+            "forms": {
+                "nominative": "pardavėjas",
+                "genitive": "pardavėjo",
+                "dative": "pardavėjui",
+                "accusative": "pardavėją",
+                "instrumental": "pardavėju",
+                "locative": "pardavėjuje",
+                "vocative": "pardavėjau"
+            },
+            "ru": ["продавец"]
+        },
+        {
+            "type": "noun",
+            "lemma": "pardavėja",
+            "forms": {
+                "nominative": "pardavėja",
+                "genitive": "pardavėjos",
+                "dative": "pardavėjai",
+                "accusative": "pardavėją",
+                "instrumental": "pardavėja",
+                "locative": "pardavėjoje",
+                "vocative": "pardavėja"
+            },
+            "ru": ["продавщица", "продавец"]
+        }
+    ]
+}
