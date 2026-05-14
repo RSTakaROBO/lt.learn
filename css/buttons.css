@@ -10,8 +10,8 @@
     font-weight: 600;
     padding: 0.6rem 1rem;
     border-radius: var(--radius-control);
-    border: var(--stroke) solid transparent;
-    background: transparent;
+    border: var(--stroke) solid color-mix(in srgb, var(--border) 74%, transparent);
+    background: color-mix(in srgb, var(--surface) 88%, var(--surface-elevated));
     color: var(--text);
     cursor: pointer;
     transition:
@@ -23,8 +23,8 @@
 
 .btn.ghost {
     border-color: color-mix(in srgb, var(--border) 86%, transparent) !important;
-    background: color-mix(in srgb, var(--control-ghost-bg) 74%, transparent) !important;
-    background-color: color-mix(in srgb, var(--control-ghost-bg) 74%, transparent) !important;
+    background: color-mix(in srgb, var(--text) 5%, var(--surface)) !important;
+    background-color: color-mix(in srgb, var(--text) 5%, var(--surface)) !important;
     background-image: none !important;
     color: var(--text) !important;
 }
@@ -67,7 +67,7 @@
     padding: 0.5rem 0.55rem;
     border-radius: var(--radius-tile);
     border-color: color-mix(in srgb, var(--border) 82%, transparent);
-    background: color-mix(in srgb, var(--surface-elevated) 82%, transparent);
+    background: color-mix(in srgb, var(--surface-elevated) 82%, var(--surface));
 }
 
 /* Ответ пользователя: кольцо по периметру внутри кнопки */
@@ -151,7 +151,7 @@
 
 .btn.ghost:hover:not(.vocab-choice--correct):not(.vocab-choice--wrong) {
     border-color: color-mix(in srgb, var(--accent) 58%, var(--border)) !important;
-    background: color-mix(in srgb, var(--accent) 12%, var(--control-ghost-bg)) !important;
-    background-color: color-mix(in srgb, var(--accent) 12%, var(--control-ghost-bg)) !important;
+    background: color-mix(in srgb, var(--accent) 12%, var(--surface)) !important;
+    background-color: color-mix(in srgb, var(--accent) 12%, var(--surface)) !important;
     background-image: none !important;
 }

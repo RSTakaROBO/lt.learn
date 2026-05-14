@@ -4,6 +4,7 @@
 :root {
     --stroke: 2px;
     --quiz-bottom-bar-clearance: 5.15rem;
+    --quiz-bottom-bar-clearance-float: 5.6rem;
     /** Высота блока литовской клавиатуры: 5 содержательных рядов + зазоры + padding клавиатуры */
     --lt-keyboard-block-clearance: 17rem;
     /** Дополнительный зазор слева / справа / снизу у клавиш (к safe-area добавляется) */
@@ -31,4 +32,10 @@
 
     --gap-actions: 0.5rem;
     --touch-btn-min-h: 2.75rem;
+}
+
+@media (pointer: coarse) {
+    :root {
+        --quiz-bottom-bar-clearance: var(--quiz-bottom-bar-clearance-float);
+    }
 }

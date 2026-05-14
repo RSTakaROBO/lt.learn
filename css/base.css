@@ -9,6 +9,8 @@ html {
 }
 
 body {
+    --app-bg-pattern-main: color-mix(in srgb, var(--text) 7%, transparent);
+    --app-bg-pattern-accent: color-mix(in srgb, var(--accent) 3%, transparent);
     margin: 0;
     min-height: 100%;
     min-height: 100dvh;
@@ -16,9 +18,21 @@ body {
     display: flex;
     flex-direction: column;
     font-family: "Segoe UI", system-ui, sans-serif;
-    background: var(--bg);
+    background:
+        radial-gradient(circle at 1px 1px, var(--app-bg-pattern-main) 1px, transparent 0),
+        linear-gradient(135deg, var(--app-bg-pattern-accent) 0 1px, transparent 1px 24px), var(--bg);
+    background-size:
+        18px 18px,
+        24px 24px,
+        auto;
     color: var(--text);
     line-height: 1.5;
+}
+
+body.lt-keyboard-open {
+    overflow-x: hidden;
+    overflow-y: hidden;
+    max-width: 100dvw;
 }
 
 /* Единые правила для «тапается пальцем» */

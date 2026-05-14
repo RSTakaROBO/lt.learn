@@ -97,7 +97,7 @@ body.vocab-round-summary-modal-open .quiz-bottom-bar {
     margin-bottom: var(--panel-section-gap);
     border: var(--stroke) solid var(--border);
     border-radius: var(--radius-control);
-    background: transparent;
+    background: var(--surface);
     overflow-x: hidden;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;

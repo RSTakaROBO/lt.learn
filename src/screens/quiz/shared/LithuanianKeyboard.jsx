@@ -4,20 +4,21 @@ import { createPortal } from "react-dom"
 import { LT_DIACRITIC_TOOLBAR_CHARS } from "js/lt-diacritic-toolbar-chars.js"
 import { STR } from "js/i18n/strings-ru.js"
 
-/** Портал: иначе #quiz.panel имеет animation с transform → fixed считается от карточки, не от экрана. */
-const LT_KEYBOARD_PORTAL_TARGET = typeof document !== "undefined" ? document.body : null
+const KEYBOARD_PORTAL_TARGET = typeof document !== "undefined" ? document.body : null
 
-/** Примерно синхронно с CSS transition (fallback размонтирования). */
 const SHEET_LEAVE_MS = 360
+const KEY_PREVIEW_RELEASE_MS = 130
 
-const KEY_ROWS = [
+/* ─── Раскладки ─── */
+
+const LT_KEY_ROWS = [
     ["q", "w", "e", "r", "t", "y", "u", "i", "o", "p"],
     ["a", "s", "d", "f", "g", "h", "j", "k", "l"],
     ["shift", "z", "c", "v", "b", "n", "m", "backspace"],
     ["hide", "space", "enter"],
 ]
 
-const SHIFT_KEY_MAP = {
+const LT_SHIFT_MAP = {
     a: "ą",
     c: "č",
     e: "ė",
@@ -26,6 +27,37 @@ const SHIFT_KEY_MAP = {
     u: "ū",
     z: "ž",
 }
+
+export const KEYBOARD_LAYOUT_LT = {
+    id: "lt",
+    keyRows: LT_KEY_ROWS,
+    shiftMap: LT_SHIFT_MAP,
+    diacritics: LT_DIACRITIC_TOOLBAR_CHARS,
+    ariaLabel: "Литовская клавиатура",
+    shiftAutoOff: true,
+    staggerRow: 1,
+}
+
+const RU_KEY_ROWS = [
+    ["й", "ц", "у", "к", "е", "н", "г", "ш", "щ", "з", "х"],
+    ["ф", "ы", "в", "а", "п", "р", "о", "л", "д", "ж", "э"],
+    ["shift", "я", "ч", "с", "м", "и", "т", "ь", "б", "ю", "backspace"],
+    ["hide", "space", "enter"],
+]
+
+const RU_SHIFT_MAP = { ь: "ъ" }
+
+export const KEYBOARD_LAYOUT_RU = {
+    id: "ru",
+    keyRows: RU_KEY_ROWS,
+    shiftMap: RU_SHIFT_MAP,
+    diacritics: null,
+    ariaLabel: "Русская клавиатура",
+    shiftAutoOff: true,
+    staggerRow: -1,
+}
+
+/* ─── Иконки ─── */
 
 function IconChevronDown() {
     return (
@@ -41,7 +73,6 @@ function IconChevronDown() {
     )
 }
 
-/** Режим «литовские буквы» — символ Shift без Unicode ⇧ */
 function IconShift() {
     return (
         <svg className="lt-keyboard-shift" viewBox="0 0 24 24" fill="none" aria-hidden>
@@ -77,14 +108,12 @@ function IconCheck() {
     )
 }
 
-function isIgnoredOutsideTarget(
-    target,
-    /** @type {React.RefObject<HTMLInputElement | null>} */ inputRef
-) {
+/* ─── Утилиты ─── */
+
+function isIgnoredOutsideTarget(target, inputRef) {
     if (!(target instanceof Element)) return true
     if (target.closest(".lt-keyboard")) return true
     if (target.closest(".lithuanian-input")) return true
-    /* Кнопки квиза: основной футер `#quiz-footer-actions` и инлайн (hardcore словарь). */
     if (target.closest(".quiz-footer-actions")) return true
     const input = inputRef.current
     if (input && (target === input || input.contains(target))) return true
@@ -130,16 +159,17 @@ function keyLabel(key) {
 }
 
 function keyAriaLabel(key) {
-    if (key === "shift") return "Переключить литовские буквы"
+    if (key === "shift") return "Переключить регистр"
     if (key === "space") return "Вставить пробел"
     if (key === "backspace") return "Удалить символ"
     if (key === "enter") return "Отправить ответ"
     return `Вставить ${key}`
 }
 
-function displayKey(key, shifted) {
+function displayKey(key, shifted, shiftMap) {
     if (!shifted) return key
-    return SHIFT_KEY_MAP[key] || key
+    if (shiftMap) return shiftMap[key] || key
+    return key.toUpperCase()
 }
 
 function submitInputForm(input) {
@@ -147,7 +177,6 @@ function submitInputForm(input) {
     const form = input.form
     if (!(form instanceof HTMLFormElement)) return
     const formId = form.getAttribute("id")
-    /** Кнопка с `form=id` висит во внешнем футере (падежи / глаголы). */
     let submitter = null
     if (formId) {
         const sel = `button[type="submit"][form="${CSS.escape(formId)}"]:not(:disabled)`
@@ -162,6 +191,8 @@ function submitInputForm(input) {
     }
 }
 
+/* ─── Компонент ─── */
+
 /**
  * @param {{
  *   inputRef: React.RefObject<HTMLInputElement | null>
@@ -170,6 +201,7 @@ function submitInputForm(input) {
  *   visible: boolean
  *   onRequestHide: () => void
  *   onPresenceChange?: (mounted: boolean) => void
+ *   layout?: typeof KEYBOARD_LAYOUT_LT
  * }} props
  */
 export function LithuanianKeyboard({
@@ -179,18 +211,34 @@ export function LithuanianKeyboard({
     visible,
     onRequestHide,
     onPresenceChange,
+    layout = KEYBOARD_LAYOUT_LT,
 }) {
     const [shifted, setShifted] = useState(false)
     const [mounted, setMounted] = useState(false)
     const [entered, setEntered] = useState(false)
+    const [pressedPreviewId, setPressedPreviewId] = useState(null)
     const panelRef = useRef(null)
+    const previewReleaseTimerRef = useRef(0)
+
+    const keyRows = layout.keyRows
+    const shiftMap = layout.shiftMap
+    const diacritics = layout.diacritics
+    const shiftAutoOff = layout.shiftAutoOff !== false
+    const staggerRow = layout.staggerRow ?? -1
 
     useEffect(() => {
         if (!visible) setShifted(false)
     }, [visible])
 
+    useEffect(
+        () => () => {
+            window.clearTimeout(previewReleaseTimerRef.current)
+        },
+        []
+    )
+
     useEffect(() => {
-        if (!LT_KEYBOARD_PORTAL_TARGET) return undefined
+        if (!KEYBOARD_PORTAL_TARGET) return undefined
         if (visible) {
             setMounted(true)
             const id = requestAnimationFrame(() => {
@@ -203,7 +251,7 @@ export function LithuanianKeyboard({
     }, [visible])
 
     useEffect(() => {
-        if (!LT_KEYBOARD_PORTAL_TARGET) return undefined
+        if (!KEYBOARD_PORTAL_TARGET) return undefined
         if (visible || entered || !mounted) return undefined
 
         const el = panelRef.current
@@ -234,6 +282,13 @@ export function LithuanianKeyboard({
     }, [mounted, onPresenceChange])
 
     useEffect(() => {
+        document.body.classList.toggle("lt-keyboard-open", mounted)
+        return () => {
+            document.body.classList.remove("lt-keyboard-open")
+        }
+    }, [mounted])
+
+    useEffect(() => {
         if (!mounted || !entered) return undefined
 
         function onPointerDownCapture(e) {
@@ -246,7 +301,7 @@ export function LithuanianKeyboard({
         return () => document.removeEventListener("pointerdown", onPointerDownCapture, true)
     }, [mounted, entered, inputRef, onRequestHide])
 
-    if (!mounted || !LT_KEYBOARD_PORTAL_TARGET) return null
+    if (!mounted || !KEYBOARD_PORTAL_TARGET) return null
 
     function applyKey(key) {
         if (key === "shift") {
@@ -259,7 +314,7 @@ export function LithuanianKeyboard({
             focusInput(input)
             return
         }
-        const text = key === "space" ? " " : displayKey(key, shifted)
+        const text = key === "space" ? " " : displayKey(key, shifted, shiftMap)
         const edit =
             key === "backspace"
                 ? removeBeforeCaret(input, value)
@@ -267,17 +322,36 @@ export function LithuanianKeyboard({
         onValueChange(edit.value)
         setCaret(input, edit.caret)
 
-        if (
-            shifted &&
-            key !== "backspace" &&
-            Object.prototype.hasOwnProperty.call(SHIFT_KEY_MAP, key)
-        ) {
-            setShifted(false)
+        if (shifted && shiftAutoOff && key !== "backspace") {
+            if (shiftMap ? Object.prototype.hasOwnProperty.call(shiftMap, key) : true) {
+                setShifted(false)
+            }
         }
     }
 
     function handlePointerPrep() {
         focusInput(inputRef.current)
+    }
+
+    function handleKeyPointerDown(e, previewId) {
+        e.preventDefault()
+        e.currentTarget.setPointerCapture?.(e.pointerId)
+        window.clearTimeout(previewReleaseTimerRef.current)
+        setPressedPreviewId(previewId)
+        handlePointerPrep()
+    }
+
+    function handleKeyPointerEnd(e) {
+        e.currentTarget.releasePointerCapture?.(e.pointerId)
+        schedulePreviewRelease()
+    }
+
+    function schedulePreviewRelease() {
+        window.clearTimeout(previewReleaseTimerRef.current)
+        previewReleaseTimerRef.current = window.setTimeout(
+            () => setPressedPreviewId(null),
+            KEY_PREVIEW_RELEASE_MS
+        )
     }
 
     function insertDiacriticLetter(ch) {
@@ -288,6 +362,7 @@ export function LithuanianKeyboard({
     }
 
     function renderDiacriticRow() {
+        if (!diacritics || diacritics.length === 0) return null
         return (
             <div className="lt-keyboard-diacritic-block">
                 <div
@@ -295,18 +370,25 @@ export function LithuanianKeyboard({
                     role="group"
                     aria-label={STR.quiz.ltCharsToolbarAria}
                 >
-                    {LT_DIACRITIC_TOOLBAR_CHARS.map((ch) => (
+                    {diacritics.map((ch) => (
                         <button
                             key={ch}
                             type="button"
                             className="lt-keyboard-key lt-keyboard-key--diacritic"
                             aria-label={`Вставить ${ch}`}
                             onPointerDown={(e) => {
-                                e.preventDefault()
-                                handlePointerPrep()
+                                handleKeyPointerDown(e, `diacritic-${ch}`)
                             }}
+                            onPointerUp={handleKeyPointerEnd}
+                            onPointerCancel={handleKeyPointerEnd}
+                            onLostPointerCapture={schedulePreviewRelease}
                             onClick={() => insertDiacriticLetter(ch)}
                         >
+                            {pressedPreviewId === `diacritic-${ch}` ? (
+                                <span className="lt-keyboard-key-pop" aria-hidden="true">
+                                    {ch}
+                                </span>
+                            ) : null}
                             {ch}
                         </button>
                     ))}
@@ -316,7 +398,8 @@ export function LithuanianKeyboard({
         )
     }
 
-    function renderLetterRow(rowKeys, rowIndex, stagger) {
+    function renderLetterRow(rowKeys, rowIndex) {
+        const stagger = rowIndex === staggerRow
         if (stagger) {
             return (
                 <div
@@ -357,6 +440,11 @@ export function LithuanianKeyboard({
                 </button>
             )
         }
+        const previewLabel =
+            key === "shift" || key === "space" || key === "backspace" || key === "enter"
+                ? ""
+                : displayKey(key, shifted, shiftMap)
+        const previewId = previewLabel ? `key-${key}` : null
         return (
             <button
                 key={key}
@@ -374,11 +462,23 @@ export function LithuanianKeyboard({
                     .join(" ")}
                 aria-label={keyAriaLabel(key)}
                 onPointerDown={(e) => {
-                    e.preventDefault()
-                    handlePointerPrep()
+                    if (previewId) {
+                        handleKeyPointerDown(e, previewId)
+                    } else {
+                        e.preventDefault()
+                        handlePointerPrep()
+                    }
                 }}
+                onPointerUp={previewId ? handleKeyPointerEnd : undefined}
+                onPointerCancel={previewId ? handleKeyPointerEnd : undefined}
+                onLostPointerCapture={previewId ? schedulePreviewRelease : undefined}
                 onClick={() => applyKey(key)}
             >
+                {previewId && pressedPreviewId === previewId ? (
+                    <span className="lt-keyboard-key-pop" aria-hidden="true">
+                        {previewLabel}
+                    </span>
+                ) : null}
                 {key === "enter" ? (
                     <IconCheck />
                 ) : key === "shift" ? (
@@ -386,7 +486,7 @@ export function LithuanianKeyboard({
                 ) : key === "backspace" || key === "space" ? (
                     keyLabel(key)
                 ) : (
-                    displayKey(key, shifted)
+                    displayKey(key, shifted, shiftMap)
                 )}
             </button>
         )
@@ -395,36 +495,41 @@ export function LithuanianKeyboard({
     const layer = (
         <div
             ref={panelRef}
-            className={["lt-keyboard", entered && "lt-keyboard--shown"].filter(Boolean).join(" ")}
-            aria-label="Литовская клавиатура"
+            className={[
+                "lt-keyboard",
+                entered && "lt-keyboard--shown",
+                layout.id === "ru" && "lt-keyboard--ru",
+            ]
+                .filter(Boolean)
+                .join(" ")}
+            aria-label={layout.ariaLabel}
             aria-hidden={!entered}
         >
             {renderDiacriticRow()}
-            {KEY_ROWS.map((rowKeys, rowIndex) => {
-                if (rowIndex < 2) {
-                    return renderLetterRow(rowKeys, rowIndex, rowIndex === 1)
+            {keyRows.map((rowKeys, rowIndex) => {
+                const isBottom = rowIndex === keyRows.length - 1
+                const isTail = rowIndex === keyRows.length - 2
+                if (isBottom) {
+                    return (
+                        <div key={rowIndex} className="lt-keyboard-row lt-keyboard-row--bottom">
+                            {rowKeys.map((rowKey) => renderKeyCell(rowKey, { bottomRow: true }))}
+                        </div>
+                    )
                 }
-                return (
-                    <div
-                        key={rowIndex}
-                        className={[
-                            "lt-keyboard-row",
-                            rowIndex === 2 && "lt-keyboard-row--letters-tail",
-                            rowIndex === KEY_ROWS.length - 1 && "lt-keyboard-row--bottom",
-                        ]
-                            .filter(Boolean)
-                            .join(" ")}
-                    >
-                        {rowKeys.map((rowKey) =>
-                            renderKeyCell(rowKey, {
-                                bottomRow: rowIndex === KEY_ROWS.length - 1,
-                            })
-                        )}
-                    </div>
-                )
+                if (isTail) {
+                    return (
+                        <div
+                            key={rowIndex}
+                            className="lt-keyboard-row lt-keyboard-row--letters-tail"
+                        >
+                            {rowKeys.map((rowKey) => renderKeyCell(rowKey))}
+                        </div>
+                    )
+                }
+                return renderLetterRow(rowKeys, rowIndex)
             })}
         </div>
     )
 
-    return createPortal(layer, LT_KEYBOARD_PORTAL_TARGET)
+    return createPortal(layer, KEYBOARD_PORTAL_TARGET)
 }

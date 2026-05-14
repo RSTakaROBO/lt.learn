@@ -7,13 +7,14 @@
     border-radius: var(--radius-control);
     border: 1px solid color-mix(in srgb, var(--border) 82%, transparent);
     overflow: hidden;
-    background: color-mix(in srgb, var(--surface-elevated) 74%, var(--surface));
+    background: var(--surface);
 }
 
 .data-table {
     width: 100%;
     border-collapse: collapse;
     font-size: 0.95rem;
+    background: var(--surface);
 }
 
 .data-table__th {
@@ -45,6 +46,7 @@
     vertical-align: middle;
     border-bottom: 1px solid color-mix(in srgb, var(--border) 78%, transparent);
     color: var(--text);
+    background: var(--surface);
 }
 
 .data-table__td--narrow {
@@ -67,10 +69,10 @@
 
 @media (hover: hover) {
     .data-table tbody tr:hover td {
-        background: color-mix(in srgb, var(--accent) 7%, transparent);
+        background: color-mix(in srgb, var(--accent) 7%, var(--surface));
     }
 }
 
 .stats-table-wrap .data-table {
-    background: transparent;
+    background: var(--surface);
 }

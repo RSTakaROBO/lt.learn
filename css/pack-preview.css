@@ -28,7 +28,7 @@
     overflow-y: visible;
     border: 1px solid var(--border);
     border-radius: var(--radius-card);
-    background: var(--panel-soft);
+    background: var(--surface);
 }
 
 .pack-preview-table-scroll .data-table {

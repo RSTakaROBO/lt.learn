@@ -1,13 +1,15 @@
 import { useEffect, useRef, useState } from "react"
 import { shallowEqual, useSelector } from "react-redux"
 
-import { TRAIN_MODE } from "js/config.js"
+import { TRAIN_MODE, VOCAB_DIRECTION } from "js/config.js"
 import { STR } from "js/i18n/strings-ru.js"
 import { AppFlowScreen } from "src/components/layout/AppFlowScreen.jsx"
 import { handleQuizSkipButtonClick } from "js/quiz.js"
 import { openVocabRoundSummaryOverlay } from "js/vocab-round.js"
 import { ConfirmDialogOverlay } from "src/components/ui/ConfirmDialogOverlay.jsx"
 import {
+    KEYBOARD_LAYOUT_LT,
+    KEYBOARD_LAYOUT_RU,
     LithuanianKeyboard,
     QuizActionButtons,
     QuizFeedback,
@@ -99,8 +101,12 @@ export function QuizScreen({ heightMode = "fill", hidden = false } = {}) {
               : "quiz--vocab"
           : "quiz--cases"
 
-    const lithuanianOverlayEligible = coarseTouchPreferred && !casesUseNativeKeyboard
-    const showLithuanianOverlayKeyboard = lithuanianOverlayEligible && usesTypedLtQuiz
+    const overlayKeyboardEligible = coarseTouchPreferred && !casesUseNativeKeyboard
+    const showOverlayKeyboard = overlayKeyboardEligible && usesTypedLtQuiz
+
+    const answerInRussian =
+        isVocab && isHardcore && task?.vocabDirection === VOCAB_DIRECTION.LT_TO_RU
+    const keyboardLayout = answerInRussian ? KEYBOARD_LAYOUT_RU : KEYBOARD_LAYOUT_LT
 
     useEffect(() => {
         if (!casesUseNativeKeyboard) return
@@ -112,8 +118,8 @@ export function QuizScreen({ heightMode = "fill", hidden = false } = {}) {
     }, [usesTypedLtQuiz])
 
     useEffect(() => {
-        if (!showLithuanianOverlayKeyboard) setQuizLtKeyboardMounted(false)
-    }, [showLithuanianOverlayKeyboard])
+        if (!showOverlayKeyboard) setQuizLtKeyboardMounted(false)
+    }, [showOverlayKeyboard])
 
     useEffect(() => {
         setQuizTypingAnswer("")
@@ -131,7 +137,7 @@ export function QuizScreen({ heightMode = "fill", hidden = false } = {}) {
                     className={[
                         "widget panel app-screen__panel",
                         quizModeClass,
-                        showLithuanianOverlayKeyboard &&
+                        showOverlayKeyboard &&
                             (quizLtKeyboardOpen || quizLtKeyboardMounted) &&
                             "quiz-lt-keyboard-clearance",
                     ]
@@ -144,7 +150,7 @@ export function QuizScreen({ heightMode = "fill", hidden = false } = {}) {
                             feedback={isCases ? feedback : null}
                             inputRef={quizTypingInputRef}
                             isActive={isCases}
-                            lithuanianOverlayKeyboard={showLithuanianOverlayKeyboard && isCases}
+                            lithuanianOverlayKeyboard={showOverlayKeyboard && isCases}
                             onAnswerValueChange={setQuizTypingAnswer}
                             onRevealLithuanianKeyboard={() => setQuizLtKeyboardOpen(true)}
                             pulseId={vocabStreakPulseId}
@@ -171,7 +177,7 @@ export function QuizScreen({ heightMode = "fill", hidden = false } = {}) {
                             submitLabel={submitLabel}
                             showFinish={showFinish}
                             showWrongTranslation={vocabShowWrongTranslation}
-                            lithuanianOverlayKeyboard={showLithuanianOverlayKeyboard && isHardcore}
+                            lithuanianOverlayKeyboard={showOverlayKeyboard && isHardcore}
                             onRevealLithuanianKeyboard={() => setQuizLtKeyboardOpen(true)}
                             quizTypingAnswer={quizTypingAnswer}
                             quizTypingInputRef={quizTypingInputRef}
@@ -185,7 +191,7 @@ export function QuizScreen({ heightMode = "fill", hidden = false } = {}) {
                             feedback={isVerbs ? feedback : null}
                             inputRef={quizTypingInputRef}
                             isActive={isVerbs}
-                            lithuanianOverlayKeyboard={showLithuanianOverlayKeyboard && isVerbs}
+                            lithuanianOverlayKeyboard={showOverlayKeyboard && isVerbs}
                             onAnswerValueChange={setQuizTypingAnswer}
                             onRevealLithuanianKeyboard={() => setQuizLtKeyboardOpen(true)}
                             pulseId={vocabStreakPulseId}
@@ -225,9 +231,10 @@ export function QuizScreen({ heightMode = "fill", hidden = false } = {}) {
                                     submitLabel={submitLabel}
                                 />
                             </div>
-                            {(isCases || isVerbs) && showLithuanianOverlayKeyboard ? (
+                            {(isCases || isVerbs) && showOverlayKeyboard ? (
                                 <LithuanianKeyboard
                                     inputRef={quizTypingInputRef}
+                                    layout={KEYBOARD_LAYOUT_LT}
                                     onPresenceChange={setQuizLtKeyboardMounted}
                                     onRequestHide={() => setQuizLtKeyboardOpen(false)}
                                     onValueChange={setQuizTypingAnswer}
@@ -238,10 +245,11 @@ export function QuizScreen({ heightMode = "fill", hidden = false } = {}) {
                         </div>
                     )}
                     {isHardcore && isVocab ? (
-                        showLithuanianOverlayKeyboard ? (
+                        showOverlayKeyboard ? (
                             <div className="app-screen__footer quiz-footer-stack">
                                 <LithuanianKeyboard
                                     inputRef={quizTypingInputRef}
+                                    layout={keyboardLayout}
                                     onPresenceChange={setQuizLtKeyboardMounted}
                                     onRequestHide={() => setQuizLtKeyboardOpen(false)}
                                     onValueChange={setQuizTypingAnswer}

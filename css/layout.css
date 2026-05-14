@@ -92,6 +92,25 @@ html:has(#pack-preview-shell) body {
         0 -10px 26px color-mix(in srgb, var(--bg) 58%, transparent);
 }
 
+@media (pointer: coarse) {
+    .quiz-bottom-bar {
+        left: 0.5rem;
+        right: 0.5rem;
+        bottom: calc(0.45rem + env(safe-area-inset-bottom, 0px));
+        width: auto;
+        border-radius: 1.75rem;
+        border: 1px solid color-mix(in srgb, var(--border) 62%, transparent);
+        border-top: 1px solid color-mix(in srgb, var(--border) 62%, transparent);
+        background: color-mix(in srgb, var(--surface) 88%, var(--bg));
+        box-shadow:
+            0 2px 16px color-mix(in srgb, var(--bg) 52%, transparent),
+            0 0 0 0.5px color-mix(in srgb, var(--text) 6%, transparent);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+        padding-bottom: 0;
+    }
+}
+
 .quiz-bottom-bar-inner {
     max-width: var(--shell-max-width);
     margin: 0 auto;
@@ -103,6 +122,12 @@ html:has(#pack-preview-shell) body {
     grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 0.28rem;
     align-items: stretch;
+}
+
+@media (pointer: coarse) {
+    .quiz-bottom-bar-inner {
+        padding: 0.22rem 0.18rem 0.25rem;
+    }
 }
 
 .quiz-bar-btn {
@@ -118,7 +143,7 @@ html:has(#pack-preview-shell) body {
     gap: 0.32rem;
     padding: 0.42rem 0.35rem 0.48rem;
     border: 1px solid transparent;
-    border-radius: var(--radius-control);
+    border-radius: 1.45rem;
     background: transparent;
     color: var(--muted);
     cursor: pointer;
@@ -178,8 +203,19 @@ html:has(#pack-preview-shell) body {
 @media (max-width: 440px) {
     .quiz-bottom-bar-inner {
         gap: 0.18rem;
-        padding-left: max(0.5rem, env(safe-area-inset-left, 0px));
-        padding-right: max(0.5rem, env(safe-area-inset-right, 0px));
+    }
+
+    @media (pointer: coarse) {
+        .quiz-bottom-bar-inner {
+            padding: 0.22rem 0.18rem 0.25rem;
+        }
+    }
+
+    @media not (pointer: coarse) {
+        .quiz-bottom-bar-inner {
+            padding-left: max(0.5rem, env(safe-area-inset-left, 0px));
+            padding-right: max(0.5rem, env(safe-area-inset-right, 0px));
+        }
     }
 
     .quiz-bar-btn {

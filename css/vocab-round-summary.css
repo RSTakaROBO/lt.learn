@@ -42,7 +42,7 @@
     padding: 1rem;
     border-radius: var(--radius-card);
     border: var(--stroke) solid var(--border);
-    background: color-mix(in srgb, var(--surface-elevated) 92%, transparent);
+    background: color-mix(in srgb, var(--surface-elevated) 92%, var(--surface));
     display: flex;
     flex-direction: column;
     gap: 1rem;
@@ -81,7 +81,7 @@
     min-width: 0;
     padding: 0.7rem 0.75rem;
     border-radius: var(--radius-control);
-    background: color-mix(in srgb, var(--surface) 72%, transparent);
+    background: color-mix(in srgb, var(--surface) 92%, var(--surface-elevated));
     border: var(--stroke) solid color-mix(in srgb, var(--border) 70%, transparent);
 }
 

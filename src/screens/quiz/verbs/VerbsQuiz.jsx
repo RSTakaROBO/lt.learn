@@ -101,6 +101,7 @@ export function VerbsQuiz({
 
     return (
         <div id="quiz-verbs-ui" className={isActive ? "" : "hidden"}>
+            <VocabRoundProgress progress={roundProgress} />
             <div className="verb-forms-block">
                 <div className="verb-forms-block__main">
                     <VerbFormsPrompt answered={answered} feedbackKind={feedbackKind} task={task} />
@@ -113,7 +114,6 @@ export function VerbsQuiz({
                 <VocabStreakMultiplier streak={streak} pulseId={pulseId} />
                 <VocabRoundDots dots={roundDots} />
             </div>
-            <VocabRoundProgress progress={roundProgress} />
             <form
                 id="verb-answer-form"
                 className="vocab-answer-form"

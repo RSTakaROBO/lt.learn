@@ -8,6 +8,7 @@ import { handleMorphCasesAnswerSubmit } from "js/quiz.js"
 import {
     LithuanianInput,
     QuizFeedback,
+    SwipeCardStack,
     VocabRoundDots,
     VocabRoundProgress,
     VocabStreakMultiplier,
@@ -44,6 +45,10 @@ export function CasesQuiz({
     const casesShowTranslation = useSelector((s) => s.trainer.persisted.casesShowTranslation)
     const casesPrompt = casesPromptForTask(task, casesShowTranslation)
     const feedbackKind = feedback?.kind === "ok" || feedback?.kind === "bad" ? feedback.kind : ""
+    const cardKey = [
+        task?.word?.id || task?.word?.lemma || task?.word?.nominative || casesPrompt.lemma,
+        task?.targetCase || "",
+    ].join(":")
 
     useEffect(() => {
         if (!isActive) return
@@ -54,30 +59,35 @@ export function CasesQuiz({
 
     return (
         <div id="quiz-cases-ui" className={isActive ? "" : "hidden"}>
-            <div className="prompt">
-                <div
-                    className={["vocab-ru-card", feedbackKind && `vocab-ru-card--${feedbackKind}`]
-                        .filter(Boolean)
-                        .join(" ")}
-                >
-                    <p className="lemma vocab-ru-display" id="lemma-display">
-                        {casesPrompt.lemma}
-                    </p>
-                    <p className="target-line">
-                        <span className="target-prefix">{STR.quiz.targetCasePrefix}</span>
-                        <span id="target-case-display">{casesPrompt.targetCase}</span>
-                    </p>
-                    <QuizFeedback
-                        className="vocab-card-feedback cases-card-feedback"
-                        feedback={feedback}
-                        id="cases-card-feedback"
-                        reserveSpace
-                    />
-                    <VocabStreakMultiplier streak={streak} pulseId={pulseId} />
-                    <VocabRoundDots dots={roundDots} />
-                </div>
-            </div>
             <VocabRoundProgress progress={roundProgress} />
+            <div className="prompt">
+                <SwipeCardStack cardKey={cardKey}>
+                    <div
+                        className={[
+                            "vocab-ru-card",
+                            feedbackKind && `vocab-ru-card--${feedbackKind}`,
+                        ]
+                            .filter(Boolean)
+                            .join(" ")}
+                    >
+                        <p className="lemma vocab-ru-display" id="lemma-display">
+                            {casesPrompt.lemma}
+                        </p>
+                        <p className="target-line">
+                            <span className="target-prefix">{STR.quiz.targetCasePrefix}</span>
+                            <span id="target-case-display">{casesPrompt.targetCase}</span>
+                        </p>
+                        <QuizFeedback
+                            className="vocab-card-feedback cases-card-feedback"
+                            feedback={feedback}
+                            id="cases-card-feedback"
+                            reserveSpace
+                        />
+                        <VocabStreakMultiplier streak={streak} pulseId={pulseId} />
+                        <VocabRoundDots dots={roundDots} />
+                    </div>
+                </SwipeCardStack>
+            </div>
             <form
                 id="answer-form"
                 autoComplete="off"
