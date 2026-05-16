@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react"
 import { shallowEqual, useSelector } from "react-redux"
 
-import { TRAIN_MODE, VOCAB_DIRECTION } from "js/config.js"
+import { TRAIN_MODE, VOCAB_DIRECTION, VOCAB_MODE } from "js/config.js"
 import { STR } from "js/i18n/strings-ru.js"
 import { AppFlowScreen } from "src/components/layout/AppFlowScreen.jsx"
 import { handleQuizSkipButtonClick } from "js/quiz.js"
@@ -34,6 +34,8 @@ export function QuizScreen({ heightMode = "fill", hidden = false } = {}) {
         task,
         answered,
         choiceState,
+        vocabSingleState,
+        vocabSingleNextTask,
         feedback,
         roundDots,
         roundProgress,
@@ -46,6 +48,8 @@ export function QuizScreen({ heightMode = "fill", hidden = false } = {}) {
             task: s.trainer.engine.currentTask,
             answered: s.trainer.engine.answered,
             choiceState: s.trainer.engine.vocabChoice,
+            vocabSingleState: s.trainer.engine.vocabSingle,
+            vocabSingleNextTask: s.trainer.engine.vocabSingleNextTask,
             feedback: s.trainer.quizFeedback,
             roundDots: s.trainer.engine.vocabRoundDots,
             vocabStreak: s.trainer.engine.vocabCorrectStreak,
@@ -80,25 +84,29 @@ export function QuizScreen({ heightMode = "fill", hidden = false } = {}) {
     const isVerbs = task?.mode === TRAIN_MODE.VERBS
     const isCases = !isVocab && !isVerbs
     const isHardcore = !!task?.vocabHardcore
+    const isSingleVocab = isVocab && task?.vocabMode === VOCAB_MODE.SINGLE
     const usesTypedLtQuiz = isCases || isVerbs || (isVocab && isHardcore)
-    const showChoices = isVocab && !isHardcore
+    const showChoices = isVocab && !isHardcore && !isSingleVocab
     const showFinish = !!roundProgress
-    const showSkip = isVocab && !isHardcore
+    const showSkip = isVocab && !isHardcore && !isSingleVocab
     const submitHidden = isVocab && !isHardcore
     const visibleFooterButtons = (showFinish ? 1 : 0) + (showSkip ? 1 : 0) + (!submitHidden ? 1 : 0)
     const footerSingle = visibleFooterButtons === 1
     const skipLabel =
-        (isVocab && answered && !isHardcore) || (isVerbs && answered)
+        (isVocab && answered && !isHardcore && !isSingleVocab) || (isVerbs && answered)
             ? STR.quiz.next
             : STR.quiz.skip
-    const skipDisabled = !task || (answered && !(isVocab && !isHardcore) && !isVerbs)
+    const skipDisabled =
+        !task || (answered && !(isVocab && !isHardcore && !isSingleVocab) && !isVerbs)
     const submitLabel = answered ? STR.quiz.next : STR.quiz.check
     const quizModeClass = isVerbs
         ? "quiz--verbs"
         : isVocab
           ? isHardcore
               ? "quiz--vocab quiz--vocab-hardcore"
-              : "quiz--vocab"
+              : isSingleVocab
+                ? "quiz--vocab quiz--vocab-single"
+                : "quiz--vocab"
           : "quiz--cases"
 
     const overlayKeyboardEligible = coarseTouchPreferred && !casesUseNativeKeyboard
@@ -183,6 +191,8 @@ export function QuizScreen({ heightMode = "fill", hidden = false } = {}) {
                             quizTypingInputRef={quizTypingInputRef}
                             setQuizTypingAnswer={setQuizTypingAnswer}
                             task={task}
+                            vocabSingleNextTask={vocabSingleNextTask}
+                            vocabSingleState={vocabSingleState}
                         />
 
                         <VerbsQuiz

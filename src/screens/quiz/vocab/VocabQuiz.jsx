@@ -1,11 +1,12 @@
 import { useEffect } from "react"
 
-import { VOCAB_DIRECTION } from "js/config.js"
+import { VOCAB_DIRECTION, VOCAB_MODE } from "js/config.js"
 import { STR } from "js/i18n/strings-ru.js"
 import {
     handleQuizSkipButtonClick,
     handleVocabChoice,
     handleVocabHardcoreFormSubmit,
+    requestVocabSingleNextTask,
 } from "js/quiz.js"
 import { answersMatch } from "js/text-utils.js"
 import {
@@ -22,6 +23,7 @@ import {
     vocabRuPrimary,
     vocabRuUserMatches,
 } from "src/screens/quiz/vocab/vocabWords.js"
+import { SingleVocabCardDeck } from "src/screens/quiz/vocab/SingleVocabCardDeck.jsx"
 
 function vocabPromptForTask(task) {
     if (!task?.word) return { text: "", lang: undefined }
@@ -111,15 +113,18 @@ export function VocabQuiz({
     showFinish,
     showWrongTranslation,
     task,
+    vocabSingleNextTask,
+    vocabSingleState,
 }) {
     const isHardcore = !!task?.vocabHardcore
+    const isSingle = task?.vocabMode === VOCAB_MODE.SINGLE
     const prompt = vocabPromptForTask(task)
-    const showChoices = isActive && !isHardcore
+    const showChoices = isActive && !isHardcore && !isSingle
     const feedbackKind = feedback?.kind === "ok" || feedback?.kind === "bad" ? feedback.kind : ""
     const cardKey = [
         task?.word?.id || task?.word?.lemma || task?.word?.nominative || prompt.text,
         task?.vocabDirection || "",
-        isHardcore ? "hardcore" : "choices",
+        task?.vocabMode || (isHardcore ? "hardcore" : "choices"),
     ].join(":")
 
     useEffect(() => {
@@ -131,31 +136,43 @@ export function VocabQuiz({
     return (
         <div id="quiz-vocab-ui" className={isActive ? "" : "hidden"}>
             <VocabRoundProgress progress={roundProgress} />
-            <SwipeCardStack cardKey={cardKey}>
-                <div
-                    className={["vocab-ru-card", feedbackKind && `vocab-ru-card--${feedbackKind}`]
-                        .filter(Boolean)
-                        .join(" ")}
-                >
-                    <div className="vocab-ru-card-body u-scrollbar-hidden">
-                        <p
-                            className="lemma vocab-ru-display"
-                            id="vocab-ru-display"
-                            lang={prompt.lang}
-                        >
-                            {prompt.text}
-                        </p>
-                        <QuizFeedback
-                            className="vocab-card-feedback"
-                            feedback={feedback}
-                            id="vocab-card-feedback"
-                            reserveSpace={isHardcore}
-                        />
+            {isSingle ? (
+                <SingleVocabCardDeck
+                    nextTask={vocabSingleNextTask}
+                    onRequestNextTask={requestVocabSingleNextTask}
+                    state={vocabSingleState}
+                    task={task}
+                />
+            ) : (
+                <SwipeCardStack cardKey={cardKey}>
+                    <div
+                        className={[
+                            "vocab-ru-card",
+                            feedbackKind && `vocab-ru-card--${feedbackKind}`,
+                        ]
+                            .filter(Boolean)
+                            .join(" ")}
+                    >
+                        <div className="vocab-ru-card-body u-scrollbar-hidden">
+                            <p
+                                className="lemma vocab-ru-display"
+                                id="vocab-ru-display"
+                                lang={prompt.lang}
+                            >
+                                {prompt.text}
+                            </p>
+                            <QuizFeedback
+                                className="vocab-card-feedback"
+                                feedback={isSingle ? null : feedback}
+                                id="vocab-card-feedback"
+                                reserveSpace={isHardcore}
+                            />
+                        </div>
+                        <VocabStreakMultiplier streak={streak} pulseId={pulseId} />
+                        <VocabRoundDots dots={roundDots} />
                     </div>
-                    <VocabStreakMultiplier streak={streak} pulseId={pulseId} />
-                    <VocabRoundDots dots={roundDots} />
-                </div>
-            </SwipeCardStack>
+                </SwipeCardStack>
+            )}
             {showChoices && (
                 <VocabChoices
                     task={task}

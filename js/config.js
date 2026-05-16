@@ -58,6 +58,13 @@ export const VOCAB_DIRECTION = {
     LT_TO_RU: "lt_to_ru",
 }
 
+/** Формат ответа в режиме «Изучение слов». */
+export const VOCAB_MODE = {
+    CHOICES: "choices",
+    SINGLE: "single",
+    HARDCORE: "hardcore",
+}
+
 /** Доступные профили из themes.css (атрибут data-theme на documentElement). */
 export const THEME_IDS = ["ocean", "forest", "ember", "paper", "mist"]
 

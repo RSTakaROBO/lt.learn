@@ -27,6 +27,12 @@ let serviceWorkerLoadHookRegistered = false
 
 function registerServiceWorker() {
     if (!("serviceWorker" in navigator)) return
+    if (import.meta.env.DEV) {
+        navigator.serviceWorker.getRegistrations?.().then((regs) => {
+            regs.forEach((reg) => reg.unregister().catch(() => {}))
+        })
+        return
+    }
     const hostOk =
         location.protocol === "https:" ||
         location.hostname === "localhost" ||

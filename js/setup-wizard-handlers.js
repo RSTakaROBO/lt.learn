@@ -1,4 +1,4 @@
-import { TRAIN_MODE } from "./config.js"
+import { TRAIN_MODE, VOCAB_MODE } from "./config.js"
 import { parseCustomPackJsonFile } from "./custom-packs.js"
 import { fmt } from "./i18n/core.js"
 import { STR } from "./i18n/strings-ru.js"
@@ -72,12 +72,16 @@ export function handleVocabDirectionStartClick() {
     saveVocabDirections(dirsTry)
     const withHint = getEngine().wordBank.filter(isVocabTrainingWord)
     const dirsNow = getResolvedVocabDirections()
-    const needChoices = !dirsNow.hardcore && withHint.length < 4
-    const needAny = dirsNow.hardcore && withHint.length < 1
+    const vocabMode =
+        dirsNow.vocabMode || (dirsNow.hardcore ? VOCAB_MODE.HARDCORE : VOCAB_MODE.CHOICES)
+    const needChoices = vocabMode === VOCAB_MODE.CHOICES && withHint.length < 4
+    const needAny = vocabMode !== VOCAB_MODE.CHOICES && withHint.length < 1
     if (needChoices || needAny) {
         setWizardStatus(
             "vocabDirection",
-            dirsNow.hardcore ? STR.events.vocabNeedRuOne : STR.events.vocabNeedRuFour
+            vocabMode === VOCAB_MODE.CHOICES
+                ? STR.events.vocabNeedRuFour
+                : STR.events.vocabNeedRuOne
         )
         return
     }
@@ -93,7 +97,7 @@ export function handleVocabDirectionStartClick() {
     if (!task) {
         setWizardStatus(
             "vocabDirection",
-            getResolvedVocabDirections().hardcore
+            getResolvedVocabDirections().vocabMode === VOCAB_MODE.HARDCORE
                 ? STR.events.vocabStartHardcoreFail
                 : STR.events.vocabStartChoicesFail
         )
@@ -123,11 +127,19 @@ export async function handlePacksNextClick() {
         clearWizardStatus("case")
         if (loadTrainMode() === TRAIN_MODE.VOCAB) {
             const withHint = getEngine().wordBank.filter(isVocabTrainingWord)
-            const hardcore = getResolvedVocabDirections().hardcore
-            if ((!hardcore && withHint.length < 4) || (hardcore && withHint.length < 1)) {
+            const directions = getResolvedVocabDirections()
+            const vocabMode =
+                directions.vocabMode ||
+                (directions.hardcore ? VOCAB_MODE.HARDCORE : VOCAB_MODE.CHOICES)
+            if (
+                (vocabMode === VOCAB_MODE.CHOICES && withHint.length < 4) ||
+                (vocabMode !== VOCAB_MODE.CHOICES && withHint.length < 1)
+            ) {
                 setWizardStatus(
                     "pack",
-                    hardcore ? STR.events.vocabAfterPackHardcore : STR.events.vocabAfterPackFour
+                    vocabMode === VOCAB_MODE.CHOICES
+                        ? STR.events.vocabAfterPackFour
+                        : STR.events.vocabAfterPackHardcore
                 )
                 return
             }

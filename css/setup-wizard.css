@@ -208,44 +208,55 @@
     width: 100%;
 }
 
-.vocab-hardcore-block .pack-card-face {
+.vocab-hardcore-block .vocab-mode-card--hardcore .pack-card-face {
     border-color: color-mix(in srgb, var(--error) 38%, var(--border));
     background: color-mix(in srgb, var(--error) 7%, var(--surface-elevated));
 }
 
-.vocab-hardcore-block .pack-card:hover .pack-card-face {
+.vocab-hardcore-block .vocab-mode-card--hardcore:hover .pack-card-face {
     border-color: color-mix(in srgb, var(--error) 48%, var(--border));
 }
 
-.vocab-hardcore-block .pack-card-input:checked + .pack-card-face {
+.vocab-hardcore-block .vocab-mode-card--hardcore .pack-card-input:checked + .pack-card-face {
     border-color: color-mix(in srgb, var(--error) 68%, var(--border));
     background: color-mix(in srgb, var(--error) 16%, var(--surface-elevated));
     box-shadow: 0 0 0 1px color-mix(in srgb, var(--error) 32%, transparent);
 }
 
-.vocab-hardcore-block .pack-card--flat .pack-card-input:checked + .pack-card-face {
+.vocab-hardcore-block
+    .vocab-mode-card--hardcore.pack-card--flat
+    .pack-card-input:checked
+    + .pack-card-face {
     box-shadow: 0 0 0 1px color-mix(in srgb, var(--error) 32%, transparent);
 }
 
-.vocab-hardcore-block .pack-card-title {
+.vocab-hardcore-block .vocab-mode-card--hardcore .pack-card-title {
     color: color-mix(in srgb, var(--error) 28%, var(--text));
 }
 
-.vocab-hardcore-block .pack-card-meta {
+.vocab-hardcore-block .vocab-mode-card--hardcore .pack-card-meta {
     color: color-mix(in srgb, var(--error) 22%, var(--muted));
 }
 
-.vocab-hardcore-block .pack-card-tick {
+.vocab-hardcore-block .vocab-mode-card--hardcore .pack-card-tick {
     border-color: color-mix(in srgb, var(--error) 45%, var(--border));
     background: color-mix(in srgb, var(--error) 9%, transparent);
 }
 
-.vocab-hardcore-block .pack-card-input:checked + .pack-card-face .pack-card-tick {
+.vocab-hardcore-block
+    .vocab-mode-card--hardcore
+    .pack-card-input:checked
+    + .pack-card-face
+    .pack-card-tick {
     border-color: color-mix(in srgb, var(--error) 35%, var(--border));
     background: var(--error);
 }
 
-.vocab-hardcore-block .pack-card-input:checked + .pack-card-face .pack-card-tick::after {
+.vocab-hardcore-block
+    .vocab-mode-card--hardcore
+    .pack-card-input:checked
+    + .pack-card-face
+    .pack-card-tick::after {
     border-color: var(--text-on-error);
 }
 

@@ -1,4 +1,4 @@
-import { MIN_GAP_BEFORE_SAME_LEMMA, TRAIN_MODE, VOCAB_DIRECTION } from "js/config.js"
+import { MIN_GAP_BEFORE_SAME_LEMMA, TRAIN_MODE, VOCAB_DIRECTION, VOCAB_MODE } from "js/config.js"
 import { pickRandom, pickWeightedRandom, shuffleArray } from "js/random.js"
 import { loadVocabDirections } from "js/storage.js"
 import { comparableAnswerKey } from "js/text-utils.js"
@@ -65,19 +65,24 @@ function buildVocabChoicesLtToRu(usable, word) {
     return { choices, choiceReveals }
 }
 
-function usableIgnoringExcludedLemma(usable, excludeLemma) {
+function usableIgnoringExcludedLemma(usable, excludeLemmas) {
     if (getEngine().vocabRound) {
         return usable.filter(
             (word) =>
                 getEngine().vocabRound.pool.has(roundLemmaKey(word)) &&
-                roundLemmaKey(word) !== excludeLemma
+                !excludeLemmas.has(roundLemmaKey(word))
         )
     }
-    return usable.filter((word) => roundLemmaKey(word) !== excludeLemma)
+    return usable.filter((word) => !excludeLemmas.has(roundLemmaKey(word)))
 }
 
 export function nextVocabTask(opts = {}) {
-    const excludeLemma = opts.excludeLemma || null
+    const excludeLemmas = new Set(
+        [
+            opts.excludeLemma || null,
+            ...(Array.isArray(opts.excludeLemmas) ? opts.excludeLemmas : []),
+        ].filter(Boolean)
+    )
     const dirsCfg = loadVocabDirections()
     if (!dirsCfg) return null
     const enabled = []
@@ -85,9 +90,12 @@ export function nextVocabTask(opts = {}) {
     if (dirsCfg.lt_to_ru) enabled.push(VOCAB_DIRECTION.LT_TO_RU)
     if (!enabled.length) return null
 
-    const hardcore = !!dirsCfg.hardcore
+    const vocabMode =
+        dirsCfg.vocabMode || (dirsCfg.hardcore ? VOCAB_MODE.HARDCORE : VOCAB_MODE.CHOICES)
+    const hardcore = vocabMode === VOCAB_MODE.HARDCORE
+    const single = vocabMode === VOCAB_MODE.SINGLE
     const usable = getEngine().wordBank.filter(isVocabTrainingWord)
-    const minWords = hardcore ? 1 : 4
+    const minWords = hardcore || single ? 1 : 4
     if (usable.length < minWords) return null
 
     let candidates
@@ -111,12 +119,12 @@ export function nextVocabTask(opts = {}) {
         candidates = usableAfterLemmaGap(usable)
     }
 
-    if (excludeLemma) {
-        const filtered = candidates.filter((word) => roundLemmaKey(word) !== excludeLemma)
+    if (excludeLemmas.size) {
+        const filtered = candidates.filter((word) => !excludeLemmas.has(roundLemmaKey(word)))
         if (filtered.length) {
             candidates = filtered
         } else {
-            const fallback = usableIgnoringExcludedLemma(usable, excludeLemma)
+            const fallback = usableIgnoringExcludedLemma(usable, excludeLemmas)
             if (fallback.length) {
                 candidates = fallback
             } else {
@@ -127,13 +135,14 @@ export function nextVocabTask(opts = {}) {
 
     const dir = pickRandom(enabled)
 
-    if (hardcore) {
+    if (hardcore || single) {
         const word = pickWeightedRandom(candidates, vocabTaskSelectionWeight)
         return {
             mode: TRAIN_MODE.VOCAB,
             word,
             vocabDirection: dir,
-            vocabHardcore: true,
+            vocabHardcore: hardcore,
+            vocabMode,
         }
     }
 
@@ -151,6 +160,7 @@ export function nextVocabTask(opts = {}) {
                 choiceReveals: choicesResult.choiceReveals,
                 vocabDirection: dir,
                 vocabHardcore: false,
+                vocabMode: VOCAB_MODE.CHOICES,
             }
         }
     }

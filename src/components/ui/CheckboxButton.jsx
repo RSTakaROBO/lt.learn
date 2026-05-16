@@ -9,6 +9,8 @@
  *   className?: string;
  *   checked?: boolean;
  *   defaultChecked?: boolean;
+ *   type?: "checkbox" | "radio";
+ *   name?: string;
  *   value?: string;
  *   onChange?: import("react").ChangeEventHandler<HTMLInputElement>;
  *   inputRef?: import("react").Ref<HTMLInputElement>;
@@ -25,6 +27,8 @@ export function CheckboxButton({
     className,
     checked,
     defaultChecked,
+    type = "checkbox",
+    name,
     value,
     onChange,
     inputRef,
@@ -47,8 +51,9 @@ export function CheckboxButton({
         >
             <input
                 ref={inputRef}
-                type="checkbox"
+                type={type}
                 id={id}
+                name={name}
                 className="pack-card-input sr-only"
                 value={value}
                 disabled={disabled}

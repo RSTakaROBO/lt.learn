@@ -135,6 +135,8 @@ function readInitialSelectedPackIds() {
  * @property {unknown | null} vocabRound
  * @property {{ lemma: string; filled: number } | null} vocabRoundDots
  * @property {{ pickedLemma: string; correctLemma: string; ok: boolean | null } | null} vocabChoice
+ * @property {{ revealed: boolean; scored: boolean; lockedWrong: boolean; ok: boolean | null } | null} vocabSingle
+ * @property {unknown | null} vocabSingleNextTask
  * @property {string[]} selectedCaseKeys
  */
 
@@ -220,6 +222,8 @@ function buildInitialState() {
             vocabRound: null,
             vocabRoundDots: null,
             vocabChoice: null,
+            vocabSingle: null,
+            vocabSingleNextTask: null,
             selectedCaseKeys: [],
         },
         manifestUi: {

@@ -2,7 +2,7 @@
  * Кэширует оболочку и JSON-словари для офлайна и быстрого старта после установки PWA.
  * При смене списка файлов увеличьте CACHE_VERSION.
  */
-const CACHE_VERSION = "lt-trainer-v225"
+const CACHE_VERSION = "lt-trainer-v226"
 
 /** Пути относительно scope (папка, где лежит sw.js). */
 function precacheUrls(scopeUrl) {
@@ -135,6 +135,21 @@ self.addEventListener("fetch", (event) => {
                 }
                 const cachedStyle = await cache.match(event.request)
                 if (cachedStyle) return cachedStyle
+            }
+
+            /* ES-модули в dev/prod должны обновляться вместе с импортерами. */
+            if (event.request.destination === "script") {
+                try {
+                    const networkRes = await fetch(event.request)
+                    if (networkRes.ok) {
+                        await cache.put(event.request, networkRes.clone())
+                        return networkRes
+                    }
+                } catch {
+                    /* offline */
+                }
+                const cachedScript = await cache.match(event.request)
+                if (cachedScript) return cachedScript
             }
 
             if (isWordsJsonRequest(event.request)) {

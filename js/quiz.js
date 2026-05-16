@@ -1,4 +1,4 @@
-import { TRAIN_MODE, VERB_FORM_BY_KEY, VOCAB_DIRECTION } from "./config.js"
+import { TRAIN_MODE, VERB_FORM_BY_KEY, VOCAB_DIRECTION, VOCAB_MODE } from "./config.js"
 import { STR } from "./i18n/strings-ru.js"
 import {
     getActiveTrainerScreen,
@@ -30,6 +30,7 @@ import { lemmaKey } from "../src/screens/quiz/shared/quizTaskSelection.js"
 
 const VOCAB_STREAK_MULT_FROM = 5
 const QUIZ_DEBUG_KEY = "lt-debug-quiz"
+const MIN_RECENT_SINGLE_EXCLUDES = 5
 
 function debugQuiz(event, data = {}) {
     try {
@@ -61,13 +62,13 @@ export function inferQuizMode(task) {
     if (task.mode === TRAIN_MODE.VOCAB) return TRAIN_MODE.VOCAB
     if (task.mode === TRAIN_MODE.VERBS) return TRAIN_MODE.VERBS
     if (task.mode === TRAIN_MODE.CASES) return TRAIN_MODE.CASES
-    if (task.vocabHardcore) return TRAIN_MODE.VOCAB
+    if (task.vocabHardcore || task.vocabMode === VOCAB_MODE.SINGLE) return TRAIN_MODE.VOCAB
     if (Array.isArray(task.choices) && task.choices.length >= 4) return TRAIN_MODE.VOCAB
     return TRAIN_MODE.CASES
 }
 
 export function showQuiz(task) {
-    task.mode = inferQuizMode(task)
+    task = { ...task, mode: inferQuizMode(task) }
     debugQuiz("showQuiz:start", {
         nextLemma: task?.word ? roundLemmaKey(task.word) : null,
         nextMode: task?.mode ?? null,
@@ -80,6 +81,8 @@ export function showQuiz(task) {
         if (histKey) e.shownLemmaHistory.push(histKey)
         e.answered = false
         e.vocabChoice = null
+        e.vocabSingle = null
+        e.vocabSingleNextTask = null
     })
     postTrainerUiAction({ type: "SCREEN_SET", screen: "quiz" })
     clearQuizFeedback()
@@ -98,8 +101,9 @@ export function showQuiz(task) {
         }
 
         const hardcore = !!task.vocabHardcore
+        const isSingle = task.vocabMode === VOCAB_MODE.SINGLE
 
-        if (!hardcore && (!Array.isArray(task.choices) || task.choices.length < 4)) {
+        if (!hardcore && !isSingle && (!Array.isArray(task.choices) || task.choices.length < 4)) {
             resetVocabCorrectStreak()
             setQuizFeedback({ kind: "info", message: STR.quiz.noVocabChoices })
             setVocabRoundLemmaDots(null)
@@ -107,6 +111,9 @@ export function showQuiz(task) {
         }
 
         setVocabRoundLemmaDots(task.word)
+        if (isSingle) {
+            prepareVocabSingleNextTask(task.word)
+        }
         return
     }
 
@@ -167,6 +174,89 @@ export function finalizeVocabChoice(ok, expected, word, pickedLemma = "") {
     })
 }
 
+function expectedVocabAnswerForTask(task, fallback = "") {
+    const dir = task?.vocabDirection || VOCAB_DIRECTION.RU_TO_LT
+    if (dir === VOCAB_DIRECTION.LT_TO_RU) return vocabRuFeedbackLine(task?.word) || fallback
+    return vocabLemma(task?.word) || fallback
+}
+
+function applyVocabAnswerOutcome(ok, expected, word) {
+    mutateEngine((e) => {
+        e.answered = true
+        if (ok) {
+            e.vocabCorrectStreak += 1
+            if (e.vocabCorrectStreak >= VOCAB_STREAK_MULT_FROM) e.vocabStreakPulseId += 1
+        } else {
+            if (e.vocabRound) {
+                e.vocabRound.maxStreak = Math.max(e.vocabRound.maxStreak, e.vocabCorrectStreak)
+            }
+            e.vocabCorrectStreak = 0
+            e.vocabStreakPulseId = 0
+        }
+    })
+    if (ok) {
+        saveVocabBestStreakIfHigher(getEngine().vocabCorrectStreak)
+    }
+    showFeedback(ok, expected, word, { showExceptionNote: false })
+    applyVocabRoundAnswer(word, ok)
+}
+
+function recentSingleExcludeLemmas(word) {
+    const current = roundLemmaKey(word)
+    const recent = getEngine().shownLemmaHistory.slice(-MIN_RECENT_SINGLE_EXCLUDES)
+    return [...new Set([current, ...recent].filter(Boolean))]
+}
+
+function prepareVocabSingleNextTask(word) {
+    const nextTask = nextVocabTask({ excludeLemmas: recentSingleExcludeLemmas(word) })
+    mutateEngine((e) => {
+        e.vocabSingleNextTask = nextTask
+    })
+    return nextTask
+}
+
+export function requestVocabSingleNextTask() {
+    const task = getEngine().currentTask
+    if (!task || task.mode !== TRAIN_MODE.VOCAB || task.vocabMode !== VOCAB_MODE.SINGLE) {
+        return null
+    }
+    if (getEngine().vocabSingleNextTask?.word) return getEngine().vocabSingleNextTask
+    return prepareVocabSingleNextTask(task.word)
+}
+
+export function handleVocabSingleSwipe(direction) {
+    const task = getEngine().currentTask
+    if (!task || task.mode !== TRAIN_MODE.VOCAB || task.vocabMode !== VOCAB_MODE.SINGLE) return
+
+    const swipeRight = direction === "right"
+    const word = task.word
+    const expected = expectedVocabAnswerForTask(task)
+    const state = getEngine().vocabSingle || { revealed: false, scored: false, lockedWrong: false }
+
+    if (!state.revealed) {
+        mutateEngine((e) => {
+            e.vocabSingle = {
+                revealed: true,
+                scored: !swipeRight,
+                lockedWrong: !swipeRight,
+                ok: swipeRight ? null : false,
+            }
+        })
+        if (!swipeRight) {
+            applyVocabAnswerOutcome(false, expected, word)
+        }
+        if (!getEngine().vocabSingleNextTask) {
+            prepareVocabSingleNextTask(word)
+        }
+        return
+    }
+
+    if (!state.scored) {
+        applyVocabAnswerOutcome(swipeRight, expected, word)
+    }
+    advanceVocabQuiz()
+}
+
 /** Хардкор-слова: первая отправка формы — проверка; вторая — следующее слово. */
 export function processVocabHardcoreSubmit(userInput) {
     if (
@@ -218,7 +308,17 @@ export function advanceVocabQuiz() {
         !getEngine().answered
     )
         return
-    const task = nextVocabTask()
+    const queuedSingleTask =
+        getEngine().currentTask?.vocabMode === VOCAB_MODE.SINGLE
+            ? getEngine().vocabSingleNextTask
+            : null
+    const task =
+        queuedSingleTask ||
+        nextVocabTask(
+            getEngine().currentTask?.vocabMode === VOCAB_MODE.SINGLE
+                ? { excludeLemmas: recentSingleExcludeLemmas(getEngine().currentTask.word) }
+                : undefined
+        )
     if (!task) {
         resetVocabCorrectStreak()
         if (getEngine().vocabRound && getEngine().vocabRound.pool.size === 0) {

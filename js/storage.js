@@ -1,4 +1,4 @@
-import { STORAGE_KEYS, STORAGE_SCHEMA_VERSION, TRAIN_MODE } from "./config.js"
+import { STORAGE_KEYS, STORAGE_SCHEMA_VERSION, TRAIN_MODE, VOCAB_MODE } from "./config.js"
 import { STR } from "./i18n/strings-ru.js"
 import { getEngine, mutateEngine } from "./trainer-ui-state.js"
 
@@ -238,10 +238,16 @@ export class TrainerStorage {
             if (!raw) return null
             const p = JSON.parse(raw)
             if (!p || typeof p !== "object") return null
+            const vocabMode = Object.values(VOCAB_MODE).includes(p.vocabMode)
+                ? p.vocabMode
+                : p.hardcore
+                  ? VOCAB_MODE.HARDCORE
+                  : VOCAB_MODE.CHOICES
             return {
                 ru_to_lt: !!p.ru_to_lt,
                 lt_to_ru: !!p.lt_to_ru,
-                hardcore: !!p.hardcore,
+                hardcore: vocabMode === VOCAB_MODE.HARDCORE,
+                vocabMode,
             }
         } catch {
             return null
@@ -250,12 +256,18 @@ export class TrainerStorage {
 
     saveVocabDirections(dirs) {
         try {
+            const vocabMode = Object.values(VOCAB_MODE).includes(dirs.vocabMode)
+                ? dirs.vocabMode
+                : dirs.hardcore
+                  ? VOCAB_MODE.HARDCORE
+                  : VOCAB_MODE.CHOICES
             this._store.setItem(
                 STORAGE_KEYS.vocabDirections,
                 JSON.stringify({
                     ru_to_lt: !!dirs.ru_to_lt,
                     lt_to_ru: !!dirs.lt_to_ru,
-                    hardcore: !!dirs.hardcore,
+                    hardcore: vocabMode === VOCAB_MODE.HARDCORE,
+                    vocabMode,
                 })
             )
         } catch {
@@ -391,7 +403,12 @@ export const saveVocabDirections = (dirs) => trainerStorage.saveVocabDirections(
 export function getResolvedVocabDirections() {
     const d = loadVocabDirections()
     if (d) return d
-    return { ru_to_lt: true, lt_to_ru: false, hardcore: false }
+    return {
+        ru_to_lt: true,
+        lt_to_ru: false,
+        hardcore: false,
+        vocabMode: VOCAB_MODE.CHOICES,
+    }
 }
 
 export const loadCasesShowTranslation = () => trainerStorage.loadCasesShowTranslation()

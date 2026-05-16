@@ -13,6 +13,20 @@
     </head>
     <body>
         <div id="root"></div>
+        <script type="module">
+            if (import.meta.env.DEV && "serviceWorker" in navigator) {
+                const regs = await navigator.serviceWorker.getRegistrations()
+                const keys = "caches" in window ? await caches.keys() : []
+                if (regs.length || keys.length) {
+                    await Promise.all(regs.map((reg) => reg.unregister()))
+                    await Promise.all(keys.map((key) => caches.delete(key)))
+                    if (!sessionStorage.getItem("lt-dev-sw-cleared")) {
+                        sessionStorage.setItem("lt-dev-sw-cleared", "1")
+                        location.reload()
+                    }
+                }
+            }
+        </script>
         <script type="module" src="/src/App.jsx"></script>
     </body>
 </html>

@@ -138,8 +138,94 @@
     z-index: 1;
 }
 
-.vocab-card-stack > .vocab-ru-card {
+.vocab-card-stack > .vocab-ru-card,
+.vocab-card-stack > .vocab-single-answer {
     z-index: 5;
+}
+
+.vocab-card-stack__underlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    transform-origin: center;
+    transition: transform 0.62s cubic-bezier(0.18, 0.76, 0.16, 1);
+}
+
+.vocab-card-stack__underlay--1 {
+    z-index: 4;
+    transform: translateY(0.72rem) scale(0.982);
+}
+
+.vocab-card-stack__underlay--2 {
+    z-index: 3;
+    transform: translateY(1.38rem) scale(0.965);
+}
+
+.vocab-card-stack__underlay--3 {
+    z-index: 2;
+    transform: translateY(1.95rem) scale(0.948);
+}
+
+.vocab-card-stack__underlay--1.vocab-card-stack__underlay--promoting {
+    transform: translateY(0) scale(1);
+}
+
+.vocab-card-stack__underlay--2.vocab-card-stack__underlay--promoting {
+    transform: translateY(0.72rem) scale(0.982);
+}
+
+.vocab-card-stack__underlay--3.vocab-card-stack__underlay--promoting {
+    transform: translateY(1.38rem) scale(0.965);
+}
+
+.vocab-card-stack--swipeable {
+    touch-action: pan-y;
+    user-select: none;
+}
+
+.vocab-card-stack--swipeable > .vocab-ru-card,
+.vocab-card-stack--swipeable > .vocab-single-answer {
+    cursor: grab;
+    will-change: transform;
+}
+
+.vocab-card-stack--swipeable > .vocab-ru-card--dragging,
+.vocab-card-stack--swipeable > .vocab-single-answer.vocab-ru-card--dragging {
+    cursor: grabbing;
+    transition: none;
+}
+
+.vocab-card-stack--swipeable > .vocab-ru-card--exiting,
+.vocab-card-stack--swipeable > .vocab-single-answer.vocab-ru-card--exiting {
+    transition:
+        transform 0.62s cubic-bezier(0.18, 0.76, 0.16, 1),
+        border-color 0.18s ease,
+        background 0.18s ease,
+        box-shadow 0.18s ease;
+}
+
+.vocab-card-stack--swipeable > .vocab-ru-card--swipe-left,
+.vocab-card-stack--swipeable > .vocab-single-answer.vocab-ru-card--swipe-left {
+    border-color: color-mix(in srgb, var(--error) 54%, var(--border));
+    background:
+        linear-gradient(
+            180deg,
+            color-mix(in srgb, var(--error) 10%, transparent),
+            color-mix(in srgb, var(--bg) 4%, transparent)
+        ),
+        color-mix(in srgb, var(--error) 12%, var(--surface-elevated));
+}
+
+.vocab-card-stack--swipeable > .vocab-ru-card--swipe-right,
+.vocab-card-stack--swipeable > .vocab-single-answer.vocab-ru-card--swipe-right {
+    border-color: color-mix(in srgb, var(--success) 54%, var(--border));
+    background:
+        linear-gradient(
+            180deg,
+            color-mix(in srgb, var(--success) 11%, transparent),
+            color-mix(in srgb, var(--bg) 4%, transparent)
+        ),
+        color-mix(in srgb, var(--success) 13%, var(--surface-elevated));
 }
 
 .vocab-ru-card--deal-in {
@@ -317,6 +403,154 @@
     min-height: clamp(10rem, 24vmin, 10rem);
 }
 
+#quiz.panel.quiz--vocab-single #quiz-vocab-ui:not(.hidden) {
+    flex: 1 1 auto;
+    justify-content: center;
+}
+
+#quiz.panel.quiz--vocab-single #quiz-vocab-ui:not(.hidden) > .vocab-card-stack {
+    flex: 0 0 clamp(18rem, 54dvh, 31rem);
+    height: clamp(18rem, 54dvh, 31rem);
+    min-height: 0;
+    max-height: clamp(18rem, 54dvh, 31rem);
+    margin-block: auto;
+    margin-bottom: auto;
+}
+
+#quiz.panel.quiz--vocab-single #quiz-vocab-ui:not(.hidden) > .vocab-single-deck {
+    flex: 0 0 clamp(18rem, 54dvh, 31rem);
+    height: clamp(18rem, 54dvh, 31rem);
+    min-height: 0;
+    max-height: clamp(18rem, 54dvh, 31rem);
+    margin-block: auto;
+    margin-bottom: auto;
+    transform: translateY(clamp(1rem, 4.6dvh, 3rem));
+}
+
+#quiz.panel.quiz--vocab-single #quiz-vocab-ui:not(.hidden) > .vocab-card-stack > .vocab-ru-card {
+    padding: clamp(1.4rem, 5vmin, 3.2rem);
+}
+
+#quiz.panel.quiz--vocab-single #quiz-vocab-ui:not(.hidden) .vocab-single-deck .vocab-ru-card {
+    padding: clamp(1.4rem, 5vmin, 3.2rem);
+}
+
+#quiz.panel.quiz--vocab-single
+    #quiz-vocab-ui:not(.hidden)
+    > .vocab-card-stack
+    > .vocab-ru-card
+    > .vocab-ru-card-body {
+    justify-content: center;
+}
+
+#quiz.panel.quiz--vocab-single #quiz-vocab-ui:not(.hidden) .vocab-ru-card .lemma,
+#quiz.panel.quiz--vocab-single #quiz-vocab-ui:not(.hidden) .vocab-ru-card .vocab-ru-display {
+    font-size: clamp(2.85rem, 11vmin, 5.35rem);
+    line-height: 1.08;
+}
+
+.vocab-single-deck {
+    position: relative;
+    display: flex;
+    overflow: visible;
+    isolation: isolate;
+    z-index: 35;
+    touch-action: pan-y;
+    user-select: none;
+}
+
+.vocab-single-deck-card {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    z-index: 1;
+    transform-origin: center;
+    transition:
+        transform 0.36s cubic-bezier(0.18, 0.76, 0.16, 1),
+        border-color 0.18s ease,
+        background 0.18s ease,
+        box-shadow 0.18s ease;
+}
+
+.vocab-single-deck-card--0 {
+    z-index: 5;
+    transform: translateY(0) scale(1);
+}
+
+.vocab-single-deck-card--1 {
+    z-index: 4;
+    transform: translateY(0.72rem) scale(0.982);
+}
+
+.vocab-single-deck-card--2 {
+    z-index: 3;
+    transform: translateY(1.38rem) scale(0.965);
+}
+
+.vocab-single-deck-card--3 {
+    z-index: 2;
+    transform: translateY(1.95rem) scale(0.948);
+}
+
+.vocab-single-deck-card--fresh {
+    animation: vocab-single-card-fade-in 0.52s ease both;
+}
+
+@keyframes vocab-single-card-fade-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.vocab-single-deck-card--top {
+    cursor: grab;
+    will-change: transform;
+}
+
+.vocab-single-deck-card--dragging {
+    cursor: grabbing;
+    transition: none;
+}
+
+.vocab-single-deck-card--exiting {
+    pointer-events: none;
+    transition:
+        transform 0.62s cubic-bezier(0.18, 0.76, 0.16, 1),
+        border-color 0.18s ease,
+        background 0.18s ease,
+        box-shadow 0.18s ease;
+}
+
+.vocab-single-deck-card > .vocab-ru-card {
+    flex: 1;
+    width: 100%;
+}
+
+.vocab-single-deck-card--swipe-left > .vocab-ru-card {
+    border-color: color-mix(in srgb, var(--error) 54%, var(--border));
+    background:
+        linear-gradient(
+            180deg,
+            color-mix(in srgb, var(--error) 10%, transparent),
+            color-mix(in srgb, var(--bg) 4%, transparent)
+        ),
+        color-mix(in srgb, var(--error) 12%, var(--surface-elevated));
+}
+
+.vocab-single-deck-card--swipe-right > .vocab-ru-card {
+    border-color: color-mix(in srgb, var(--success) 54%, var(--border));
+    background:
+        linear-gradient(
+            180deg,
+            color-mix(in srgb, var(--success) 11%, transparent),
+            color-mix(in srgb, var(--bg) 4%, transparent)
+        ),
+        color-mix(in srgb, var(--success) 13%, var(--surface-elevated));
+}
+
 #quiz-vocab-ui > .vocab-card-stack > .vocab-ru-card > .vocab-ru-card-body {
     flex: 1;
     min-height: 0;
@@ -429,6 +663,61 @@
 
 #quiz-vocab-ui:not(.hidden) .vocab-options {
     margin-bottom: 0;
+}
+
+.vocab-single-answer {
+    display: flex;
+    flex: 1;
+    min-width: 0;
+    min-height: 0;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: clamp(1.4rem, 5vmin, 3.2rem);
+    border-radius: var(--radius-card);
+    border: 1px solid color-mix(in srgb, var(--accent) 38%, var(--border));
+    background:
+        linear-gradient(
+            180deg,
+            color-mix(in srgb, var(--accent) 9%, transparent),
+            color-mix(in srgb, var(--bg) 5%, transparent)
+        ),
+        color-mix(in srgb, var(--surface-elevated) 93%, var(--surface));
+    box-shadow:
+        0 1px 0 color-mix(in srgb, white 22%, transparent) inset,
+        0 0 0 1px color-mix(in srgb, var(--accent) 11%, transparent) inset;
+    opacity: 1;
+}
+
+.vocab-single-answer--ok {
+    border-color: color-mix(in srgb, var(--success) 42%, var(--border));
+    background: color-mix(in srgb, var(--success) 10%, var(--surface));
+}
+
+.vocab-single-answer--bad {
+    border-color: color-mix(in srgb, var(--error) 42%, var(--border));
+    background: color-mix(in srgb, var(--error) 10%, var(--surface));
+}
+
+.vocab-single-answer__label {
+    color: var(--muted);
+    font-size: 0.76rem;
+    font-weight: 700;
+    line-height: 1.2;
+    text-transform: uppercase;
+}
+
+.vocab-single-answer__value {
+    margin-top: 0.28rem;
+    max-width: 100%;
+    color: var(--accent);
+    font-size: clamp(1.35rem, 5.2vmin, 2.25rem);
+    font-weight: 700;
+    line-height: 1.16;
+    text-align: center;
+    overflow-wrap: break-word;
+    word-break: break-word;
 }
 
 .vocab-choice {

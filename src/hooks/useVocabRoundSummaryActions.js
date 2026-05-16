@@ -1,7 +1,7 @@
 import { useCallback } from "react"
 
 import { STR } from "js/i18n/strings-ru.js"
-import { TRAIN_MODE } from "js/config.js"
+import { TRAIN_MODE, VOCAB_MODE } from "js/config.js"
 import { resetVocabCorrectStreak, showQuiz } from "js/quiz.js"
 import { getResolvedVocabDirections, loadTrainMode } from "js/storage.js"
 import { getCheckedCaseKeys, mutateEngine } from "js/trainer-ui-state.js"
@@ -78,7 +78,9 @@ export function useVocabRoundSummaryActions() {
             const directions = getResolvedVocabDirections()
             goToSetup(
                 fallbackStep,
-                directions.hardcore ? STR.events.roundRepeatFail : STR.events.roundRepeatChoices
+                directions.vocabMode === VOCAB_MODE.CHOICES
+                    ? STR.events.roundRepeatChoices
+                    : STR.events.roundRepeatFail
             )
             return
         }
