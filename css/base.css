@@ -3,20 +3,26 @@
 }
 
 html {
-    height: 100%;
-    overflow-x: hidden;
+    --app-height: 100dvh;
+    height: var(--app-height, 100dvh);
+    min-height: var(--app-height, 100dvh);
+    overflow: hidden;
+    overscroll-behavior: none;
     -webkit-tap-highlight-color: transparent;
+}
+
+html.ios-standalone {
+    min-height: calc(100% + env(safe-area-inset-top, 0px));
 }
 
 body {
     --app-bg-pattern-main: color-mix(in srgb, var(--text) 7%, transparent);
     --app-bg-pattern-accent: color-mix(in srgb, var(--accent) 3%, transparent);
     margin: 0;
-    height: 100%;
-    height: 100dvh;
-    max-height: 100dvh;
-    overflow-x: hidden;
-    overflow-y: hidden;
+    height: var(--app-height, 100dvh);
+    max-height: var(--app-height, 100dvh);
+    overflow: hidden;
+    overscroll-behavior: none;
     display: flex;
     flex-direction: column;
     font-family: "Segoe UI", system-ui, sans-serif;

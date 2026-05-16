@@ -42,6 +42,7 @@
     min-height: 0;
     display: flex;
     flex-direction: column;
+    overscroll-behavior: none;
 }
 
 .app-screen__panel {
@@ -66,7 +67,7 @@
     overflow-x: hidden;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
-    overscroll-behavior-y: contain;
+    overscroll-behavior-y: none;
 }
 
 /* Статистика: сводка фиксирована, таблица — flex + внутренний скролл (полоса скрыта в overlays) */
@@ -123,7 +124,7 @@
     overflow-x: hidden;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
-    overscroll-behavior-y: contain;
+    overscroll-behavior-y: none;
 }
 
 .app-screen--modal.app-screen--height-scroll .app-screen__panel {
@@ -163,7 +164,7 @@
     overflow-x: hidden;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
-    overscroll-behavior-y: contain;
+    overscroll-behavior-y: none;
 }
 
 .app-screen--flow.app-screen--height-scroll .app-screen__panel {

@@ -1,3 +1,10 @@
+.u-scroll-y {
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: none;
+}
+
 .u-scrollbar-hidden {
     scrollbar-width: none;
     -ms-overflow-style: none;

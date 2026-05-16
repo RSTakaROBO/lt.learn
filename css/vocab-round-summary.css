@@ -31,6 +31,7 @@
     overflow-x: hidden;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: none;
     display: flex;
     flex-direction: column;
     gap: 1.35rem;

@@ -26,13 +26,13 @@
 /* Предпросмотр набора: один скролл внутри приложения, без прокрутки документа */
 html:has(#pack-preview-shell) {
     overflow: hidden;
-    height: 100dvh;
+    height: var(--app-height, 100dvh);
 }
 
 html:has(#pack-preview-shell) body {
     overflow: hidden;
-    height: 100%;
-    max-height: 100dvh;
+    height: var(--app-height, 100dvh);
+    max-height: var(--app-height, 100dvh);
 }
 
 #help-hub-shell:not(.hidden) > #help-hub,
@@ -107,11 +107,12 @@ html:has(#pack-preview-shell) body {
             0 0 0 0.5px color-mix(in srgb, var(--text) 6%, transparent);
         backdrop-filter: blur(18px);
         -webkit-backdrop-filter: blur(18px);
-        padding-bottom: 0;
+        padding: 0;
     }
 }
 
 .quiz-bottom-bar-inner {
+    flex: 0 0 auto;
     max-width: var(--shell-max-width);
     margin: 0 auto;
     padding: 0.45rem max(var(--shell-pad-x), env(safe-area-inset-right, 0px)) 0.55rem
@@ -121,7 +122,7 @@ html:has(#pack-preview-shell) body {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 0.28rem;
-    align-items: stretch;
+    align-items: center;
 }
 
 @media (pointer: coarse) {

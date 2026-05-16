@@ -20,11 +20,13 @@
 
 /* Bridge React mount (#root) into body flex column so .app fills viewport height. */
 #root {
-    flex: 1;
+    flex: 1 1 auto;
     display: flex;
     flex-direction: column;
     min-height: 0;
     width: 100%;
+    overflow: hidden;
+    overscroll-behavior: none;
 }
 
 .hidden {

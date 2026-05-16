@@ -59,7 +59,7 @@
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     align-content: start;
-    overscroll-behavior-y: contain;
+    overscroll-behavior-y: none;
     border-radius: var(--radius-card);
     border: 1px solid color-mix(in srgb, var(--border) 78%, transparent);
     background: color-mix(in srgb, var(--bg) 28%, var(--surface));

@@ -19,12 +19,12 @@ body.pack-prompt-modal-open
     > .app
     > *:not(#stats-overlay):not(#settings-shell):not(#pack-prompt-overlay):not(#help-hub-shell):not(
         #vocab-round-summary-overlay
-    ):not(.quiz-bottom-bar),
+    ),
 body.vocab-round-summary-modal-open
     > .app
     > *:not(#stats-overlay):not(#settings-shell):not(#pack-prompt-overlay):not(#help-hub-shell):not(
         #vocab-round-summary-overlay
-    ):not(.quiz-bottom-bar) {
+    ) {
     visibility: hidden;
     pointer-events: none;
 }
@@ -55,7 +55,7 @@ body.vocab-round-summary-modal-open .quiz-bottom-bar {
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     align-content: start;
-    overscroll-behavior-y: contain;
+    overscroll-behavior-y: none;
     border-radius: var(--radius-card);
     border: 1px solid color-mix(in srgb, var(--border) 78%, transparent);
     background: color-mix(in srgb, var(--bg) 28%, var(--surface));
@@ -116,7 +116,7 @@ body.vocab-round-summary-modal-open .quiz-bottom-bar {
     overflow-x: hidden;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
-    overscroll-behavior-y: contain;
+    overscroll-behavior-y: none;
 }
 
 .stats-empty {

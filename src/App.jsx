@@ -9,6 +9,8 @@ import { mutateEngine, postTrainerUiAction } from "js/trainer-ui-state.js"
 import { QuizBottomBar } from "src/components/layout/QuizBottomBar.jsx"
 import { ManifestPacksProvider, useManifestPacks } from "src/context/ManifestPacksContext.jsx"
 import { TrainerAppProvider } from "src/context/TrainerAppContext.jsx"
+import { useIosDocumentScrollLock } from "src/hooks/useIosDocumentScrollLock.js"
+import { useStandaloneAppHeight } from "src/hooks/useStandaloneAppHeight.js"
 import { useTrainerKeyboardShortcuts } from "src/hooks/useTrainerKeyboardShortcuts.js"
 import { CasesHelpScreen } from "src/screens/help/CasesHelpScreen.jsx"
 import { HelpHubScreen } from "src/screens/help/HelpHubScreen.jsx"
@@ -92,6 +94,8 @@ function AppScreens() {
 
 function AppRuntime() {
     useTrainerKeyboardShortcuts()
+    useIosDocumentScrollLock()
+    useStandaloneAppHeight()
 
     return (
         <ManifestPacksProvider>
