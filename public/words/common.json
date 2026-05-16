@@ -350,6 +350,68 @@
             "locative": "paukštyje",
             "vocative": "paukšti",
             "ru": "птица"
+        },
+        {
+            "nominative": "vardas",
+            "genitive": "vardo",
+            "dative": "vardui",
+            "accusative": "vardą",
+            "instrumental": "vardu",
+            "locative": "varde",
+            "vocative": "vardau",
+            "ru": "имя"
+        },
+        {
+            "nominative": "pavardė",
+            "genitive": "pavardės",
+            "dative": "pavardei",
+            "accusative": "pavardę",
+            "instrumental": "pavarde",
+            "locative": "pavardėje",
+            "vocative": "pavarde",
+            "ru": "фамилия"
+        },
+        {
+            "exception": true,
+            "exception_note_ru": "Наречие: форма не склоняется.",
+            "nominative": "puikiai",
+            "genitive": "puikiai",
+            "dative": "puikiai",
+            "accusative": "puikiai",
+            "instrumental": "puikiai",
+            "locative": "puikiai",
+            "vocative": "puikiai",
+            "ru": "прекрасно"
+        },
+        {
+            "nominative": "biuras",
+            "genitive": "biuro",
+            "dative": "biurui",
+            "accusative": "biurą",
+            "instrumental": "biuru",
+            "locative": "biure",
+            "vocative": "biurau",
+            "ru": "офис"
+        },
+        {
+            "nominative": "traukinys",
+            "genitive": "traukinio",
+            "dative": "traukiniui",
+            "accusative": "traukinį",
+            "instrumental": "traukiniu",
+            "locative": "traukinyje",
+            "vocative": "traukini",
+            "ru": "поезд"
+        },
+        {
+            "nominative": "dviratis",
+            "genitive": "dviračio",
+            "dative": "dviračiui",
+            "accusative": "dviratį",
+            "instrumental": "dviračiu",
+            "locative": "dviratyje",
+            "vocative": "dvirati",
+            "ru": "велосипед"
         }
     ]
 }

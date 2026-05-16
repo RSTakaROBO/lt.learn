@@ -1,0 +1,59 @@
+.feedback {
+    margin-top: 0.55rem;
+    padding: 0.85rem 1rem;
+    border-radius: var(--radius-control);
+    border: 1px solid color-mix(in srgb, var(--border) 84%, transparent);
+}
+
+.feedback.ok {
+    border-color: color-mix(in srgb, var(--success) 50%, var(--border));
+    background: color-mix(in srgb, var(--success) 12%, var(--surface));
+}
+
+.feedback.bad {
+    border-color: color-mix(in srgb, var(--error) 50%, var(--border));
+    background: color-mix(in srgb, var(--error) 12%, var(--surface));
+}
+
+.feedback p {
+    margin: 0;
+}
+
+.feedback .correct-form {
+    margin-top: 0.35rem;
+    font-weight: 600;
+}
+
+.feedback .exception-hint {
+    margin-top: 0.75rem;
+    font-size: 0.92rem;
+    font-weight: normal;
+    color: var(--muted);
+}
+
+.feedback.ok .exception-hint {
+    color: color-mix(in srgb, var(--text) 72%, var(--muted));
+}
+
+.feedback.bad .exception-hint {
+    color: color-mix(in srgb, var(--text) 82%, var(--muted));
+}
+
+/* Режим «слова»: зазор между блоком задания и нижней кнопкой (margin-top: auto снимает margin у .actions) */
+#quiz.panel.quiz--vocab {
+    row-gap: var(--panel-section-gap);
+}
+
+#quiz.panel #feedback:not(.hidden) {
+    flex-shrink: 0;
+}
+
+#quiz.panel > .quiz-footer-actions {
+    margin-top: 0.85rem;
+    padding-top: 0;
+    flex-shrink: 0;
+}
+/* Режим падежей: ответ сразу под клавиатурой литовских букв, без лишнего разрыва */
+#quiz.panel.quiz--cases #feedback:not(.hidden) {
+    margin-top: 0.55rem;
+}

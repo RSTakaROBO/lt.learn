@@ -1,0 +1,125 @@
+@media (pointer: coarse) {
+    #quiz.panel.quiz--cases > .quiz-footer-stack,
+    #quiz.panel.quiz--verbs > .quiz-footer-stack,
+    #quiz.panel.quiz--vocab.quiz--vocab-hardcore > .quiz-footer-stack {
+        transition: none;
+    }
+
+    /* Плашка приложения (.quiz-bottom-bar) — z-index: 40; фиксируем клавиатуру поверх неё */
+    .lt-keyboard {
+        display: flex;
+        position: fixed;
+        inset-inline: 0;
+        bottom: 0;
+        inline-size: auto;
+        max-inline-size: 100dvw;
+        max-width: none;
+        margin: 0;
+        z-index: 50;
+        box-sizing: border-box;
+        overflow-x: clip;
+        overflow-y: visible;
+        padding: 6px calc(env(safe-area-inset-right, 0px) + var(--lt-keyboard-edge-pad))
+            calc(env(safe-area-inset-bottom, 0px) + var(--lt-keyboard-edge-pad))
+            calc(env(safe-area-inset-left, 0px) + var(--lt-keyboard-edge-pad));
+        background: color-mix(in srgb, var(--surface) 92%, var(--bg));
+        border-top: 1px solid color-mix(in srgb, var(--border) 82%, transparent);
+        box-shadow:
+            0 -1px 0 color-mix(in srgb, var(--text) 5%, transparent) inset,
+            0 -10px 26px color-mix(in srgb, var(--bg) 58%, transparent);
+        transform: translate3d(0, 112%, 0);
+        opacity: 0.98;
+        transition:
+            transform 0.32s cubic-bezier(0.32, 0.72, 0, 1),
+            opacity 0.26s ease;
+        will-change: transform;
+        backface-visibility: hidden;
+    }
+
+    .lt-keyboard.lt-keyboard--shown {
+        transform: translate3d(0, 0, 0);
+        opacity: 1;
+        will-change: auto;
+    }
+
+    .lt-keyboard:not(.lt-keyboard--shown) {
+        pointer-events: none;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .lt-keyboard {
+            transition: none;
+        }
+    }
+
+    .lt-keyboard-key {
+        min-height: 3.05rem;
+    }
+
+    .lt-keyboard-row--letters
+        .lt-keyboard-key:not(.lt-keyboard-key--shift):not(.lt-keyboard-key--backspace) {
+        font-size: 1.28rem;
+        font-weight: 400;
+    }
+
+    .lt-keyboard-row--letters-tail
+        .lt-keyboard-key:not(.lt-keyboard-key--shift):not(.lt-keyboard-key--backspace) {
+        font-size: 1.28rem;
+        font-weight: 400;
+    }
+
+    .lt-keyboard-row--diacritics .lt-keyboard-key--diacritic {
+        font-size: 1.26rem;
+        font-weight: 400;
+    }
+
+    .lt-keyboard-diacritic-fade-rule {
+        width: min(54%, 14rem);
+        box-shadow:
+            0 0 14px color-mix(in srgb, var(--text) 7%, transparent),
+            0 0 1px color-mix(in srgb, var(--border) 40%, transparent);
+    }
+
+    .lt-keyboard-key.lt-keyboard-key--bottom-row.lt-keyboard-key--space {
+        font-size: 1.28rem;
+        font-weight: 400;
+    }
+
+    .lt-keyboard-key--bottom-row .lt-keyboard-chevron {
+        width: 1.34rem;
+        height: 1.34rem;
+    }
+
+    .lt-keyboard-key--bottom-row .lt-keyboard-check {
+        width: 1.28rem;
+        height: 1.28rem;
+    }
+
+    .lt-keyboard-row--bottom .lt-keyboard-key {
+        min-height: 2.68rem;
+        padding-block: 0.24rem;
+    }
+
+    .lt-keyboard-key--hide {
+        display: inline-flex;
+        flex-grow: 1;
+        align-items: center;
+        justify-content: center;
+        padding-inline: 0.12rem;
+    }
+
+    .lt-keyboard-chevron {
+        display: block;
+        flex-shrink: 0;
+    }
+
+    .lt-keyboard-check {
+        display: block;
+        flex-shrink: 0;
+    }
+
+    .lt-keyboard-shift {
+        display: block;
+        flex-shrink: 0;
+    }
+}

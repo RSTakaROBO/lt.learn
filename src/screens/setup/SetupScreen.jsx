@@ -3,13 +3,11 @@ import { TRAIN_MODE } from "js/config.js"
 import { APP_VERSION } from "js/app-version.js"
 import { STR } from "js/i18n/strings-ru.js"
 import {
-    handlePackJsonInputChange,
     handlePacksNextClick,
     handleStartCasesTrainingClick,
     handleVocabDirectionStartClick,
 } from "js/setup-wizard-handlers.js"
 import { loadTrainMode, saveExcludeLearnedWords, saveTrainMode } from "js/storage.js"
-import { openPackPromptOverlay } from "js/trainer-ui-state.js"
 import { AppFlowScreen } from "src/components/layout/AppFlowScreen.jsx"
 import { WizardCaseCheckboxes } from "src/components/setup/WizardCaseCheckboxes.jsx"
 import { WizardVocabDirectionForm } from "src/components/setup/WizardVocabDirectionForm.jsx"
@@ -142,30 +140,6 @@ export function SetupScreen({ heightMode = "fill", hidden = false } = {}) {
                     <p id="pack-step-status" className="status" aria-live="polite">
                         {status.pack}
                     </p>
-                    <div className="pack-custom-upload">
-                        <Button
-                            type="button"
-                            className="btn-pack-prompt-help"
-                            aria-label={STR.packs.llmPromptAria}
-                            title={STR.packs.llmPromptTitle}
-                            onClick={() => openPackPromptOverlay()}
-                        >
-                            ?
-                        </Button>
-                        <label className="btn ghost btn-pack-json-main pack-json-upload-label">
-                            <span className="pack-json-upload-label-text">
-                                {STR.packs.uploadJsonLabel}
-                            </span>
-                            <input
-                                type="file"
-                                id="pack-json-input"
-                                className="pack-json-file-input-native"
-                                accept="*/*"
-                                aria-label={STR.packs.uploadJsonAria}
-                                onChange={(e) => void handlePackJsonInputChange(e)}
-                            />
-                        </label>
-                    </div>
                     <div className="actions wizard-pack-actions">
                         <Button
                             type="button"

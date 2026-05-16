@@ -1,0 +1,106 @@
+/*
+ * Глаголы: без большой карточки vocab-ru-card — блок относительным для ×N и точек раунда.
+ */
+#quiz-verbs-ui > .verb-forms-block {
+    position: relative;
+    flex: 0 1 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+    min-width: 0;
+    min-height: 0;
+    padding: 0.15rem 0 1.4rem;
+    margin: 0;
+    border: none;
+    background: transparent;
+    overflow: visible;
+}
+
+#quiz-verbs-ui > .verb-forms-block > .verb-forms-block__main {
+    width: 100%;
+}
+
+.verb-forms-grid {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(0.55rem, 2vmin, 0.9rem);
+}
+
+.verb-form-card {
+    min-width: 0;
+    padding: 0.5rem 0.08rem;
+    border-radius: var(--radius-control);
+    border: 1px solid color-mix(in srgb, var(--border) 82%, transparent);
+    background: color-mix(in srgb, var(--bg) 70%, var(--surface));
+    text-align: center;
+}
+
+.verb-form-label {
+    display: block;
+    color: var(--muted);
+    font-size: 0.72rem;
+    font-weight: 700;
+    line-height: 1.2;
+    text-transform: uppercase;
+}
+
+.verb-form-value {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35em;
+    margin-top: 0.92rem;
+    margin-inline: auto;
+    max-width: 100%;
+    color: var(--accent);
+    font-size: clamp(1.05rem, 4vmin, 1.55rem);
+    font-weight: 700;
+    line-height: 1.2;
+    overflow-wrap: break-word;
+}
+
+.verb-form-value-text {
+    min-width: 0;
+}
+
+.verb-form-verdict-emoji {
+    flex-shrink: 0;
+    line-height: 1;
+}
+
+.verb-form-card--hidden {
+    border-color: color-mix(in srgb, var(--accent) 45%, var(--border));
+    background: color-mix(in srgb, var(--accent) 10%, var(--surface-elevated));
+}
+
+.verb-form-card--hidden .verb-form-value {
+    color: var(--muted);
+}
+
+/* Глаголы: верно / неверно — подсветка ячейки с угадываемой формой (без блока фидбека) */
+#quiz-verbs-ui .verb-form-card--hidden.verb-form-card--feedback-ok {
+    border-color: color-mix(in srgb, var(--success) 55%, var(--border));
+    background: color-mix(in srgb, var(--success) 24%, var(--surface-elevated));
+}
+
+#quiz-verbs-ui .verb-form-card--hidden.verb-form-card--feedback-ok .verb-form-value {
+    color: color-mix(in srgb, var(--success) 78%, var(--text));
+}
+
+#quiz-verbs-ui .verb-form-card--hidden.verb-form-card--feedback-bad {
+    border-color: color-mix(in srgb, var(--error) 55%, var(--border));
+    background: color-mix(in srgb, var(--error) 22%, var(--surface-elevated));
+}
+
+#quiz-verbs-ui .verb-form-card--hidden.verb-form-card--feedback-bad .verb-form-value {
+    color: color-mix(in srgb, var(--error) 82%, var(--text));
+}
+
+@media (max-width: 600px) {
+    .verb-forms-grid {
+        grid-template-columns: 1fr;
+    }
+}

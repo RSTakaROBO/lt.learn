@@ -1,0 +1,167 @@
+.vocab-answer-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    flex-shrink: 0;
+}
+
+.lithuanian-input {
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+}
+
+.lithuanian-input-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 0.45rem;
+    align-items: stretch;
+}
+
+.lithuanian-input-row--single {
+    grid-template-columns: minmax(0, 1fr);
+}
+#answer-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.prompt {
+    margin-bottom: 0;
+}
+
+.prompt .target-line {
+    margin: 0;
+    font-size: 1.05rem;
+    line-height: 1.45;
+    text-align: center;
+}
+
+.prompt .target-prefix {
+    color: var(--muted);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-right: 0.35rem;
+}
+
+.prompt #target-case-display {
+    font-weight: 600;
+}
+
+.lemma {
+    font-size: clamp(3rem, 8.4vmin, 4.25rem);
+    font-weight: 600;
+    margin: 0;
+    color: var(--accent);
+    text-shadow:
+        0 1px 0 color-mix(in srgb, var(--surface) 72%, transparent),
+        0 0 0.06em color-mix(in srgb, var(--text) 24%, transparent);
+}
+
+#answer-input,
+#vocab-answer-input,
+#verb-answer-input {
+    width: 100%;
+    font: inherit;
+    font-size: 1.15rem;
+    padding: 0.65rem 0.85rem;
+    border-radius: var(--radius-control);
+    border: 1px solid color-mix(in srgb, var(--border) 88%, transparent);
+    background: color-mix(in srgb, var(--bg) 78%, var(--surface));
+    color: var(--text);
+    margin-bottom: 0;
+    transition:
+        border-color 0.15s ease,
+        background 0.15s ease,
+        box-shadow 0.15s ease;
+}
+
+.lt-chars-toggle {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 2.9rem;
+    min-width: 2.9rem;
+    margin: 0;
+    padding: 0;
+    border-radius: var(--radius-control);
+    border: 1px solid color-mix(in srgb, var(--border) 82%, transparent);
+    background: color-mix(in srgb, var(--surface-elevated) 82%, var(--surface));
+    color: var(--muted);
+    cursor: pointer;
+    font: inherit;
+    font-size: 1.08rem;
+    line-height: 1;
+    display: grid;
+    place-items: center;
+}
+
+.lt-chars-toggle--open {
+    color: var(--text);
+    border-color: color-mix(in srgb, var(--accent) 48%, var(--border));
+    background: color-mix(in srgb, var(--accent) 14%, var(--surface-elevated));
+}
+
+.lt-chars-toggle:hover {
+    color: var(--text);
+    border-color: color-mix(in srgb, var(--accent) 58%, var(--border));
+}
+
+#answer-input:focus,
+#vocab-answer-input:focus,
+#verb-answer-input:focus {
+    outline: none;
+}
+
+#answer-input:focus-visible,
+#vocab-answer-input:focus-visible,
+#verb-answer-input:focus-visible {
+    border-color: color-mix(in srgb, var(--accent) 72%, var(--border));
+    background: color-mix(in srgb, var(--bg) 64%, var(--surface));
+    box-shadow: inset 0 0 0 calc(var(--stroke) + 1px)
+        color-mix(in srgb, var(--accent) 86%, transparent);
+}
+
+.lt-chars {
+    display: grid;
+    grid-template-columns: repeat(9, minmax(0, 1fr));
+    column-gap: 0.4rem;
+    row-gap: 0.45rem;
+    width: 100%;
+    margin-bottom: 0;
+    padding: 0.55rem 0.55rem 0.85rem;
+    box-sizing: border-box;
+    border: 1px solid color-mix(in srgb, var(--border) 82%, transparent);
+    border-radius: var(--radius-control);
+    background: color-mix(in srgb, var(--bg) 82%, var(--surface));
+}
+
+.lt-char {
+    font: inherit;
+    font-size: 0.95rem;
+    font-weight: 600;
+    min-width: 0;
+    width: 100%;
+    margin: 0;
+    padding: 0.42rem 0.15rem;
+    border: 1px solid color-mix(in srgb, var(--border) 72%, transparent);
+    border-radius: var(--radius-char);
+    background: color-mix(in srgb, var(--surface) 84%, var(--surface-elevated));
+    color: var(--text);
+    cursor: pointer;
+    line-height: 1.2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.lt-char:hover {
+    color: var(--accent);
+    border-color: color-mix(in srgb, var(--accent) 42%, var(--border));
+    background: color-mix(in srgb, var(--accent) 11%, var(--surface));
+}
+
+.lt-char:active {
+    transform: scale(0.97);
+}

@@ -11,7 +11,7 @@
 @import "./data-table.css";
 @import "./pack-preview.css";
 @import "./reference-help.css";
-@import "./quiz-training.css";
+@import "./quiz/index.css";
 @import "./buttons.css";
 @import "./overlays.css";
 @import "./vocab-round-summary.css";

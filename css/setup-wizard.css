@@ -1,10 +1,32 @@
-/** Ряд: компактная «?» и основная кнопка загрузки JSON. */
+/** Ряд: компактная «?» и основная кнопка загрузки JSON (в конце списка наборов). */
 .pack-custom-upload {
-    margin-top: var(--panel-section-gap);
     display: flex;
     flex-direction: row;
     align-items: stretch;
     gap: var(--gap-actions);
+    flex: 1;
+    min-width: 0;
+}
+
+.pack-custom-upload--in-list {
+    margin: 0;
+    min-height: 0;
+    padding: 0;
+    border: none;
+    background: transparent;
+    box-shadow: none;
+}
+
+.pack-card--upload-row {
+    cursor: default;
+}
+
+.pack-card--upload-row:hover .pack-card-face,
+.pack-card--upload-row:active .pack-card-face {
+    border-color: color-mix(in srgb, var(--border) 84%, transparent);
+    background: color-mix(in srgb, var(--surface-elevated) 86%, var(--surface));
+    transform: none;
+    box-shadow: none;
 }
 
 .pack-custom-upload .btn-pack-prompt-help {

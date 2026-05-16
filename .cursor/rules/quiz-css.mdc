@@ -1,0 +1,28 @@
+---
+description: Where to add quiz / training screen CSS
+globs: css/quiz/**/*.css, src/screens/quiz/**/*
+alwaysApply: false
+---
+
+# Quiz CSS layout
+
+Quiz styles live under `css/quiz/`, imported from `css/quiz/index.css` (wired in `css/styles.css`).
+
+Do **not** recreate `css/quiz-training.css` or add monolithic quiz styles outside this folder.
+
+| Change | File |
+|--------|------|
+| Panel shell, footer stack, `#quiz-vocab-ui` / `#quiz-verbs-ui` layout | `quiz-layout.css` |
+| `.vocab-ru-card`, `.vocab-card-stack`, swipe, streak, round dots | `vocab-card.css` |
+| Mode modifiers (`quiz--vocab-single`), options, choices | `vocab-modes.css` |
+| `quiz--vocab-hardcore` layout | `vocab-hardcore.css` |
+| Inputs, `.prompt`, `.lemma`, `.lithuanian-input`, `.lt-chars` | `quiz-forms.css` |
+| `.lt-keyboard` (base + desktop) | `lt-keyboard.css` |
+| `.lt-keyboard` fixed overlay (`pointer: coarse`) | `lt-keyboard-coarse.css` |
+| `#quiz-cases-ui` | `quiz-cases.css` |
+| Verbs grid / `.verb-form-*` | `quiz-verbs.css` |
+| `.feedback`, `.vocab-card-feedback`, panel feedback spacing | `quiz-feedback.css` |
+
+New quiz mode with ~80+ lines: prefer `css/quiz/quiz-<mode>.css` plus one `@import` line in `index.css` (keep cascade order documented in a comment).
+
+Run `npm run check:css-size` before committing large CSS changes.

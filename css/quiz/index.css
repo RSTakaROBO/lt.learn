@@ -1,0 +1,11 @@
+/* Cascade order matches former quiz-training.css */
+@import "./quiz-layout.css";
+@import "./vocab-card.css";
+@import "./vocab-modes.css";
+@import "./quiz-cases.css";
+@import "./quiz-forms.css";
+@import "./lt-keyboard.css";
+@import "./lt-keyboard-coarse.css";
+@import "./quiz-verbs.css";
+@import "./vocab-hardcore.css";
+@import "./quiz-feedback.css";

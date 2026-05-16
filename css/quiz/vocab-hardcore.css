@@ -1,0 +1,82 @@
+/* Хардкор-слова: карточка слова выше (поле ввода и буквы съедают экран — даём слову воздух), футер без «прижима к низу» */
+#quiz.panel.quiz--vocab-hardcore #quiz-vocab-ui:not(.hidden) {
+    flex: 0 1 auto;
+    gap: 0.55rem;
+}
+
+#quiz.panel.quiz--vocab-hardcore #quiz-vocab-ui:not(.hidden) > .vocab-card-stack {
+    flex: 0 1 auto;
+    min-height: 0;
+    max-height: min(62vh, 40rem);
+    margin-bottom: calc(10px + 0.55rem);
+}
+
+html.ios-standalone
+    #quiz.panel.quiz--vocab-hardcore
+    #quiz-vocab-ui:not(.hidden)
+    > .vocab-card-stack {
+    max-height: min(58vh, 38rem);
+}
+
+#quiz.panel.quiz--vocab-hardcore #quiz-vocab-ui:not(.hidden) > .vocab-card-stack > .vocab-ru-card {
+    padding: 4rem 2.3rem;
+    overflow: visible;
+}
+
+#quiz.panel.quiz--vocab-hardcore
+    #quiz-vocab-ui:not(.hidden)
+    > .vocab-card-stack
+    > .vocab-ru-card
+    > .vocab-ru-card-body {
+    overflow-y: auto;
+    overscroll-behavior-y: none;
+}
+
+#quiz.panel.quiz--vocab-hardcore #quiz-vocab-ui:not(.hidden) .vocab-ru-card .lemma,
+#quiz.panel.quiz--vocab-hardcore #quiz-vocab-ui:not(.hidden) .vocab-ru-card .vocab-ru-display {
+    font-size: clamp(2.25rem, 7.2vmin, 3.35rem);
+    line-height: 1.3;
+}
+
+#quiz.panel.quiz--vocab-hardcore .vocab-streak-mult {
+    right: 0.42rem;
+    bottom: 0.38rem;
+}
+
+#quiz.panel.quiz--vocab-hardcore .vocab-streak-mult--t0 .vocab-streak-mult-value {
+    font-size: clamp(2.05rem, 7.2vmin, 2.75rem);
+}
+
+#quiz.panel.quiz--vocab-hardcore .vocab-streak-mult--t1 .vocab-streak-mult-value {
+    font-size: clamp(2.28rem, 7.95vmin, 3.05rem);
+}
+
+#quiz.panel.quiz--vocab-hardcore .vocab-streak-mult--t2 .vocab-streak-mult-value {
+    font-size: clamp(2.48rem, 8.65vmin, 3.4rem);
+}
+
+#quiz.panel.quiz--vocab-hardcore .vocab-streak-mult--t3 .vocab-streak-mult-value {
+    font-size: clamp(2.72rem, 9.35vmin, 3.78rem);
+}
+
+#quiz.panel.quiz--vocab-hardcore .vocab-streak-mult--t4 .vocab-streak-mult-value {
+    font-size: clamp(2.98rem, 10.05vmin, 4.15rem);
+}
+
+#quiz.panel.quiz--vocab-hardcore .vocab-streak-mult--t5 .vocab-streak-mult-value {
+    font-size: clamp(3.25rem, 10.85vmin, 4.55rem);
+}
+
+#quiz.panel.quiz--vocab-hardcore > .quiz-footer-actions {
+    margin-top: 0;
+    flex-shrink: 0;
+}
+
+#quiz.panel.quiz--vocab-hardcore #vocab-answer-form {
+    gap: 0.55rem;
+}
+
+#quiz.panel.quiz--vocab-hardcore .quiz-footer-actions--inline {
+    margin-top: 0;
+    padding-top: 0;
+}

@@ -10,11 +10,14 @@ import {
     removeCustomPackById,
     saveSelectedPacks,
 } from "js/storage.js"
+import { handlePackJsonInputChange } from "js/setup-wizard-handlers.js"
+import { openPackPromptOverlay } from "js/trainer-ui-state.js"
 import { countPackWords } from "src/context/manifestPacks/packWordCounts.js"
 import { useManifestPacks } from "src/context/ManifestPacksContext.jsx"
 import { useTrainerDispatch } from "src/context/TrainerAppContext.jsx"
 import { CardList } from "src/components/ui/CardList.jsx"
 import { CheckboxButton } from "src/components/ui/CheckboxButton.jsx"
+import { Button } from "src/components/ui/Button.jsx"
 import { PackCardDeleteButton } from "src/components/pack-card/PackCardDeleteButton.jsx"
 import { PackCardPreviewButton } from "src/components/pack-card/PackCardPreviewButton.jsx"
 
@@ -126,6 +129,32 @@ export function WizardPackList({ scrollWell = true }) {
                     />
                 )
             })}
+            <div className="pack-card pack-card--flat pack-card--upload-row" role="group">
+                <div className="pack-card-face pack-custom-upload pack-custom-upload--in-list">
+                    <Button
+                        type="button"
+                        className="btn-pack-prompt-help"
+                        aria-label={STR.packs.llmPromptAria}
+                        title={STR.packs.llmPromptTitle}
+                        onClick={() => openPackPromptOverlay()}
+                    >
+                        ?
+                    </Button>
+                    <label className="btn ghost btn-pack-json-main pack-json-upload-label">
+                        <span className="pack-json-upload-label-text">
+                            {STR.packs.uploadJsonLabel}
+                        </span>
+                        <input
+                            type="file"
+                            id="pack-json-input"
+                            className="pack-json-file-input-native"
+                            accept="*/*"
+                            aria-label={STR.packs.uploadJsonAria}
+                            onChange={(e) => void handlePackJsonInputChange(e)}
+                        />
+                    </label>
+                </div>
+            </div>
         </CardList>
     )
 }
