@@ -8,8 +8,7 @@
     flex-direction: column;
     height: calc(
         100dvh - max(var(--shell-pad-top), env(safe-area-inset-top, 0px)) -
-            calc(env(safe-area-inset-bottom, 0px) + var(--shell-pad-bottom-extra)) -
-            var(--quiz-bottom-bar-clearance) - 0.75rem
+            var(--shell-pad-bottom) - 0.75rem
     );
     margin-inline: auto;
 }

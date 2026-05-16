@@ -323,7 +323,7 @@
                 "locative": "gydytojoje",
                 "vocative": "gydytoja"
             },
-            "ru": ["врач", "доктор"]
+            "ru": ["врач (ж)", "врач", "доктор"]
         },
         {
             "type": "noun",
@@ -435,7 +435,7 @@
                 "locative": "fotografėje",
                 "vocative": "fotografe"
             },
-            "ru": ["фотограф", "фотограф-женщина"]
+            "ru": ["фотограф (ж)", "фотограф"]
         },
         {
             "type": "noun",
@@ -800,6 +800,454 @@
                 "vocative": "pardavėja"
             },
             "ru": ["продавщица", "продавец"]
+        },
+        {
+            "type": "noun",
+            "lemma": "advokatas",
+            "forms": {
+                "nominative": "advokatas",
+                "genitive": "advokato",
+                "dative": "advokatui",
+                "accusative": "advokatą",
+                "instrumental": "advokatu",
+                "locative": "advokate",
+                "vocative": "advokate"
+            },
+            "ru": ["адвокат"]
+        },
+        {
+            "type": "noun",
+            "lemma": "advokatė",
+            "forms": {
+                "nominative": "advokatė",
+                "genitive": "advokatės",
+                "dative": "advokatei",
+                "accusative": "advokatę",
+                "instrumental": "advokate",
+                "locative": "advokatėje",
+                "vocative": "advokate"
+            },
+            "ru": ["адвокат (ж)", "адвокат"]
+        },
+        {
+            "type": "noun",
+            "lemma": "ambasadorius",
+            "forms": {
+                "nominative": "ambasadorius",
+                "genitive": "ambasadoriaus",
+                "dative": "ambasadoriui",
+                "accusative": "ambasadorių",
+                "instrumental": "ambasadoriumi",
+                "locative": "ambasadoriuje",
+                "vocative": "ambasadoriau"
+            },
+            "ru": ["посол"]
+        },
+        {
+            "type": "noun",
+            "lemma": "ambasadorė",
+            "forms": {
+                "nominative": "ambasadorė",
+                "genitive": "ambasadorės",
+                "dative": "ambasadorei",
+                "accusative": "ambasadorę",
+                "instrumental": "ambasadore",
+                "locative": "ambasadorėje",
+                "vocative": "ambasadore"
+            },
+            "ru": ["посол (ж)", "посол"]
+        },
+        {
+            "type": "noun",
+            "lemma": "diplomatas",
+            "forms": {
+                "nominative": "diplomatas",
+                "genitive": "diplomato",
+                "dative": "diplomatui",
+                "accusative": "diplomatą",
+                "instrumental": "diplomatu",
+                "locative": "diplomate",
+                "vocative": "diplomate"
+            },
+            "ru": ["дипломат"]
+        },
+        {
+            "type": "noun",
+            "lemma": "diplomatė",
+            "forms": {
+                "nominative": "diplomatė",
+                "genitive": "diplomatės",
+                "dative": "diplomatei",
+                "accusative": "diplomatę",
+                "instrumental": "diplomate",
+                "locative": "diplomatėje",
+                "vocative": "diplomate"
+            },
+            "ru": ["дипломат (ж)", "дипломат"]
+        },
+        {
+            "type": "noun",
+            "lemma": "ekonomistas",
+            "forms": {
+                "nominative": "ekonomistas",
+                "genitive": "ekonomisto",
+                "dative": "ekonomistui",
+                "accusative": "ekonomistą",
+                "instrumental": "ekonomistu",
+                "locative": "ekonomiste",
+                "vocative": "ekonomiste"
+            },
+            "ru": ["экономист"]
+        },
+        {
+            "type": "noun",
+            "lemma": "ekonomistė",
+            "forms": {
+                "nominative": "ekonomistė",
+                "genitive": "ekonomistės",
+                "dative": "ekonomistei",
+                "accusative": "ekonomistę",
+                "instrumental": "ekonomiste",
+                "locative": "ekonomistėje",
+                "vocative": "ekonomiste"
+            },
+            "ru": ["экономист (ж)", "экономист"]
+        },
+        {
+            "type": "noun",
+            "lemma": "inžinierius",
+            "forms": {
+                "nominative": "inžinierius",
+                "genitive": "inžinieriaus",
+                "dative": "inžinieriui",
+                "accusative": "inžinierių",
+                "instrumental": "inžinieriumi",
+                "locative": "inžinieriuje",
+                "vocative": "inžinieriau"
+            },
+            "ru": ["инженер"]
+        },
+        {
+            "type": "noun",
+            "lemma": "inžinierė",
+            "forms": {
+                "nominative": "inžinierė",
+                "genitive": "inžinierės",
+                "dative": "inžinierei",
+                "accusative": "inžinierę",
+                "instrumental": "inžiniere",
+                "locative": "inžinierėje",
+                "vocative": "inžiniere"
+            },
+            "ru": ["инженер (ж)", "инженер"]
+        },
+        {
+            "type": "noun",
+            "lemma": "jūrininkas",
+            "forms": {
+                "nominative": "jūrininkas",
+                "genitive": "jūrininko",
+                "dative": "jūrininkui",
+                "accusative": "jūrininką",
+                "instrumental": "jūrininku",
+                "locative": "jūrininke",
+                "vocative": "jūrininke"
+            },
+            "ru": ["моряк"]
+        },
+        {
+            "type": "noun",
+            "lemma": "jūrininkė",
+            "forms": {
+                "nominative": "jūrininkė",
+                "genitive": "jūrininkės",
+                "dative": "jūrininkei",
+                "accusative": "jūrininkę",
+                "instrumental": "jūrininke",
+                "locative": "jūrininkėje",
+                "vocative": "jūrininke"
+            },
+            "ru": ["моряк (ж)", "моряк"]
+        },
+        {
+            "type": "noun",
+            "lemma": "lakūnas",
+            "forms": {
+                "nominative": "lakūnas",
+                "genitive": "lakūno",
+                "dative": "lakūnui",
+                "accusative": "lakūną",
+                "instrumental": "lakūnu",
+                "locative": "lakūne",
+                "vocative": "lakūne"
+            },
+            "ru": ["пилот", "лётчик"]
+        },
+        {
+            "type": "noun",
+            "lemma": "lakūnė",
+            "forms": {
+                "nominative": "lakūnė",
+                "genitive": "lakūnės",
+                "dative": "lakūnei",
+                "accusative": "lakūnę",
+                "instrumental": "lakūne",
+                "locative": "lakūnėje",
+                "vocative": "lakūne"
+            },
+            "ru": ["пилот (ж)", "пилот", "лётчица"]
+        },
+        {
+            "type": "noun",
+            "lemma": "profesorius",
+            "forms": {
+                "nominative": "profesorius",
+                "genitive": "profesoriaus",
+                "dative": "profesoriui",
+                "accusative": "profesorių",
+                "instrumental": "profesoriumi",
+                "locative": "profesoriuje",
+                "vocative": "profesoriau"
+            },
+            "ru": ["профессор"]
+        },
+        {
+            "type": "noun",
+            "lemma": "profesorė",
+            "forms": {
+                "nominative": "profesorė",
+                "genitive": "profesorės",
+                "dative": "profesorei",
+                "accusative": "profesorę",
+                "instrumental": "profesore",
+                "locative": "profesorėje",
+                "vocative": "profesore"
+            },
+            "ru": ["профессор (ж)", "профессор"]
+        },
+        {
+            "type": "noun",
+            "lemma": "režisierius",
+            "forms": {
+                "nominative": "režisierius",
+                "genitive": "režisieriaus",
+                "dative": "režisieriui",
+                "accusative": "režisierių",
+                "instrumental": "režisieriumi",
+                "locative": "režisieriuje",
+                "vocative": "režisieriau"
+            },
+            "ru": ["режиссёр"]
+        },
+        {
+            "type": "noun",
+            "lemma": "režisierė",
+            "forms": {
+                "nominative": "režisierė",
+                "genitive": "režisierės",
+                "dative": "režisierei",
+                "accusative": "režisierę",
+                "instrumental": "režisiere",
+                "locative": "režisierėje",
+                "vocative": "režisiere"
+            },
+            "ru": ["режиссёр (ж)", "режиссёр"]
+        },
+        {
+            "type": "noun",
+            "lemma": "sekretorius",
+            "forms": {
+                "nominative": "sekretorius",
+                "genitive": "sekretoriaus",
+                "dative": "sekretoriui",
+                "accusative": "sekretorių",
+                "instrumental": "sekretoriumi",
+                "locative": "sekretoriuje",
+                "vocative": "sekretoriau"
+            },
+            "ru": ["секретарь"]
+        },
+        {
+            "type": "noun",
+            "lemma": "sekretorė",
+            "forms": {
+                "nominative": "sekretorė",
+                "genitive": "sekretorės",
+                "dative": "sekretorei",
+                "accusative": "sekretorę",
+                "instrumental": "sekretore",
+                "locative": "sekretorėje",
+                "vocative": "sekretore"
+            },
+            "ru": ["секретарь (ж)", "секретарь"]
+        },
+        {
+            "type": "noun",
+            "lemma": "tarnautojas",
+            "forms": {
+                "nominative": "tarnautojas",
+                "genitive": "tarnautojo",
+                "dative": "tarnautojui",
+                "accusative": "tarnautoją",
+                "instrumental": "tarnautoju",
+                "locative": "tarnautojuje",
+                "vocative": "tarnautojau"
+            },
+            "ru": ["служащий"]
+        },
+        {
+            "type": "noun",
+            "lemma": "tarnautoja",
+            "forms": {
+                "nominative": "tarnautoja",
+                "genitive": "tarnautojos",
+                "dative": "tarnautojai",
+                "accusative": "tarnautoją",
+                "instrumental": "tarnautoja",
+                "locative": "tarnautojoje",
+                "vocative": "tarnautoja"
+            },
+            "ru": ["служащая", "служащий"]
+        },
+        {
+            "type": "noun",
+            "lemma": "teisininkas",
+            "forms": {
+                "nominative": "teisininkas",
+                "genitive": "teisininko",
+                "dative": "teisininkui",
+                "accusative": "teisininką",
+                "instrumental": "teisininku",
+                "locative": "teisininke",
+                "vocative": "teisininke"
+            },
+            "ru": ["юрист"]
+        },
+        {
+            "type": "noun",
+            "lemma": "teisininkė",
+            "forms": {
+                "nominative": "teisininkė",
+                "genitive": "teisininkės",
+                "dative": "teisininkei",
+                "accusative": "teisininkę",
+                "instrumental": "teisininke",
+                "locative": "teisininkėje",
+                "vocative": "teisininke"
+            },
+            "ru": ["юрист (ж)", "юрист"]
+        },
+        {
+            "type": "noun",
+            "lemma": "vadybininkas",
+            "forms": {
+                "nominative": "vadybininkas",
+                "genitive": "vadybininko",
+                "dative": "vadybininkui",
+                "accusative": "vadybininką",
+                "instrumental": "vadybininku",
+                "locative": "vadybininke",
+                "vocative": "vadybininke"
+            },
+            "ru": ["менеджер"]
+        },
+        {
+            "type": "noun",
+            "lemma": "vadybininkė",
+            "forms": {
+                "nominative": "vadybininkė",
+                "genitive": "vadybininkės",
+                "dative": "vadybininkei",
+                "accusative": "vadybininkę",
+                "instrumental": "vadybininke",
+                "locative": "vadybininkėje",
+                "vocative": "vadybininke"
+            },
+            "ru": ["менеджер (ж)", "менеджер"]
+        },
+        {
+            "type": "noun",
+            "lemma": "verslininkas",
+            "forms": {
+                "nominative": "verslininkas",
+                "genitive": "verslininko",
+                "dative": "verslininkui",
+                "accusative": "verslininką",
+                "instrumental": "verslininku",
+                "locative": "verslininke",
+                "vocative": "verslininke"
+            },
+            "ru": ["предприниматель", "бизнесмен"]
+        },
+        {
+            "type": "noun",
+            "lemma": "verslininkė",
+            "forms": {
+                "nominative": "verslininkė",
+                "genitive": "verslininkės",
+                "dative": "verslininkei",
+                "accusative": "verslininkę",
+                "instrumental": "verslininke",
+                "locative": "verslininkėje",
+                "vocative": "verslininke"
+            },
+            "ru": ["предпринимательница", "предприниматель"]
+        },
+        {
+            "type": "noun",
+            "lemma": "vertėjas",
+            "forms": {
+                "nominative": "vertėjas",
+                "genitive": "vertėjo",
+                "dative": "vertėjui",
+                "accusative": "vertėją",
+                "instrumental": "vertėju",
+                "locative": "vertėjuje",
+                "vocative": "vertėjau"
+            },
+            "ru": ["переводчик"]
+        },
+        {
+            "type": "noun",
+            "lemma": "vertėja",
+            "forms": {
+                "nominative": "vertėja",
+                "genitive": "vertėjos",
+                "dative": "vertėjai",
+                "accusative": "vertėją",
+                "instrumental": "vertėja",
+                "locative": "vertėjoje",
+                "vocative": "vertėja"
+            },
+            "ru": ["переводчица", "переводчик"]
+        },
+        {
+            "type": "noun",
+            "lemma": "žurnalistas",
+            "forms": {
+                "nominative": "žurnalistas",
+                "genitive": "žurnalisto",
+                "dative": "žurnalistui",
+                "accusative": "žurnalistą",
+                "instrumental": "žurnalistu",
+                "locative": "žurnaliste",
+                "vocative": "žurnaliste"
+            },
+            "ru": ["журналист"]
+        },
+        {
+            "type": "noun",
+            "lemma": "žurnalistė",
+            "forms": {
+                "nominative": "žurnalistė",
+                "genitive": "žurnalistės",
+                "dative": "žurnalistei",
+                "accusative": "žurnalistę",
+                "instrumental": "žurnaliste",
+                "locative": "žurnalistėje",
+                "vocative": "žurnaliste"
+            },
+            "ru": ["журналистка", "журналист"]
         }
     ]
 }

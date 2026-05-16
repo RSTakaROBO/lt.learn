@@ -44,6 +44,7 @@
 
 /* Множитель серии ×N: правый нижний угол карточки слова (с 5 подряд верных) */
 .vocab-ru-card {
+    --vocab-card-radius: 18px;
     position: relative;
     flex: 1;
     min-height: 0;
@@ -52,7 +53,7 @@
     justify-content: center;
     margin: 0;
     padding: 1.05rem 1.2rem;
-    border-radius: var(--radius-card);
+    border-radius: var(--vocab-card-radius);
     border: 1px solid color-mix(in srgb, var(--border) 88%, var(--text) 10%);
     background:
         linear-gradient(
@@ -115,7 +116,7 @@
     position: absolute;
     inset: 0 0 0;
     z-index: 0;
-    border-radius: var(--radius-card);
+    border-radius: 18px;
     border: 1px solid color-mix(in srgb, var(--border) 84%, var(--text) 8%);
     background: color-mix(in srgb, var(--surface-elevated) 88%, var(--surface));
     pointer-events: none;
@@ -424,7 +425,7 @@
     max-height: clamp(18rem, 54dvh, 31rem);
     margin-block: auto;
     margin-bottom: auto;
-    transform: translateY(clamp(1rem, 4.6dvh, 3rem));
+    transform: translateY(clamp(2.2rem, 7.5dvh, 5rem));
 }
 
 #quiz.panel.quiz--vocab-single #quiz-vocab-ui:not(.hidden) > .vocab-card-stack > .vocab-ru-card {
@@ -450,6 +451,14 @@
 }
 
 .vocab-single-deck {
+    --vocab-single-card-scale-0: 1;
+    --vocab-single-card-scale-1: 0.982;
+    --vocab-single-card-scale-2: 0.965;
+    --vocab-single-card-scale-3: 0.948;
+    --vocab-single-card-y-0: 0;
+    --vocab-single-card-y-1: 0.72rem;
+    --vocab-single-card-y-2: 1.38rem;
+    --vocab-single-card-y-3: 1.95rem;
     position: relative;
     display: flex;
     overflow: visible;
@@ -474,35 +483,26 @@
 
 .vocab-single-deck-card--0 {
     z-index: 5;
-    transform: translateY(0) scale(1);
+    transform: translateY(var(--vocab-single-card-y-0)) scale(var(--vocab-single-card-scale-0));
 }
 
 .vocab-single-deck-card--1 {
     z-index: 4;
-    transform: translateY(0.72rem) scale(0.982);
+    transform: translateY(var(--vocab-single-card-y-1)) scale(var(--vocab-single-card-scale-1));
 }
 
 .vocab-single-deck-card--2 {
     z-index: 3;
-    transform: translateY(1.38rem) scale(0.965);
+    transform: translateY(var(--vocab-single-card-y-2)) scale(var(--vocab-single-card-scale-2));
 }
 
 .vocab-single-deck-card--3 {
     z-index: 2;
-    transform: translateY(1.95rem) scale(0.948);
+    transform: translateY(var(--vocab-single-card-y-3)) scale(var(--vocab-single-card-scale-3));
 }
 
-.vocab-single-deck-card--fresh {
-    animation: vocab-single-card-fade-in 0.52s ease both;
-}
-
-@keyframes vocab-single-card-fade-in {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
+.vocab-single-deck-card--entering {
+    transform: translateY(var(--vocab-single-enter-y)) scale(var(--vocab-single-enter-scale));
 }
 
 .vocab-single-deck-card--top {
@@ -666,6 +666,8 @@
 }
 
 .vocab-single-answer {
+    --vocab-answer-accent: color-mix(in srgb, var(--accent) 42%, #ffd166);
+    --vocab-card-radius: 18px;
     display: flex;
     flex: 1;
     min-width: 0;
@@ -675,18 +677,18 @@
     justify-content: center;
     width: 100%;
     padding: clamp(1.4rem, 5vmin, 3.2rem);
-    border-radius: var(--radius-card);
-    border: 1px solid color-mix(in srgb, var(--accent) 38%, var(--border));
+    border-radius: var(--vocab-card-radius);
+    border: 1px solid color-mix(in srgb, var(--vocab-answer-accent) 52%, var(--border));
     background:
         linear-gradient(
             180deg,
-            color-mix(in srgb, var(--accent) 9%, transparent),
-            color-mix(in srgb, var(--bg) 5%, transparent)
+            color-mix(in srgb, var(--vocab-answer-accent) 19%, transparent),
+            color-mix(in srgb, var(--vocab-answer-accent) 7%, transparent)
         ),
-        color-mix(in srgb, var(--surface-elevated) 93%, var(--surface));
+        color-mix(in srgb, var(--surface-elevated) 88%, var(--vocab-answer-accent));
     box-shadow:
-        0 1px 0 color-mix(in srgb, white 22%, transparent) inset,
-        0 0 0 1px color-mix(in srgb, var(--accent) 11%, transparent) inset;
+        0 1px 0 color-mix(in srgb, white 28%, transparent) inset,
+        0 0 0 1px color-mix(in srgb, var(--vocab-answer-accent) 22%, transparent) inset;
     opacity: 1;
 }
 
@@ -711,10 +713,10 @@
 .vocab-single-answer__value {
     margin-top: 0.28rem;
     max-width: 100%;
-    color: var(--accent);
-    font-size: clamp(1.35rem, 5.2vmin, 2.25rem);
-    font-weight: 700;
-    line-height: 1.16;
+    color: var(--vocab-answer-accent);
+    font-size: clamp(2.4rem, 8.6vmin, 4.45rem);
+    font-weight: 800;
+    line-height: 1.08;
     text-align: center;
     overflow-wrap: break-word;
     word-break: break-word;

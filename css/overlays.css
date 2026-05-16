@@ -48,6 +48,21 @@ body.vocab-round-summary-modal-open .quiz-bottom-bar {
     overflow: visible;
 }
 
+.settings-options-well {
+    flex: 1 1 0;
+    min-height: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    align-content: start;
+    overscroll-behavior-y: contain;
+    border-radius: var(--radius-card);
+    border: 1px solid color-mix(in srgb, var(--border) 78%, transparent);
+    background: color-mix(in srgb, var(--bg) 28%, var(--surface));
+    padding: 0.55rem 0.6rem;
+    padding-bottom: calc(var(--panel-scroll-pad) + 0.55rem);
+}
+
 .settings-theme-block > .sub {
     flex-shrink: 0;
     margin: 0 0 0.65rem;
@@ -168,7 +183,7 @@ body.vocab-round-summary-modal-open .quiz-bottom-bar {
     flex: 0 1 auto;
     width: min(100%, 24rem);
     min-height: unset;
-    max-height: calc(100dvh - var(--quiz-bottom-bar-clearance) - 2rem);
+    max-height: calc(100dvh - var(--shell-pad-bottom) - 2rem);
     margin-inline: auto;
     padding: clamp(1rem, 4.5vmin, 1.35rem);
     padding-bottom: clamp(1rem, 4.5vmin, 1.35rem);

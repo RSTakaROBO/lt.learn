@@ -14,7 +14,7 @@
     padding-top: max(var(--shell-pad-top), env(safe-area-inset-top, 0px));
     padding-right: max(var(--shell-pad-x), env(safe-area-inset-right, 0px));
     padding-left: max(var(--shell-pad-x), env(safe-area-inset-left, 0px));
-    padding-bottom: calc(env(safe-area-inset-bottom, 0px) + var(--shell-pad-bottom-extra));
+    padding-bottom: calc(var(--quiz-bottom-bar-zone) + var(--shell-pad-bottom-extra));
     background: color-mix(in srgb, var(--text) 56%, transparent);
     overflow: hidden;
 }
@@ -31,7 +31,7 @@
         92dvh,
         calc(
             100dvh - max(var(--shell-pad-top), env(safe-area-inset-top, 0px)) -
-                calc(env(safe-area-inset-bottom, 0px) + var(--shell-pad-bottom-extra)) - 1.25rem
+                calc(var(--quiz-bottom-bar-zone) + var(--shell-pad-bottom-extra)) - 1.25rem
         )
     );
 }
@@ -99,7 +99,7 @@
 }
 
 .app-screen--modal .app-screen__footer {
-    margin-bottom: calc(var(--quiz-bottom-bar-clearance) + env(safe-area-inset-bottom, 0px));
+    margin-bottom: 0;
 }
 
 .app-screen__footer--single .btn {

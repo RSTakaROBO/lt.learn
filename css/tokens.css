@@ -5,6 +5,13 @@
     --stroke: 2px;
     --quiz-bottom-bar-clearance: 5.15rem;
     --quiz-bottom-bar-clearance-float: 5.6rem;
+    /** Зазор «пилюли» над home indicator (только touch); совпадает с bottom у .quiz-bottom-bar */
+    --quiz-bottom-bar-float-gap: 0px;
+    /** Высота зоны нижнего меню от края экрана (бар + зазор + safe-area) */
+    --quiz-bottom-bar-zone: calc(
+        var(--quiz-bottom-bar-clearance) + var(--quiz-bottom-bar-float-gap) +
+            env(safe-area-inset-bottom, 0px)
+    );
     /** Высота блока литовской клавиатуры: 5 содержательных рядов + зазоры + padding клавиатуры */
     --lt-keyboard-block-clearance: 17rem;
     /** Дополнительный зазор слева / справа / снизу у клавиш (к safe-area добавляется) */
@@ -22,11 +29,11 @@
     --shell-pad-x: 1rem;
     --shell-pad-top: 1.5rem;
     --shell-pad-bottom-extra: 0.75rem;
-    --shell-pad-bottom: calc(var(--quiz-bottom-bar-clearance) + var(--shell-pad-bottom-extra));
+    --shell-pad-bottom: calc(var(--quiz-bottom-bar-zone) + var(--shell-pad-bottom-extra));
 
     --radius-card: 8px;
     --radius-table-wrap: 8px;
-    --radius-control: 8px;
+    --radius-control: 12px;
     --radius-tile: 10px;
     --radius-char: 6px;
 
@@ -37,5 +44,6 @@
 @media (pointer: coarse) {
     :root {
         --quiz-bottom-bar-clearance: var(--quiz-bottom-bar-clearance-float);
+        --quiz-bottom-bar-float-gap: 0.45rem;
     }
 }

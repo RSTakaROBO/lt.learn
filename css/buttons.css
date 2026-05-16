@@ -10,7 +10,7 @@
     font-weight: 600;
     padding: 0.6rem 1rem;
     border-radius: var(--radius-control);
-    border: var(--stroke) solid color-mix(in srgb, var(--border) 74%, transparent);
+    border: 1px solid color-mix(in srgb, var(--border) 74%, transparent);
     background: color-mix(in srgb, var(--surface) 88%, var(--surface-elevated));
     color: var(--text);
     cursor: pointer;

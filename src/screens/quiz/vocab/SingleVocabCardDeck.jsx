@@ -3,7 +3,8 @@ import { flushSync } from "react-dom"
 
 import { VOCAB_DIRECTION } from "js/config.js"
 import { STR } from "js/i18n/strings-ru.js"
-import { handleVocabSingleSwipe } from "js/quiz.js"
+import { handleVocabSingleSwipe, requestVocabSingleFutureTask } from "js/quiz.js"
+import { VocabRoundDots } from "src/screens/quiz/shared/VocabRoundDots.jsx"
 import { vocabLemma, vocabRuPrimary } from "src/screens/quiz/vocab/vocabWords.js"
 
 const EXIT_MS = 620
@@ -33,7 +34,6 @@ function taskKey(task) {
 function makeCard(type, sourceTask, suffix) {
     return {
         id: `${taskKey(sourceTask)}:${type}:${suffix}`,
-        isFresh: suffix > 0,
         task: sourceTask,
         type,
     }
@@ -49,16 +49,27 @@ function initialDeck(task, nextTask) {
     return [...cardsForTaskPair(task, 0), ...cardsForTaskPair(nextTask, 0)]
 }
 
-function appendRequestedCards(rows, requestTask, seq) {
-    if (rows.length >= 4) return rows
+function queueRequestedCards(queue, rows, requestTask, seq) {
+    if (queue.length > 0) return queue
     const next = requestTask?.()
-    if (!next?.word) return rows
-    const alreadyQueued = rows.some((card) => taskKey(card.task) === taskKey(next))
-    if (alreadyQueued) return rows
-    return [...rows, ...cardsForTaskPair(next, seq)].slice(0, 4)
+    if (!next?.word) return queue
+    const alreadyVisible = rows.some((card) => taskKey(card.task) === taskKey(next))
+    if (alreadyVisible) return queue
+    return cardsForTaskPair(next, seq)
 }
 
-function PromptCard({ card }) {
+function appendQueuedCard(rows, queue) {
+    if (rows.length >= 4 || queue.length === 0) {
+        return { nextCards: rows, nextQueue: queue }
+    }
+    const [nextCard, ...nextQueue] = queue
+    return {
+        nextCards: [...rows, nextCard],
+        nextQueue,
+    }
+}
+
+function PromptCard({ card, dots }) {
     const prompt = vocabPromptForTask(card.task)
     return (
         <div className="vocab-ru-card vocab-ru-card--single">
@@ -67,6 +78,7 @@ function PromptCard({ card }) {
                     {prompt.text}
                 </p>
             </div>
+            <VocabRoundDots dots={dots} />
         </div>
     )
 }
@@ -80,15 +92,18 @@ function AnswerCard({ card }) {
     )
 }
 
-function DeckCard({ card }) {
+function DeckCard({ card, dots }) {
     if (card.type === "answer") return <AnswerCard card={card} />
-    return <PromptCard card={card} />
+    return <PromptCard card={card} dots={dots} />
 }
 
-export function SingleVocabCardDeck({ nextTask, onRequestNextTask, state, task }) {
+export function SingleVocabCardDeck({ nextTask, onRequestNextTask, roundDots, state, task }) {
     const [dragX, setDragX] = useState(0)
     const [cards, setCards] = useState(() => initialDeck(task, nextTask))
+    const [enterFrom, setEnterFrom] = useState({})
     const [exit, setExit] = useState(null)
+    const enterRafRef = useRef(0)
+    const pendingCardsRef = useRef([])
     const pointerRef = useRef(null)
     const seqRef = useRef(1)
     const timerRef = useRef(0)
@@ -103,13 +118,17 @@ export function SingleVocabCardDeck({ nextTask, onRequestNextTask, state, task }
             return initialDeck(task, nextTask)
         })
         setDragX(0)
+        setEnterFrom({})
         setExit(null)
+        pendingCardsRef.current = []
         pointerRef.current = null
+        cancelAnimationFrame(enterRafRef.current)
         window.clearTimeout(timerRef.current)
     }, [nextTask, task])
 
     useEffect(
         () => () => {
+            cancelAnimationFrame(enterRafRef.current)
             window.clearTimeout(timerRef.current)
         },
         []
@@ -129,10 +148,54 @@ export function SingleVocabCardDeck({ nextTask, onRequestNextTask, state, task }
         timerRef.current = window.setTimeout(() => {
             flushSync(() => {
                 handleVocabSingleSwipe(dir)
+                let nextEnterFrom = {}
                 setCards((prev) => {
                     const shifted = prev.slice(1)
-                    if (top.type !== "answer") return shifted
-                    return appendRequestedCards(shifted, onRequestNextTask, seqRef.current++)
+                    if (top.type !== "answer") {
+                        const blockedTasks = [...shifted, ...pendingCardsRef.current].map(
+                            (card) => card.task
+                        )
+                        const nextQueue = queueRequestedCards(
+                            pendingCardsRef.current,
+                            shifted,
+                            () => requestVocabSingleFutureTask(blockedTasks),
+                            seqRef.current
+                        )
+                        if (nextQueue !== pendingCardsRef.current) {
+                            seqRef.current += 1
+                            pendingCardsRef.current = nextQueue
+                        }
+                    }
+                    if (pendingCardsRef.current.length === 0 && shifted.length < 4) {
+                        const nextQueue = queueRequestedCards(
+                            pendingCardsRef.current,
+                            shifted,
+                            onRequestNextTask,
+                            seqRef.current
+                        )
+                        if (nextQueue !== pendingCardsRef.current) {
+                            seqRef.current += 1
+                            pendingCardsRef.current = nextQueue
+                        }
+                    }
+                    const { nextCards, nextQueue } = appendQueuedCard(
+                        shifted,
+                        pendingCardsRef.current
+                    )
+                    pendingCardsRef.current = nextQueue
+                    const shiftedIds = new Set(shifted.map((card) => card.id))
+                    nextEnterFrom = {}
+                    nextCards.forEach((card, index) => {
+                        if (index > 0 && !shiftedIds.has(card.id)) {
+                            nextEnterFrom[card.id] = Math.max(0, index - 1)
+                        }
+                    })
+                    return nextCards
+                })
+                setEnterFrom(nextEnterFrom)
+                cancelAnimationFrame(enterRafRef.current)
+                enterRafRef.current = requestAnimationFrame(() => {
+                    enterRafRef.current = requestAnimationFrame(() => setEnterFrom({}))
                 })
                 setExit(null)
                 setDragX(0)
@@ -216,13 +279,19 @@ export function SingleVocabCardDeck({ nextTask, onRequestNextTask, state, task }
                 .map((card) => {
                     const index = cards.findIndex((row) => row.id === card.id)
                     const isTop = index === 0
+                    const enteringFromIndex = enterFrom[card.id]
                     const style = isTop
                         ? {
                               transform: motionX
                                   ? `translate3d(${motionX}px, 0, 0) rotate(${Math.max(-12, Math.min(12, motionX / 18))}deg)`
                                   : undefined,
                           }
-                        : undefined
+                        : enteringFromIndex != null
+                          ? {
+                                "--vocab-single-enter-y": `var(--vocab-single-card-y-${Math.min(enteringFromIndex, 3)})`,
+                                "--vocab-single-enter-scale": `var(--vocab-single-card-scale-${Math.min(enteringFromIndex, 3)})`,
+                            }
+                          : undefined
                     return (
                         <div
                             key={card.id}
@@ -230,7 +299,7 @@ export function SingleVocabCardDeck({ nextTask, onRequestNextTask, state, task }
                                 "vocab-single-deck-card",
                                 `vocab-single-deck-card--${Math.min(index, 3)}`,
                                 isTop && "vocab-single-deck-card--top",
-                                card.isFresh && index > 0 && "vocab-single-deck-card--fresh",
+                                enteringFromIndex != null && "vocab-single-deck-card--entering",
                                 isTop && dragX && "vocab-single-deck-card--dragging",
                                 isTop && exit && "vocab-single-deck-card--exiting",
                                 isTop &&
@@ -241,7 +310,7 @@ export function SingleVocabCardDeck({ nextTask, onRequestNextTask, state, task }
                                 .join(" ")}
                             style={style}
                         >
-                            <DeckCard card={card} />
+                            <DeckCard card={card} dots={isTop ? roundDots : null} />
                         </div>
                     )
                 })}

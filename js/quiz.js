@@ -208,9 +208,14 @@ function recentSingleExcludeLemmas(word) {
 }
 
 function prepareVocabSingleNextTask(word) {
-    const nextTask = nextVocabTask({ excludeLemmas: recentSingleExcludeLemmas(word) })
+    const futureTask = getEngine().vocabSingleFutureTask
+    const nextTask =
+        futureTask?.word && roundLemmaKey(futureTask.word) !== roundLemmaKey(word)
+            ? futureTask
+            : nextVocabTask({ excludeLemmas: recentSingleExcludeLemmas(word) })
     mutateEngine((e) => {
         e.vocabSingleNextTask = nextTask
+        if (futureTask === nextTask) e.vocabSingleFutureTask = null
     })
     return nextTask
 }
@@ -222,6 +227,22 @@ export function requestVocabSingleNextTask() {
     }
     if (getEngine().vocabSingleNextTask?.word) return getEngine().vocabSingleNextTask
     return prepareVocabSingleNextTask(task.word)
+}
+
+export function requestVocabSingleFutureTask(excludeTasks = []) {
+    const task = getEngine().currentTask
+    if (!task || task.mode !== TRAIN_MODE.VOCAB || task.vocabMode !== VOCAB_MODE.SINGLE) {
+        return null
+    }
+    if (getEngine().vocabSingleFutureTask?.word) return getEngine().vocabSingleFutureTask
+    const visibleExcludes = excludeTasks.map((row) => roundLemmaKey(row?.word)).filter(Boolean)
+    const nextTask = nextVocabTask({
+        excludeLemmas: [...new Set([...recentSingleExcludeLemmas(task.word), ...visibleExcludes])],
+    })
+    mutateEngine((e) => {
+        e.vocabSingleFutureTask = nextTask
+    })
+    return nextTask
 }
 
 export function handleVocabSingleSwipe(direction) {

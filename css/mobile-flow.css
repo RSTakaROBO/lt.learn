@@ -1,5 +1,7 @@
 @media (max-width: 560px) {
     :root {
+        --quiz-bottom-bar-clearance-float: 4.85rem;
+        --shell-pad-bottom-extra: 0.45rem;
         --shell-pad-x: 0.75rem;
         --shell-pad-top: 2.1rem;
         --panel-section-gap: 0.72rem;
@@ -10,6 +12,10 @@
         max-width: none;
         padding-left: max(var(--shell-pad-x), env(safe-area-inset-left, 0px));
         padding-right: max(var(--shell-pad-x), env(safe-area-inset-right, 0px));
+    }
+
+    .app:has(> .app-screen--flow:not(.hidden) .app-screen__footer) {
+        padding-bottom: var(--shell-pad-bottom-extra);
     }
 
     .app-screen--flow > .app-screen__panel {
@@ -80,6 +86,10 @@
     #setup .wizard-step:not(.hidden) > .actions {
         padding-top: 0.72rem;
         padding-bottom: 0;
+    }
+
+    .app-screen--flow:not(.hidden) > .app-screen__panel > .app-screen__footer {
+        padding-bottom: calc(var(--quiz-bottom-bar-zone) + var(--widget-actions-shadow-pad));
     }
 
     .wizard-pack-actions,

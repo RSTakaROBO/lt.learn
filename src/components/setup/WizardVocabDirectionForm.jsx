@@ -59,15 +59,6 @@ export function WizardVocabDirectionForm() {
                 <div className="vocab-hardcore-divider" role="presentation" aria-hidden="true" />
                 <CardList className="vocab-hardcore-list" role="radiogroup">
                     <CheckboxButton
-                        id="vocab-mode-choices"
-                        type="radio"
-                        name="vocab-mode"
-                        title={STR.vocabDirection.modeChoicesTitle}
-                        meta={STR.vocabDirection.modeChoicesMeta}
-                        checked={(dirs.vocabMode || VOCAB_MODE.CHOICES) === VOCAB_MODE.CHOICES}
-                        onChange={() => commit({ vocabMode: VOCAB_MODE.CHOICES, hardcore: false })}
-                    />
-                    <CheckboxButton
                         id="vocab-mode-single"
                         type="radio"
                         name="vocab-mode"
@@ -75,6 +66,15 @@ export function WizardVocabDirectionForm() {
                         meta={STR.vocabDirection.modeSingleMeta}
                         checked={dirs.vocabMode === VOCAB_MODE.SINGLE}
                         onChange={() => commit({ vocabMode: VOCAB_MODE.SINGLE, hardcore: false })}
+                    />
+                    <CheckboxButton
+                        id="vocab-mode-choices"
+                        type="radio"
+                        name="vocab-mode"
+                        title={STR.vocabDirection.modeChoicesTitle}
+                        meta={STR.vocabDirection.modeChoicesMeta}
+                        checked={(dirs.vocabMode || VOCAB_MODE.CHOICES) === VOCAB_MODE.CHOICES}
+                        onChange={() => commit({ vocabMode: VOCAB_MODE.CHOICES, hardcore: false })}
                     />
                     <CheckboxButton
                         id="vocab-hardcore"

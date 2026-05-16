@@ -41,7 +41,7 @@ export function SettingsScreen({ heightMode = "fill" } = {}) {
                 <h2 id="settings-title" tabIndex={-1}>
                     {STR.settings.title}
                 </h2>
-                <div className="app-screen__body">
+                <div className="settings-options-well wizard-scroll-well u-scrollbar-hidden">
                     <div className="settings-theme-block">
                         <p className="sub">{STR.settings.themeLabel}</p>
                         <div

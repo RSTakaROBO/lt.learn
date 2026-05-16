@@ -140,6 +140,7 @@ export function VocabQuiz({
                 <SingleVocabCardDeck
                     nextTask={vocabSingleNextTask}
                     onRequestNextTask={requestVocabSingleNextTask}
+                    roundDots={roundDots}
                     state={vocabSingleState}
                     task={task}
                 />
