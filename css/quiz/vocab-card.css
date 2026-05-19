@@ -10,17 +10,18 @@
     margin: 0;
     padding: 1.05rem 1.2rem;
     border-radius: var(--vocab-card-radius);
-    border: 1px solid color-mix(in srgb, var(--border) 88%, var(--text) 10%);
+    border: 1px solid color-mix(in srgb, var(--border) 72%, var(--hairline));
     background:
         linear-gradient(
             180deg,
-            color-mix(in srgb, white 7%, transparent),
-            color-mix(in srgb, var(--bg) 6%, transparent)
+            color-mix(in srgb, white 10%, transparent),
+            color-mix(in srgb, var(--accent) 5%, transparent)
         ),
-        color-mix(in srgb, var(--surface-elevated) 92%, var(--surface));
+        color-mix(in srgb, var(--surface-elevated) 88%, var(--surface));
     box-shadow:
-        0 1px 0 color-mix(in srgb, white 28%, transparent) inset,
-        0 0 0 1px color-mix(in srgb, var(--text) 9%, transparent) inset;
+        0 1px 0 color-mix(in srgb, white 20%, transparent) inset,
+        0 0 0 1px color-mix(in srgb, var(--text) 7%, transparent) inset,
+        0 18px 42px color-mix(in srgb, var(--bg) 24%, transparent);
     /* Режим «слова»: без полос прокрутки карточки — множитель и pulse через transform иначе дают scroll */
     overflow: hidden;
     transition:
@@ -74,8 +75,8 @@
     inset: 0 0 0;
     z-index: 0;
     border-radius: 18px;
-    border: 1px solid color-mix(in srgb, var(--border) 84%, var(--text) 8%);
-    background: color-mix(in srgb, var(--surface-elevated) 88%, var(--surface));
+    border: 1px solid color-mix(in srgb, var(--border) 62%, var(--hairline));
+    background: color-mix(in srgb, var(--surface-elevated) 78%, var(--surface));
     pointer-events: none;
 }
 
@@ -184,28 +185,6 @@
             color-mix(in srgb, var(--bg) 4%, transparent)
         ),
         color-mix(in srgb, var(--success) 13%, var(--surface-elevated));
-}
-
-.vocab-ru-card--deal-in {
-    animation: vocab-card-deal-in 220ms cubic-bezier(0.18, 0.9, 0.22, 1) both;
-    transform-origin: 58% 52%;
-}
-
-@keyframes vocab-card-deal-in {
-    0% {
-        opacity: 0.45;
-        transform: translate3d(-9%, 2%, 0) rotate(-2deg) scale(0.985);
-    }
-    100% {
-        opacity: 1;
-        transform: translate3d(0, 0, 0) rotate(0deg) scale(1);
-    }
-}
-
-@media (prefers-reduced-motion: reduce) {
-    .vocab-ru-card--deal-in {
-        animation: none;
-    }
 }
 
 .vocab-streak-mult {
@@ -341,6 +320,8 @@
 .vocab-ru-display {
     margin: 0;
     text-align: center;
+    font-weight: 800;
+    letter-spacing: 0;
 }
 
 /* Длинные слова и ×N не должны раздувать карточку по ширине (десктоп + множитель). */

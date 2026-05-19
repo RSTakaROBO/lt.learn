@@ -15,8 +15,16 @@
     padding-right: max(var(--shell-pad-x), env(safe-area-inset-right, 0px));
     padding-left: max(var(--shell-pad-x), env(safe-area-inset-left, 0px));
     padding-bottom: calc(var(--quiz-bottom-bar-zone) + var(--shell-pad-bottom-extra));
-    background: color-mix(in srgb, var(--text) 56%, transparent);
+    background:
+        radial-gradient(
+            circle at 50% 12%,
+            color-mix(in srgb, var(--accent) 12%, transparent),
+            transparent 28rem
+        ),
+        color-mix(in srgb, #000 44%, transparent);
     overflow: hidden;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
 }
 
 /* Карточка по центру; в режиме height-scroll лимит не задаём — скролл на оболочке */
@@ -24,6 +32,7 @@
     flex: 0 1 auto;
     min-height: 0;
     width: min(100%, var(--shell-max-width));
+    border-radius: 22px;
 }
 
 .app-screen--modal:not(.app-screen--height-scroll) .app-screen__panel {
@@ -53,6 +62,7 @@
     width: 100%;
     max-width: var(--shell-max-width);
     margin: 0 auto;
+    border-radius: var(--radius-panel);
     overflow: visible;
     background-color: var(--surface);
 }

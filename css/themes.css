@@ -12,24 +12,23 @@
  * color-scheme: чтобы браузер не рисовал нативные тёмные кнопки поверх светлой темы приложения.
  */
 
-html:not([data-theme]),
 html[data-theme="ocean"] {
-    --bg: #0c1520;
-    --surface: #152a38;
-    --border: #1f3a4d;
-    --text: #e4f4fc;
-    --muted: #7aa3bc;
-    --accent: #3dccff;
-    --success: #3ee6a8;
-    --error: #ff8f8f;
-    --surface-elevated: #1e3a52;
-    --btn-shadow-depth: #2a4a63;
-    --text-on-accent: #051018;
+    --bg: #091113;
+    --surface: #12201f;
+    --border: #24413e;
+    --text: #e8f7f4;
+    --muted: #8aa8a2;
+    --accent: #4bd4c5;
+    --success: #73e0a8;
+    --error: #ff8c94;
+    --surface-elevated: #19302e;
+    --btn-shadow-depth: #2a514d;
+    --text-on-accent: #031513;
     --text-on-success: #041e14;
     --text-on-error: #1c0a0a;
-    --elev-shadow: color-mix(in srgb, #040a10 56%, transparent);
+    --elev-shadow: color-mix(in srgb, #020807 58%, transparent);
     color-scheme: dark;
-    --control-ghost-bg: rgba(228, 244, 252, 0.13);
+    --control-ghost-bg: rgba(232, 247, 244, 0.13);
 }
 
 html[data-theme="forest"] {
@@ -73,6 +72,7 @@ html[data-theme="ember"] {
 /* ——— Светлые темы: спокойные фоны, аккуратный контраст; верно/неверно — разнесённые оттенки
  * (изумруд/бирюза vs розово-коралловый), чтобы блоки обратной связи и кнопки читались без «кислотности». ——— */
 
+html:not([data-theme]),
 html[data-theme="paper"] {
     --bg: #f3efe6;
     --surface: #fffdf8;

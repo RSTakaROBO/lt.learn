@@ -7,67 +7,113 @@
     -webkit-appearance: none;
     appearance: none;
     font: inherit;
-    font-weight: 600;
-    padding: 0.6rem 1rem;
-    border-radius: var(--radius-control);
-    border: 1px solid color-mix(in srgb, var(--border) 74%, transparent);
-    background: color-mix(in srgb, var(--surface) 88%, var(--surface-elevated));
+    font-weight: 700;
+    padding: 0.62rem 1.05rem;
+    border-radius: 999px;
+    border: 1px solid color-mix(in srgb, var(--accent) 18%, var(--text) 8%);
+    background:
+        linear-gradient(
+            180deg,
+            color-mix(in srgb, white 8%, transparent),
+            color-mix(in srgb, var(--accent) 5%, transparent)
+        ),
+        color-mix(in srgb, var(--accent) 8%, var(--text) 5%);
     color: var(--text);
     cursor: pointer;
+    box-shadow:
+        0 1px 0 color-mix(in srgb, white 10%, transparent) inset,
+        0 10px 22px color-mix(in srgb, var(--bg) 16%, transparent),
+        0 0 0 1px color-mix(in srgb, var(--accent) 4%, transparent);
     transition:
         border-color 0.15s ease,
         background 0.15s ease,
+        box-shadow 0.15s ease,
         filter 0.15s ease,
         transform 0.12s ease;
 }
 
 .btn.ghost {
-    border-color: color-mix(in srgb, var(--border) 86%, transparent) !important;
-    background: color-mix(in srgb, var(--text) 5%, var(--surface)) !important;
-    background-color: color-mix(in srgb, var(--text) 5%, var(--surface)) !important;
-    background-image: none !important;
+    border-color: color-mix(in srgb, var(--accent) 16%, var(--text) 8%) !important;
+    background:
+        linear-gradient(
+            180deg,
+            color-mix(in srgb, white 7%, transparent),
+            color-mix(in srgb, var(--accent) 4%, transparent)
+        ),
+        color-mix(in srgb, var(--accent) 7%, var(--text) 4%) !important;
+    background-color: color-mix(in srgb, var(--accent) 7%, var(--text) 4%) !important;
     color: var(--text) !important;
+    box-shadow:
+        inset 0 1px 0 color-mix(in srgb, white 8%, transparent),
+        0 8px 20px color-mix(in srgb, var(--bg) 13%, transparent);
 }
 
 .btn.primary {
-    border-color: color-mix(in srgb, var(--accent) 78%, var(--border)) !important;
-    background: var(--accent) !important;
+    border-color: color-mix(in srgb, var(--accent) 64%, white 10%) !important;
+    background:
+        linear-gradient(
+            180deg,
+            color-mix(in srgb, white 22%, transparent),
+            color-mix(in srgb, var(--bg) 5%, transparent)
+        ),
+        var(--accent) !important;
     background-color: var(--accent) !important;
-    background-image: none !important;
     color: var(--text-on-accent) !important;
-    font-weight: 600;
+    font-weight: 800;
+    box-shadow:
+        0 1px 0 color-mix(in srgb, white 32%, transparent) inset,
+        0 14px 30px color-mix(in srgb, var(--accent) 24%, transparent);
     -webkit-appearance: none;
     appearance: none;
 }
 
 .btn.primary:hover {
-    filter: brightness(1.06);
+    filter: brightness(1.04);
+    transform: translateY(-1px);
 }
 
 .btn:active {
-    transform: translateY(1px);
+    transform: translateY(1px) scale(0.995);
 }
 
 .btn.start {
-    border-color: color-mix(in srgb, var(--success) 78%, var(--border)) !important;
-    background: var(--success) !important;
+    border-color: color-mix(in srgb, var(--success) 64%, white 10%) !important;
+    background:
+        linear-gradient(
+            180deg,
+            color-mix(in srgb, white 22%, transparent),
+            color-mix(in srgb, var(--bg) 5%, transparent)
+        ),
+        var(--success) !important;
     background-color: var(--success) !important;
-    background-image: none !important;
     color: var(--text-on-success) !important;
-    font-weight: 600;
+    font-weight: 800;
+    box-shadow:
+        0 1px 0 color-mix(in srgb, white 32%, transparent) inset,
+        0 14px 30px color-mix(in srgb, var(--success) 20%, transparent);
     -webkit-appearance: none;
     appearance: none;
 }
 
 .btn.start:hover {
-    filter: brightness(1.06);
+    filter: brightness(1.04);
+    transform: translateY(-1px);
 }
 
 .btn.vocab-choice {
-    padding: 0.5rem 0.55rem;
-    border-radius: var(--radius-tile);
-    border-color: color-mix(in srgb, var(--border) 82%, transparent);
-    background: color-mix(in srgb, var(--surface-elevated) 82%, var(--surface));
+    padding: 0.62rem 0.68rem;
+    border-radius: 16px;
+    border-color: color-mix(in srgb, var(--text) 9%, transparent);
+    background: color-mix(in srgb, var(--text) 5%, transparent);
+    box-shadow:
+        inset 0 1px 0 color-mix(in srgb, white 7%, transparent),
+        0 10px 24px color-mix(in srgb, var(--bg) 13%, transparent);
+}
+
+.btn.vocab-choice:hover:not(.vocab-choice--correct):not(.vocab-choice--wrong) {
+    border-color: color-mix(in srgb, var(--accent) 38%, transparent);
+    background: color-mix(in srgb, var(--accent) 10%, transparent);
+    transform: translateY(-1px);
 }
 
 /* Ответ пользователя: кольцо по периметру внутри кнопки */
@@ -75,8 +121,8 @@
     position: relative;
     z-index: 1;
     box-shadow:
-        inset 0 0 0 2px var(--accent),
-        0 0 0 1px color-mix(in srgb, var(--accent) 35%, transparent);
+        inset 0 0 0 2px color-mix(in srgb, var(--accent) 84%, white 10%),
+        0 12px 28px color-mix(in srgb, var(--accent) 16%, transparent);
 }
 
 .btn:disabled {
@@ -150,8 +196,14 @@
 }
 
 .btn.ghost:hover:not(.vocab-choice--correct):not(.vocab-choice--wrong) {
-    border-color: color-mix(in srgb, var(--accent) 58%, var(--border)) !important;
-    background: color-mix(in srgb, var(--accent) 12%, var(--surface)) !important;
-    background-color: color-mix(in srgb, var(--accent) 12%, var(--surface)) !important;
-    background-image: none !important;
+    border-color: color-mix(in srgb, var(--accent) 42%, transparent) !important;
+    background:
+        linear-gradient(
+            180deg,
+            color-mix(in srgb, white 8%, transparent),
+            color-mix(in srgb, var(--accent) 7%, transparent)
+        ),
+        color-mix(in srgb, var(--accent) 13%, transparent) !important;
+    background-color: color-mix(in srgb, var(--accent) 13%, transparent) !important;
+    transform: translateY(-1px);
 }

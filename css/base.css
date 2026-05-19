@@ -16,8 +16,8 @@ html.ios-standalone {
 }
 
 body {
-    --app-bg-pattern-main: color-mix(in srgb, var(--text) 7%, transparent);
-    --app-bg-pattern-accent: color-mix(in srgb, var(--accent) 3%, transparent);
+    --app-bg-pattern-main: color-mix(in srgb, var(--text) 4%, transparent);
+    --app-bg-pattern-accent: color-mix(in srgb, var(--accent) 7%, transparent);
     margin: 0;
     height: var(--app-height, 100dvh);
     max-height: var(--app-height, 100dvh);
@@ -27,11 +27,17 @@ body {
     flex-direction: column;
     font-family: "Segoe UI", system-ui, sans-serif;
     background:
+        radial-gradient(circle at 50% -18%, var(--app-bg-pattern-accent), transparent 34rem),
         radial-gradient(circle at 1px 1px, var(--app-bg-pattern-main) 1px, transparent 0),
-        linear-gradient(135deg, var(--app-bg-pattern-accent) 0 1px, transparent 1px 24px), var(--bg);
+        linear-gradient(
+            180deg,
+            color-mix(in srgb, var(--surface) 9%, transparent),
+            transparent 34%
+        ),
+        var(--bg);
     background-size:
+        auto,
         18px 18px,
-        24px 24px,
         auto;
     color: var(--text);
     line-height: 1.5;

@@ -17,6 +17,12 @@
 #quiz.panel > .quiz-screen-body {
     flex: 0 1 auto;
 }
+
+#quiz.panel.quiz--vocab:not(.quiz--vocab-single):not(.quiz--vocab-hardcore) > .quiz-screen-body {
+    flex: 1 1 0;
+    overflow: hidden;
+}
+
 .quiz-footer-stack {
     display: flex;
     flex-direction: column;

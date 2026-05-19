@@ -25,12 +25,7 @@ export function SwipeCardStack({
         setExitX(0)
         exitingRef.current = false
         if (typeof onSwipe === "function") return undefined
-        const raf = requestAnimationFrame(() => setSwiping(true))
-        const timer = window.setTimeout(() => setSwiping(false), 260)
-        return () => {
-            cancelAnimationFrame(raf)
-            window.clearTimeout(timer)
-        }
+        return undefined
     }, [cardKey])
 
     useEffect(() => {

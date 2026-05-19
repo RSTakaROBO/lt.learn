@@ -26,22 +26,26 @@
     position: relative;
     display: flex;
     align-items: center;
-    gap: 0.62rem;
-    min-height: 2.35rem;
-    padding: 0.46rem 0.72rem 0.46rem 0.82rem;
-    border-radius: var(--radius-card);
-    border: 1px solid color-mix(in srgb, var(--border) 84%, transparent);
-    background: color-mix(in srgb, var(--surface-elevated) 86%, var(--surface));
-    box-shadow: none;
+    gap: 0.72rem;
+    min-height: 2.5rem;
+    padding: 0.56rem 0.64rem 0.56rem 0.78rem;
+    border-radius: 14px;
+    border: 1px solid color-mix(in srgb, var(--text) 8%, transparent);
+    background: color-mix(in srgb, var(--text) 4.5%, transparent);
+    box-shadow:
+        inset 0 1px 0 color-mix(in srgb, white 6%, transparent),
+        0 8px 20px color-mix(in srgb, var(--bg) 10%, transparent);
     transition:
         border-color 0.15s ease,
         background 0.15s ease,
-        box-shadow 0.15s ease;
+        box-shadow 0.15s ease,
+        transform 0.12s ease;
 }
 
 .pack-card:hover .pack-card-face {
-    border-color: color-mix(in srgb, var(--accent) 45%, var(--border));
-    background: color-mix(in srgb, var(--surface-elevated) 92%, var(--accent));
+    border-color: color-mix(in srgb, var(--accent) 34%, transparent);
+    background: color-mix(in srgb, var(--accent) 8%, transparent);
+    transform: translateY(-1px);
 }
 
 .pack-card:active .pack-card-face {
@@ -75,18 +79,25 @@
 }
 
 .pack-card-input:checked + .pack-card-face {
-    border-color: var(--accent);
-    background: color-mix(in srgb, var(--accent) 18%, var(--surface-elevated));
-    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 34%, transparent);
+    border-color: color-mix(in srgb, var(--accent) 58%, white 8%);
+    background:
+        linear-gradient(180deg, color-mix(in srgb, white 7%, transparent), transparent),
+        color-mix(in srgb, var(--accent) 18%, transparent);
+    box-shadow:
+        inset 0 0 0 1px color-mix(in srgb, var(--accent) 20%, transparent),
+        0 12px 28px color-mix(in srgb, var(--accent) 13%, transparent);
     overflow: hidden;
 }
 
 .pack-card-input:checked + .pack-card-face::before {
     content: "";
     position: absolute;
-    inset: 0 auto 0 0;
-    width: 0.24rem;
-    background: var(--accent);
+    inset: 0;
+    background: radial-gradient(
+        circle at 100% 0,
+        color-mix(in srgb, var(--accent) 18%, transparent),
+        transparent 42%
+    );
     pointer-events: none;
 }
 
@@ -111,8 +122,8 @@
 
 .pack-card-title {
     font-size: clamp(0.9rem, 3.15vmin, 0.98rem);
-    font-weight: 650;
-    letter-spacing: -0.02em;
+    font-weight: 720;
+    letter-spacing: 0;
     line-height: 1.18;
     color: var(--text);
 }
@@ -131,28 +142,33 @@
 
 .pack-card-tick {
     flex-shrink: 0;
-    width: 1.28rem;
+    width: 1.78rem;
     height: 1.28rem;
     border-radius: 999px;
-    border: var(--stroke) solid var(--border);
-    background: color-mix(in srgb, var(--text) 7%, transparent);
+    border: 1px solid color-mix(in srgb, var(--text) 12%, transparent);
+    background: color-mix(in srgb, var(--text) 5%, transparent);
     display: grid;
     place-items: center;
+    box-shadow: inset 0 1px 0 color-mix(in srgb, white 6%, transparent);
     transition:
         border-color 0.15s ease,
-        background 0.15s ease;
+        background 0.15s ease,
+        box-shadow 0.15s ease;
 }
 
 .pack-card-input:checked + .pack-card-face .pack-card-tick {
-    border-color: color-mix(in srgb, var(--accent) 65%, var(--border));
+    border-color: color-mix(in srgb, var(--accent) 70%, white 12%);
     background: var(--accent);
+    box-shadow:
+        inset 0 1px 0 color-mix(in srgb, white 25%, transparent),
+        0 8px 18px color-mix(in srgb, var(--accent) 20%, transparent);
 }
 
 .pack-card-tick::after {
     content: "";
-    width: 0.32rem;
-    height: 0.5rem;
-    margin-bottom: 2px;
+    width: 0.34rem;
+    height: 0.56rem;
+    margin-bottom: 0.08rem;
     border: solid var(--text-on-accent);
     border-width: 0 2px 2px 0;
     transform: rotate(45deg);

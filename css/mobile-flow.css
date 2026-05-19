@@ -18,12 +18,21 @@
         padding-bottom: var(--shell-pad-bottom-extra);
     }
 
-    .app-screen--flow > .app-screen__panel {
+    .app-screen--flow:not(#stats-overlay):not(#settings-shell):not(#help-hub-shell):not(
+            .cases-help-shell
+        ):not(.verbs-help-shell)
+        > .app-screen__panel {
         max-width: none;
     }
 
-    .app-screen--flow > .widget,
-    .app-screen--flow > .panel {
+    .app-screen--flow:not(#stats-overlay):not(#settings-shell):not(#help-hub-shell):not(
+            .cases-help-shell
+        ):not(.verbs-help-shell)
+        > .widget,
+    .app-screen--flow:not(#stats-overlay):not(#settings-shell):not(#help-hub-shell):not(
+            .cases-help-shell
+        ):not(.verbs-help-shell)
+        > .panel {
         padding: 0;
         padding-bottom: 0;
         border: 0;
@@ -37,8 +46,16 @@
         margin-bottom: 0.45rem;
     }
 
-    .app-screen--flow > .widget > h2:first-child,
-    .app-screen--flow > .panel > h2:first-child,
+    .app-screen--flow:not(#stats-overlay):not(#settings-shell):not(#help-hub-shell):not(
+            .cases-help-shell
+        ):not(.verbs-help-shell)
+        > .widget
+        > h2:first-child,
+    .app-screen--flow:not(#stats-overlay):not(#settings-shell):not(#help-hub-shell):not(
+            .cases-help-shell
+        ):not(.verbs-help-shell)
+        > .panel
+        > h2:first-child,
     #setup .wizard-step:not(.hidden) > h2:first-child {
         align-self: center;
         position: relative;
@@ -52,8 +69,16 @@
         color: var(--text);
     }
 
-    .app-screen--flow > .widget > h2:first-child::after,
-    .app-screen--flow > .panel > h2:first-child::after,
+    .app-screen--flow:not(#stats-overlay):not(#settings-shell):not(#help-hub-shell):not(
+            .cases-help-shell
+        ):not(.verbs-help-shell)
+        > .widget
+        > h2:first-child::after,
+    .app-screen--flow:not(#stats-overlay):not(#settings-shell):not(#help-hub-shell):not(
+            .cases-help-shell
+        ):not(.verbs-help-shell)
+        > .panel
+        > h2:first-child::after,
     #setup .wizard-step:not(.hidden) > h2:first-child::after {
         content: "";
         position: absolute;
@@ -88,7 +113,11 @@
         padding-bottom: 0;
     }
 
-    .app-screen--flow:not(.hidden) > .app-screen__panel > .app-screen__footer {
+    .app-screen--flow:not(#stats-overlay):not(#settings-shell):not(#help-hub-shell):not(
+            .cases-help-shell
+        ):not(.verbs-help-shell):not(.hidden)
+        > .app-screen__panel
+        > .app-screen__footer {
         padding-bottom: calc(var(--quiz-bottom-bar-zone) + var(--widget-actions-shadow-pad));
     }
 

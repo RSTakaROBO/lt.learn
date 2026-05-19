@@ -15,7 +15,7 @@ function readInitialThemeId() {
     } catch {
         /* ignore */
     }
-    return THEME_IDS[0]
+    return "paper"
 }
 
 function readInitialCasesShowTranslation() {

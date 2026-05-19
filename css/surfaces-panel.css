@@ -1,12 +1,18 @@
 /* Карточка экрана: виджет / panel одинаково по языку */
 .widget,
 .panel {
-    background: color-mix(in srgb, var(--surface) 94%, var(--bg));
-    border: 1px solid color-mix(in srgb, var(--border) 84%, transparent);
-    border-radius: var(--radius-card);
+    background:
+        linear-gradient(180deg, color-mix(in srgb, white 5%, transparent), transparent 4.5rem),
+        var(--surface-glass);
+    border: 1px solid color-mix(in srgb, var(--border) 72%, var(--hairline));
+    border-radius: var(--radius-panel);
     padding: var(--panel-padding);
     padding-bottom: var(--panel-padding-bottom);
-    box-shadow: 0 1px 0 color-mix(in srgb, var(--text) 5%, transparent) inset;
+    box-shadow:
+        0 1px 0 color-mix(in srgb, white 13%, transparent) inset,
+        var(--shadow-soft);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
 }
 
 .widget h2,
@@ -60,9 +66,11 @@
     -webkit-overflow-scrolling: touch;
     align-content: start;
     overscroll-behavior-y: none;
-    border-radius: var(--radius-card);
-    border: 1px solid color-mix(in srgb, var(--border) 78%, transparent);
-    background: color-mix(in srgb, var(--bg) 28%, var(--surface));
+    border-radius: 18px;
+    border: 1px solid color-mix(in srgb, var(--border) 68%, transparent);
+    background:
+        linear-gradient(180deg, color-mix(in srgb, var(--surface) 48%, transparent), transparent),
+        color-mix(in srgb, var(--bg) 30%, var(--surface));
     padding: 0.55rem 0.6rem;
     padding-bottom: calc(var(--panel-scroll-pad) + 0.55rem);
 }

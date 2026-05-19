@@ -5,7 +5,8 @@
 }
 
 #quiz.panel.quiz--vocab:not(.quiz--vocab-hardcore) #quiz-vocab-ui:not(.hidden) > .vocab-card-stack {
-    min-height: clamp(10rem, 24vmin, 10rem);
+    flex: 1 1 min(10rem, 28dvh);
+    min-height: min(10rem, 28dvh);
 }
 
 #quiz.panel.quiz--vocab-single #quiz-vocab-ui:not(.hidden) {
@@ -170,6 +171,15 @@
     overflow-y: hidden;
 }
 
+#quiz.panel.quiz--vocab:not(.quiz--vocab-single):not(.quiz--vocab-hardcore)
+    #quiz-vocab-ui:not(.hidden)
+    > .vocab-card-stack
+    > .vocab-ru-card
+    > .vocab-ru-card-body {
+    justify-content: center;
+    padding-top: 0;
+}
+
 #quiz-vocab-ui .vocab-card-feedback,
 #quiz-cases-ui .vocab-card-feedback {
     margin-top: 0;
@@ -200,18 +210,7 @@
     position: relative;
     height: 1.05rem;
     border-radius: 999px;
-    background:
-        repeating-linear-gradient(
-            135deg,
-            color-mix(in srgb, var(--text) 4%, transparent) 0 0.28rem,
-            transparent 0.28rem 0.56rem
-        ),
-        linear-gradient(
-            180deg,
-            color-mix(in srgb, var(--bg) 62%, var(--surface)),
-            color-mix(in srgb, var(--bg) 82%, var(--surface))
-        ),
-        color-mix(in srgb, var(--bg) 62%, var(--surface-elevated));
+    background: color-mix(in srgb, var(--bg) 58%, var(--surface-elevated));
     overflow: hidden;
     border: 1px solid color-mix(in srgb, var(--border) 84%, transparent);
     box-shadow:
@@ -223,22 +222,11 @@
     height: 100%;
     width: 0%;
     border-radius: inherit;
-    background:
-        repeating-linear-gradient(
-            135deg,
-            color-mix(in srgb, white 18%, transparent) 0 0.32rem,
-            transparent 0.32rem 0.64rem
-        ),
-        linear-gradient(
-            180deg,
-            color-mix(in srgb, white 22%, transparent),
-            color-mix(in srgb, var(--bg) 6%, transparent)
-        ),
-        linear-gradient(
-            90deg,
-            color-mix(in srgb, var(--accent) 72%, var(--surface)),
-            color-mix(in srgb, var(--accent) 96%, var(--text) 4%)
-        );
+    background: linear-gradient(
+        90deg,
+        color-mix(in srgb, var(--accent) 70%, var(--surface)),
+        color-mix(in srgb, var(--success) 62%, var(--accent))
+    );
     box-shadow:
         0 0 0 1px color-mix(in srgb, var(--accent) 30%, transparent) inset,
         0.35rem 0 0.9rem color-mix(in srgb, var(--accent) 20%, transparent);
@@ -254,9 +242,9 @@
 .vocab-options {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    grid-auto-rows: auto;
-    gap: clamp(0.65rem, 2.2vmin, 1rem);
-    flex: none;
+    grid-template-rows: repeat(2, minmax(0, 1fr));
+    gap: clamp(0.72rem, 2.4vmin, 1.05rem);
+    flex: 1 1 min(15rem, 36dvh);
     min-height: 0;
     justify-items: stretch;
     margin-bottom: -0.2rem;
@@ -335,8 +323,9 @@
     width: 100%;
     min-width: 0;
     min-height: 0;
-    aspect-ratio: 1 / 1;
-    font-weight: 600;
+    aspect-ratio: auto;
+    height: 100%;
+    font-weight: 680;
     font-size: clamp(1.2rem, 4.5vmin, 1.85rem);
     line-height: 1.2;
     text-align: center;
@@ -344,6 +333,11 @@
     overflow: hidden;
     touch-action: manipulation;
     transform-origin: center;
+    transition:
+        border-color 0.16s ease,
+        background 0.16s ease,
+        box-shadow 0.16s ease,
+        transform 0.12s ease;
 }
 
 .vocab-choice-main,
