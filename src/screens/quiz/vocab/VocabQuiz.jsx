@@ -19,17 +19,18 @@ import {
     VocabStreakMultiplier,
 } from "src/screens/quiz/shared/index.js"
 import {
+    vocabLtDisplay,
     vocabLemma,
     vocabRuPrimary,
     vocabRuUserMatches,
 } from "src/screens/quiz/vocab/vocabWords.js"
 import { SingleVocabCardDeck } from "src/screens/quiz/vocab/SingleVocabCardDeck.jsx"
 
-function vocabPromptForTask(task) {
+function vocabPromptForTask(task, showVerbForms) {
     if (!task?.word) return { text: "", lang: undefined }
     const dir = task.vocabDirection || VOCAB_DIRECTION.RU_TO_LT
     if (dir === VOCAB_DIRECTION.LT_TO_RU) {
-        return { text: vocabLemma(task.word), lang: "lt" }
+        return { text: vocabLtDisplay(task.word, showVerbForms), lang: "lt" }
     }
     return { text: vocabRuPrimary(task.word), lang: "ru" }
 }
@@ -53,7 +54,7 @@ function vocabChoiceClass(lem, task, answered, choiceState) {
     return classes.join(" ")
 }
 
-function VocabChoices({ task, answered, choiceState, showWrongTranslation }) {
+function VocabChoices({ task, answered, choiceState, showVerbForms, showWrongTranslation }) {
     const choices = Array.isArray(task?.choices) ? task.choices : []
     const dir = task?.vocabDirection || VOCAB_DIRECTION.RU_TO_LT
     const ariaLabel =
@@ -70,7 +71,18 @@ function VocabChoices({ task, answered, choiceState, showWrongTranslation }) {
                         : false
                 const pickedWrong =
                     answered && !correct && choiceState?.pickedLemma === lem && showWrongTranslation
-                const reveal = pickedWrong ? task?.choiceReveals?.[lem] || "" : ""
+                const reveal =
+                    pickedWrong && dir === VOCAB_DIRECTION.LT_TO_RU
+                        ? vocabLtDisplay(task?.choiceWords?.[lem], showVerbForms) ||
+                          task?.choiceReveals?.[lem] ||
+                          ""
+                        : pickedWrong
+                          ? task?.choiceReveals?.[lem] || ""
+                          : ""
+                const choiceLabel =
+                    dir === VOCAB_DIRECTION.RU_TO_LT
+                        ? vocabLtDisplay(task?.choiceWords?.[lem], showVerbForms) || lem
+                        : lem
                 return (
                     <button
                         key={lem}
@@ -78,10 +90,10 @@ function VocabChoices({ task, answered, choiceState, showWrongTranslation }) {
                         className={vocabChoiceClass(lem, task, answered, choiceState)}
                         data-lemma={lem}
                         disabled={answered && !correct}
-                        aria-label={lem}
+                        aria-label={choiceLabel}
                         onClick={() => handleVocabChoice(lem)}
                     >
-                        <span className="vocab-choice-main">{lem}</span>
+                        <span className="vocab-choice-main">{choiceLabel}</span>
                         {reveal ? <span className="vocab-choice-reveal">{reveal}</span> : null}
                     </button>
                 )
@@ -111,6 +123,7 @@ export function VocabQuiz({
     submitHidden,
     submitLabel,
     showFinish,
+    showVerbForms,
     showWrongTranslation,
     task,
     vocabSingleNextTask,
@@ -118,7 +131,7 @@ export function VocabQuiz({
 }) {
     const isHardcore = !!task?.vocabHardcore
     const isSingle = task?.vocabMode === VOCAB_MODE.SINGLE
-    const prompt = vocabPromptForTask(task)
+    const prompt = vocabPromptForTask(task, showVerbForms)
     const showChoices = isActive && !isHardcore && !isSingle
     const feedbackKind = feedback?.kind === "ok" || feedback?.kind === "bad" ? feedback.kind : ""
     const cardKey = [
@@ -141,6 +154,7 @@ export function VocabQuiz({
                     nextTask={vocabSingleNextTask}
                     onRequestNextTask={requestVocabSingleNextTask}
                     roundDots={roundDots}
+                    showVerbForms={showVerbForms}
                     state={vocabSingleState}
                     task={task}
                 />
@@ -156,7 +170,12 @@ export function VocabQuiz({
                     >
                         <div className="vocab-ru-card-body u-scrollbar-hidden">
                             <p
-                                className="lemma vocab-ru-display"
+                                className={[
+                                    "lemma vocab-ru-display",
+                                    prompt.text.includes("\n") && "vocab-ru-display--stacked",
+                                ]
+                                    .filter(Boolean)
+                                    .join(" ")}
                                 id="vocab-ru-display"
                                 lang={prompt.lang}
                             >
@@ -179,6 +198,7 @@ export function VocabQuiz({
                     task={task}
                     answered={answered}
                     choiceState={choiceState}
+                    showVerbForms={showVerbForms}
                     showWrongTranslation={showWrongTranslation}
                 />
             )}

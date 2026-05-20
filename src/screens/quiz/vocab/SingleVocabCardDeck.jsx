@@ -5,23 +5,25 @@ import { VOCAB_DIRECTION } from "js/config.js"
 import { STR } from "js/i18n/strings-ru.js"
 import { handleVocabSingleSwipe, requestVocabSingleFutureTask } from "js/quiz.js"
 import { VocabRoundDots } from "src/screens/quiz/shared/VocabRoundDots.jsx"
-import { vocabLemma, vocabRuPrimary } from "src/screens/quiz/vocab/vocabWords.js"
+import { vocabLtDisplay, vocabRuPrimary } from "src/screens/quiz/vocab/vocabWords.js"
 
 const EXIT_MS = 620
 
-function vocabPromptForTask(task) {
+function vocabPromptForTask(task, showVerbForms) {
     if (!task?.word) return { text: "", lang: undefined }
     const dir = task.vocabDirection || VOCAB_DIRECTION.RU_TO_LT
     if (dir === VOCAB_DIRECTION.LT_TO_RU) {
-        return { text: vocabLemma(task.word), lang: "lt" }
+        return { text: vocabLtDisplay(task.word, showVerbForms), lang: "lt" }
     }
     return { text: vocabRuPrimary(task.word), lang: "ru" }
 }
 
-function vocabExpectedForTask(task) {
+function vocabExpectedForTask(task, showVerbForms) {
     if (!task?.word) return ""
     const dir = task.vocabDirection || VOCAB_DIRECTION.RU_TO_LT
-    return dir === VOCAB_DIRECTION.LT_TO_RU ? vocabRuPrimary(task.word) : vocabLemma(task.word)
+    return dir === VOCAB_DIRECTION.LT_TO_RU
+        ? vocabRuPrimary(task.word)
+        : vocabLtDisplay(task.word, showVerbForms)
 }
 
 function taskKey(task) {
@@ -69,12 +71,20 @@ function appendQueuedCard(rows, queue) {
     }
 }
 
-function PromptCard({ card, dots }) {
-    const prompt = vocabPromptForTask(card.task)
+function PromptCard({ card, dots, showVerbForms }) {
+    const prompt = vocabPromptForTask(card.task, showVerbForms)
     return (
         <div className="vocab-ru-card vocab-ru-card--single">
             <div className="vocab-ru-card-body u-scrollbar-hidden">
-                <p className="lemma vocab-ru-display" lang={prompt.lang}>
+                <p
+                    className={[
+                        "lemma vocab-ru-display",
+                        prompt.text.includes("\n") && "vocab-ru-display--stacked",
+                    ]
+                        .filter(Boolean)
+                        .join(" ")}
+                    lang={prompt.lang}
+                >
                     {prompt.text}
                 </p>
             </div>
@@ -83,21 +93,30 @@ function PromptCard({ card, dots }) {
     )
 }
 
-function AnswerCard({ card }) {
+function AnswerCard({ card, showVerbForms }) {
     return (
         <div className="vocab-ru-card vocab-single-answer" aria-live="polite">
             <span className="vocab-single-answer__label">{STR.quiz.vocabSingleAnswerLabel}</span>
-            <span className="vocab-single-answer__value">{vocabExpectedForTask(card.task)}</span>
+            <span className="vocab-single-answer__value">
+                {vocabExpectedForTask(card.task, showVerbForms)}
+            </span>
         </div>
     )
 }
 
-function DeckCard({ card, dots }) {
-    if (card.type === "answer") return <AnswerCard card={card} />
-    return <PromptCard card={card} dots={dots} />
+function DeckCard({ card, dots, showVerbForms }) {
+    if (card.type === "answer") return <AnswerCard card={card} showVerbForms={showVerbForms} />
+    return <PromptCard card={card} dots={dots} showVerbForms={showVerbForms} />
 }
 
-export function SingleVocabCardDeck({ nextTask, onRequestNextTask, roundDots, state, task }) {
+export function SingleVocabCardDeck({
+    nextTask,
+    onRequestNextTask,
+    roundDots,
+    showVerbForms = false,
+    state,
+    task,
+}) {
     const [dragX, setDragX] = useState(0)
     const [cards, setCards] = useState(() => initialDeck(task, nextTask))
     const [enterFrom, setEnterFrom] = useState({})
@@ -310,7 +329,11 @@ export function SingleVocabCardDeck({ nextTask, onRequestNextTask, roundDots, st
                                 .join(" ")}
                             style={style}
                         >
-                            <DeckCard card={card} dots={isTop ? roundDots : null} />
+                            <DeckCard
+                                card={card}
+                                dots={isTop ? roundDots : null}
+                                showVerbForms={showVerbForms}
+                            />
                         </div>
                     )
                 })}

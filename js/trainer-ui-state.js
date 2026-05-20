@@ -40,6 +40,17 @@ function readInitialVocabShowWrongTranslation() {
     return false
 }
 
+function readInitialVocabShowVerbForms() {
+    try {
+        const raw = localStorage.getItem(STORAGE_KEYS.vocabShowVerbForms)
+        if (raw === "1") return true
+        if (raw === "0") return false
+    } catch {
+        /* ignore */
+    }
+    return false
+}
+
 function readInitialExcludeLearnedWords() {
     try {
         const raw = localStorage.getItem(STORAGE_KEYS.excludeLearnedWords)
@@ -92,6 +103,7 @@ function readInitialSelectedPackIds() {
  * @property {boolean} casesShowTranslation
  * @property {boolean} casesUseNativeKeyboard
  * @property {boolean} vocabShowWrongTranslation
+ * @property {boolean} vocabShowVerbForms
  * @property {boolean} excludeLearnedWords
  */
 
@@ -172,6 +184,7 @@ function readInitialSelectedPackIds() {
  *   | { type: "SET_CASES_SHOW_TRANSLATION"; value: boolean }
  *   | { type: "SET_CASES_USE_NATIVE_KEYBOARD"; value: boolean }
  *   | { type: "SET_VOCAB_SHOW_WRONG_TRANSLATION"; value: boolean }
+ *   | { type: "SET_VOCAB_SHOW_VERB_FORMS"; value: boolean }
  *   | { type: "SET_EXCLUDE_LEARNED_WORDS"; value: boolean }
  *   | { type: "WIZARD_SET_STEP"; step: number }
  *   | { type: "WIZARD_SET_STATUS"; name: "pack" | "case" | "vocabDirection"; message: string }
@@ -198,6 +211,7 @@ function buildInitialState() {
             casesShowTranslation: readInitialCasesShowTranslation(),
             casesUseNativeKeyboard: readInitialCasesUseNativeKeyboard(),
             vocabShowWrongTranslation: readInitialVocabShowWrongTranslation(),
+            vocabShowVerbForms: readInitialVocabShowVerbForms(),
             excludeLearnedWords: readInitialExcludeLearnedWords(),
         },
         vocabRoundSummary: null,
@@ -290,6 +304,9 @@ const trainerSlice = createSlice({
                     break
                 case "SET_VOCAB_SHOW_WRONG_TRANSLATION":
                     state.persisted.vocabShowWrongTranslation = a.value
+                    break
+                case "SET_VOCAB_SHOW_VERB_FORMS":
+                    state.persisted.vocabShowVerbForms = a.value
                     break
                 case "SET_EXCLUDE_LEARNED_WORDS":
                     state.persisted.excludeLearnedWords = a.value

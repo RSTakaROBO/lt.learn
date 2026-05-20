@@ -5,6 +5,7 @@ import { STR } from "js/i18n/strings-ru.js"
 import {
     saveCasesShowTranslation,
     saveCasesUseNativeKeyboard,
+    saveVocabShowVerbForms,
     saveVocabShowWrongTranslation,
 } from "js/storage.js"
 import { AppFlowScreen } from "src/components/layout/AppFlowScreen.jsx"
@@ -21,8 +22,13 @@ import { useAutoFocusOnOpen } from "src/hooks/useAutoFocusOnOpen.js"
 export function SettingsScreen({ heightMode = "fill" } = {}) {
     const [state, dispatch] = useTrainerApp()
     const open = state.overlay.settings
-    const { themeId, casesShowTranslation, casesUseNativeKeyboard, vocabShowWrongTranslation } =
-        state.persisted
+    const {
+        themeId,
+        casesShowTranslation,
+        casesUseNativeKeyboard,
+        vocabShowWrongTranslation,
+        vocabShowVerbForms,
+    } = state.persisted
     const closeButtonRef = useRef(null)
 
     useAutoFocusOnOpen(closeButtonRef, open)
@@ -104,6 +110,20 @@ export function SettingsScreen({ heightMode = "fill" } = {}) {
                                         value: v,
                                     })
                                     saveVocabShowWrongTranslation(v)
+                                }}
+                            />
+                            <CheckboxButton
+                                id="settings-vocab-show-verb-forms"
+                                title={STR.settings.vocabVerbFormsTitle}
+                                meta={STR.settings.vocabVerbFormsMeta}
+                                checked={vocabShowVerbForms}
+                                onChange={(e) => {
+                                    const v = e.target.checked
+                                    dispatch({
+                                        type: "SET_VOCAB_SHOW_VERB_FORMS",
+                                        value: v,
+                                    })
+                                    saveVocabShowVerbForms(v)
                                 }}
                             />
                         </CardList>

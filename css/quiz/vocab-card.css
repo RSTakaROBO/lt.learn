@@ -322,6 +322,7 @@
     text-align: center;
     font-weight: 800;
     letter-spacing: 0;
+    white-space: pre-line;
 }
 
 /* Длинные слова и ×N не должны раздувать карточку по ширине (десктоп + множитель). */
@@ -330,4 +331,10 @@
     min-width: 0;
     overflow-wrap: break-word;
     word-break: break-word;
+}
+
+.vocab-ru-card .vocab-ru-display--stacked {
+    line-height: 1.12;
+    padding-block: 0.02em 0.14em;
+    transform: translateY(-0.08em);
 }

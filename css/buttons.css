@@ -101,7 +101,7 @@
 }
 
 .btn.vocab-choice {
-    padding: 0.62rem 0.68rem;
+    padding: 0.28rem 0.46rem;
     border-radius: 16px;
     border-color: color-mix(in srgb, var(--text) 9%, transparent);
     background: color-mix(in srgb, var(--text) 5%, transparent);

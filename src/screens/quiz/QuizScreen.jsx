@@ -41,6 +41,7 @@ export function QuizScreen({ heightMode = "fill", hidden = false } = {}) {
         roundProgress,
         vocabStreak,
         vocabStreakPulseId,
+        vocabShowVerbForms,
         vocabShowWrongTranslation,
         casesUseNativeKeyboard,
     } = useSelector(
@@ -54,6 +55,7 @@ export function QuizScreen({ heightMode = "fill", hidden = false } = {}) {
             roundDots: s.trainer.engine.vocabRoundDots,
             vocabStreak: s.trainer.engine.vocabCorrectStreak,
             vocabStreakPulseId: s.trainer.engine.vocabStreakPulseId,
+            vocabShowVerbForms: s.trainer.persisted.vocabShowVerbForms,
             vocabShowWrongTranslation: s.trainer.persisted.vocabShowWrongTranslation,
             casesUseNativeKeyboard: s.trainer.persisted.casesUseNativeKeyboard,
             roundProgress: s.trainer.engine.vocabRound
@@ -184,6 +186,7 @@ export function QuizScreen({ heightMode = "fill", hidden = false } = {}) {
                             submitHidden={submitHidden}
                             submitLabel={submitLabel}
                             showFinish={showFinish}
+                            showVerbForms={vocabShowVerbForms}
                             showWrongTranslation={vocabShowWrongTranslation}
                             lithuanianOverlayKeyboard={showOverlayKeyboard && isHardcore}
                             onRevealLithuanianKeyboard={() => setQuizLtKeyboardOpen(true)}

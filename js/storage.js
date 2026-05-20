@@ -339,6 +339,27 @@ export class TrainerStorage {
     }
 
     /** @returns {boolean|null} */
+    loadVocabShowVerbForms() {
+        try {
+            const raw = this._store.getItem(STORAGE_KEYS.vocabShowVerbForms)
+            if (raw === null) return null
+            if (raw === "1") return true
+            if (raw === "0") return false
+            return null
+        } catch {
+            return null
+        }
+    }
+
+    saveVocabShowVerbForms(show) {
+        try {
+            this._store.setItem(STORAGE_KEYS.vocabShowVerbForms, show ? "1" : "0")
+        } catch {
+            /* ignore */
+        }
+    }
+
+    /** @returns {boolean|null} */
     loadExcludeLearnedWords() {
         try {
             const raw = this._store.getItem(STORAGE_KEYS.excludeLearnedWords)
@@ -419,5 +440,7 @@ export const saveCasesUseNativeKeyboard = (useNative) =>
 export const loadVocabShowWrongTranslation = () => trainerStorage.loadVocabShowWrongTranslation()
 export const saveVocabShowWrongTranslation = (show) =>
     trainerStorage.saveVocabShowWrongTranslation(show)
+export const loadVocabShowVerbForms = () => trainerStorage.loadVocabShowVerbForms()
+export const saveVocabShowVerbForms = (show) => trainerStorage.saveVocabShowVerbForms(show)
 export const loadExcludeLearnedWords = () => trainerStorage.loadExcludeLearnedWords()
 export const saveExcludeLearnedWords = (exclude) => trainerStorage.saveExcludeLearnedWords(exclude)

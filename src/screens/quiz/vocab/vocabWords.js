@@ -8,6 +8,23 @@ export function vocabLemma(word) {
     return cleanString(word?.lemma || word?.nominative)
 }
 
+export function vocabVerbFormsLine(word) {
+    if (word?.type !== "verb") return ""
+    const source = word?.forms && typeof word.forms === "object" ? word.forms : word
+    return [source?.infinitive || word?.lemma, source?.present3, source?.past3]
+        .map(cleanString)
+        .filter(Boolean)
+        .join("\n")
+}
+
+export function vocabLtDisplay(word, showVerbForms = false) {
+    if (showVerbForms) {
+        const verbForms = vocabVerbFormsLine(word)
+        if (verbForms) return verbForms
+    }
+    return vocabLemma(word)
+}
+
 export function vocabRuPrimary(word) {
     if (Array.isArray(word?.ru_list)) return cleanString(word.ru_list[0])
     if (Array.isArray(word?.ru)) return cleanString(word.ru[0])

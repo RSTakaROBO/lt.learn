@@ -52,10 +52,11 @@
 #quiz.panel.quiz--vocab-single #quiz-vocab-ui:not(.hidden) .vocab-ru-card .lemma,
 #quiz.panel.quiz--vocab-single #quiz-vocab-ui:not(.hidden) .vocab-ru-card .vocab-ru-display {
     font-size: clamp(2.85rem, 11vmin, 5.35rem);
-    line-height: 1.08;
+    line-height: 1.1;
 }
 
 .vocab-single-deck {
+    --vocab-single-text-accent: color-mix(in srgb, var(--accent) 42%, #ffd166);
     --vocab-single-card-scale-0: 1;
     --vocab-single-card-scale-1: 0.982;
     --vocab-single-card-scale-2: 0.965;
@@ -258,7 +259,10 @@
 }
 
 .vocab-single-answer {
-    --vocab-answer-accent: color-mix(in srgb, var(--accent) 42%, #ffd166);
+    --vocab-answer-accent: var(
+        --vocab-single-text-accent,
+        color-mix(in srgb, var(--accent) 42%, #ffd166)
+    );
     --vocab-card-radius: 18px;
     display: flex;
     flex: 1;
@@ -306,12 +310,28 @@
     margin-top: 0.28rem;
     max-width: 100%;
     color: var(--vocab-answer-accent);
-    font-size: clamp(2.4rem, 8.6vmin, 4.45rem);
+    font-family: inherit;
+    font-size: clamp(2.85rem, 11vmin, 5.35rem);
     font-weight: 800;
     line-height: 1.08;
     text-align: center;
-    overflow-wrap: break-word;
-    word-break: break-word;
+    text-shadow:
+        0 1px 0 color-mix(in srgb, var(--surface) 72%, transparent),
+        0 0 0.06em color-mix(in srgb, var(--text) 24%, transparent);
+    white-space: pre-line;
+    overflow-wrap: normal;
+    word-break: normal;
+}
+
+#quiz.panel.quiz--vocab-single #quiz-vocab-ui:not(.hidden) .vocab-ru-card .vocab-ru-display {
+    color: var(--vocab-single-text-accent);
+    font-family: inherit;
+    font-weight: 800;
+    text-shadow:
+        0 1px 0 color-mix(in srgb, var(--surface) 72%, transparent),
+        0 0 0.06em color-mix(in srgb, var(--text) 24%, transparent);
+    overflow-wrap: normal;
+    word-break: normal;
 }
 
 .vocab-choice {
@@ -319,7 +339,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 0.24rem;
+    gap: 0.08rem;
     width: 100%;
     min-width: 0;
     min-height: 0;
@@ -327,7 +347,7 @@
     height: 100%;
     font-weight: 680;
     font-size: clamp(1.2rem, 4.5vmin, 1.85rem);
-    line-height: 1.2;
+    line-height: 1.08;
     text-align: center;
     word-break: break-word;
     overflow: hidden;
@@ -345,13 +365,18 @@
     display: block;
     max-width: 100%;
     min-width: 0;
+    white-space: pre-line;
     overflow-wrap: break-word;
     word-break: break-word;
 }
 
+.vocab-choice-main {
+    line-height: 1.08;
+}
+
 .vocab-choice-reveal {
     font-size: 0.72em;
-    line-height: 1.15;
+    line-height: 1;
     font-weight: 600;
     opacity: 0.86;
 }

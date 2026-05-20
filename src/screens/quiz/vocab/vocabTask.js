@@ -26,12 +26,14 @@ function buildVocabChoicesRuToLt(usable, word) {
     if (distractors.length < 3) return null
     const entries = shuffleArray([word, ...picks])
     const choiceReveals = {}
+    const choiceWords = {}
     const choices = entries.map((w) => {
         const choice = vocabLemma(w)
         choiceReveals[choice] = vocabRuPrimary(w)
+        choiceWords[choice] = w
         return choice
     })
-    return { choices, choiceReveals }
+    return { choices, choiceReveals, choiceWords }
 }
 
 function buildVocabChoicesLtToRu(usable, word) {
@@ -51,18 +53,20 @@ function buildVocabChoicesLtToRu(usable, word) {
     }
     if (distractorHints.length < 3) return null
     const entries = shuffleArray([
-        { choice: correct, reveal: vocabLemma(word) },
+        { choice: correct, reveal: vocabLemma(word), word },
         ...distractorHints.map((choice) => {
             const source = others.find((w) => vocabRuPrimary(w) === choice)
-            return { choice, reveal: source ? vocabLemma(source) : "" }
+            return { choice, reveal: source ? vocabLemma(source) : "", word: source || null }
         }),
     ])
     const choiceReveals = {}
+    const choiceWords = {}
     const choices = entries.map((entry) => {
         choiceReveals[entry.choice] = entry.reveal
+        if (entry.word) choiceWords[entry.choice] = entry.word
         return entry.choice
     })
-    return { choices, choiceReveals }
+    return { choices, choiceReveals, choiceWords }
 }
 
 function usableIgnoringExcludedLemma(usable, excludeLemmas) {
