@@ -6,6 +6,8 @@ import { STR } from "js/i18n/strings-ru.js"
 import { handleVocabSingleSwipe, requestVocabSingleFutureTask } from "js/quiz.js"
 import { VocabRoundDots } from "src/screens/quiz/shared/VocabRoundDots.jsx"
 import { vocabLtDisplay, vocabRuPrimary } from "src/screens/quiz/vocab/vocabWords.js"
+import { VocabWordInfoButton } from "src/screens/quiz/vocab/VocabWordInfoButton.jsx"
+import { VocabWordInfoOverlay } from "src/screens/quiz/vocab/VocabWordInfoOverlay.jsx"
 
 const EXIT_MS = 620
 
@@ -93,19 +95,31 @@ function PromptCard({ card, dots, showVerbForms }) {
     )
 }
 
-function AnswerCard({ card, showVerbForms }) {
+function AnswerCard({ card, onOpenWordInfo, showInfoButton, showVerbForms }) {
     return (
         <div className="vocab-ru-card vocab-single-answer" aria-live="polite">
             <span className="vocab-single-answer__label">{STR.quiz.vocabSingleAnswerLabel}</span>
             <span className="vocab-single-answer__value">
                 {vocabExpectedForTask(card.task, showVerbForms)}
             </span>
+            {showInfoButton ? (
+                <VocabWordInfoButton onClick={() => onOpenWordInfo?.(card.task?.word)} />
+            ) : null}
         </div>
     )
 }
 
-function DeckCard({ card, dots, showVerbForms }) {
-    if (card.type === "answer") return <AnswerCard card={card} showVerbForms={showVerbForms} />
+function DeckCard({ card, dots, onOpenWordInfo, showInfoButton, showVerbForms }) {
+    if (card.type === "answer") {
+        return (
+            <AnswerCard
+                card={card}
+                onOpenWordInfo={onOpenWordInfo}
+                showInfoButton={showInfoButton}
+                showVerbForms={showVerbForms}
+            />
+        )
+    }
     return <PromptCard card={card} dots={dots} showVerbForms={showVerbForms} />
 }
 
@@ -121,6 +135,7 @@ export function SingleVocabCardDeck({
     const [cards, setCards] = useState(() => initialDeck(task, nextTask))
     const [enterFrom, setEnterFrom] = useState({})
     const [exit, setExit] = useState(null)
+    const [infoWord, setInfoWord] = useState(null)
     const enterRafRef = useRef(0)
     const pendingCardsRef = useRef([])
     const pointerRef = useRef(null)
@@ -280,63 +295,72 @@ export function SingleVocabCardDeck({
     }
 
     return (
-        <div
-            className="vocab-single-deck"
-            role="group"
-            aria-label={STR.quiz.vocabSingleCardAria}
-            tabIndex={0}
-            onKeyDown={handleKeyDown}
-            onPointerCancel={handlePointerCancel}
-            onPointerDown={handlePointerDown}
-            onPointerMove={handlePointerMove}
-            onPointerUp={handlePointerUp}
-        >
-            {cards
-                .slice(0, 4)
-                .slice(0)
-                .reverse()
-                .map((card) => {
-                    const index = cards.findIndex((row) => row.id === card.id)
-                    const isTop = index === 0
-                    const enteringFromIndex = enterFrom[card.id]
-                    const style = isTop
-                        ? {
-                              transform: motionX
-                                  ? `translate3d(${motionX}px, 0, 0) rotate(${Math.max(-12, Math.min(12, motionX / 18))}deg)`
-                                  : undefined,
-                          }
-                        : enteringFromIndex != null
-                          ? {
-                                "--vocab-single-enter-y": `var(--vocab-single-card-y-${Math.min(enteringFromIndex, 3)})`,
-                                "--vocab-single-enter-scale": `var(--vocab-single-card-scale-${Math.min(enteringFromIndex, 3)})`,
-                            }
-                          : undefined
-                    return (
-                        <div
-                            key={card.id}
-                            className={[
-                                "vocab-single-deck-card",
-                                `vocab-single-deck-card--${Math.min(index, 3)}`,
-                                isTop && "vocab-single-deck-card--top",
-                                enteringFromIndex != null && "vocab-single-deck-card--entering",
-                                isTop && dragX && "vocab-single-deck-card--dragging",
-                                isTop && exit && "vocab-single-deck-card--exiting",
-                                isTop &&
-                                    thresholdActive &&
-                                    `vocab-single-deck-card--swipe-${motionDir}`,
-                            ]
-                                .filter(Boolean)
-                                .join(" ")}
-                            style={style}
-                        >
-                            <DeckCard
-                                card={card}
-                                dots={isTop ? roundDots : null}
-                                showVerbForms={showVerbForms}
-                            />
-                        </div>
-                    )
-                })}
-        </div>
+        <>
+            <div
+                className="vocab-single-deck"
+                role="group"
+                aria-label={STR.quiz.vocabSingleCardAria}
+                tabIndex={0}
+                onKeyDown={handleKeyDown}
+                onPointerCancel={handlePointerCancel}
+                onPointerDown={handlePointerDown}
+                onPointerMove={handlePointerMove}
+                onPointerUp={handlePointerUp}
+            >
+                {cards
+                    .slice(0, 4)
+                    .slice(0)
+                    .reverse()
+                    .map((card) => {
+                        const index = cards.findIndex((row) => row.id === card.id)
+                        const isTop = index === 0
+                        const enteringFromIndex = enterFrom[card.id]
+                        const style = isTop
+                            ? {
+                                  transform: motionX
+                                      ? `translate3d(${motionX}px, 0, 0) rotate(${Math.max(-12, Math.min(12, motionX / 18))}deg)`
+                                      : undefined,
+                              }
+                            : enteringFromIndex != null
+                              ? {
+                                    "--vocab-single-enter-y": `var(--vocab-single-card-y-${Math.min(enteringFromIndex, 3)})`,
+                                    "--vocab-single-enter-scale": `var(--vocab-single-card-scale-${Math.min(enteringFromIndex, 3)})`,
+                                }
+                              : undefined
+                        return (
+                            <div
+                                key={card.id}
+                                className={[
+                                    "vocab-single-deck-card",
+                                    `vocab-single-deck-card--${Math.min(index, 3)}`,
+                                    isTop && "vocab-single-deck-card--top",
+                                    enteringFromIndex != null && "vocab-single-deck-card--entering",
+                                    isTop && dragX && "vocab-single-deck-card--dragging",
+                                    isTop && exit && "vocab-single-deck-card--exiting",
+                                    isTop &&
+                                        thresholdActive &&
+                                        `vocab-single-deck-card--swipe-${motionDir}`,
+                                ]
+                                    .filter(Boolean)
+                                    .join(" ")}
+                                style={style}
+                            >
+                                <DeckCard
+                                    card={card}
+                                    dots={isTop ? roundDots : null}
+                                    onOpenWordInfo={setInfoWord}
+                                    showInfoButton={isTop}
+                                    showVerbForms={showVerbForms}
+                                />
+                            </div>
+                        )
+                    })}
+            </div>
+            <VocabWordInfoOverlay
+                open={!!infoWord}
+                word={infoWord}
+                onClose={() => setInfoWord(null)}
+            />
+        </>
     )
 }

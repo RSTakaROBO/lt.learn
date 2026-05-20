@@ -159,6 +159,24 @@ export const STR = {
         percentUnit: "%",
     },
 
+    wordInfo: {
+        openAria: "Открыть информацию по слову",
+        openTitle: "Информация по слову",
+        kicker: "Слово",
+        titleFallback: "Слово",
+        translations: "Переводы",
+        forms: "Формы",
+        details: "Данные",
+        partOfSpeech: "Часть речи",
+        lemma: "Лемма",
+        id: "ID",
+        exception: "Исключение",
+        exceptionNote: "Заметка",
+        yes: "да",
+        no: "нет",
+        close: "Закрыть",
+    },
+
     stats: {
         title: "Статистика",
         tableCaption: "Слова: верно и неверно",

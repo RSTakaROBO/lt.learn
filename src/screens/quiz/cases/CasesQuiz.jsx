@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useSelector } from "react-redux"
 
 import { TRAIN_MODE } from "js/config.js"
@@ -14,6 +14,8 @@ import {
     VocabStreakMultiplier,
 } from "src/screens/quiz/shared/index.js"
 import { casesLemma, casesRuPrimary } from "src/screens/quiz/cases/casesWords.js"
+import { VocabWordInfoButton } from "src/screens/quiz/vocab/VocabWordInfoButton.jsx"
+import { VocabWordInfoOverlay } from "src/screens/quiz/vocab/VocabWordInfoOverlay.jsx"
 
 function casesPromptForTask(task, casesShowTranslation) {
     if (!task?.word || task.mode === TRAIN_MODE.VOCAB || task.mode === TRAIN_MODE.VERBS) {
@@ -42,6 +44,7 @@ export function CasesQuiz({
     streak,
     task,
 }) {
+    const [infoWord, setInfoWord] = useState(null)
     const casesShowTranslation = useSelector((s) => s.trainer.persisted.casesShowTranslation)
     const casesPrompt = casesPromptForTask(task, casesShowTranslation)
     const feedbackKind = feedback?.kind === "ok" || feedback?.kind === "bad" ? feedback.kind : ""
@@ -85,9 +88,15 @@ export function CasesQuiz({
                         />
                         <VocabStreakMultiplier streak={streak} pulseId={pulseId} />
                         <VocabRoundDots dots={roundDots} />
+                        <VocabWordInfoButton onClick={() => setInfoWord(task?.word)} />
                     </div>
                 </SwipeCardStack>
             </div>
+            <VocabWordInfoOverlay
+                open={!!infoWord}
+                word={infoWord}
+                onClose={() => setInfoWord(null)}
+            />
             <form
                 id="answer-form"
                 autoComplete="off"
