@@ -11,12 +11,14 @@ import {
 import { answersMatch } from "js/text-utils.js"
 import {
     LithuanianInput,
+    AutoFitText,
     QuizActionButtons,
     QuizFeedback,
     SwipeCardStack,
     VocabRoundDots,
     VocabRoundProgress,
     VocabStreakMultiplier,
+    VerbConjugationMark,
 } from "src/screens/quiz/shared/index.js"
 import {
     vocabLtDisplay,
@@ -168,8 +170,10 @@ export function VocabQuiz({
                             .filter(Boolean)
                             .join(" ")}
                     >
+                        <VerbConjugationMark word={task?.word} />
                         <div className="vocab-ru-card-body u-scrollbar-hidden">
-                            <p
+                            <AutoFitText
+                                as="p"
                                 className={[
                                     "lemma vocab-ru-display",
                                     prompt.text.includes("\n") && "vocab-ru-display--stacked",
@@ -180,7 +184,7 @@ export function VocabQuiz({
                                 lang={prompt.lang}
                             >
                                 {prompt.text}
-                            </p>
+                            </AutoFitText>
                             <QuizFeedback
                                 className="vocab-card-feedback"
                                 feedback={isSingle ? null : feedback}

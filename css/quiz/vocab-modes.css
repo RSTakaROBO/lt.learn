@@ -135,6 +135,12 @@
     width: 100%;
 }
 
+.vocab-ru-card--single > .vocab-ru-card-body,
+.vocab-ru-card--single > .vocab-round-lemma-dots,
+.vocab-ru-card--single > .verb-conjugation-mark {
+    z-index: 1;
+}
+
 .vocab-single-deck-card--swipe-left > .vocab-ru-card {
     border-color: color-mix(in srgb, var(--error) 54%, var(--border));
     background:
@@ -307,6 +313,7 @@
 }
 
 .vocab-single-answer__value {
+    display: block;
     margin-top: 0.28rem;
     max-width: 100%;
     color: var(--vocab-answer-accent);

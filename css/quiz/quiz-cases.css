@@ -25,6 +25,8 @@
 }
 
 #quiz-cases-ui .prompt > .vocab-card-stack > .vocab-ru-card {
+    --vocab-single-text-accent: color-mix(in srgb, var(--accent) 42%, #ffd166);
+    --vocab-answer-accent: var(--vocab-single-text-accent);
     min-height: unset;
     flex-direction: column;
     align-items: center;
@@ -32,4 +34,33 @@
     gap: 0.7rem;
     padding-top: clamp(1rem, 4.6vmin, 1.85rem);
     overflow: visible;
+}
+
+#quiz-cases-ui .prompt > .vocab-card-stack > .vocab-ru-card .vocab-ru-display {
+    color: var(--vocab-single-text-accent);
+    font-family: inherit;
+    font-size: clamp(2.85rem, 11vmin, 5.35rem);
+    font-weight: 800;
+    line-height: 1.1;
+    text-shadow:
+        0 1px 0 color-mix(in srgb, var(--surface) 72%, transparent),
+        0 0 0.06em color-mix(in srgb, var(--text) 24%, transparent);
+    overflow-wrap: normal;
+    word-break: normal;
+}
+
+.cases-lemma-block {
+    display: grid;
+    gap: 0.35rem;
+    justify-items: center;
+    max-width: 100%;
+}
+
+.cases-translation-line {
+    margin: 0;
+    color: color-mix(in srgb, var(--muted) 82%, var(--accent));
+    font-size: clamp(1rem, 3.1vmin, 1.22rem);
+    font-weight: 650;
+    line-height: 1.2;
+    text-align: center;
 }

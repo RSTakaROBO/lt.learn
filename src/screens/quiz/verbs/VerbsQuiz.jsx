@@ -1,4 +1,5 @@
 import { useEffect } from "react"
+import { useSelector } from "react-redux"
 
 import { VERB_FORM_ORDER } from "js/config.js"
 import { STR } from "js/i18n/strings-ru.js"
@@ -9,6 +10,7 @@ import {
     VocabRoundProgress,
     VocabStreakMultiplier,
 } from "src/screens/quiz/shared/index.js"
+import { vocabRuAcceptedList } from "src/screens/quiz/vocab/vocabWords.js"
 
 function VerbFormsPrompt({ answered, feedbackKind, task }) {
     const hiddenKey = task?.hiddenVerbFormKey
@@ -82,6 +84,8 @@ export function VerbsQuiz({
     task,
 }) {
     const feedbackKind = feedback?.kind === "ok" || feedback?.kind === "bad" ? feedback.kind : ""
+    const showTranslation = useSelector((s) => s.trainer.persisted.casesShowTranslation)
+    const translation = showTranslation ? (vocabRuAcceptedList(task?.word)[0] ?? "") : ""
 
     let verdictAnnouncement = ""
     if (answered && feedbackKind === "ok") verdictAnnouncement = STR.vocabRound.statCorrect
@@ -105,6 +109,7 @@ export function VerbsQuiz({
             <div className="verb-forms-block">
                 <div className="verb-forms-block__main">
                     <VerbFormsPrompt answered={answered} feedbackKind={feedbackKind} task={task} />
+                    {translation ? <p className="verb-translation-line">{translation}</p> : null}
                     {verdictAnnouncement ? (
                         <p className="sr-only" aria-live="polite">
                             {verdictAnnouncement}

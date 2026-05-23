@@ -34,7 +34,7 @@ export function vocabRuPrimary(word) {
 export function vocabRuAlt(word) {
     if (Array.isArray(word?.ru_list)) return word.ru_list.slice(1).map(cleanString).filter(Boolean)
     if (Array.isArray(word?.ru)) return word.ru.slice(1).map(cleanString).filter(Boolean)
-    return cleanString(word?.ru_alt).split(",").map(cleanString).filter(Boolean)
+    return []
 }
 
 export function vocabRuAcceptedList(word) {

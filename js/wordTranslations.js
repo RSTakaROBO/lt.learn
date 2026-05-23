@@ -17,8 +17,7 @@ export function wordRuAlt(word) {
             .filter(Boolean)
             .join(", ")
     }
-    const v = word?.ru_alt
-    return typeof v === "string" ? v.trim() : ""
+    return ""
 }
 
 /** Основной и альтернативный перевод (оба засчитываются при проверке). */

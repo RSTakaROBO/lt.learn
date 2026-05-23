@@ -7,6 +7,7 @@ import { STR } from "js/i18n/strings-ru.js"
 import { handleMorphCasesAnswerSubmit } from "js/quiz.js"
 import {
     LithuanianInput,
+    AutoFitText,
     QuizFeedback,
     SwipeCardStack,
     VocabRoundDots,
@@ -19,13 +20,13 @@ import { VocabWordInfoOverlay } from "src/screens/quiz/vocab/VocabWordInfoOverla
 
 function casesPromptForTask(task, casesShowTranslation) {
     if (!task?.word || task.mode === TRAIN_MODE.VOCAB || task.mode === TRAIN_MODE.VERBS) {
-        return { lemma: "", targetCase: "" }
+        return { lemma: "", translation: "", targetCase: "" }
     }
     const nom = casesLemma(task.word)
     const ru = casesRuPrimary(task.word)
-    const hint = casesShowTranslation === true && ru ? ` (${ru})` : ""
     return {
-        lemma: `${nom}${hint}`,
+        lemma: nom,
+        translation: casesShowTranslation === true ? ru : "",
         targetCase: task.targetCase ? caseRu(task.targetCase) : "",
     }
 }
@@ -73,9 +74,18 @@ export function CasesQuiz({
                             .filter(Boolean)
                             .join(" ")}
                     >
-                        <p className="lemma vocab-ru-display" id="lemma-display">
-                            {casesPrompt.lemma}
-                        </p>
+                        <div className="cases-lemma-block">
+                            <AutoFitText
+                                as="p"
+                                className="lemma vocab-ru-display"
+                                id="lemma-display"
+                            >
+                                {casesPrompt.lemma}
+                            </AutoFitText>
+                            {casesPrompt.translation ? (
+                                <p className="cases-translation-line">{casesPrompt.translation}</p>
+                            ) : null}
+                        </div>
                         <p className="target-line">
                             <span className="target-prefix">{STR.quiz.targetCasePrefix}</span>
                             <span id="target-case-display">{casesPrompt.targetCase}</span>

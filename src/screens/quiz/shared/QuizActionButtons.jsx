@@ -45,7 +45,11 @@ export function QuizActionButtons({
     return (
         <>
             {showFinish ? (
-                <Button variant="ghost" type="button" onClick={onFinish}>
+                <Button
+                    variant={isVocab && !isHardcore ? "primary" : "ghost"}
+                    type="button"
+                    onClick={onFinish}
+                >
                     {finishLabel}
                 </Button>
             ) : null}

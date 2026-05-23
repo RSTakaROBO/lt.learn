@@ -21,11 +21,6 @@ function normalizeRuList(entry) {
     } else {
         add(entry?.ru)
     }
-    if (Array.isArray(entry?.ru_alt)) {
-        entry.ru_alt.forEach(add)
-    } else {
-        add(entry?.ru_alt)
-    }
     return out
 }
 
@@ -104,8 +99,7 @@ export function normalizeWordEntry(raw) {
         instrumental: forms.instrumental,
         locative: forms.locative,
         vocative: forms.vocative,
-        ru: ruList[0] ?? "",
-        ru_alt: ruList.slice(1).join(", "),
+        ru: ruList.length > 1 ? ruList : (ruList[0] ?? ""),
     }
 }
 

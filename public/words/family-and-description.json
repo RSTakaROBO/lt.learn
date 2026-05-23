@@ -1,0 +1,899 @@
+{
+    "title": "Ни дня без литовского. Часть 3",
+    "words": [
+        {
+            "type": "noun",
+            "lemma": "šeima",
+            "forms": {
+                "nominative": "šeima",
+                "genitive": "šeimos",
+                "dative": "šeimai",
+                "accusative": "šeimą",
+                "instrumental": "šeima",
+                "locative": "šeimoje",
+                "vocative": "šeima"
+            },
+            "ru": "семья"
+        },
+        {
+            "type": "noun",
+            "lemma": "tėvai",
+            "exception": true,
+            "exception_note_ru": "Слово обычно употребляется во множественном числе: родители.",
+            "forms": {
+                "nominative": "tėvai",
+                "genitive": "tėvų",
+                "dative": "tėvams",
+                "accusative": "tėvus",
+                "instrumental": "tėvais",
+                "locative": "tėvuose",
+                "vocative": "tėvai"
+            },
+            "ru": "родители"
+        },
+        {
+            "type": "noun",
+            "lemma": "motina",
+            "forms": {
+                "nominative": "motina",
+                "genitive": "motinos",
+                "dative": "motinai",
+                "accusative": "motiną",
+                "instrumental": "motina",
+                "locative": "motinoje",
+                "vocative": "motina"
+            },
+            "ru": "мать"
+        },
+        {
+            "type": "noun",
+            "lemma": "mama",
+            "forms": {
+                "nominative": "mama",
+                "genitive": "mamos",
+                "dative": "mamai",
+                "accusative": "mamą",
+                "instrumental": "mama",
+                "locative": "mamoje",
+                "vocative": "mama"
+            },
+            "ru": "мама"
+        },
+        {
+            "type": "noun",
+            "lemma": "tėvas",
+            "forms": {
+                "nominative": "tėvas",
+                "genitive": "tėvo",
+                "dative": "tėvui",
+                "accusative": "tėvą",
+                "instrumental": "tėvu",
+                "locative": "tėve",
+                "vocative": "tėve"
+            },
+            "ru": "отец"
+        },
+        {
+            "type": "noun",
+            "lemma": "tėtis",
+            "forms": {
+                "nominative": "tėtis",
+                "genitive": "tėčio",
+                "dative": "tėčiui",
+                "accusative": "tėtį",
+                "instrumental": "tėčiu",
+                "locative": "tėtyje",
+                "vocative": "tėti"
+            },
+            "ru": "папа"
+        },
+        {
+            "type": "noun",
+            "lemma": "sūnus",
+            "forms": {
+                "nominative": "sūnus",
+                "genitive": "sūnaus",
+                "dative": "sūnui",
+                "accusative": "sūnų",
+                "instrumental": "sūnumi",
+                "locative": "sūnuje",
+                "vocative": "sūnau"
+            },
+            "ru": "сын"
+        },
+        {
+            "type": "noun",
+            "lemma": "duktė",
+            "exception": true,
+            "exception_note_ru": "Нерегулярная основа: duktė -> dukter-.",
+            "forms": {
+                "nominative": "duktė",
+                "genitive": "dukters",
+                "dative": "dukteriai",
+                "accusative": "dukterį",
+                "instrumental": "dukterimi",
+                "locative": "dukteryje",
+                "vocative": "dukterie"
+            },
+            "ru": "дочь"
+        },
+        {
+            "type": "noun",
+            "lemma": "senelis",
+            "forms": {
+                "nominative": "senelis",
+                "genitive": "senelio",
+                "dative": "seneliui",
+                "accusative": "senelį",
+                "instrumental": "seneliu",
+                "locative": "senelyje",
+                "vocative": "seneli"
+            },
+            "ru": "дедушка"
+        },
+        {
+            "type": "noun",
+            "lemma": "senelė",
+            "forms": {
+                "nominative": "senelė",
+                "genitive": "senelės",
+                "dative": "senelei",
+                "accusative": "senelę",
+                "instrumental": "senele",
+                "locative": "senelėje",
+                "vocative": "senele"
+            },
+            "ru": "бабуля"
+        },
+        {
+            "type": "noun",
+            "lemma": "močiutė",
+            "forms": {
+                "nominative": "močiutė",
+                "genitive": "močiutės",
+                "dative": "močiutei",
+                "accusative": "močiutę",
+                "instrumental": "močiute",
+                "locative": "močiutėje",
+                "vocative": "močiute"
+            },
+            "ru": "бабушка"
+        },
+        {
+            "type": "noun",
+            "lemma": "prosenelis",
+            "forms": {
+                "nominative": "prosenelis",
+                "genitive": "prosenelio",
+                "dative": "proseneliui",
+                "accusative": "prosenelį",
+                "instrumental": "proseneliu",
+                "locative": "prosenelyje",
+                "vocative": "proseneli"
+            },
+            "ru": "прадедушка"
+        },
+        {
+            "type": "noun",
+            "lemma": "prosenelė",
+            "forms": {
+                "nominative": "prosenelė",
+                "genitive": "prosenelės",
+                "dative": "prosenelei",
+                "accusative": "prosenelę",
+                "instrumental": "prosenele",
+                "locative": "prosenelėje",
+                "vocative": "prosenele"
+            },
+            "ru": "прабабушка"
+        },
+        {
+            "type": "noun",
+            "lemma": "vyras",
+            "forms": {
+                "nominative": "vyras",
+                "genitive": "vyro",
+                "dative": "vyrui",
+                "accusative": "vyrą",
+                "instrumental": "vyru",
+                "locative": "vyre",
+                "vocative": "vyre"
+            },
+            "ru": ["муж", "мужчина"]
+        },
+        {
+            "type": "noun",
+            "lemma": "žmona",
+            "forms": {
+                "nominative": "žmona",
+                "genitive": "žmonos",
+                "dative": "žmonai",
+                "accusative": "žmoną",
+                "instrumental": "žmona",
+                "locative": "žmonoje",
+                "vocative": "žmona"
+            },
+            "ru": "жена"
+        },
+        {
+            "type": "noun",
+            "lemma": "brolis",
+            "forms": {
+                "nominative": "brolis",
+                "genitive": "brolio",
+                "dative": "broliui",
+                "accusative": "brolį",
+                "instrumental": "broliu",
+                "locative": "brolyje",
+                "vocative": "broli"
+            },
+            "ru": "брат"
+        },
+        {
+            "type": "noun",
+            "lemma": "sesuo",
+            "exception": true,
+            "exception_note_ru": "Нерегулярная основа: sesuo -> seser-.",
+            "forms": {
+                "nominative": "sesuo",
+                "genitive": "sesers",
+                "dative": "seseriai",
+                "accusative": "seserį",
+                "instrumental": "seserimi",
+                "locative": "seseryje",
+                "vocative": "seserie"
+            },
+            "ru": "сестра"
+        },
+        {
+            "type": "noun",
+            "lemma": "vaikas",
+            "forms": {
+                "nominative": "vaikas",
+                "genitive": "vaiko",
+                "dative": "vaikui",
+                "accusative": "vaiką",
+                "instrumental": "vaiku",
+                "locative": "vaike",
+                "vocative": "vaike"
+            },
+            "ru": "ребёнок"
+        },
+        {
+            "type": "noun",
+            "lemma": "kūdikis",
+            "forms": {
+                "nominative": "kūdikis",
+                "genitive": "kūdikio",
+                "dative": "kūdikiui",
+                "accusative": "kūdikį",
+                "instrumental": "kūdikiu",
+                "locative": "kūdikyje",
+                "vocative": "kūdiki"
+            },
+            "ru": "младенец"
+        },
+        {
+            "type": "noun",
+            "lemma": "anūkas",
+            "forms": {
+                "nominative": "anūkas",
+                "genitive": "anūko",
+                "dative": "anūkui",
+                "accusative": "anūką",
+                "instrumental": "anūku",
+                "locative": "anūke",
+                "vocative": "anūke"
+            },
+            "ru": "внук"
+        },
+        {
+            "type": "noun",
+            "lemma": "anūkė",
+            "forms": {
+                "nominative": "anūkė",
+                "genitive": "anūkės",
+                "dative": "anūkei",
+                "accusative": "anūkę",
+                "instrumental": "anūke",
+                "locative": "anūkėje",
+                "vocative": "anūke"
+            },
+            "ru": "внучка"
+        },
+        {
+            "type": "noun",
+            "lemma": "giminės",
+            "exception": true,
+            "exception_note_ru": "На странице дано во множественном числе: родственники.",
+            "forms": {
+                "nominative": "giminės",
+                "genitive": "giminių",
+                "dative": "giminėms",
+                "accusative": "gimines",
+                "instrumental": "giminėmis",
+                "locative": "giminėse",
+                "vocative": "giminės"
+            },
+            "ru": ["родственники", "родня"]
+        },
+        {
+            "type": "noun",
+            "lemma": "dėdė",
+            "forms": {
+                "nominative": "dėdė",
+                "genitive": "dėdės",
+                "dative": "dėdei",
+                "accusative": "dėdę",
+                "instrumental": "dėde",
+                "locative": "dėdėje",
+                "vocative": "dėde"
+            },
+            "ru": "дядя"
+        },
+        {
+            "type": "noun",
+            "lemma": "teta",
+            "forms": {
+                "nominative": "teta",
+                "genitive": "tetos",
+                "dative": "tetai",
+                "accusative": "tetą",
+                "instrumental": "teta",
+                "locative": "tetoje",
+                "vocative": "teta"
+            },
+            "ru": "тётя"
+        },
+        {
+            "type": "noun",
+            "lemma": "pusbrolis",
+            "forms": {
+                "nominative": "pusbrolis",
+                "genitive": "pusbrolio",
+                "dative": "pusbroliui",
+                "accusative": "pusbrolį",
+                "instrumental": "pusbroliu",
+                "locative": "pusbrolyje",
+                "vocative": "pusbroli"
+            },
+            "ru": ["двоюродный брат", "кузин"]
+        },
+        {
+            "type": "noun",
+            "lemma": "pusseserė",
+            "forms": {
+                "nominative": "pusseserė",
+                "genitive": "pusseserės",
+                "dative": "pusseserei",
+                "accusative": "pusseserę",
+                "instrumental": "pussesere",
+                "locative": "pusseserėje",
+                "vocative": "pussesere"
+            },
+            "ru": ["двоюродная сестра", "кузина"]
+        },
+        {
+            "type": "verb",
+            "lemma": "galėti",
+            "forms": {
+                "infinitive": "galėti",
+                "present3": "gali",
+                "past3": "galėjo"
+            },
+            "ru": "мочь",
+            "conjugation": "II"
+        },
+        {
+            "type": "verb",
+            "lemma": "mylėti",
+            "forms": {
+                "infinitive": "mylėti",
+                "present3": "myli",
+                "past3": "mylėjo"
+            },
+            "ru": "любить",
+            "conjugation": "II"
+        },
+        {
+            "type": "verb",
+            "lemma": "norėti",
+            "forms": {
+                "infinitive": "norėti",
+                "present3": "nori",
+                "past3": "norėjo"
+            },
+            "ru": "хотеть",
+            "conjugation": "II"
+        },
+        {
+            "type": "verb",
+            "lemma": "pasiilgti",
+            "forms": {
+                "infinitive": "pasiilgti",
+                "present3": "pasiilgsta",
+                "past3": "pasiilgo"
+            },
+            "ru": ["соскучиться", "тосковать"],
+            "conjugation": "I"
+        },
+        {
+            "type": "verb",
+            "lemma": "sėdėti",
+            "forms": {
+                "infinitive": "sėdėti",
+                "present3": "sėdi",
+                "past3": "sėdėjo"
+            },
+            "ru": "сидеть",
+            "conjugation": "II"
+        },
+        {
+            "type": "verb",
+            "lemma": "stovėti",
+            "forms": {
+                "infinitive": "stovėti",
+                "present3": "stovi",
+                "past3": "stovėjo"
+            },
+            "ru": "стоять",
+            "conjugation": "II"
+        },
+        {
+            "type": "verb",
+            "lemma": "turėti",
+            "forms": {
+                "infinitive": "turėti",
+                "present3": "turi",
+                "past3": "turėjo"
+            },
+            "ru": "иметь",
+            "conjugation": "II"
+        },
+        {
+            "type": "verb",
+            "lemma": "žiūrėti",
+            "forms": {
+                "infinitive": "žiūrėti",
+                "present3": "žiūri",
+                "past3": "žiūrėjo"
+            },
+            "ru": "смотреть",
+            "conjugation": "II"
+        },
+        {
+            "type": "verb",
+            "lemma": "girdėti",
+            "forms": {
+                "infinitive": "girdėti",
+                "present3": "girdi",
+                "past3": "girdėjo"
+            },
+            "ru": "слышать",
+            "conjugation": "II"
+        },
+        {
+            "type": "verb",
+            "lemma": "mėgti",
+            "forms": {
+                "infinitive": "mėgti",
+                "present3": "mėgsta",
+                "past3": "mėgo"
+            },
+            "ru": ["любить", "нравиться"],
+            "conjugation": "I"
+        },
+        {
+            "type": "verb",
+            "lemma": "susipažinti",
+            "forms": {
+                "infinitive": "susipažinti",
+                "present3": "susipažįsta",
+                "past3": "susipažino"
+            },
+            "ru": "познакомиться",
+            "conjugation": "I"
+        },
+        {
+            "type": "verb",
+            "lemma": "žaisti",
+            "forms": {
+                "infinitive": "žaisti",
+                "present3": "žaidžia",
+                "past3": "žaidė"
+            },
+            "ru": "играть",
+            "conjugation": "I"
+        },
+        {
+            "type": "adjective",
+            "lemma": "vedęs",
+            "ru": "женатый"
+        },
+        {
+            "type": "adjective",
+            "lemma": "ištekėjusi",
+            "ru": "замужняя"
+        },
+        {
+            "type": "adjective",
+            "lemma": "išsiskyręs",
+            "ru": "разведённый"
+        },
+        {
+            "type": "adjective",
+            "lemma": "išsiskyrusi",
+            "ru": "разведённая"
+        },
+        {
+            "type": "adjective",
+            "lemma": "miręs",
+            "ru": "умерший"
+        },
+        {
+            "type": "adjective",
+            "lemma": "mirusi",
+            "ru": "умершая"
+        },
+        {
+            "type": "adjective",
+            "lemma": "jaunas",
+            "ru": "молодой"
+        },
+        {
+            "type": "adjective",
+            "lemma": "jauna",
+            "ru": "молодая"
+        },
+        {
+            "type": "adjective",
+            "lemma": "senas",
+            "ru": "старый"
+        },
+        {
+            "type": "adjective",
+            "lemma": "sena",
+            "ru": "старая"
+        },
+        {
+            "type": "adjective",
+            "lemma": "linksmas",
+            "ru": "весёлый"
+        },
+        {
+            "type": "adjective",
+            "lemma": "linksma",
+            "ru": "весёлая"
+        },
+        {
+            "type": "adjective",
+            "lemma": "liūdnas",
+            "ru": "грустный"
+        },
+        {
+            "type": "adjective",
+            "lemma": "liūdna",
+            "ru": "грустная"
+        },
+        {
+            "type": "adjective",
+            "lemma": "gražus",
+            "ru": "красивый"
+        },
+        {
+            "type": "adjective",
+            "lemma": "graži",
+            "ru": "красивая"
+        },
+        {
+            "type": "adjective",
+            "lemma": "negražus",
+            "ru": "некрасивый"
+        },
+        {
+            "type": "adjective",
+            "lemma": "negraži",
+            "ru": "некрасивая"
+        },
+        {
+            "type": "adjective",
+            "lemma": "šviesus",
+            "ru": "светлый"
+        },
+        {
+            "type": "adjective",
+            "lemma": "šviesi",
+            "ru": "светлая"
+        },
+        {
+            "type": "adjective",
+            "lemma": "tamsus",
+            "ru": "тёмный"
+        },
+        {
+            "type": "adjective",
+            "lemma": "tamsi",
+            "ru": "тёмная"
+        },
+        {
+            "type": "adjective",
+            "lemma": "žemas",
+            "ru": "низкий"
+        },
+        {
+            "type": "adjective",
+            "lemma": "žema",
+            "ru": "низкая"
+        },
+        {
+            "type": "adjective",
+            "lemma": "aukštas",
+            "ru": "высокий"
+        },
+        {
+            "type": "adjective",
+            "lemma": "aukšta",
+            "ru": "высокая"
+        },
+        {
+            "type": "adjective",
+            "lemma": "stambus",
+            "ru": "крупный"
+        },
+        {
+            "type": "adjective",
+            "lemma": "stambi",
+            "ru": "крупная"
+        },
+        {
+            "type": "adjective",
+            "lemma": "plonas",
+            "ru": "тонкий"
+        },
+        {
+            "type": "adjective",
+            "lemma": "plona",
+            "ru": "тонкая"
+        },
+        {
+            "type": "adjective",
+            "lemma": "stiprus",
+            "ru": "сильный"
+        },
+        {
+            "type": "adjective",
+            "lemma": "stipri",
+            "ru": "сильная"
+        },
+        {
+            "type": "adjective",
+            "lemma": "silpnas",
+            "ru": "слабый"
+        },
+        {
+            "type": "adjective",
+            "lemma": "silpna",
+            "ru": "слабая"
+        },
+        {
+            "type": "adjective",
+            "lemma": "tylus",
+            "ru": "тихий"
+        },
+        {
+            "type": "adjective",
+            "lemma": "tyli",
+            "ru": "тихая"
+        },
+        {
+            "type": "adjective",
+            "lemma": "triukšmingas",
+            "ru": "шумный"
+        },
+        {
+            "type": "adjective",
+            "lemma": "triukšminga",
+            "ru": "шумная"
+        },
+        {
+            "type": "adjective",
+            "lemma": "lėtas",
+            "ru": "медленный"
+        },
+        {
+            "type": "adjective",
+            "lemma": "lėta",
+            "ru": "медленная"
+        },
+        {
+            "type": "adjective",
+            "lemma": "greitas",
+            "ru": "быстрый"
+        },
+        {
+            "type": "adjective",
+            "lemma": "greita",
+            "ru": "быстрая"
+        },
+        {
+            "type": "adjective",
+            "lemma": "puikus",
+            "ru": "отличный"
+        },
+        {
+            "type": "adjective",
+            "lemma": "puiki",
+            "ru": "отличная"
+        },
+        {
+            "type": "adjective",
+            "lemma": "geras",
+            "ru": "хороший"
+        },
+        {
+            "type": "adjective",
+            "lemma": "gera",
+            "ru": "хорошая"
+        },
+        {
+            "type": "adjective",
+            "lemma": "blogas",
+            "ru": "плохой"
+        },
+        {
+            "type": "adjective",
+            "lemma": "bloga",
+            "ru": "плохая"
+        },
+        {
+            "type": "adjective",
+            "lemma": "didelis",
+            "ru": "большой"
+        },
+        {
+            "type": "adjective",
+            "lemma": "didelė",
+            "ru": "большая"
+        },
+        {
+            "type": "adjective",
+            "lemma": "vidutinis",
+            "ru": "средний"
+        },
+        {
+            "type": "adjective",
+            "lemma": "vidutinė",
+            "ru": "средняя"
+        },
+        {
+            "type": "adjective",
+            "lemma": "mažas",
+            "ru": "маленький"
+        },
+        {
+            "type": "adjective",
+            "lemma": "maža",
+            "ru": "маленькая"
+        },
+        {
+            "type": "adjective",
+            "lemma": "malonus",
+            "ru": "приятный"
+        },
+        {
+            "type": "adjective",
+            "lemma": "maloni",
+            "ru": "приятная"
+        },
+        {
+            "type": "adjective",
+            "lemma": "bjaurus",
+            "ru": "противный"
+        },
+        {
+            "type": "adjective",
+            "lemma": "bjauri",
+            "ru": "противная"
+        },
+        {
+            "type": "adjective",
+            "lemma": "laimingas",
+            "ru": "счастливый"
+        },
+        {
+            "type": "adjective",
+            "lemma": "laiminga",
+            "ru": "счастливая"
+        },
+        {
+            "type": "adjective",
+            "lemma": "nelaimingas",
+            "ru": "несчастный"
+        },
+        {
+            "type": "adjective",
+            "lemma": "nelaiminga",
+            "ru": "несчастная"
+        },
+        {
+            "type": "adjective",
+            "lemma": "mielas",
+            "ru": "милый"
+        },
+        {
+            "type": "adjective",
+            "lemma": "miela",
+            "ru": "милая"
+        },
+        {
+            "type": "adjective",
+            "lemma": "piktas",
+            "ru": "злой"
+        },
+        {
+            "type": "adjective",
+            "lemma": "pikta",
+            "ru": "злая"
+        },
+        {
+            "type": "adjective",
+            "lemma": "naujas",
+            "ru": "новый"
+        },
+        {
+            "type": "adjective",
+            "lemma": "nauja",
+            "ru": "новая"
+        },
+        {
+            "type": "adjective",
+            "lemma": "keistas",
+            "ru": "странный"
+        },
+        {
+            "type": "adjective",
+            "lemma": "keista",
+            "ru": "странная"
+        },
+        {
+            "type": "adjective",
+            "lemma": "įdomus",
+            "ru": "интересный"
+        },
+        {
+            "type": "adjective",
+            "lemma": "įdomi",
+            "ru": "интересная"
+        },
+        {
+            "type": "adjective",
+            "lemma": "nuobodus",
+            "ru": "скучный"
+        },
+        {
+            "type": "adjective",
+            "lemma": "nuobodi",
+            "ru": "скучная"
+        },
+        {
+            "type": "adjective",
+            "lemma": "draugiškas",
+            "ru": "дружелюбный"
+        },
+        {
+            "type": "adjective",
+            "lemma": "draugiška",
+            "ru": "дружелюбная"
+        },
+        {
+            "type": "adjective",
+            "lemma": "protingas",
+            "ru": "умный"
+        },
+        {
+            "type": "adjective",
+            "lemma": "protinga",
+            "ru": "умная"
+        }
+    ]
+}

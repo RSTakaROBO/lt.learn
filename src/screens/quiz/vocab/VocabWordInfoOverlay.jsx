@@ -11,7 +11,6 @@ import { vocabLemma, vocabRuAcceptedList } from "src/screens/quiz/vocab/vocabWor
 const KNOWN_WORD_KEYS = new Set([
     "forms",
     "ru",
-    "ru_alt",
     "ru_list",
     "nominative",
     "genitive",
@@ -58,6 +57,8 @@ function formRowsForWord(word) {
         })).filter((row) => row.value)
     }
 
+    if (source === word) return []
+
     return Object.entries(source)
         .map(([key, value]) => ({
             key,
@@ -77,13 +78,15 @@ function extraRowsForWord(word) {
                     ? STR.wordInfo.partOfSpeech
                     : key === "lemma"
                       ? STR.wordInfo.lemma
-                      : key === "id"
-                        ? STR.wordInfo.id
-                        : key === "exception"
-                          ? STR.wordInfo.exception
-                          : key === "exception_note_ru"
-                            ? STR.wordInfo.exceptionNote
-                            : key
+                      : key === "conjugation"
+                        ? STR.wordInfo.conjugation
+                        : key === "id"
+                          ? STR.wordInfo.id
+                          : key === "exception"
+                            ? STR.wordInfo.exception
+                            : key === "exception_note_ru"
+                              ? STR.wordInfo.exceptionNote
+                              : key
             return {
                 key,
                 label,

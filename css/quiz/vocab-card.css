@@ -58,6 +58,30 @@
         0 0 0 1px color-mix(in srgb, var(--error) 18%, transparent) inset;
 }
 
+.verb-conjugation-mark {
+    position: absolute;
+    top: 0.62rem;
+    right: 0.72rem;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    gap: 0.28rem;
+    pointer-events: none;
+    opacity: 0.34;
+}
+
+.verb-conjugation-mark__dash {
+    display: block;
+    width: 0.2rem;
+    height: 1.28rem;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--text) 72%, transparent);
+}
+
+.vocab-single-deck-card:not(.vocab-single-deck-card--top) .verb-conjugation-mark {
+    display: none;
+}
+
 .vocab-card-stack {
     position: relative;
     display: flex;
@@ -323,6 +347,14 @@
     font-weight: 800;
     letter-spacing: 0;
     white-space: pre-line;
+    display: block;
+}
+
+.auto-fit-text__inner {
+    display: inline-block;
+    white-space: inherit;
+    overflow-wrap: normal;
+    word-break: normal;
 }
 
 /* Длинные слова и ×N не должны раздувать карточку по ширине (десктоп + множитель). */

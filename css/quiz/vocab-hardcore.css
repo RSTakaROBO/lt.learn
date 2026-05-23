@@ -7,7 +7,7 @@
 #quiz.panel.quiz--vocab-hardcore #quiz-vocab-ui:not(.hidden) > .vocab-card-stack {
     flex: 0 1 auto;
     min-height: 0;
-    max-height: min(62vh, 40rem);
+    max-height: min(50vh, 32rem);
     margin-bottom: calc(10px + 0.55rem);
 }
 
@@ -15,11 +15,11 @@ html.ios-standalone
     #quiz.panel.quiz--vocab-hardcore
     #quiz-vocab-ui:not(.hidden)
     > .vocab-card-stack {
-    max-height: min(58vh, 38rem);
+    max-height: min(48vh, 30rem);
 }
 
 #quiz.panel.quiz--vocab-hardcore #quiz-vocab-ui:not(.hidden) > .vocab-card-stack > .vocab-ru-card {
-    padding: 4rem 2.3rem;
+    padding: 2.2rem 2.3rem;
     overflow: visible;
 }
 

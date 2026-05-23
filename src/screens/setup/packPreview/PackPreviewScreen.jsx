@@ -22,6 +22,21 @@ function groupPreviewRows(rows) {
     )
 }
 
+function TranslationCell({ translations }) {
+    const rows = Array.isArray(translations) ? translations.filter(Boolean) : []
+    if (!rows.length) return STR.quiz.emDash
+
+    return (
+        <ul className="pack-preview-translations">
+            {rows.map((translation) => (
+                <li key={translation} className="pack-preview-translation">
+                    {translation}
+                </li>
+            ))}
+        </ul>
+    )
+}
+
 export function PackPreviewScreen({ heightMode = "fill" } = {}) {
     const { previewPackRow, closePackPreview } = useManifestPacks()
     const groups = groupPreviewRows(previewPackRow?.previewRows || [])
@@ -73,7 +88,14 @@ export function PackPreviewScreen({ heightMode = "fill" } = {}) {
                                         ]}
                                         rows={group.rows.map((row, index) => ({
                                             lemma: row.lemma,
-                                            translation: row.translation || STR.quiz.emDash,
+                                            translation: (
+                                                <TranslationCell
+                                                    translations={
+                                                        row.translations ||
+                                                        (row.translation ? [row.translation] : [])
+                                                    }
+                                                />
+                                            ),
                                             rowKey: `${group.type}-${row.lemma}-${index}`,
                                         }))}
                                         getRowKey={(row) => row.rowKey}

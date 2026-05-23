@@ -4,6 +4,8 @@ import { flushSync } from "react-dom"
 import { VOCAB_DIRECTION } from "js/config.js"
 import { STR } from "js/i18n/strings-ru.js"
 import { handleVocabSingleSwipe, requestVocabSingleFutureTask } from "js/quiz.js"
+import { AutoFitText } from "src/screens/quiz/shared/AutoFitText.jsx"
+import { VerbConjugationMark } from "src/screens/quiz/shared/VerbConjugationMark.jsx"
 import { VocabRoundDots } from "src/screens/quiz/shared/VocabRoundDots.jsx"
 import { vocabLtDisplay, vocabRuPrimary } from "src/screens/quiz/vocab/vocabWords.js"
 import { VocabWordInfoButton } from "src/screens/quiz/vocab/VocabWordInfoButton.jsx"
@@ -77,8 +79,10 @@ function PromptCard({ card, dots, showVerbForms }) {
     const prompt = vocabPromptForTask(card.task, showVerbForms)
     return (
         <div className="vocab-ru-card vocab-ru-card--single">
+            <VerbConjugationMark word={card.task?.word} />
             <div className="vocab-ru-card-body u-scrollbar-hidden">
-                <p
+                <AutoFitText
+                    as="p"
                     className={[
                         "lemma vocab-ru-display",
                         prompt.text.includes("\n") && "vocab-ru-display--stacked",
@@ -88,7 +92,7 @@ function PromptCard({ card, dots, showVerbForms }) {
                     lang={prompt.lang}
                 >
                     {prompt.text}
-                </p>
+                </AutoFitText>
             </div>
             <VocabRoundDots dots={dots} />
         </div>
@@ -98,10 +102,11 @@ function PromptCard({ card, dots, showVerbForms }) {
 function AnswerCard({ card, onOpenWordInfo, showInfoButton, showVerbForms }) {
     return (
         <div className="vocab-ru-card vocab-single-answer" aria-live="polite">
+            <VerbConjugationMark word={card.task?.word} />
             <span className="vocab-single-answer__label">{STR.quiz.vocabSingleAnswerLabel}</span>
-            <span className="vocab-single-answer__value">
+            <AutoFitText as="span" className="vocab-single-answer__value">
                 {vocabExpectedForTask(card.task, showVerbForms)}
-            </span>
+            </AutoFitText>
             {showInfoButton ? (
                 <VocabWordInfoButton onClick={() => onOpenWordInfo?.(card.task?.word)} />
             ) : null}

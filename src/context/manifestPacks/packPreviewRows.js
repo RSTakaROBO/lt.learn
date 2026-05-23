@@ -1,5 +1,5 @@
 import { normalizeWordEntries } from "js/word-entry.js"
-import { vocabRuFeedbackLine } from "src/screens/quiz/vocab/vocabWords.js"
+import { vocabRuAcceptedList } from "src/screens/quiz/vocab/vocabWords.js"
 
 function cleanString(value) {
     return typeof value === "string" ? value.trim() : ""
@@ -10,7 +10,11 @@ export function wordPreviewLemma(word) {
 }
 
 export function wordPreviewTranslation(word) {
-    return vocabRuFeedbackLine(word)
+    return vocabRuAcceptedList(word).join(", ")
+}
+
+export function wordPreviewTranslations(word) {
+    return vocabRuAcceptedList(word)
 }
 
 export function wordsForPackPreview(pack, fileMap) {
@@ -29,6 +33,7 @@ export function wordsForPackPreview(pack, fileMap) {
             type: cleanString(word?.type) || "noun",
             lemma: wordPreviewLemma(word),
             translation: wordPreviewTranslation(word),
+            translations: wordPreviewTranslations(word),
         }))
         .filter((row) => row.lemma || row.translation)
 }

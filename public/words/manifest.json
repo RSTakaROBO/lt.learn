@@ -1,6 +1,22 @@
 {
     "packs": [
         {
+            "id": "ndblk_2",
+            "files": ["ndblk_2.json"]
+        },
+        {
+            "id": "professions",
+            "files": ["professions.json"]
+        },
+        {
+            "id": "time",
+            "files": ["time.json"]
+        },
+        {
+            "id": "family-and-description",
+            "files": ["family-and-description.json"]
+        },
+        {
             "id": "basic",
             "files": ["common.json"]
         },
@@ -9,28 +25,16 @@
             "files": ["home.json"]
         },
         {
-            "id": "time",
-            "files": ["time.json"]
+            "id": "food",
+            "files": ["food.json"]
         },
         {
             "id": "interrogatives",
             "files": ["interrogatives.json"]
         },
         {
-            "id": "food",
-            "files": ["food.json"]
-        },
-        {
-            "id": "professions",
-            "files": ["professions.json"]
-        },
-        {
             "id": "basic-verbs",
             "files": ["basic-verbs.json"]
-        },
-        {
-            "id": "ndblk_2",
-            "files": ["ndblk_2.json"]
         }
     ]
 }
