@@ -1,22 +1,56 @@
 import { CASE_BY_KEY } from "js/config.js"
 import { caseRu } from "js/i18n/core.js"
-import { STR } from "js/i18n/strings-ru.js"
 
-/** Заголовки таблицы окончаний. */
-function CaseTableHead() {
-    return (
-        <thead>
-            <tr>
-                <th scope="col">{STR.help.tableStem}</th>
-                <th scope="col">{STR.help.tableSg}</th>
-                <th scope="col">{STR.help.tablePl}</th>
-            </tr>
-        </thead>
-    )
-}
+const ENDINGS = ["−as", "−is", "−ys", "−us", "−a", "−ė"]
 
-function CaseTitle({ caseKey, children }) {
-    const lt = children ?? CASE_BY_KEY[caseKey]?.lt ?? caseKey
+const CASE_ENDINGS = [
+    {
+        key: "genitive",
+        id: "ch-kil",
+        singular: ["−o", "−io", "−io", "−aus", "−os", "−ės"],
+        plural: ["−ų", "−ių", "−ių", "−ų", "−ų", "−ių"],
+    },
+    {
+        key: "dative",
+        id: "ch-naud",
+        singular: ["−ui", "−iui", "−iui", "−ui", "−ai", "−ei"],
+        plural: ["−ams", "−iams", "−iams", "−ums", "−oms", "−ėms"],
+    },
+    {
+        key: "accusative",
+        id: "ch-gal",
+        singular: ["−ą", "−į", "−į", "−ų", "−ą", "−ę"],
+        plural: ["−us", "−ius", "−ius", "−us", "−as", "−es"],
+    },
+    {
+        key: "instrumental",
+        id: "ch-inag",
+        singular: ["−u", "−iu", "−iu", "−umi", "−a", "−e"],
+        plural: ["−ais", "−iais", "−iais", "−umis", "−omis", "−ėmis"],
+    },
+    {
+        key: "locative",
+        id: "ch-viet",
+        singular: ["−e", "−yje", "−yje", "−uje", "−oje", "−ėje"],
+        plural: ["−uose", "−iuose", "−iuose", "−uose", "−ose", "−ėse"],
+    },
+    {
+        key: "vocative",
+        id: "ch-sauk",
+        singular: ["−ai", "−i", "−iau", "−au", "−a", "−e"],
+        plural: ["−ai", "−iai", "−iai", "−ūs", "−os", "−ės"],
+        note: (
+            <>
+                Мн. ч. звательного часто совпадает с именительным мн. ч. У −ys звательный ед. ч.
+                часто на −iau (<i lang="lt">arklys</i> — <i lang="lt">arkliau</i>), но бывают слова
+                на <span lang="lt">−y</span>.
+            </>
+        ),
+    },
+]
+
+function CaseTitle({ caseKey }) {
+    const lt = CASE_BY_KEY[caseKey]?.lt ?? caseKey
 
     return (
         <>
@@ -28,488 +62,36 @@ function CaseTitle({ caseKey, children }) {
     )
 }
 
-/** Таблицы окончаний по падежам для экрана «Справка по падежам». */
-export function CasesHelpTables() {
+function EndingsRow({ label, endings }) {
     return (
-        <>
-            <section className="cases-help-case-block" aria-labelledby="ch-kil">
-                <h3 className="cases-help-table-title" id="ch-kil">
-                    <CaseTitle caseKey="genitive" />
-                </h3>
-                <div className="cases-help-table-wrap">
-                    <table className="cases-help-table cases-help-table--one-case">
-                        <CaseTableHead />
-                        <tbody>
-                            <tr>
-                                <th scope="row">
-                                    <span lang="lt">−as</span>
-                                </th>
-                                <td>
-                                    <span lang="lt">−o</span>
-                                </td>
-                                <td>
-                                    <span lang="lt">−ų</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">
-                                    <span lang="lt">−is</span>
-                                </th>
-                                <td>
-                                    <span lang="lt">−io</span>
-                                </td>
-                                <td>
-                                    <span lang="lt">−ių</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">
-                                    <span lang="lt">−ys</span>
-                                </th>
-                                <td>
-                                    <span lang="lt">−io</span>
-                                </td>
-                                <td>
-                                    <span lang="lt">−ių</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">
-                                    <span lang="lt">−us</span>
-                                </th>
-                                <td>
-                                    <span lang="lt">−aus</span>
-                                </td>
-                                <td>
-                                    <span lang="lt">−ų</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">
-                                    <span lang="lt">−a</span>
-                                </th>
-                                <td>
-                                    <span lang="lt">−os</span>
-                                </td>
-                                <td>
-                                    <span lang="lt">−ų</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">
-                                    <span lang="lt">−ė</span>
-                                </th>
-                                <td>
-                                    <span lang="lt">−ės</span>
-                                </td>
-                                <td>
-                                    <span lang="lt">−ių</span>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </section>
-
-            <section className="cases-help-case-block" aria-labelledby="ch-naud">
-                <h3 className="cases-help-table-title" id="ch-naud">
-                    <CaseTitle caseKey="dative" />
-                </h3>
-                <div className="cases-help-table-wrap">
-                    <table className="cases-help-table cases-help-table--one-case">
-                        <CaseTableHead />
-                        <tbody>
-                            <tr>
-                                <th scope="row">
-                                    <span lang="lt">−as</span>
-                                </th>
-                                <td>
-                                    <span lang="lt">−ui</span>
-                                </td>
-                                <td>
-                                    <span lang="lt">−ams</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">
-                                    <span lang="lt">−is</span>
-                                </th>
-                                <td>
-                                    <span lang="lt">−iui</span>
-                                </td>
-                                <td>
-                                    <span lang="lt">−iams</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">
-                                    <span lang="lt">−ys</span>
-                                </th>
-                                <td>
-                                    <span lang="lt">−iui</span>
-                                </td>
-                                <td>
-                                    <span lang="lt">−iams</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">
-                                    <span lang="lt">−us</span>
-                                </th>
-                                <td>
-                                    <span lang="lt">−ui</span>
-                                </td>
-                                <td>
-                                    <span lang="lt">−ums</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">
-                                    <span lang="lt">−a</span>
-                                </th>
-                                <td>
-                                    <span lang="lt">−ai</span>
-                                </td>
-                                <td>
-                                    <span lang="lt">−oms</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">
-                                    <span lang="lt">−ė</span>
-                                </th>
-                                <td>
-                                    <span lang="lt">−ei</span>
-                                </td>
-                                <td>
-                                    <span lang="lt">−ėms</span>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </section>
-
-            <section className="cases-help-case-block" aria-labelledby="ch-gal">
-                <h3 className="cases-help-table-title" id="ch-gal">
-                    <CaseTitle caseKey="accusative" />
-                </h3>
-                <div className="cases-help-table-wrap">
-                    <table className="cases-help-table cases-help-table--one-case">
-                        <CaseTableHead />
-                        <tbody>
-                            <tr>
-                                <th scope="row">
-                                    <span lang="lt">−as</span>
-                                </th>
-                                <td>
-                                    <span lang="lt">−ą</span>
-                                </td>
-                                <td>
-                                    <span lang="lt">−us</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">
-                                    <span lang="lt">−is</span>
-                                </th>
-                                <td>
-                                    <span lang="lt">−į</span>
-                                </td>
-                                <td>
-                                    <span lang="lt">−ius</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">
-                                    <span lang="lt">−ys</span>
-                                </th>
-                                <td>
-                                    <span lang="lt">−į</span>
-                                </td>
-                                <td>
-                                    <span lang="lt">−ius</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">
-                                    <span lang="lt">−us</span>
-                                </th>
-                                <td>
-                                    <span lang="lt">−ų</span>
-                                </td>
-                                <td>
-                                    <span lang="lt">−us</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">
-                                    <span lang="lt">−a</span>
-                                </th>
-                                <td>
-                                    <span lang="lt">−ą</span>
-                                </td>
-                                <td>
-                                    <span lang="lt">−as</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">
-                                    <span lang="lt">−ė</span>
-                                </th>
-                                <td>
-                                    <span lang="lt">−ę</span>
-                                </td>
-                                <td>
-                                    <span lang="lt">−es</span>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </section>
-
-            <section className="cases-help-case-block" aria-labelledby="ch-inag">
-                <h3 className="cases-help-table-title" id="ch-inag">
-                    <CaseTitle caseKey="instrumental" />
-                </h3>
-                <div className="cases-help-table-wrap">
-                    <table className="cases-help-table cases-help-table--one-case">
-                        <CaseTableHead />
-                        <tbody>
-                            <tr>
-                                <th scope="row">
-                                    <span lang="lt">−as</span>
-                                </th>
-                                <td>
-                                    <span lang="lt">−u</span>
-                                </td>
-                                <td>
-                                    <span lang="lt">−ais</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">
-                                    <span lang="lt">−is</span>
-                                </th>
-                                <td>
-                                    <span lang="lt">−iu</span>
-                                </td>
-                                <td>
-                                    <span lang="lt">−iais</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">
-                                    <span lang="lt">−ys</span>
-                                </th>
-                                <td>
-                                    <span lang="lt">−iu</span>
-                                </td>
-                                <td>
-                                    <span lang="lt">−iais</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">
-                                    <span lang="lt">−us</span>
-                                </th>
-                                <td>
-                                    <span lang="lt">−umi</span>
-                                </td>
-                                <td>
-                                    <span lang="lt">−umis</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">
-                                    <span lang="lt">−a</span>
-                                </th>
-                                <td>
-                                    <span lang="lt">−a</span>
-                                </td>
-                                <td>
-                                    <span lang="lt">−omis</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">
-                                    <span lang="lt">−ė</span>
-                                </th>
-                                <td>
-                                    <span lang="lt">−e</span>
-                                </td>
-                                <td>
-                                    <span lang="lt">−ėmis</span>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </section>
-
-            <section className="cases-help-case-block" aria-labelledby="ch-viet">
-                <h3 className="cases-help-table-title" id="ch-viet">
-                    <CaseTitle caseKey="locative" />
-                </h3>
-                <div className="cases-help-table-wrap">
-                    <table className="cases-help-table cases-help-table--one-case">
-                        <CaseTableHead />
-                        <tbody>
-                            <tr>
-                                <th scope="row">
-                                    <span lang="lt">−as</span>
-                                </th>
-                                <td>
-                                    <span lang="lt">−e</span>
-                                </td>
-                                <td>
-                                    <span lang="lt">−uose</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">
-                                    <span lang="lt">−is</span>
-                                </th>
-                                <td>
-                                    <span lang="lt">−yje</span>
-                                </td>
-                                <td>
-                                    <span lang="lt">−iuose</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">
-                                    <span lang="lt">−ys</span>
-                                </th>
-                                <td>
-                                    <span lang="lt">−yje</span>
-                                </td>
-                                <td>
-                                    <span lang="lt">−iuose</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">
-                                    <span lang="lt">−us</span>
-                                </th>
-                                <td>
-                                    <span lang="lt">−uje</span>
-                                </td>
-                                <td>
-                                    <span lang="lt">−uose</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">
-                                    <span lang="lt">−a</span>
-                                </th>
-                                <td>
-                                    <span lang="lt">−oje</span>
-                                </td>
-                                <td>
-                                    <span lang="lt">−ose</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">
-                                    <span lang="lt">−ė</span>
-                                </th>
-                                <td>
-                                    <span lang="lt">−ėje</span>
-                                </td>
-                                <td>
-                                    <span lang="lt">−ėse</span>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </section>
-
-            <section className="cases-help-case-block" aria-labelledby="ch-sauk">
-                <h3 className="cases-help-table-title" id="ch-sauk">
-                    <CaseTitle caseKey="vocative" />
-                </h3>
-                <div className="cases-help-table-wrap">
-                    <table className="cases-help-table cases-help-table--one-case">
-                        <CaseTableHead />
-                        <tbody>
-                            <tr>
-                                <th scope="row">
-                                    <span lang="lt">−as</span>
-                                </th>
-                                <td>
-                                    <span lang="lt">−ai</span>
-                                </td>
-                                <td>
-                                    <span lang="lt">−ai</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">
-                                    <span lang="lt">−is</span>
-                                </th>
-                                <td>
-                                    <span lang="lt">−i</span>
-                                </td>
-                                <td>
-                                    <span lang="lt">−iai</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">
-                                    <span lang="lt">−ys</span>
-                                </th>
-                                <td>
-                                    <span lang="lt">−iau</span>
-                                </td>
-                                <td>
-                                    <span lang="lt">−iai</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">
-                                    <span lang="lt">−us</span>
-                                </th>
-                                <td>
-                                    <span lang="lt">−au</span>
-                                </td>
-                                <td>
-                                    <span lang="lt">−ūs</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">
-                                    <span lang="lt">−a</span>
-                                </th>
-                                <td>
-                                    <span lang="lt">−a</span>
-                                </td>
-                                <td>
-                                    <span lang="lt">−os</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">
-                                    <span lang="lt">−ė</span>
-                                </th>
-                                <td>
-                                    <span lang="lt">−e</span>
-                                </td>
-                                <td>
-                                    <span lang="lt">−ės</span>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <p className="cases-help-case-note sub">
-                    Мн. ч. звательного часто совпадает с именительным мн. ч. У −ys звательный ед. ч.
-                    часто на −iau (<i lang="lt">arklys</i> — <i lang="lt">arkliau</i>), но бывают
-                    слова на <span lang="lt">−y</span>.
-                </p>
-            </section>
-        </>
+        <tr>
+            <th scope="row">{label}</th>
+            {endings.map((ending, index) => (
+                <td key={`${index}-${ending}`}>
+                    <span lang="lt">{ending}</span>
+                </td>
+            ))}
+        </tr>
     )
+}
+
+/** Окончания по падежам: исходная форма, единственное и множественное число. */
+export function CasesHelpTables() {
+    return CASE_ENDINGS.map(({ key, id, singular, plural, note }) => (
+        <section className="cases-help-case-block" aria-labelledby={id} key={key}>
+            <h3 className="cases-help-table-title" id={id}>
+                <CaseTitle caseKey={key} />
+            </h3>
+            <div className="cases-help-table-wrap">
+                <table className="cases-help-table cases-help-table--endings">
+                    <tbody>
+                        <EndingsRow label="Окончания" endings={ENDINGS} />
+                        <EndingsRow label="Ед. число" endings={singular} />
+                        <EndingsRow label="Мн. число" endings={plural} />
+                    </tbody>
+                </table>
+            </div>
+            {note && <p className="cases-help-case-note sub">{note}</p>}
+        </section>
+    ))
 }

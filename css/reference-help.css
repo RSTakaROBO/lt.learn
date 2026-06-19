@@ -34,6 +34,10 @@
     color: var(--muted);
 }
 
+.cases-help-table-title .cases-help-lt-sub {
+    margin-left: 0.35rem;
+}
+
 .cases-help-case-note {
     margin: 0.4rem 0 0;
     font-size: 0.84rem;
@@ -59,6 +63,21 @@
     font-size: 0.76rem;
     text-transform: none;
     letter-spacing: 0;
+}
+
+.cases-help-table--endings {
+    table-layout: fixed;
+}
+
+.cases-help-table--endings th[scope="row"] {
+    width: 20%;
+    padding-inline: 0.45rem 0.25rem;
+    font-size: 0.76rem;
+    color: var(--muted);
+}
+
+.cases-help-table--endings td {
+    padding-inline: 0.15rem;
 }
 
 .cases-help-table th,

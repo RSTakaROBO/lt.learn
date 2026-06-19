@@ -34,7 +34,10 @@ export function CasesHelpScreen({ heightMode = "fill" } = {}) {
                 <h2 ref={titleRef} id="cases-help-title" tabIndex={-1}>
                     {STR.help.casesTitle}
                 </h2>
-                <div ref={scrollBlockRef} className="app-screen__body cases-help-scroll-block">
+                <div
+                    ref={scrollBlockRef}
+                    className="app-screen__body cases-help-scroll-block u-scrollbar-hidden"
+                >
                     <CasesHelpTables />
                 </div>
                 <div className="app-screen__footer actions">
