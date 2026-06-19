@@ -62,7 +62,8 @@ export function QuizScreen({ heightMode = "fill", hidden = false } = {}) {
                 ? {
                       done:
                           s.trainer.engine.vocabRound.initialSize -
-                          s.trainer.engine.vocabRound.pool.size,
+                          (s.trainer.engine.vocabRound.pool.size +
+                              s.trainer.engine.vocabRound.reserve.length),
                       total: s.trainer.engine.vocabRound.initialSize,
                       pct:
                           s.trainer.engine.vocabRound.initialSize > 0
@@ -72,7 +73,8 @@ export function QuizScreen({ heightMode = "fill", hidden = false } = {}) {
                                         100,
                                         (100 *
                                             (s.trainer.engine.vocabRound.initialSize -
-                                                s.trainer.engine.vocabRound.pool.size)) /
+                                                (s.trainer.engine.vocabRound.pool.size +
+                                                    s.trainer.engine.vocabRound.reserve.length))) /
                                             s.trainer.engine.vocabRound.initialSize
                                     )
                                 )

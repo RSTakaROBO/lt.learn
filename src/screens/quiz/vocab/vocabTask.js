@@ -132,7 +132,15 @@ export function nextVocabTask(opts = {}) {
             if (fallback.length) {
                 candidates = fallback
             } else {
-                return null
+                const currentLemma =
+                    opts.excludeLemma ||
+                    getEngine().shownLemmaHistory[getEngine().shownLemmaHistory.length - 1]
+                const relaxed = usableIgnoringExcludedLemma(
+                    usable,
+                    new Set(currentLemma ? [currentLemma] : [])
+                )
+                if (!relaxed.length) return null
+                candidates = relaxed
             }
         }
     }

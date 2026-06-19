@@ -1,10 +1,11 @@
 import { useRef } from "react"
 
-import { THEME_IDS } from "js/config.js"
+import { LEARNING_SCOPE_MAX, LEARNING_SCOPE_MIN, THEME_IDS } from "js/config.js"
 import { STR } from "js/i18n/strings-ru.js"
 import {
     saveCasesShowTranslation,
     saveCasesUseNativeKeyboard,
+    saveLearningScopeSize,
     saveVocabShowVerbForms,
     saveVocabShowWrongTranslation,
 } from "js/storage.js"
@@ -28,6 +29,7 @@ export function SettingsScreen({ heightMode = "fill" } = {}) {
         casesUseNativeKeyboard,
         vocabShowWrongTranslation,
         vocabShowVerbForms,
+        learningScopeSize,
     } = state.persisted
     const closeButtonRef = useRef(null)
 
@@ -76,6 +78,49 @@ export function SettingsScreen({ heightMode = "fill" } = {}) {
                     </div>
                     <div className="settings-training-block">
                         <CardList className="settings-training-options-list">
+                            <div className="settings-scope-card">
+                                <div className="settings-scope-heading">
+                                    <div>
+                                        <div className="pack-card-title">
+                                            {STR.settings.learningScopeTitle}
+                                        </div>
+                                        <div className="pack-card-meta">
+                                            {STR.settings.learningScopeMeta}
+                                        </div>
+                                    </div>
+                                    <output
+                                        className="settings-scope-value"
+                                        htmlFor="settings-learning-scope"
+                                    >
+                                        {learningScopeSize}
+                                    </output>
+                                </div>
+                                <div className="settings-scope-control">
+                                    <span aria-hidden="true">{LEARNING_SCOPE_MIN}</span>
+                                    <input
+                                        id="settings-learning-scope"
+                                        type="range"
+                                        min={LEARNING_SCOPE_MIN}
+                                        max={LEARNING_SCOPE_MAX}
+                                        step="1"
+                                        value={learningScopeSize}
+                                        aria-label={STR.settings.learningScopeAria}
+                                        aria-valuetext={`${learningScopeSize} ${STR.settings.learningScopeUnit}`}
+                                        style={{
+                                            "--scope-progress": `${
+                                                ((learningScopeSize - LEARNING_SCOPE_MIN) * 100) /
+                                                (LEARNING_SCOPE_MAX - LEARNING_SCOPE_MIN)
+                                            }%`,
+                                        }}
+                                        onChange={(e) => {
+                                            const value = Number(e.target.value)
+                                            dispatch({ type: "SET_LEARNING_SCOPE_SIZE", value })
+                                            saveLearningScopeSize(value)
+                                        }}
+                                    />
+                                    <span aria-hidden="true">{LEARNING_SCOPE_MAX}</span>
+                                </div>
+                            </div>
                             <CheckboxButton
                                 id="settings-cases-show-translation"
                                 title={STR.settings.casesTranslationTitle}

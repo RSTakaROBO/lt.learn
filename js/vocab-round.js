@@ -1,4 +1,6 @@
 import {
+    LEARNED_WORD_CORRECT_WRONG_DELTA,
+    normalizeLearningScopeSize,
     TRAIN_MODE,
     WEIGHT_BASE,
     WEIGHT_MIN,
@@ -6,7 +8,13 @@ import {
     WEIGHT_PER_SKIP,
     WEIGHT_PER_WRONG,
 } from "./config.js"
-import { getEngine, mutateEngine, postTrainerUiAction } from "./trainer-ui-state.js"
+import { shuffleArray } from "./random.js"
+import {
+    getEngine,
+    getLearningScopeSize,
+    mutateEngine,
+    postTrainerUiAction,
+} from "./trainer-ui-state.js"
 import { isCasesTrainingWord } from "../src/screens/quiz/cases/casesWords.js"
 import { isVocabTrainingWord } from "../src/screens/quiz/vocab/vocabWords.js"
 import { isVerbsTrainingWord } from "../src/screens/quiz/verbs/verbsWords.js"
@@ -15,15 +23,11 @@ function cleanString(value) {
     return typeof value === "string" ? value.trim() : ""
 }
 
-/** Сколько верных подряд по одному слову — исключение из пула раунда. */
-export const VOCAB_ROUND_STREAK_TO_REMOVE = 3
+/** Глобальный прогресс слова до статуса «выучено». */
+export const VOCAB_ROUND_STREAK_TO_REMOVE = LEARNED_WORD_CORRECT_WRONG_DELTA
 
 /**
  * Ключ леммы в раунде (trim), чтобы пул, веса и счётчики совпадали.
- *
- * Семантика «подряд» только по **этой лемме**: между показами одного и того же слова
- * могут быть любые другие слова — прогресс к трём верным подряд по этой лемме не сбрасывается.
- * Обнуляется счётчик только при неверном ответе по этой лемме или при пропуске карточки.
  */
 export function roundLemmaKey(word) {
     return cleanString(word?.lemma || word?.nominative)
@@ -34,8 +38,29 @@ function ensureRoundRow(vr, lemma) {
     return vr.roundRow[lemma]
 }
 
+function learnedProgress(wordStats, lemma) {
+    const row = wordStats?.[lemma]
+    if (!row) return 0
+    return Math.max(0, (Number(row.correct) || 0) - (Number(row.wrong) || 0))
+}
+
+function isLearnedLemma(wordStats, lemma) {
+    return learnedProgress(wordStats, lemma) >= LEARNED_WORD_CORRECT_WRONG_DELTA
+}
+
+function remainingRoundWords(vr) {
+    return vr.pool.size + vr.reserve.length
+}
+
+function fillActivePool(vr, wordStats) {
+    while (vr.pool.size < vr.scopeSize && vr.reserve.length) {
+        const lemma = vr.reserve.shift()
+        if (lemma && !isLearnedLemma(wordStats, lemma)) vr.pool.add(lemma)
+    }
+}
+
 /**
- * Инициализация конечного раунда «Слова»: пул — все подходящие слова из wordBank.
+ * Инициализация урока: активный пул ограничен настройкой, остальные слова ждут в резерве.
  * @returns {boolean}
  */
 export function initVocabRound(mode = TRAIN_MODE.VOCAB) {
@@ -47,27 +72,37 @@ export function initVocabRound(mode = TRAIN_MODE.VOCAB) {
             : mode === TRAIN_MODE.VERBS
               ? getEngine().wordBank.filter(isVerbsTrainingWord)
               : getEngine().wordBank.filter(isVocabTrainingWord)
+    const wordStats = getEngine().wordStats
+    const uniqueUnlearnedLemmas = [
+        ...new Set(
+            usable.map(roundLemmaKey).filter((lemma) => lemma && !isLearnedLemma(wordStats, lemma))
+        ),
+    ]
+    const shuffledLemmas = shuffleArray(uniqueUnlearnedLemmas)
+    const scopeSize = normalizeLearningScopeSize(getLearningScopeSize())
     let success = true
     mutateEngine((e) => {
-        if (!usable.length) {
+        if (!shuffledLemmas.length) {
             e.vocabRound = null
             success = false
             return
         }
-        const pool = new Set(usable.map((w) => roundLemmaKey(w)).filter(Boolean))
+        const activeLemmas = shuffledLemmas.slice(0, scopeSize)
+        const reserve = shuffledLemmas.slice(scopeSize)
+        const pool = new Set(activeLemmas)
         const roundRow = {}
-        for (const w of usable) {
-            const k = roundLemmaKey(w)
-            if (k) roundRow[k] = { correct: 0, wrong: 0, skipped: 0 }
+        for (const lemma of shuffledLemmas) {
+            roundRow[lemma] = { correct: 0, wrong: 0, skipped: 0 }
         }
         e.vocabRound = {
             pool,
-            initialSize: pool.size,
+            reserve,
+            scopeSize,
+            initialSize: shuffledLemmas.length,
             gradedCorrect: 0,
             gradedWrong: 0,
             wrongByLemma: Object.create(null),
             roundRow,
-            lemmaTowardThree: Object.create(null),
             maxStreak: 0,
         }
         e.vocabRoundDots = null
@@ -106,7 +141,7 @@ function weightFromRoundRow(row) {
     return Math.max(WEIGHT_MIN, w)
 }
 
-/** Учитывает ответ по текущей карточке: серия «к 3» только по этой лемме, без сброса при смене карточки на другую. */
+/** Учитывает ответ и заменяет слово из активного стека, когда оно стало выученным. */
 export function applyVocabRoundAnswer(word, ok) {
     const lem = roundLemmaKey(word)
     if (!lem) return
@@ -115,37 +150,24 @@ export function applyVocabRoundAnswer(word, ok) {
     mutateEngine((e) => {
         const vr = e.vocabRound
         if (!vr) return
-        const inPool = vr.pool.has(lem)
-        if (!inPool) {
-            if (!ok) vr.lemmaTowardThree[lem] = 0
-            const slot = vr.lemmaTowardThree[lem]
-            out.dots = typeof slot === "number" ? slot : 0
-            return
-        }
+        if (!vr.pool.has(lem)) return
         const row = ensureRoundRow(vr, lem)
-        let dotsForUi = 0
         if (ok) {
             row.correct += 1
             vr.gradedCorrect += 1
-            const n = (vr.lemmaTowardThree[lem] || 0) + 1
-            vr.lemmaTowardThree[lem] = n
-            dotsForUi = Math.min(n, VOCAB_ROUND_STREAK_TO_REMOVE)
-            if (n >= VOCAB_ROUND_STREAK_TO_REMOVE) {
-                vr.pool.delete(lem)
-                delete vr.lemmaTowardThree[lem]
-                dotsForUi = VOCAB_ROUND_STREAK_TO_REMOVE
-            }
         } else {
             row.wrong += 1
             vr.gradedWrong += 1
-            vr.lemmaTowardThree[lem] = 0
-            dotsForUi = 0
             vr.wrongByLemma[lem] = (vr.wrongByLemma[lem] || 0) + 1
         }
         if (ok) {
             vr.maxStreak = Math.max(vr.maxStreak, e.vocabCorrectStreak || 0)
         }
-        out.dots = dotsForUi
+        out.dots = Math.min(VOCAB_ROUND_STREAK_TO_REMOVE, learnedProgress(e.wordStats, lem))
+        if (isLearnedLemma(e.wordStats, lem)) {
+            vr.pool.delete(lem)
+            fillActivePool(vr, e.wordStats)
+        }
     })
     setVocabRoundLemmaDots(word, out.dots)
 }
@@ -159,15 +181,14 @@ export function applyVocabRoundSkip(word) {
         vr.maxStreak = Math.max(vr.maxStreak, e.vocabCorrectStreak || 0)
         const row = ensureRoundRow(vr, lem)
         row.skipped += 1
-        vr.lemmaTowardThree[lem] = 0
     })
-    setVocabRoundLemmaDots(word, 0)
+    setVocabRoundLemmaDots(word)
 }
 
 /**
- * Три точки внизу карточки: сколько верных подряд по этой лемме в раунде (0–3).
+ * Точки внизу карточки: глобальный прогресс слова до статуса «выучено».
  * @param {object | null} word
- * @param {number} [filledOverride] явное значение после ответа (например 3 в момент снятия с пула)
+ * @param {number} [filledOverride] явное значение после ответа (например 5 при снятии с пула)
  */
 export function setVocabRoundLemmaDots(word, filledOverride) {
     const lem = roundLemmaKey(word)
@@ -181,7 +202,7 @@ export function setVocabRoundLemmaDots(word, filledOverride) {
         if (typeof filledOverride === "number" && Number.isFinite(filledOverride)) {
             filled = Math.max(0, Math.min(VOCAB_ROUND_STREAK_TO_REMOVE, filledOverride))
         } else {
-            filled = Math.min(VOCAB_ROUND_STREAK_TO_REMOVE, vr.lemmaTowardThree[lem] || 0)
+            filled = Math.min(VOCAB_ROUND_STREAK_TO_REMOVE, learnedProgress(e.wordStats, lem))
         }
         e.vocabRoundDots = { lemma: lem, filled }
     })
@@ -207,7 +228,7 @@ export function getVocabRoundSummarySnapshot() {
         maxStreak: vr.maxStreak,
         topHard,
         initialSize: vr.initialSize,
-        poolLeft: vr.pool.size,
+        poolLeft: remainingRoundWords(vr),
     }
 }
 

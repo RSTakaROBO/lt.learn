@@ -1,4 +1,10 @@
-import { STORAGE_KEYS, STORAGE_SCHEMA_VERSION, TRAIN_MODE, VOCAB_MODE } from "./config.js"
+import {
+    normalizeLearningScopeSize,
+    STORAGE_KEYS,
+    STORAGE_SCHEMA_VERSION,
+    TRAIN_MODE,
+    VOCAB_MODE,
+} from "./config.js"
 import { STR } from "./i18n/strings-ru.js"
 import { getEngine, mutateEngine } from "./trainer-ui-state.js"
 
@@ -359,6 +365,17 @@ export class TrainerStorage {
         }
     }
 
+    saveLearningScopeSize(size) {
+        try {
+            this._store.setItem(
+                STORAGE_KEYS.learningScopeSize,
+                String(normalizeLearningScopeSize(size))
+            )
+        } catch {
+            /* ignore */
+        }
+    }
+
     /** @returns {boolean|null} */
     loadExcludeLearnedWords() {
         try {
@@ -419,6 +436,7 @@ export const saveVocabBestStreakIfHigher = (streak) =>
     trainerStorage.saveVocabBestStreakIfHigher(streak)
 export const loadVocabDirections = () => trainerStorage.loadVocabDirections()
 export const saveVocabDirections = (dirs) => trainerStorage.saveVocabDirections(dirs)
+export const saveLearningScopeSize = (size) => trainerStorage.saveLearningScopeSize(size)
 
 /** Как в мастере до первого сохранения; для логики вне React (события, квиз). */
 export function getResolvedVocabDirections() {

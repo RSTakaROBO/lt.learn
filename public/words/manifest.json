@@ -5,6 +5,10 @@
             "files": ["ndblk_2.json"]
         },
         {
+            "id": "ndblk_4",
+            "files": ["ndblk_4.json"]
+        },
+        {
             "id": "professions",
             "files": ["professions.json"]
         },

@@ -1,6 +1,6 @@
 import { configureStore, createSlice } from "@reduxjs/toolkit"
 import { enableMapSet } from "immer"
-import { STORAGE_KEYS, THEME_IDS } from "./config.js"
+import { normalizeLearningScopeSize, STORAGE_KEYS, THEME_IDS } from "./config.js"
 
 enableMapSet()
 
@@ -62,6 +62,14 @@ function readInitialExcludeLearnedWords() {
     return false
 }
 
+function readInitialLearningScopeSize() {
+    try {
+        return normalizeLearningScopeSize(localStorage.getItem(STORAGE_KEYS.learningScopeSize))
+    } catch {
+        return normalizeLearningScopeSize(null)
+    }
+}
+
 function readInitialCasesUseNativeKeyboard() {
     try {
         const raw = localStorage.getItem(STORAGE_KEYS.casesUseNativeKeyboard)
@@ -104,6 +112,7 @@ function readInitialSelectedPackIds() {
  * @property {boolean} casesUseNativeKeyboard
  * @property {boolean} vocabShowWrongTranslation
  * @property {boolean} vocabShowVerbForms
+ * @property {number} learningScopeSize
  * @property {boolean} excludeLearnedWords
  */
 
@@ -185,6 +194,7 @@ function readInitialSelectedPackIds() {
  *   | { type: "SET_CASES_USE_NATIVE_KEYBOARD"; value: boolean }
  *   | { type: "SET_VOCAB_SHOW_WRONG_TRANSLATION"; value: boolean }
  *   | { type: "SET_VOCAB_SHOW_VERB_FORMS"; value: boolean }
+ *   | { type: "SET_LEARNING_SCOPE_SIZE"; value: number }
  *   | { type: "SET_EXCLUDE_LEARNED_WORDS"; value: boolean }
  *   | { type: "WIZARD_SET_STEP"; step: number }
  *   | { type: "WIZARD_SET_STATUS"; name: "pack" | "case" | "vocabDirection"; message: string }
@@ -212,6 +222,7 @@ function buildInitialState() {
             casesUseNativeKeyboard: readInitialCasesUseNativeKeyboard(),
             vocabShowWrongTranslation: readInitialVocabShowWrongTranslation(),
             vocabShowVerbForms: readInitialVocabShowVerbForms(),
+            learningScopeSize: readInitialLearningScopeSize(),
             excludeLearnedWords: readInitialExcludeLearnedWords(),
         },
         vocabRoundSummary: null,
@@ -308,6 +319,9 @@ const trainerSlice = createSlice({
                 case "SET_VOCAB_SHOW_VERB_FORMS":
                     state.persisted.vocabShowVerbForms = a.value
                     break
+                case "SET_LEARNING_SCOPE_SIZE":
+                    state.persisted.learningScopeSize = normalizeLearningScopeSize(a.value)
+                    break
                 case "SET_EXCLUDE_LEARNED_WORDS":
                     state.persisted.excludeLearnedWords = a.value
                     break
@@ -391,6 +405,10 @@ export const applyEngine = mutateEngine
 /** @returns {TrainerEngine} */
 export function getEngine() {
     return trainerStore.getState().trainer.engine
+}
+
+export function getLearningScopeSize() {
+    return trainerStore.getState().trainer.persisted.learningScopeSize
 }
 
 /** @returns {TrainerScreen} */

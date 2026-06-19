@@ -46,6 +46,7 @@ export const STORAGE_KEYS = {
     casesUseNativeKeyboard: "lt-trainer-cases-use-native-keyboard-v1",
     vocabShowWrongTranslation: "lt-trainer-vocab-show-wrong-translation-v1",
     vocabShowVerbForms: "lt-trainer-vocab-show-verb-forms-v1",
+    learningScopeSize: "lt-trainer-learning-scope-size-v1",
     excludeLearnedWords: "lt-trainer-exclude-learned-words-v1",
     customPacks: "lt-trainer-custom-packs-v1",
 }
@@ -98,6 +99,17 @@ export const LT_SHIFT_KEY_CYCLES = {
 export const MIN_GAP_BEFORE_SAME_LEMMA = 5
 
 export const LEARNED_WORD_CORRECT_WRONG_DELTA = 5
+
+export const LEARNING_SCOPE_MIN = 5
+export const LEARNING_SCOPE_MAX = 30
+export const LEARNING_SCOPE_DEFAULT = 10
+
+export function normalizeLearningScopeSize(value) {
+    if (value == null || value === "") return LEARNING_SCOPE_DEFAULT
+    const size = Math.round(Number(value))
+    if (!Number.isFinite(size)) return LEARNING_SCOPE_DEFAULT
+    return Math.min(LEARNING_SCOPE_MAX, Math.max(LEARNING_SCOPE_MIN, size))
+}
 
 export const WEIGHT_MIN = 0.28
 export const WEIGHT_BASE = 1

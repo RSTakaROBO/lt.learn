@@ -11,9 +11,9 @@ export function VocabRoundDots({ dots }) {
                 aria-hidden="true"
                 role="img"
             >
-                <span className="vocab-round-lemma-dot" aria-hidden="true" />
-                <span className="vocab-round-lemma-dot" aria-hidden="true" />
-                <span className="vocab-round-lemma-dot" aria-hidden="true" />
+                {Array.from({ length: VOCAB_ROUND_STREAK_TO_REMOVE }, (_, i) => (
+                    <span key={i} className="vocab-round-lemma-dot" aria-hidden="true" />
+                ))}
             </div>
         )
     }
