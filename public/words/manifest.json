@@ -29,10 +29,6 @@
             "files": ["home.json"]
         },
         {
-            "id": "food",
-            "files": ["food.json"]
-        },
-        {
             "id": "interrogatives",
             "files": ["interrogatives.json"]
         },

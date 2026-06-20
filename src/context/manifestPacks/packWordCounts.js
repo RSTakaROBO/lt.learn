@@ -1,6 +1,6 @@
 import { TRAIN_MODE } from "js/config.js"
 import { filterLearnedWords } from "js/learned-words.js"
-import { normalizeWordEntries } from "js/word-entry.js"
+import { parseCurrentWordEntries } from "js/word-entry.js"
 import { isCasesTrainingWord } from "src/screens/quiz/cases/casesWords.js"
 import { isVocabTrainingWord } from "src/screens/quiz/vocab/vocabWords.js"
 import { isVerbsTrainingWord } from "src/screens/quiz/verbs/verbsWords.js"
@@ -34,11 +34,11 @@ export function countPackWords(
 export function wordsForPack(pack, fileMap) {
     const words = []
     if (pack.custom && Array.isArray(pack.words)) {
-        words.push(...normalizeWordEntries(pack.words))
+        words.push(...parseCurrentWordEntries(pack.words))
     } else if (Array.isArray(pack.files)) {
         for (const file of pack.files) {
             const data = fileMap.get(file)
-            words.push(...normalizeWordEntries(data?.words))
+            words.push(...parseCurrentWordEntries(data?.words))
         }
     }
     return words

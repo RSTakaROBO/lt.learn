@@ -1,32 +1,19 @@
-/* Только режим «слова»: колонка — тело карточки забирает высоту, прокрутка только внутри него */
 #quiz-vocab-ui {
     --vocab-word-text-accent: color-mix(in srgb, var(--accent) 42%, #ffd166);
 }
-
 #quiz-vocab-ui > .vocab-card-stack {
     flex-direction: column;
     align-items: stretch;
 }
-
 #quiz.panel.quiz--vocab:not(.quiz--vocab-hardcore) #quiz-vocab-ui:not(.hidden) > .vocab-card-stack {
     flex: 1 1 min(10rem, 28dvh);
     min-height: min(10rem, 28dvh);
 }
-
 #quiz.panel.quiz--vocab-single #quiz-vocab-ui:not(.hidden) {
     flex: 1 1 auto;
     justify-content: center;
 }
-
-#quiz.panel.quiz--vocab-single #quiz-vocab-ui:not(.hidden) > .vocab-card-stack {
-    flex: 0 0 clamp(18rem, 54dvh, 31rem);
-    height: clamp(18rem, 54dvh, 31rem);
-    min-height: 0;
-    max-height: clamp(18rem, 54dvh, 31rem);
-    margin-block: auto;
-    margin-bottom: auto;
-}
-
+#quiz.panel.quiz--vocab-single #quiz-vocab-ui:not(.hidden) > .vocab-card-stack,
 #quiz.panel.quiz--vocab-single #quiz-vocab-ui:not(.hidden) > .vocab-single-deck {
     flex: 0 0 clamp(18rem, 54dvh, 31rem);
     height: clamp(18rem, 54dvh, 31rem);
@@ -34,17 +21,14 @@
     max-height: clamp(18rem, 54dvh, 31rem);
     margin-block: auto;
     margin-bottom: auto;
+}
+#quiz.panel.quiz--vocab-single #quiz-vocab-ui:not(.hidden) > .vocab-single-deck {
     transform: translateY(clamp(2.2rem, 7.5dvh, 5rem));
 }
-
-#quiz.panel.quiz--vocab-single #quiz-vocab-ui:not(.hidden) > .vocab-card-stack > .vocab-ru-card {
-    padding: clamp(1.4rem, 5vmin, 3.2rem);
-}
-
+#quiz.panel.quiz--vocab-single #quiz-vocab-ui:not(.hidden) > .vocab-card-stack > .vocab-ru-card,
 #quiz.panel.quiz--vocab-single #quiz-vocab-ui:not(.hidden) .vocab-single-deck .vocab-ru-card {
     padding: clamp(1.4rem, 5vmin, 3.2rem);
 }
-
 #quiz.panel.quiz--vocab-single
     #quiz-vocab-ui:not(.hidden)
     > .vocab-card-stack
@@ -52,13 +36,11 @@
     > .vocab-ru-card-body {
     justify-content: center;
 }
-
 #quiz.panel.quiz--vocab-single #quiz-vocab-ui:not(.hidden) .vocab-ru-card .lemma,
 #quiz.panel.quiz--vocab-single #quiz-vocab-ui:not(.hidden) .vocab-ru-card .vocab-ru-display {
     font-size: clamp(2.85rem, 11vmin, 5.35rem);
     line-height: 1.1;
 }
-
 .vocab-single-deck {
     --vocab-single-card-scale-0: 1;
     --vocab-single-card-scale-1: 0.982;
@@ -76,7 +58,6 @@
     touch-action: pan-y;
     user-select: none;
 }
-
 .vocab-single-deck-card {
     position: absolute;
     inset: 0;
@@ -89,41 +70,33 @@
         background 0.18s ease,
         box-shadow 0.18s ease;
 }
-
 .vocab-single-deck-card--0 {
     z-index: 5;
     transform: translateY(var(--vocab-single-card-y-0)) scale(var(--vocab-single-card-scale-0));
 }
-
 .vocab-single-deck-card--1 {
     z-index: 4;
     transform: translateY(var(--vocab-single-card-y-1)) scale(var(--vocab-single-card-scale-1));
 }
-
 .vocab-single-deck-card--2 {
     z-index: 3;
     transform: translateY(var(--vocab-single-card-y-2)) scale(var(--vocab-single-card-scale-2));
 }
-
 .vocab-single-deck-card--3 {
     z-index: 2;
     transform: translateY(var(--vocab-single-card-y-3)) scale(var(--vocab-single-card-scale-3));
 }
-
 .vocab-single-deck-card--entering {
     transform: translateY(var(--vocab-single-enter-y)) scale(var(--vocab-single-enter-scale));
 }
-
 .vocab-single-deck-card--top {
     cursor: grab;
     will-change: transform;
 }
-
 .vocab-single-deck-card--dragging {
     cursor: grabbing;
     transition: none;
 }
-
 .vocab-single-deck-card--exiting {
     pointer-events: none;
     transition:
@@ -132,18 +105,15 @@
         background 0.18s ease,
         box-shadow 0.18s ease;
 }
-
 .vocab-single-deck-card > .vocab-ru-card {
     flex: 1;
     width: 100%;
 }
-
 .vocab-ru-card--single > .vocab-ru-card-body,
 .vocab-ru-card--single > .vocab-round-lemma-dots,
 .vocab-ru-card--single > .verb-conjugation-mark {
     z-index: 1;
 }
-
 .vocab-single-deck-card--swipe-left > .vocab-ru-card {
     border-color: color-mix(in srgb, var(--error) 54%, var(--border));
     background:
@@ -154,7 +124,6 @@
         ),
         color-mix(in srgb, var(--error) 12%, var(--surface-elevated));
 }
-
 .vocab-single-deck-card--swipe-right > .vocab-ru-card {
     border-color: color-mix(in srgb, var(--success) 54%, var(--border));
     background:
@@ -165,7 +134,6 @@
         ),
         color-mix(in srgb, var(--success) 13%, var(--surface-elevated));
 }
-
 #quiz-vocab-ui > .vocab-card-stack > .vocab-ru-card > .vocab-ru-card-body {
     flex: 1;
     min-height: 0;
@@ -180,7 +148,6 @@
     overflow-x: hidden;
     overflow-y: hidden;
 }
-
 #quiz.panel.quiz--vocab:not(.quiz--vocab-single):not(.quiz--vocab-hardcore)
     #quiz-vocab-ui:not(.hidden)
     > .vocab-card-stack
@@ -189,7 +156,6 @@
     justify-content: center;
     padding-top: 0;
 }
-
 #quiz-vocab-ui .vocab-card-feedback,
 #quiz-cases-ui .vocab-card-feedback {
     margin-top: 0;
@@ -199,23 +165,19 @@
     text-align: center;
     min-height: calc(2lh + 0.25rem);
 }
-
 #quiz-vocab-ui .vocab-card-feedback .correct-form,
 #quiz-cases-ui .vocab-card-feedback .correct-form {
     margin-top: 0.25rem;
 }
-
 #quiz-vocab-ui .vocab-card-feedback.feedback--placeholder,
 #quiz-cases-ui .vocab-card-feedback.feedback--placeholder {
     visibility: hidden;
 }
-
 .vocab-round-progress {
     flex: none;
     margin: 0 0 clamp(0.15rem, 1.2vmin, 0.35rem);
     padding-inline: 0.08rem;
 }
-
 .vocab-round-progress-track {
     position: relative;
     height: 1.05rem;
@@ -227,7 +189,6 @@
         0 1px 0 color-mix(in srgb, white 22%, transparent) inset,
         0 0 0 1px color-mix(in srgb, var(--text) 5%, transparent) inset;
 }
-
 .vocab-round-progress-fill {
     height: 100%;
     width: 0%;
@@ -242,13 +203,11 @@
         0.35rem 0 0.9rem color-mix(in srgb, var(--accent) 20%, transparent);
     transition: width 0.35s ease;
 }
-
 @media (prefers-reduced-motion: reduce) {
     .vocab-round-progress-fill {
         transition: none;
     }
 }
-
 .vocab-options {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -262,11 +221,9 @@
     overflow-x: visible;
     overflow-y: visible;
 }
-
 #quiz-vocab-ui:not(.hidden) .vocab-options {
     margin-bottom: 0;
 }
-
 .vocab-single-answer {
     --vocab-answer-accent: var(
         --vocab-single-text-accent,
@@ -296,17 +253,6 @@
         0 0 0 1px color-mix(in srgb, var(--vocab-answer-accent) 22%, transparent) inset;
     opacity: 1;
 }
-
-.vocab-single-answer--ok {
-    border-color: color-mix(in srgb, var(--success) 42%, var(--border));
-    background: color-mix(in srgb, var(--success) 10%, var(--surface));
-}
-
-.vocab-single-answer--bad {
-    border-color: color-mix(in srgb, var(--error) 42%, var(--border));
-    background: color-mix(in srgb, var(--error) 10%, var(--surface));
-}
-
 .vocab-single-answer__label {
     color: var(--muted);
     font-size: 0.76rem;
@@ -314,7 +260,6 @@
     line-height: 1.2;
     text-transform: uppercase;
 }
-
 .vocab-single-answer__value {
     display: block;
     margin-top: 0.28rem;
@@ -332,7 +277,6 @@
     overflow-wrap: normal;
     word-break: normal;
 }
-
 #quiz.panel.quiz--vocab #quiz-vocab-ui:not(.hidden) .vocab-ru-card .vocab-ru-display {
     color: var(--vocab-word-text-accent);
     font-family: inherit;
@@ -343,7 +287,6 @@
     overflow-wrap: normal;
     word-break: normal;
 }
-
 .vocab-choice {
     position: relative;
     display: flex;
@@ -370,7 +313,6 @@
         box-shadow 0.16s ease,
         transform 0.12s ease;
 }
-
 .vocab-choice-number {
     position: absolute;
     top: clamp(0.42rem, 1.5vmin, 0.62rem);
@@ -381,7 +323,6 @@
     opacity: 0.45;
     pointer-events: none;
 }
-
 .vocab-choice-main,
 .vocab-choice-reveal {
     display: block;
@@ -391,18 +332,15 @@
     overflow-wrap: break-word;
     word-break: break-word;
 }
-
 .vocab-choice-main {
     line-height: 1.08;
 }
-
 .vocab-choice-reveal {
     font-size: 0.72em;
     line-height: 1;
     font-weight: 600;
     opacity: 0.86;
 }
-
 .quiz-shell,
 #quiz.panel.quiz--vocab,
 #quiz.panel.quiz--verbs,
@@ -410,19 +348,9 @@
     overflow-x: clip;
     overflow-y: visible;
 }
-
 .vocab-choice:disabled {
     cursor: default;
 }
-
-/* `.btn { font: inherit }` в buttons.css иначе перебивает размер */
 .btn.vocab-choice {
     font-size: clamp(1.2rem, 4.5vmin, 1.85rem);
-}
-.quiz-shell,
-#quiz.panel.quiz--vocab,
-#quiz.panel.quiz--verbs,
-#quiz-vocab-ui {
-    overflow-x: clip;
-    overflow-y: visible;
 }

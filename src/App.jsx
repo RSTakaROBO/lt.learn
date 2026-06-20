@@ -3,7 +3,7 @@ import { createRoot } from "react-dom/client"
 import { shallowEqual, useSelector } from "react-redux"
 
 import { STR } from "js/i18n/strings-ru.js"
-import { initTrainerStorage, loadPersistedWordStats } from "js/storage.js"
+import { loadPersistedWordStats } from "js/storage.js"
 import { mutateEngine, postTrainerUiAction } from "js/trainer-ui-state.js"
 
 import { QuizBottomBar } from "src/components/layout/QuizBottomBar.jsx"
@@ -111,11 +111,6 @@ export default function App() {
             .querySelector('meta[name="apple-mobile-web-app-title"]')
             ?.setAttribute("content", STR.app.appleWebAppTitle)
         registerServiceWorker()
-        initTrainerStorage()
-        mutateEngine((e) => {
-            e.wordStats = loadPersistedWordStats()
-        })
-        postTrainerUiAction({ type: "WIZARD_SET_STEP", step: 1 })
     }, [])
 
     return (
@@ -124,6 +119,11 @@ export default function App() {
         </TrainerAppProvider>
     )
 }
+
+mutateEngine((e) => {
+    e.wordStats = loadPersistedWordStats()
+})
+postTrainerUiAction({ type: "WIZARD_SET_STEP", step: 1 })
 
 const rootEl = document.getElementById("root")
 if (rootEl) {

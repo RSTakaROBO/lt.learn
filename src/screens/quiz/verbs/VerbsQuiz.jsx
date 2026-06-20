@@ -20,7 +20,7 @@ function VerbFormsPrompt({ answered, feedbackKind, task }) {
         <div className="verb-forms-grid" aria-label={STR.quiz.verbFormsAria}>
             {VERB_FORM_ORDER.map((form) => {
                 const hidden = form.key === hiddenKey
-                const value = word?.[form.key] || word?.forms?.[form.key] || STR.quiz.emDash
+                const value = word?.forms?.[form.key] || STR.quiz.emDash
                 const showPrompt = hidden && !answered
                 const verdictClass =
                     answered && hidden && (feedbackKind === "ok" || feedbackKind === "bad")

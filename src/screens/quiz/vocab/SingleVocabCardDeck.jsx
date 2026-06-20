@@ -16,7 +16,7 @@ const EXIT_MS = 620
 
 function vocabPromptForTask(task, showVerbForms) {
     if (!task?.word) return { text: "", lang: undefined }
-    const dir = task.vocabDirection || VOCAB_DIRECTION.RU_TO_LT
+    const dir = task.vocabDirection
     if (dir === VOCAB_DIRECTION.LT_TO_RU) {
         return { text: vocabLtDisplay(task.word, showVerbForms), lang: "lt" }
     }
@@ -25,17 +25,14 @@ function vocabPromptForTask(task, showVerbForms) {
 
 function vocabExpectedForTask(task, showVerbForms) {
     if (!task?.word) return ""
-    const dir = task.vocabDirection || VOCAB_DIRECTION.RU_TO_LT
+    const dir = task.vocabDirection
     return dir === VOCAB_DIRECTION.LT_TO_RU
         ? vocabRuPrimary(task.word)
         : vocabLtDisplay(task.word, showVerbForms)
 }
 
 function taskKey(task) {
-    return [
-        task?.word?.id || task?.word?.lemma || task?.word?.nominative || "",
-        task?.vocabDirection || "",
-    ].join(":")
+    return [task?.word?.id || task?.word?.lemma || "", task?.vocabDirection || ""].join(":")
 }
 
 function makeCard(type, sourceTask, suffix) {
@@ -106,7 +103,7 @@ function PromptCard({ card, dots, showVerbForms }) {
 
 function AnswerCard({ card, onOpenWordInfo, showInfoButton, showVerbForms }) {
     const expected = vocabExpectedForTask(card.task, showVerbForms)
-    const direction = card.task?.vocabDirection || VOCAB_DIRECTION.RU_TO_LT
+    const direction = card.task?.vocabDirection
     const lang = direction === VOCAB_DIRECTION.RU_TO_LT ? "lt" : "ru"
 
     return (

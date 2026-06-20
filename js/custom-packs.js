@@ -1,6 +1,10 @@
 import { STR } from "./i18n/strings-ru.js"
 import { loadCustomPackRecords } from "./storage.js"
-import { normalizeWordEntries } from "./word-entry.js"
+import {
+    migrateWordPackDocument,
+    parseCurrentWordEntries,
+    WORD_PACK_SCHEMA_VERSION,
+} from "./word-entry.js"
 
 /** Название набора: только поле `title` в корне JSON/записи. */
 export function packDisplayTitle(root) {
@@ -22,7 +26,8 @@ export function hydrateCustomPacksFromStorage() {
     const out = []
     for (const row of rows) {
         if (!row || typeof row.id !== "string" || !row.id.startsWith("custom-")) continue
-        const words = normalizeWordEntries(row.words)
+        if (row.schemaVersion !== WORD_PACK_SCHEMA_VERSION) continue
+        const words = parseCurrentWordEntries(row.words)
         if (!words.length) continue
         const title = packDisplayTitle(row)
         if (!title) continue
@@ -49,11 +54,11 @@ export function parseCustomPackJsonFile(text) {
         throw new Error(STR.errors.jsonInvalid)
     }
     if (!data || typeof data !== "object") throw new Error(STR.errors.jsonRootObject)
-    const wordsIn = data.words
-    if (!Array.isArray(wordsIn)) {
+    if (!Array.isArray(data.words)) {
         throw new Error(STR.errors.jsonNeedWords)
     }
-    const words = normalizeWordEntries(wordsIn)
+    const migrated = migrateWordPackDocument(data)
+    const words = migrated?.words || []
     if (!words.length) {
         throw new Error(STR.errors.jsonNoCompleteArticles)
     }
@@ -62,6 +67,7 @@ export function parseCustomPackJsonFile(text) {
     return {
         id: newCustomPackId(),
         title,
+        schemaVersion: WORD_PACK_SCHEMA_VERSION,
         words,
     }
 }

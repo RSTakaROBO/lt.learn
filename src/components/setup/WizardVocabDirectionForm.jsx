@@ -11,7 +11,6 @@ import { ChoiceGroup } from "src/components/ui/ChoiceGroup.jsx"
 const defaultDirs = () => ({
     ru_to_lt: true,
     lt_to_ru: false,
-    hardcore: false,
     vocabMode: VOCAB_MODE.CHOICES,
 })
 
@@ -65,7 +64,7 @@ export function WizardVocabDirectionForm() {
                         title={STR.vocabDirection.modeSingleTitle}
                         meta={STR.vocabDirection.modeSingleMeta}
                         checked={dirs.vocabMode === VOCAB_MODE.SINGLE}
-                        onChange={() => commit({ vocabMode: VOCAB_MODE.SINGLE, hardcore: false })}
+                        onChange={() => commit({ vocabMode: VOCAB_MODE.SINGLE })}
                     />
                     <CheckboxButton
                         id="vocab-mode-choices"
@@ -73,8 +72,8 @@ export function WizardVocabDirectionForm() {
                         name="vocab-mode"
                         title={STR.vocabDirection.modeChoicesTitle}
                         meta={STR.vocabDirection.modeChoicesMeta}
-                        checked={(dirs.vocabMode || VOCAB_MODE.CHOICES) === VOCAB_MODE.CHOICES}
-                        onChange={() => commit({ vocabMode: VOCAB_MODE.CHOICES, hardcore: false })}
+                        checked={dirs.vocabMode === VOCAB_MODE.CHOICES}
+                        onChange={() => commit({ vocabMode: VOCAB_MODE.CHOICES })}
                     />
                     <CheckboxButton
                         id="vocab-hardcore"
@@ -83,8 +82,8 @@ export function WizardVocabDirectionForm() {
                         className="vocab-mode-card--hardcore"
                         title={STR.vocabDirection.hardcoreTitle}
                         meta={STR.vocabDirection.hardcoreMeta}
-                        checked={dirs.vocabMode === VOCAB_MODE.HARDCORE || dirs.hardcore}
-                        onChange={() => commit({ vocabMode: VOCAB_MODE.HARDCORE, hardcore: true })}
+                        checked={dirs.vocabMode === VOCAB_MODE.HARDCORE}
+                        onChange={() => commit({ vocabMode: VOCAB_MODE.HARDCORE })}
                     />
                 </CardList>
             </div>

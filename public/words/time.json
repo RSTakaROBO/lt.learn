@@ -2,284 +2,389 @@
     "title": "Время",
     "words": [
         {
-            "nominative": "rytas",
-            "genitive": "ryto",
-            "dative": "rytui",
-            "accusative": "rytą",
-            "instrumental": "rytu",
-            "locative": "ryte",
-            "vocative": "rytai",
-            "ru": "утро"
+            "type": "noun",
+            "lemma": "rytas",
+            "forms": {
+                "nominative": "rytas",
+                "genitive": "ryto",
+                "dative": "rytui",
+                "accusative": "rytą",
+                "instrumental": "rytu",
+                "locative": "ryte",
+                "vocative": "rytai"
+            },
+            "translations": ["утро"]
         },
         {
-            "nominative": "vakaras",
-            "genitive": "vakaro",
-            "dative": "vakarui",
-            "accusative": "vakarą",
-            "instrumental": "vakaru",
-            "locative": "vakare",
-            "vocative": "vakare",
-            "ru": "вечер"
+            "type": "noun",
+            "lemma": "vakaras",
+            "forms": {
+                "nominative": "vakaras",
+                "genitive": "vakaro",
+                "dative": "vakarui",
+                "accusative": "vakarą",
+                "instrumental": "vakaru",
+                "locative": "vakare",
+                "vocative": "vakare"
+            },
+            "translations": ["вечер"]
         },
         {
-            "nominative": "naktis",
-            "genitive": "nakties",
-            "dative": "nakčiai",
-            "accusative": "naktį",
-            "instrumental": "naktimi",
-            "locative": "naktyje",
-            "vocative": "naktie",
-            "ru": "ночь"
+            "type": "noun",
+            "lemma": "naktis",
+            "forms": {
+                "nominative": "naktis",
+                "genitive": "nakties",
+                "dative": "nakčiai",
+                "accusative": "naktį",
+                "instrumental": "naktimi",
+                "locative": "naktyje",
+                "vocative": "naktie"
+            },
+            "translations": ["ночь"]
         },
         {
-            "nominative": "pusryčiai",
-            "genitive": "pusryčių",
-            "dative": "pusryčiams",
-            "accusative": "pusryčius",
-            "instrumental": "pusryčiais",
-            "locative": "pusryčiuose",
-            "vocative": "pusryčiai",
-            "ru": "завтрак"
+            "type": "noun",
+            "lemma": "pusryčiai",
+            "forms": {
+                "nominative": "pusryčiai",
+                "genitive": "pusryčių",
+                "dative": "pusryčiams",
+                "accusative": "pusryčius",
+                "instrumental": "pusryčiais",
+                "locative": "pusryčiuose",
+                "vocative": "pusryčiai"
+            },
+            "translations": ["завтрак"]
         },
         {
-            "nominative": "pietūs",
-            "genitive": "pietų",
-            "dative": "pietums",
-            "accusative": "pietus",
-            "instrumental": "pietumis",
-            "locative": "pietuose",
-            "vocative": "pietūs",
-            "ru": "обед"
+            "type": "noun",
+            "lemma": "pietūs",
+            "forms": {
+                "nominative": "pietūs",
+                "genitive": "pietų",
+                "dative": "pietums",
+                "accusative": "pietus",
+                "instrumental": "pietumis",
+                "locative": "pietuose",
+                "vocative": "pietūs"
+            },
+            "translations": ["обед"]
         },
         {
-            "nominative": "vakarienė",
-            "genitive": "vakarienės",
-            "dative": "vakarienei",
-            "accusative": "vakarienę",
-            "instrumental": "vakariene",
-            "locative": "vakarienėje",
-            "vocative": "vakariene",
-            "ru": "ужин"
+            "type": "noun",
+            "lemma": "vakarienė",
+            "forms": {
+                "nominative": "vakarienė",
+                "genitive": "vakarienės",
+                "dative": "vakarienei",
+                "accusative": "vakarienę",
+                "instrumental": "vakariene",
+                "locative": "vakarienėje",
+                "vocative": "vakariene"
+            },
+            "translations": ["ужин"]
         },
         {
-            "nominative": "savaitė",
-            "genitive": "savaitės",
-            "dative": "savaitei",
-            "accusative": "savaitę",
-            "instrumental": "savaite",
-            "locative": "savaitėje",
-            "vocative": "savaite",
-            "ru": "неделя"
+            "type": "noun",
+            "lemma": "savaitė",
+            "forms": {
+                "nominative": "savaitė",
+                "genitive": "savaitės",
+                "dative": "savaitei",
+                "accusative": "savaitę",
+                "instrumental": "savaite",
+                "locative": "savaitėje",
+                "vocative": "savaite"
+            },
+            "translations": ["неделя"]
         },
         {
-            "nominative": "pirmadienis",
-            "genitive": "pirmadienio",
-            "dative": "pirmadieniui",
-            "accusative": "pirmadienį",
-            "instrumental": "pirmadieniu",
-            "locative": "pirmadienyje",
-            "vocative": "pirmadieni",
-            "ru": "понедельник"
+            "type": "noun",
+            "lemma": "pirmadienis",
+            "forms": {
+                "nominative": "pirmadienis",
+                "genitive": "pirmadienio",
+                "dative": "pirmadieniui",
+                "accusative": "pirmadienį",
+                "instrumental": "pirmadieniu",
+                "locative": "pirmadienyje",
+                "vocative": "pirmadieni"
+            },
+            "translations": ["понедельник"]
         },
         {
-            "nominative": "antradienis",
-            "genitive": "antradienio",
-            "dative": "antradieniui",
-            "accusative": "antradienį",
-            "instrumental": "antradieniu",
-            "locative": "antradienyje",
-            "vocative": "antradieni",
-            "ru": "вторник"
+            "type": "noun",
+            "lemma": "antradienis",
+            "forms": {
+                "nominative": "antradienis",
+                "genitive": "antradienio",
+                "dative": "antradieniui",
+                "accusative": "antradienį",
+                "instrumental": "antradieniu",
+                "locative": "antradienyje",
+                "vocative": "antradieni"
+            },
+            "translations": ["вторник"]
         },
         {
-            "nominative": "trečiadienis",
-            "genitive": "trečiadienio",
-            "dative": "trečiadieniui",
-            "accusative": "trečiadienį",
-            "instrumental": "trečiadieniu",
-            "locative": "trečiadienyje",
-            "vocative": "trečiadieni",
-            "ru": "среда"
+            "type": "noun",
+            "lemma": "trečiadienis",
+            "forms": {
+                "nominative": "trečiadienis",
+                "genitive": "trečiadienio",
+                "dative": "trečiadieniui",
+                "accusative": "trečiadienį",
+                "instrumental": "trečiadieniu",
+                "locative": "trečiadienyje",
+                "vocative": "trečiadieni"
+            },
+            "translations": ["среда"]
         },
         {
-            "nominative": "ketvirtadienis",
-            "genitive": "ketvirtadienio",
-            "dative": "ketvirtadieniui",
-            "accusative": "ketvirtadienį",
-            "instrumental": "ketvirtadieniu",
-            "locative": "ketvirtadienyje",
-            "vocative": "ketvirtadieni",
-            "ru": "четвер"
+            "type": "noun",
+            "lemma": "ketvirtadienis",
+            "forms": {
+                "nominative": "ketvirtadienis",
+                "genitive": "ketvirtadienio",
+                "dative": "ketvirtadieniui",
+                "accusative": "ketvirtadienį",
+                "instrumental": "ketvirtadieniu",
+                "locative": "ketvirtadienyje",
+                "vocative": "ketvirtadieni"
+            },
+            "translations": ["четвер"]
         },
         {
-            "nominative": "penktadienis",
-            "genitive": "penktadienio",
-            "dative": "penktadieniui",
-            "accusative": "penktadienį",
-            "instrumental": "penktadieniu",
-            "locative": "penktadienyje",
-            "vocative": "penktadieni",
-            "ru": "пятница"
+            "type": "noun",
+            "lemma": "penktadienis",
+            "forms": {
+                "nominative": "penktadienis",
+                "genitive": "penktadienio",
+                "dative": "penktadieniui",
+                "accusative": "penktadienį",
+                "instrumental": "penktadieniu",
+                "locative": "penktadienyje",
+                "vocative": "penktadieni"
+            },
+            "translations": ["пятница"]
         },
         {
-            "nominative": "šeštadienis",
-            "genitive": "šeštadienio",
-            "dative": "šeštadieniui",
-            "accusative": "šeštadienį",
-            "instrumental": "šeštadieniu",
-            "locative": "šeštadienyje",
-            "vocative": "šeštadieni",
-            "ru": "суббота"
+            "type": "noun",
+            "lemma": "šeštadienis",
+            "forms": {
+                "nominative": "šeštadienis",
+                "genitive": "šeštadienio",
+                "dative": "šeštadieniui",
+                "accusative": "šeštadienį",
+                "instrumental": "šeštadieniu",
+                "locative": "šeštadienyje",
+                "vocative": "šeštadieni"
+            },
+            "translations": ["суббота"]
         },
         {
-            "nominative": "sekmadienis",
-            "genitive": "sekmadienio",
-            "dative": "sekmadieniui",
-            "accusative": "sekmadienį",
-            "instrumental": "sekmadieniu",
-            "locative": "sekmadienyje",
-            "vocative": "sekmadieni",
-            "ru": "воскресенье"
+            "type": "noun",
+            "lemma": "sekmadienis",
+            "forms": {
+                "nominative": "sekmadienis",
+                "genitive": "sekmadienio",
+                "dative": "sekmadieniui",
+                "accusative": "sekmadienį",
+                "instrumental": "sekmadieniu",
+                "locative": "sekmadienyje",
+                "vocative": "sekmadieni"
+            },
+            "translations": ["воскресенье"]
         },
         {
-            "nominative": "savaitgalis",
-            "genitive": "savaitgalio",
-            "dative": "savaitgaliui",
-            "accusative": "savaitgalį",
-            "instrumental": "savaitgaliu",
-            "locative": "savaitgalyje",
-            "vocative": "savaitgali",
-            "ru": "выходные"
+            "type": "noun",
+            "lemma": "savaitgalis",
+            "forms": {
+                "nominative": "savaitgalis",
+                "genitive": "savaitgalio",
+                "dative": "savaitgaliui",
+                "accusative": "savaitgalį",
+                "instrumental": "savaitgaliu",
+                "locative": "savaitgalyje",
+                "vocative": "savaitgali"
+            },
+            "translations": ["выходные"]
         },
         {
-            "nominative": "mėnuo",
-            "genitive": "mėnesio",
-            "dative": "mėnesiui",
-            "accusative": "mėnesį",
-            "instrumental": "mėnesiu",
-            "locative": "mėnesyje",
-            "vocative": "mėnesi",
-            "ru": "месяц"
+            "type": "noun",
+            "lemma": "mėnuo",
+            "forms": {
+                "nominative": "mėnuo",
+                "genitive": "mėnesio",
+                "dative": "mėnesiui",
+                "accusative": "mėnesį",
+                "instrumental": "mėnesiu",
+                "locative": "mėnesyje",
+                "vocative": "mėnesi"
+            },
+            "translations": ["месяц"]
         },
         {
-            "nominative": "metai",
-            "genitive": "metų",
-            "dative": "metams",
-            "accusative": "metus",
-            "instrumental": "metais",
-            "locative": "metuose",
-            "vocative": "metai",
-            "ru": "год"
+            "type": "noun",
+            "lemma": "metai",
+            "forms": {
+                "nominative": "metai",
+                "genitive": "metų",
+                "dative": "metams",
+                "accusative": "metus",
+                "instrumental": "metais",
+                "locative": "metuose",
+                "vocative": "metai"
+            },
+            "translations": ["год"]
         },
         {
-            "nominative": "valanda",
-            "genitive": "valandos",
-            "dative": "valandai",
-            "accusative": "valandą",
-            "instrumental": "valanda",
-            "locative": "valandoje",
-            "vocative": "valanda",
-            "ru": "час"
+            "type": "noun",
+            "lemma": "valanda",
+            "forms": {
+                "nominative": "valanda",
+                "genitive": "valandos",
+                "dative": "valandai",
+                "accusative": "valandą",
+                "instrumental": "valanda",
+                "locative": "valandoje",
+                "vocative": "valanda"
+            },
+            "translations": ["час"]
         },
         {
-            "nominative": "minutė",
-            "genitive": "minutės",
-            "dative": "minutei",
-            "accusative": "minutę",
-            "instrumental": "minute",
-            "locative": "minutėje",
-            "vocative": "minute",
-            "ru": "минута"
+            "type": "noun",
+            "lemma": "minutė",
+            "forms": {
+                "nominative": "minutė",
+                "genitive": "minutės",
+                "dative": "minutei",
+                "accusative": "minutę",
+                "instrumental": "minute",
+                "locative": "minutėje",
+                "vocative": "minute"
+            },
+            "translations": ["минута"]
         },
         {
-            "nominative": "laikas",
-            "genitive": "laiko",
-            "dative": "laikui",
-            "accusative": "laiką",
-            "instrumental": "laiku",
-            "locative": "laike",
-            "vocative": "laike",
-            "ru": "время"
+            "type": "noun",
+            "lemma": "laikas",
+            "forms": {
+                "nominative": "laikas",
+                "genitive": "laiko",
+                "dative": "laikui",
+                "accusative": "laiką",
+                "instrumental": "laiku",
+                "locative": "laike",
+                "vocative": "laike"
+            },
+            "translations": ["время"]
         },
         {
             "type": "adverb",
             "lemma": "visada",
-            "ru": "всегда"
+            "forms": {},
+            "translations": ["всегда"]
         },
         {
             "type": "adverb",
             "lemma": "niekada",
-            "ru": "никогда"
+            "forms": {},
+            "translations": ["никогда"]
         },
         {
             "type": "adverb",
             "lemma": "kartais",
-            "ru": "иногда"
+            "forms": {},
+            "translations": ["иногда"]
         },
         {
             "type": "adverb",
             "lemma": "rytoj",
-            "ru": "завтра"
+            "forms": {},
+            "translations": ["завтра"]
         },
         {
             "type": "adverb",
             "lemma": "dabar",
-            "ru": "сейчас"
+            "forms": {},
+            "translations": ["сейчас"]
         },
         {
             "type": "adverb",
             "lemma": "kasdien",
-            "ru": "каждый день"
+            "forms": {},
+            "translations": ["каждый день"]
         },
         {
             "type": "adverb",
             "lemma": "vakar",
-            "ru": "вчера"
+            "forms": {},
+            "translations": ["вчера"]
         },
         {
             "type": "adverb",
             "lemma": "retai",
-            "ru": "редко"
+            "forms": {},
+            "translations": ["редко"]
         },
         {
-            "nominative": "pavasaris",
-            "genitive": "pavasario",
-            "dative": "pavasariui",
-            "accusative": "pavasarį",
-            "instrumental": "pavasariu",
-            "locative": "pavasaryje",
-            "vocative": "pavasari",
-            "ru": "весна"
+            "type": "noun",
+            "lemma": "pavasaris",
+            "forms": {
+                "nominative": "pavasaris",
+                "genitive": "pavasario",
+                "dative": "pavasariui",
+                "accusative": "pavasarį",
+                "instrumental": "pavasariu",
+                "locative": "pavasaryje",
+                "vocative": "pavasari"
+            },
+            "translations": ["весна"]
         },
         {
-            "nominative": "vasara",
-            "genitive": "vasaros",
-            "dative": "vasarai",
-            "accusative": "vasarą",
-            "instrumental": "vasara",
-            "locative": "vasaroje",
-            "vocative": "vasara",
-            "ru": "лето"
+            "type": "noun",
+            "lemma": "vasara",
+            "forms": {
+                "nominative": "vasara",
+                "genitive": "vasaros",
+                "dative": "vasarai",
+                "accusative": "vasarą",
+                "instrumental": "vasara",
+                "locative": "vasaroje",
+                "vocative": "vasara"
+            },
+            "translations": ["лето"]
         },
         {
-            "nominative": "ruduo",
-            "genitive": "rudens",
-            "dative": "rudeniui",
-            "accusative": "rudenį",
-            "instrumental": "rudeniu",
-            "locative": "rudenyje",
-            "vocative": "rudenie",
-            "ru": "осень"
+            "type": "noun",
+            "lemma": "ruduo",
+            "forms": {
+                "nominative": "ruduo",
+                "genitive": "rudens",
+                "dative": "rudeniui",
+                "accusative": "rudenį",
+                "instrumental": "rudeniu",
+                "locative": "rudenyje",
+                "vocative": "rudenie"
+            },
+            "translations": ["осень"]
         },
         {
-            "nominative": "žiema",
-            "genitive": "žiemos",
-            "dative": "žiemai",
-            "accusative": "žiemą",
-            "instrumental": "žiema",
-            "locative": "žiemoje",
-            "vocative": "žiema",
-            "ru": "зима"
+            "type": "noun",
+            "lemma": "žiema",
+            "forms": {
+                "nominative": "žiema",
+                "genitive": "žiemos",
+                "dative": "žiemai",
+                "accusative": "žiemą",
+                "instrumental": "žiema",
+                "locative": "žiemoje",
+                "vocative": "žiema"
+            },
+            "translations": ["зима"]
         }
-    ]
+    ],
+    "schemaVersion": 1
 }

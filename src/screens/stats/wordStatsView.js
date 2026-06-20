@@ -1,4 +1,4 @@
-import { normalizeWordStatRow } from "js/storage.js"
+import { parseCurrentWordStatRow } from "js/storage.js"
 
 /**
  * @param {Record<string, unknown>} wordStats
@@ -9,7 +9,7 @@ export function aggregateWordStatsTotals(wordStats) {
     let wrong = 0
     let skipped = 0
     for (const row of Object.values(wordStats)) {
-        const n = normalizeWordStatRow(row)
+        const n = parseCurrentWordStatRow(row)
         if (!n) continue
         correct += n.correct
         wrong += n.wrong
@@ -25,7 +25,7 @@ export function aggregateWordStatsTotals(wordStats) {
 export function buildSortedWordStatRows(wordStats) {
     return Object.entries(wordStats)
         .map(([lemma, row]) => {
-            const n = normalizeWordStatRow(row)
+            const n = parseCurrentWordStatRow(row)
             if (!n) return null
             return { lemma, correct: n.correct, wrong: n.wrong, skipped: n.skipped }
         })

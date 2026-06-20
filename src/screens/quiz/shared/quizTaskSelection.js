@@ -15,7 +15,7 @@ function cleanString(value) {
 }
 
 export function lemmaKey(word) {
-    return cleanString(word?.lemma || word?.nominative)
+    return cleanString(word?.lemma)
 }
 
 export function computeWordSelectionWeight(word) {

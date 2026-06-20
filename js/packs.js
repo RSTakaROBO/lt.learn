@@ -4,7 +4,7 @@ import { STR } from "./i18n/strings-ru.js"
 import { filterLearnedWords } from "./learned-words.js"
 import { loadExcludeLearnedWords } from "./storage.js"
 import { getEngine, mutateEngine, trainerStore } from "./trainer-ui-state.js"
-import { normalizeWordEntries } from "./word-entry.js"
+import { parseCurrentWordEntries, parseCurrentWordPackDocument } from "./word-entry.js"
 
 export function getCheckedPackIds() {
     return [...trainerStore.getState().trainer.manifestUi.selectedPackIds]
@@ -56,16 +56,15 @@ export async function loadWordsFromFiles(refs) {
             const id = ref.slice("custom:".length)
             const pack = getEngine().manifestCache?.packs?.find((p) => p.id === id && p.custom)
             if (!pack?.words?.length) throw new Error(STR.errors.customPackMissing)
-            all.push(...normalizeWordEntries(pack.words))
+            all.push(...parseCurrentWordEntries(pack.words))
             continue
         }
         const url = `${base}${ref}`
         const res = await fetch(url)
         if (!res.ok) throw new Error(fmt(STR.errors.fileBadStatus, { ref, status: res.status }))
-        const data = await res.json()
-        const words = data.words
-        if (!Array.isArray(words)) throw new Error(fmt(STR.errors.fileNoWordsArray, { ref }))
-        all.push(...normalizeWordEntries(words))
+        const data = parseCurrentWordPackDocument(await res.json())
+        if (!data) throw new Error(fmt(STR.errors.fileNoWordsArray, { ref }))
+        all.push(...data.words)
     }
 
     const words = loadExcludeLearnedWords() ? filterLearnedWords(all, getEngine().wordStats) : all

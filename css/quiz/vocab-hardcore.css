@@ -1,28 +1,23 @@
-/* Хардкор-слова: карточка слова выше (поле ввода и буквы съедают экран — даём слову воздух), футер без «прижима к низу» */
 #quiz.panel.quiz--vocab-hardcore #quiz-vocab-ui:not(.hidden) {
     flex: 0 1 auto;
     gap: 0.55rem;
 }
-
 #quiz.panel.quiz--vocab-hardcore #quiz-vocab-ui:not(.hidden) > .vocab-card-stack {
     flex: 0 1 auto;
     min-height: 0;
     max-height: min(50vh, 32rem);
     margin-bottom: calc(10px + 0.55rem);
 }
-
 html.ios-standalone
     #quiz.panel.quiz--vocab-hardcore
     #quiz-vocab-ui:not(.hidden)
     > .vocab-card-stack {
     max-height: min(48vh, 30rem);
 }
-
 #quiz.panel.quiz--vocab-hardcore #quiz-vocab-ui:not(.hidden) > .vocab-card-stack > .vocab-ru-card {
     padding: 2.2rem 2.3rem;
     overflow: visible;
 }
-
 #quiz.panel.quiz--vocab-hardcore
     #quiz-vocab-ui:not(.hidden)
     > .vocab-card-stack
@@ -31,68 +26,53 @@ html.ios-standalone
     overflow-y: auto;
     overscroll-behavior-y: none;
 }
-
 #quiz.panel.quiz--vocab-hardcore #quiz-vocab-ui:not(.hidden) .vocab-ru-card .lemma,
 #quiz.panel.quiz--vocab-hardcore #quiz-vocab-ui:not(.hidden) .vocab-ru-card .vocab-ru-display {
     font-size: clamp(2.25rem, 7.2vmin, 3.35rem);
     line-height: 1.3;
 }
-
 #quiz.panel.quiz--vocab-hardcore .vocab-streak-mult {
     right: 0.42rem;
     bottom: 0.38rem;
 }
-
 #quiz.panel.quiz--vocab-hardcore .vocab-streak-mult--t0 .vocab-streak-mult-value {
     font-size: clamp(2.05rem, 7.2vmin, 2.75rem);
 }
-
 #quiz.panel.quiz--vocab-hardcore .vocab-streak-mult--t1 .vocab-streak-mult-value {
     font-size: clamp(2.28rem, 7.95vmin, 3.05rem);
 }
-
 #quiz.panel.quiz--vocab-hardcore .vocab-streak-mult--t2 .vocab-streak-mult-value {
     font-size: clamp(2.48rem, 8.65vmin, 3.4rem);
 }
-
 #quiz.panel.quiz--vocab-hardcore .vocab-streak-mult--t3 .vocab-streak-mult-value {
     font-size: clamp(2.72rem, 9.35vmin, 3.78rem);
 }
-
 #quiz.panel.quiz--vocab-hardcore .vocab-streak-mult--t4 .vocab-streak-mult-value {
     font-size: clamp(2.98rem, 10.05vmin, 4.15rem);
 }
-
 #quiz.panel.quiz--vocab-hardcore .vocab-streak-mult--t5 .vocab-streak-mult-value {
     font-size: clamp(3.25rem, 10.85vmin, 4.55rem);
 }
-
 #quiz.panel.quiz--vocab-hardcore > .quiz-footer-actions {
     margin-top: 0;
     flex-shrink: 0;
 }
-
 #quiz.panel.quiz--vocab-hardcore #vocab-answer-form {
     gap: 0.55rem;
 }
-
 #quiz.panel.quiz--vocab-hardcore .quiz-footer-actions--inline {
     margin-top: 0;
     padding-top: 0;
 }
-
 .vocab-hardcore-answer {
     display: none;
 }
-
-/* Полноразмерный десктоп: ответ становится второй крупной частью карточки. */
 @media (display-mode: browser) and (min-width: 900px) and (min-height: 600px) and (hover: hover) and (pointer: fine) {
     #quiz.panel.quiz--vocab-hardcore #quiz-vocab-ui:not(.hidden) > .vocab-card-stack {
         flex: 0 0 clamp(20rem, 46dvh, 28rem);
         min-height: clamp(20rem, 46dvh, 28rem);
         max-height: clamp(20rem, 46dvh, 28rem);
     }
-
     #quiz.panel.quiz--vocab-hardcore
         #quiz-vocab-ui:not(.hidden)
         > .vocab-card-stack
@@ -103,11 +83,9 @@ html.ios-standalone
         padding-top: 0;
         overflow-y: hidden;
     }
-
     #quiz.panel.quiz--vocab-hardcore .vocab-card-feedback .correct-form {
         display: none;
     }
-
     #quiz.panel.quiz--vocab-hardcore .vocab-hardcore-answer {
         display: flex;
         flex-direction: column;
@@ -118,17 +96,14 @@ html.ios-standalone
         border-top: 1px solid color-mix(in srgb, var(--border) 72%, transparent);
         text-align: center;
     }
-
     #quiz.panel.quiz--vocab-hardcore .vocab-hardcore-answer--placeholder {
         visibility: hidden;
     }
-
     #quiz.panel.quiz--vocab-hardcore .vocab-hardcore-answer > span {
         color: var(--muted);
         font-size: 0.9rem;
         font-weight: 650;
     }
-
     #quiz.panel.quiz--vocab-hardcore .vocab-hardcore-answer > strong {
         display: flex;
         align-items: center;

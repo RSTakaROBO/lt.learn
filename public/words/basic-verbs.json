@@ -4,248 +4,413 @@
         {
             "type": "verb",
             "lemma": "būti",
-            "forms": { "infinitive": "būti", "present3": "yra", "past3": "buvo" },
-            "ru": "быть"
+            "forms": {
+                "infinitive": "būti",
+                "present3": "yra",
+                "past3": "buvo"
+            },
+            "translations": ["быть"]
         },
         {
             "type": "verb",
             "lemma": "turėti",
-            "forms": { "infinitive": "turėti", "present3": "turi", "past3": "turėjo" },
-            "ru": "иметь"
+            "forms": {
+                "infinitive": "turėti",
+                "present3": "turi",
+                "past3": "turėjo"
+            },
+            "translations": ["иметь"]
         },
         {
             "type": "verb",
             "lemma": "eiti",
-            "forms": { "infinitive": "eiti", "present3": "eina", "past3": "ėjo" },
-            "ru": "идти"
+            "forms": {
+                "infinitive": "eiti",
+                "present3": "eina",
+                "past3": "ėjo"
+            },
+            "translations": ["идти"]
         },
         {
             "type": "verb",
             "lemma": "ateiti",
-            "forms": { "infinitive": "ateiti", "present3": "ateina", "past3": "atėjo" },
-            "ru": "приходить"
+            "forms": {
+                "infinitive": "ateiti",
+                "present3": "ateina",
+                "past3": "atėjo"
+            },
+            "translations": ["приходить"]
         },
         {
             "type": "verb",
             "lemma": "išeiti",
-            "forms": { "infinitive": "išeiti", "present3": "išeina", "past3": "išėjo" },
-            "ru": ["выходить", "уходить"]
+            "forms": {
+                "infinitive": "išeiti",
+                "present3": "išeina",
+                "past3": "išėjo"
+            },
+            "translations": ["выходить", "уходить"]
         },
         {
             "type": "verb",
             "lemma": "važiuoti",
-            "forms": { "infinitive": "važiuoti", "present3": "važiuoja", "past3": "važiavo" },
-            "ru": "ехать"
+            "forms": {
+                "infinitive": "važiuoti",
+                "present3": "važiuoja",
+                "past3": "važiavo"
+            },
+            "translations": ["ехать"]
         },
         {
             "type": "verb",
             "lemma": "gyventi",
-            "forms": { "infinitive": "gyventi", "present3": "gyvena", "past3": "gyveno" },
-            "ru": "жить"
+            "forms": {
+                "infinitive": "gyventi",
+                "present3": "gyvena",
+                "past3": "gyveno"
+            },
+            "translations": ["жить"]
         },
         {
             "type": "verb",
             "lemma": "dirbti",
-            "forms": { "infinitive": "dirbti", "present3": "dirba", "past3": "dirbo" },
-            "ru": "работать"
+            "forms": {
+                "infinitive": "dirbti",
+                "present3": "dirba",
+                "past3": "dirbo"
+            },
+            "translations": ["работать"]
         },
         {
             "type": "verb",
             "lemma": "mokytis",
-            "forms": { "infinitive": "mokytis", "present3": "mokosi", "past3": "mokėsi" },
-            "ru": "учиться"
+            "forms": {
+                "infinitive": "mokytis",
+                "present3": "mokosi",
+                "past3": "mokėsi"
+            },
+            "translations": ["учиться"]
         },
         {
             "type": "verb",
             "lemma": "mokyti",
-            "forms": { "infinitive": "mokyti", "present3": "moko", "past3": "mokė" },
-            "ru": "учить"
+            "forms": {
+                "infinitive": "mokyti",
+                "present3": "moko",
+                "past3": "mokė"
+            },
+            "translations": ["учить"]
         },
         {
             "type": "verb",
             "lemma": "kalbėti",
-            "forms": { "infinitive": "kalbėti", "present3": "kalba", "past3": "kalbėjo" },
-            "ru": "говорить"
+            "forms": {
+                "infinitive": "kalbėti",
+                "present3": "kalba",
+                "past3": "kalbėjo"
+            },
+            "translations": ["говорить"]
         },
         {
             "type": "verb",
             "lemma": "sakyti",
-            "forms": { "infinitive": "sakyti", "present3": "sako", "past3": "sakė" },
-            "ru": ["сказать", "говорить"]
+            "forms": {
+                "infinitive": "sakyti",
+                "present3": "sako",
+                "past3": "sakė"
+            },
+            "translations": ["сказать", "говорить"]
         },
         {
             "type": "verb",
             "lemma": "klausyti",
-            "forms": { "infinitive": "klausyti", "present3": "klauso", "past3": "klausė" },
-            "ru": "слушать"
+            "forms": {
+                "infinitive": "klausyti",
+                "present3": "klauso",
+                "past3": "klausė"
+            },
+            "translations": ["слушать"]
         },
         {
             "type": "verb",
             "lemma": "girdėti",
-            "forms": { "infinitive": "girdėti", "present3": "girdi", "past3": "girdėjo" },
-            "ru": "слышать"
+            "forms": {
+                "infinitive": "girdėti",
+                "present3": "girdi",
+                "past3": "girdėjo"
+            },
+            "translations": ["слышать"]
         },
         {
             "type": "verb",
             "lemma": "matyti",
-            "forms": { "infinitive": "matyti", "present3": "mato", "past3": "matė" },
-            "ru": "видеть"
+            "forms": {
+                "infinitive": "matyti",
+                "present3": "mato",
+                "past3": "matė"
+            },
+            "translations": ["видеть"]
         },
         {
             "type": "verb",
             "lemma": "žiūrėti",
-            "forms": { "infinitive": "žiūrėti", "present3": "žiūri", "past3": "žiūrėjo" },
-            "ru": "смотреть"
+            "forms": {
+                "infinitive": "žiūrėti",
+                "present3": "žiūri",
+                "past3": "žiūrėjo"
+            },
+            "translations": ["смотреть"]
         },
         {
             "type": "verb",
             "lemma": "skaityti",
-            "forms": { "infinitive": "skaityti", "present3": "skaito", "past3": "skaitė" },
-            "ru": "читать"
+            "forms": {
+                "infinitive": "skaityti",
+                "present3": "skaito",
+                "past3": "skaitė"
+            },
+            "translations": ["читать"]
         },
         {
             "type": "verb",
             "lemma": "rašyti",
-            "forms": { "infinitive": "rašyti", "present3": "rašo", "past3": "rašė" },
-            "ru": "писать"
+            "forms": {
+                "infinitive": "rašyti",
+                "present3": "rašo",
+                "past3": "rašė"
+            },
+            "translations": ["писать"]
         },
         {
             "type": "verb",
             "lemma": "valgyti",
-            "forms": { "infinitive": "valgyti", "present3": "valgo", "past3": "valgė" },
-            "ru": ["есть", "кушать"]
+            "forms": {
+                "infinitive": "valgyti",
+                "present3": "valgo",
+                "past3": "valgė"
+            },
+            "translations": ["есть", "кушать"]
         },
         {
             "type": "verb",
             "lemma": "gerti",
-            "forms": { "infinitive": "gerti", "present3": "geria", "past3": "gėrė" },
-            "ru": "пить"
+            "forms": {
+                "infinitive": "gerti",
+                "present3": "geria",
+                "past3": "gėrė"
+            },
+            "translations": ["пить"]
         },
         {
             "type": "verb",
             "lemma": "miegoti",
-            "forms": { "infinitive": "miegoti", "present3": "miega", "past3": "miegojo" },
-            "ru": "спать"
+            "forms": {
+                "infinitive": "miegoti",
+                "present3": "miega",
+                "past3": "miegojo"
+            },
+            "translations": ["спать"]
         },
         {
             "type": "verb",
             "lemma": "norėti",
-            "forms": { "infinitive": "norėti", "present3": "nori", "past3": "norėjo" },
-            "ru": "хотеть"
+            "forms": {
+                "infinitive": "norėti",
+                "present3": "nori",
+                "past3": "norėjo"
+            },
+            "translations": ["хотеть"]
         },
         {
             "type": "verb",
             "lemma": "galėti",
-            "forms": { "infinitive": "galėti", "present3": "gali", "past3": "galėjo" },
-            "ru": "мочь"
+            "forms": {
+                "infinitive": "galėti",
+                "present3": "gali",
+                "past3": "galėjo"
+            },
+            "translations": ["мочь"]
         },
         {
             "type": "verb",
             "lemma": "reikėti",
-            "forms": { "infinitive": "reikėti", "present3": "reikia", "past3": "reikėjo" },
-            "ru": ["быть нужным", "нужно"]
+            "forms": {
+                "infinitive": "reikėti",
+                "present3": "reikia",
+                "past3": "reikėjo"
+            },
+            "translations": ["быть нужным", "нужно"]
         },
         {
             "type": "verb",
             "lemma": "daryti",
-            "forms": { "infinitive": "daryti", "present3": "daro", "past3": "darė" },
-            "ru": "делать"
+            "forms": {
+                "infinitive": "daryti",
+                "present3": "daro",
+                "past3": "darė"
+            },
+            "translations": ["делать"]
         },
         {
             "type": "verb",
             "lemma": "imti",
-            "forms": { "infinitive": "imti", "present3": "ima", "past3": "ėmė" },
-            "ru": "брать"
+            "forms": {
+                "infinitive": "imti",
+                "present3": "ima",
+                "past3": "ėmė"
+            },
+            "translations": ["брать"]
         },
         {
             "type": "verb",
             "lemma": "duoti",
-            "forms": { "infinitive": "duoti", "present3": "duoda", "past3": "davė" },
-            "ru": "давать"
+            "forms": {
+                "infinitive": "duoti",
+                "present3": "duoda",
+                "past3": "davė"
+            },
+            "translations": ["давать"]
         },
         {
             "type": "verb",
             "lemma": "pirkti",
-            "forms": { "infinitive": "pirkti", "present3": "perka", "past3": "pirko" },
-            "ru": "покупать"
+            "forms": {
+                "infinitive": "pirkti",
+                "present3": "perka",
+                "past3": "pirko"
+            },
+            "translations": ["покупать"]
         },
         {
             "type": "verb",
             "lemma": "parduoti",
-            "forms": { "infinitive": "parduoti", "present3": "parduoda", "past3": "pardavė" },
-            "ru": "продавать"
+            "forms": {
+                "infinitive": "parduoti",
+                "present3": "parduoda",
+                "past3": "pardavė"
+            },
+            "translations": ["продавать"]
         },
         {
             "type": "verb",
             "lemma": "žinoti",
-            "forms": { "infinitive": "žinoti", "present3": "žino", "past3": "žinojo" },
-            "ru": "знать"
+            "forms": {
+                "infinitive": "žinoti",
+                "present3": "žino",
+                "past3": "žinojo"
+            },
+            "translations": ["знать"]
         },
         {
             "type": "verb",
             "lemma": "suprasti",
-            "forms": { "infinitive": "suprasti", "present3": "supranta", "past3": "suprato" },
-            "ru": "понимать"
+            "forms": {
+                "infinitive": "suprasti",
+                "present3": "supranta",
+                "past3": "suprato"
+            },
+            "translations": ["понимать"]
         },
         {
             "type": "verb",
             "lemma": "laukti",
-            "forms": { "infinitive": "laukti", "present3": "laukia", "past3": "laukė" },
-            "ru": "ждать"
+            "forms": {
+                "infinitive": "laukti",
+                "present3": "laukia",
+                "past3": "laukė"
+            },
+            "translations": ["ждать"]
         },
         {
             "type": "verb",
             "lemma": "rasti",
-            "forms": { "infinitive": "rasti", "present3": "randa", "past3": "rado" },
-            "ru": "найти"
+            "forms": {
+                "infinitive": "rasti",
+                "present3": "randa",
+                "past3": "rado"
+            },
+            "translations": ["найти"]
         },
         {
             "type": "verb",
             "lemma": "ieškoti",
-            "forms": { "infinitive": "ieškoti", "present3": "ieško", "past3": "ieškojo" },
-            "ru": "искать"
+            "forms": {
+                "infinitive": "ieškoti",
+                "present3": "ieško",
+                "past3": "ieškojo"
+            },
+            "translations": ["искать"]
         },
         {
             "type": "verb",
             "lemma": "mylėti",
-            "forms": { "infinitive": "mylėti", "present3": "myli", "past3": "mylėjo" },
-            "ru": "любить"
+            "forms": {
+                "infinitive": "mylėti",
+                "present3": "myli",
+                "past3": "mylėjo"
+            },
+            "translations": ["любить"]
         },
         {
             "type": "verb",
             "lemma": "mėgti",
-            "forms": { "infinitive": "mėgti", "present3": "mėgsta", "past3": "mėgo" },
-            "ru": ["любить", "нравиться"]
+            "forms": {
+                "infinitive": "mėgti",
+                "present3": "mėgsta",
+                "past3": "mėgo"
+            },
+            "translations": ["любить", "нравиться"]
         },
         {
             "type": "verb",
             "lemma": "sėdėti",
-            "forms": { "infinitive": "sėdėti", "present3": "sėdi", "past3": "sėdėjo" },
-            "ru": "сидеть"
+            "forms": {
+                "infinitive": "sėdėti",
+                "present3": "sėdi",
+                "past3": "sėdėjo"
+            },
+            "translations": ["сидеть"]
         },
         {
             "type": "verb",
             "lemma": "stovėti",
-            "forms": { "infinitive": "stovėti", "present3": "stovi", "past3": "stovėjo" },
-            "ru": "стоять"
+            "forms": {
+                "infinitive": "stovėti",
+                "present3": "stovi",
+                "past3": "stovėjo"
+            },
+            "translations": ["стоять"]
         },
         {
             "type": "verb",
             "lemma": "gulėti",
-            "forms": { "infinitive": "gulėti", "present3": "guli", "past3": "gulėjo" },
-            "ru": "лежать"
+            "forms": {
+                "infinitive": "gulėti",
+                "present3": "guli",
+                "past3": "gulėjo"
+            },
+            "translations": ["лежать"]
         },
         {
             "type": "verb",
             "lemma": "atidaryti",
-            "forms": { "infinitive": "atidaryti", "present3": "atidaro", "past3": "atidarė" },
-            "ru": "открыть"
+            "forms": {
+                "infinitive": "atidaryti",
+                "present3": "atidaro",
+                "past3": "atidarė"
+            },
+            "translations": ["открыть"]
         },
         {
             "type": "verb",
             "lemma": "uždaryti",
-            "forms": { "infinitive": "uždaryti", "present3": "uždaro", "past3": "uždarė" },
-            "ru": "закрыть"
+            "forms": {
+                "infinitive": "uždaryti",
+                "present3": "uždaro",
+                "past3": "uždarė"
+            },
+            "translations": ["закрыть"]
         }
-    ]
+    ],
+    "schemaVersion": 1
 }

@@ -11,8 +11,7 @@ import { vocabLemma, vocabRuAcceptedList } from "src/screens/quiz/vocab/vocabWor
 const KNOWN_WORD_KEYS = new Set([
     "forms",
     "ru",
-    "ru_list",
-    "nominative",
+    "translations",
     "genitive",
     "dative",
     "accusative",
@@ -38,7 +37,7 @@ function displayValue(value) {
 }
 
 function formRowsForWord(word) {
-    const source = word?.forms && typeof word.forms === "object" ? word.forms : word
+    const source = word?.forms
     if (!source || typeof source !== "object") return []
 
     if (word?.type === "verb") {

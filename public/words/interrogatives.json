@@ -2,69 +2,89 @@
     "title": "Вопросительные слова",
     "words": [
         {
-            "nominative": "kas",
-            "genitive": "ko",
-            "dative": "kam",
-            "accusative": "ką",
-            "instrumental": "kuo",
-            "locative": "kame",
-            "vocative": "kas",
-            "ru": ["кто", "что"]
+            "type": "noun",
+            "lemma": "kas",
+            "forms": {
+                "nominative": "kas",
+                "genitive": "ko",
+                "dative": "kam",
+                "accusative": "ką",
+                "instrumental": "kuo",
+                "locative": "kame",
+                "vocative": "kas"
+            },
+            "translations": ["кто", "что"]
         },
         {
             "type": "adverb",
             "lemma": "kur",
-            "ru": ["где", "куда"]
+            "forms": {},
+            "translations": ["где", "куда"]
         },
         {
             "type": "adverb",
             "lemma": "kada",
-            "ru": "когда"
+            "forms": {},
+            "translations": ["когда"]
         },
         {
             "type": "adverb",
             "lemma": "kaip",
-            "ru": "как"
+            "forms": {},
+            "translations": ["как"]
         },
         {
             "type": "adverb",
             "lemma": "kodėl",
-            "ru": "почему"
+            "forms": {},
+            "translations": ["почему"]
         },
         {
             "type": "adverb",
             "lemma": "kiek",
-            "ru": "сколько"
+            "forms": {},
+            "translations": ["сколько"]
         },
         {
             "type": "adverb",
             "lemma": "ar",
-            "ru": "ли"
+            "forms": {},
+            "translations": ["ли"]
         },
         {
-            "nominative": "koks",
-            "genitive": "kokio",
-            "dative": "kokiam",
-            "accusative": "kokį",
-            "instrumental": "kokiu",
-            "locative": "kokiame",
-            "vocative": "koki",
-            "ru": "какой"
+            "type": "noun",
+            "lemma": "koks",
+            "forms": {
+                "nominative": "koks",
+                "genitive": "kokio",
+                "dative": "kokiam",
+                "accusative": "kokį",
+                "instrumental": "kokiu",
+                "locative": "kokiame",
+                "vocative": "koki"
+            },
+            "translations": ["какой"]
         },
         {
-            "nominative": "kuris",
-            "genitive": "kurio",
-            "dative": "kuriam",
-            "accusative": "kurį",
-            "instrumental": "kuriu",
-            "locative": "kuriame",
-            "vocative": "kuri",
-            "ru": "который"
+            "type": "noun",
+            "lemma": "kuris",
+            "forms": {
+                "nominative": "kuris",
+                "genitive": "kurio",
+                "dative": "kuriam",
+                "accusative": "kurį",
+                "instrumental": "kuriu",
+                "locative": "kuriame",
+                "vocative": "kuri"
+            },
+            "translations": ["который"]
         },
         {
             "type": "adverb",
             "lemma": "iškur",
-            "ru": "откуда"
+            "forms": {},
+            "translations": ["откуда"]
         }
-    ]
+    ],
+    "schemaVersion": 1
 }

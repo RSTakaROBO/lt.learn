@@ -3,17 +3,15 @@ function cleanString(value) {
 }
 
 export function casesLemma(word) {
-    return cleanString(word?.lemma || word?.nominative)
+    return cleanString(word?.lemma)
 }
 
 export function casesRuPrimary(word) {
-    if (Array.isArray(word?.ru_list)) return cleanString(word.ru_list[0])
-    if (Array.isArray(word?.ru)) return cleanString(word.ru[0])
-    return cleanString(word?.ru)
+    return Array.isArray(word?.translations) ? cleanString(word.translations[0]) : ""
 }
 
 export function isCasesTrainingWord(word, selectedKeys = []) {
     if (word?.type !== "noun") return false
     if (!Array.isArray(selectedKeys)) return false
-    return selectedKeys.every((key) => typeof word[key] === "string" && word[key])
+    return selectedKeys.every((key) => typeof word.forms?.[key] === "string" && word.forms[key])
 }

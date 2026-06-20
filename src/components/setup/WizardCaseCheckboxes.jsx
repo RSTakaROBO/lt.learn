@@ -2,7 +2,7 @@ import { useLayoutEffect, useState } from "react"
 
 import { CASE_ORDER } from "js/config.js"
 import { caseRu } from "js/i18n/core.js"
-import { applyEngine } from "js/trainer-ui-state.js"
+import { mutateEngine } from "js/trainer-ui-state.js"
 import { loadSelectedCases, saveSelectedCases } from "js/storage.js"
 import { useTrainerDispatch } from "src/context/TrainerAppContext.jsx"
 import { CardList } from "src/components/ui/CardList.jsx"
@@ -21,7 +21,7 @@ export function WizardCaseCheckboxes({ scrollWell = true }) {
     })
 
     useLayoutEffect(() => {
-        applyEngine((e) => {
+        mutateEngine((e) => {
             e.selectedCaseKeys = [...selectedKeys]
         })
     }, [selectedKeys])

@@ -94,8 +94,7 @@ export function nextVocabTask(opts = {}) {
     if (dirsCfg.lt_to_ru) enabled.push(VOCAB_DIRECTION.LT_TO_RU)
     if (!enabled.length) return null
 
-    const vocabMode =
-        dirsCfg.vocabMode || (dirsCfg.hardcore ? VOCAB_MODE.HARDCORE : VOCAB_MODE.CHOICES)
+    const vocabMode = dirsCfg.vocabMode
     const hardcore = vocabMode === VOCAB_MODE.HARDCORE
     const single = vocabMode === VOCAB_MODE.SINGLE
     const usable = getEngine().wordBank.filter(isVocabTrainingWord)
@@ -153,7 +152,6 @@ export function nextVocabTask(opts = {}) {
             mode: TRAIN_MODE.VOCAB,
             word,
             vocabDirection: dir,
-            vocabHardcore: hardcore,
             vocabMode,
         }
     }
@@ -171,7 +169,6 @@ export function nextVocabTask(opts = {}) {
                 choices: choicesResult.choices,
                 choiceReveals: choicesResult.choiceReveals,
                 vocabDirection: dir,
-                vocabHardcore: false,
                 vocabMode: VOCAB_MODE.CHOICES,
             }
         }

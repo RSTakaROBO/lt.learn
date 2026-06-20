@@ -1,4 +1,4 @@
-import { normalizeWordEntries } from "js/word-entry.js"
+import { parseCurrentWordEntries } from "js/word-entry.js"
 import { vocabRuAcceptedList } from "src/screens/quiz/vocab/vocabWords.js"
 
 function cleanString(value) {
@@ -6,11 +6,7 @@ function cleanString(value) {
 }
 
 export function wordPreviewLemma(word) {
-    return cleanString(word?.lemma || word?.nominative)
-}
-
-export function wordPreviewTranslation(word) {
-    return vocabRuAcceptedList(word).join(", ")
+    return cleanString(word?.lemma)
 }
 
 export function wordPreviewTranslations(word) {
@@ -20,20 +16,19 @@ export function wordPreviewTranslations(word) {
 export function wordsForPackPreview(pack, fileMap) {
     const words = []
     if (pack.custom && Array.isArray(pack.words)) {
-        words.push(...normalizeWordEntries(pack.words))
+        words.push(...parseCurrentWordEntries(pack.words))
     } else if (Array.isArray(pack.files)) {
         for (const file of pack.files) {
             const data = fileMap.get(file)
-            words.push(...normalizeWordEntries(data?.words))
+            words.push(...parseCurrentWordEntries(data?.words))
         }
     }
 
     return words
         .map((word) => ({
-            type: cleanString(word?.type) || "noun",
+            type: cleanString(word?.type),
             lemma: wordPreviewLemma(word),
-            translation: wordPreviewTranslation(word),
             translations: wordPreviewTranslations(word),
         }))
-        .filter((row) => row.lemma || row.translation)
+        .filter((row) => row.lemma)
 }

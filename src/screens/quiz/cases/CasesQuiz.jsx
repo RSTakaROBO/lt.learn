@@ -50,7 +50,7 @@ export function CasesQuiz({
     const casesPrompt = casesPromptForTask(task, casesShowTranslation)
     const feedbackKind = feedback?.kind === "ok" || feedback?.kind === "bad" ? feedback.kind : ""
     const cardKey = [
-        task?.word?.id || task?.word?.lemma || task?.word?.nominative || casesPrompt.lemma,
+        task?.word?.id || task?.word?.lemma || casesPrompt.lemma,
         task?.targetCase || "",
     ].join(":")
 

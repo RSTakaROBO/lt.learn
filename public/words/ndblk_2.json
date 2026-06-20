@@ -13,7 +13,7 @@
                 "locative": "skaityme",
                 "vocative": "skaityme"
             },
-            "ru": ["чтение"]
+            "translations": ["чтение"]
         },
         {
             "type": "noun",
@@ -27,7 +27,7 @@
                 "locative": "puslapyje",
                 "vocative": "puslapi"
             },
-            "ru": ["страница"]
+            "translations": ["страница"]
         },
         {
             "type": "verb",
@@ -37,7 +37,7 @@
                 "present3": "atostogauja",
                 "past3": "atostogavo"
             },
-            "ru": ["отдыхать", "быть в отпуске"]
+            "translations": ["отдыхать", "быть в отпуске"]
         },
         {
             "type": "verb",
@@ -47,7 +47,7 @@
                 "present3": "eina",
                 "past3": "ėjo"
             },
-            "ru": ["идти", "ходить"]
+            "translations": ["идти", "ходить"]
         },
         {
             "type": "verb",
@@ -57,7 +57,7 @@
                 "present3": "skambina",
                 "past3": "skambino"
             },
-            "ru": ["звонить"]
+            "translations": ["звонить"]
         },
         {
             "type": "verb",
@@ -67,7 +67,7 @@
                 "present3": "skuba",
                 "past3": "skubėjo"
             },
-            "ru": ["спешить"]
+            "translations": ["спешить"]
         },
         {
             "type": "verb",
@@ -77,7 +77,7 @@
                 "present3": "susitinka",
                 "past3": "susitiko"
             },
-            "ru": ["встретиться", "встречать"]
+            "translations": ["встретиться", "встречать"]
         },
         {
             "type": "verb",
@@ -87,7 +87,7 @@
                 "present3": "važiuoja",
                 "past3": "važiavo"
             },
-            "ru": ["ехать"]
+            "translations": ["ехать"]
         },
         {
             "type": "verb",
@@ -97,7 +97,7 @@
                 "present3": "vėluoja",
                 "past3": "vėlavo"
             },
-            "ru": ["опаздывать"]
+            "translations": ["опаздывать"]
         },
         {
             "type": "noun",
@@ -111,7 +111,7 @@
                 "locative": "mieste",
                 "vocative": "mieste"
             },
-            "ru": ["город"]
+            "translations": ["город"]
         },
         {
             "type": "noun",
@@ -125,7 +125,7 @@
                 "locative": "senamiestyje",
                 "vocative": "senamiesti"
             },
-            "ru": ["старый город", "исторический центр"]
+            "translations": ["старый город", "исторический центр"]
         },
         {
             "type": "noun",
@@ -139,11 +139,13 @@
                 "locative": "pilyje",
                 "vocative": "pilie"
             },
-            "ru": ["замок"]
+            "translations": ["замок"]
         },
         {
             "type": "noun",
             "lemma": "muziejus",
+            "exception": true,
+            "exception_note_ru": "Существительное на -jus: в косвенных падежах основа muziej-.",
             "forms": {
                 "nominative": "muziejus",
                 "genitive": "muziejaus",
@@ -153,9 +155,7 @@
                 "locative": "muziejuje",
                 "vocative": "muziejau"
             },
-            "ru": ["музей"],
-            "exception": true,
-            "exception_note_ru": "Существительное на -jus: в косвенных падежах основа muziej-."
+            "translations": ["музей"]
         },
         {
             "type": "noun",
@@ -169,7 +169,7 @@
                 "locative": "gatvėje",
                 "vocative": "gatve"
             },
-            "ru": ["улица"]
+            "translations": ["улица"]
         },
         {
             "type": "noun",
@@ -183,7 +183,7 @@
                 "locative": "aikštėje",
                 "vocative": "aikšte"
             },
-            "ru": ["площадь"]
+            "translations": ["площадь"]
         },
         {
             "type": "noun",
@@ -197,7 +197,7 @@
                 "locative": "teatre",
                 "vocative": "teatre"
             },
-            "ru": ["театр"]
+            "translations": ["театр"]
         },
         {
             "type": "noun",
@@ -211,7 +211,7 @@
                 "locative": "kavinėje",
                 "vocative": "kavine"
             },
-            "ru": ["кафе"]
+            "translations": ["кафе"]
         },
         {
             "type": "noun",
@@ -225,7 +225,7 @@
                 "locative": "kioske",
                 "vocative": "kioske"
             },
-            "ru": ["киоск"]
+            "translations": ["киоск"]
         },
         {
             "type": "noun",
@@ -239,7 +239,7 @@
                 "locative": "ligoninėje",
                 "vocative": "ligonine"
             },
-            "ru": ["больница"]
+            "translations": ["больница"]
         },
         {
             "type": "noun",
@@ -253,7 +253,7 @@
                 "locative": "pašte",
                 "vocative": "pašte"
             },
-            "ru": ["почта"]
+            "translations": ["почта"]
         },
         {
             "type": "noun",
@@ -267,7 +267,7 @@
                 "locative": "ministerijoje",
                 "vocative": "ministerija"
             },
-            "ru": ["министерство"]
+            "translations": ["министерство"]
         },
         {
             "type": "noun",
@@ -281,7 +281,7 @@
                 "locative": "viešbutyje",
                 "vocative": "viešbuti"
             },
-            "ru": ["гостиница", "отель"]
+            "translations": ["гостиница", "отель"]
         },
         {
             "type": "noun",
@@ -295,7 +295,7 @@
                 "locative": "restorane",
                 "vocative": "restorane"
             },
-            "ru": ["ресторан"]
+            "translations": ["ресторан"]
         },
         {
             "type": "noun",
@@ -309,7 +309,7 @@
                 "locative": "bendrabutyje",
                 "vocative": "bendrabuti"
             },
-            "ru": ["общежитие"]
+            "translations": ["общежитие"]
         },
         {
             "type": "noun",
@@ -323,7 +323,7 @@
                 "locative": "vaistinėje",
                 "vocative": "vaistine"
             },
-            "ru": ["аптека"]
+            "translations": ["аптека"]
         },
         {
             "type": "noun",
@@ -337,11 +337,13 @@
                 "locative": "ambasadoje",
                 "vocative": "ambasada"
             },
-            "ru": ["посольство"]
+            "translations": ["посольство"]
         },
         {
             "type": "noun",
             "lemma": "turgus",
+            "exception": true,
+            "exception_note_ru": "Существительное на -us с основой -aus в родительном падеже.",
             "forms": {
                 "nominative": "turgus",
                 "genitive": "turgaus",
@@ -351,9 +353,7 @@
                 "locative": "turguje",
                 "vocative": "turgau"
             },
-            "ru": ["рынок"],
-            "exception": true,
-            "exception_note_ru": "Существительное на -us с основой -aus в родительном падеже."
+            "translations": ["рынок"]
         },
         {
             "type": "noun",
@@ -367,7 +367,7 @@
                 "locative": "bažnyčioje",
                 "vocative": "bažnyčia"
             },
-            "ru": ["церковь"]
+            "translations": ["церковь"]
         },
         {
             "type": "noun",
@@ -381,7 +381,7 @@
                 "locative": "parduotuvėje",
                 "vocative": "parduotuve"
             },
-            "ru": ["магазин"]
+            "translations": ["магазин"]
         },
         {
             "type": "noun",
@@ -395,7 +395,7 @@
                 "locative": "parke",
                 "vocative": "parke"
             },
-            "ru": ["парк"]
+            "translations": ["парк"]
         },
         {
             "type": "noun",
@@ -409,7 +409,7 @@
                 "locative": "upėje",
                 "vocative": "upe"
             },
-            "ru": ["река"]
+            "translations": ["река"]
         },
         {
             "type": "noun",
@@ -423,7 +423,7 @@
                 "locative": "tilte",
                 "vocative": "tilte"
             },
-            "ru": ["мост"]
+            "translations": ["мост"]
         },
         {
             "type": "noun",
@@ -437,7 +437,7 @@
                 "locative": "banke",
                 "vocative": "banke"
             },
-            "ru": ["банк"]
+            "translations": ["банк"]
         },
         {
             "type": "noun",
@@ -451,7 +451,7 @@
                 "locative": "bare",
                 "vocative": "bare"
             },
-            "ru": ["бар"]
+            "translations": ["бар"]
         },
         {
             "type": "noun",
@@ -465,7 +465,7 @@
                 "locative": "baseine",
                 "vocative": "baseine"
             },
-            "ru": ["бассейн"]
+            "translations": ["бассейн"]
         },
         {
             "type": "noun",
@@ -479,7 +479,7 @@
                 "locative": "bibliotekoje",
                 "vocative": "biblioteka"
             },
-            "ru": ["библиотека"]
+            "translations": ["библиотека"]
         },
         {
             "type": "noun",
@@ -493,7 +493,7 @@
                 "locative": "bokšte",
                 "vocative": "bokšte"
             },
-            "ru": ["башня"]
+            "translations": ["башня"]
         },
         {
             "type": "noun",
@@ -507,7 +507,7 @@
                 "locative": "fontane",
                 "vocative": "fontane"
             },
-            "ru": ["фонтан"]
+            "translations": ["фонтан"]
         },
         {
             "type": "noun",
@@ -521,7 +521,7 @@
                 "locative": "kirpykloje",
                 "vocative": "kirpykla"
             },
-            "ru": ["парикмахерская"]
+            "translations": ["парикмахерская"]
         },
         {
             "type": "noun",
@@ -535,7 +535,7 @@
                 "locative": "knygyne",
                 "vocative": "knygyne"
             },
-            "ru": ["книжный магазин"]
+            "translations": ["книжный магазин"]
         },
         {
             "type": "noun",
@@ -549,7 +549,7 @@
                 "locative": "klube",
                 "vocative": "klube"
             },
-            "ru": ["клуб"]
+            "translations": ["клуб"]
         },
         {
             "type": "noun",
@@ -563,7 +563,7 @@
                 "locative": "mokykloje",
                 "vocative": "mokykla"
             },
-            "ru": ["школа"]
+            "translations": ["школа"]
         },
         {
             "type": "noun",
@@ -577,7 +577,7 @@
                 "locative": "operos teatre",
                 "vocative": "operos teatre"
             },
-            "ru": ["оперный театр"]
+            "translations": ["оперный театр"]
         },
         {
             "type": "noun",
@@ -591,7 +591,7 @@
                 "locative": "oro uoste",
                 "vocative": "oro uoste"
             },
-            "ru": ["аэропорт"]
+            "translations": ["аэропорт"]
         },
         {
             "type": "noun",
@@ -605,7 +605,7 @@
                 "locative": "sankryžoje",
                 "vocative": "sankryža"
             },
-            "ru": ["перекрёсток"]
+            "translations": ["перекрёсток"]
         },
         {
             "type": "noun",
@@ -619,7 +619,7 @@
                 "locative": "sporto klube",
                 "vocative": "sporto klube"
             },
-            "ru": ["спортивный клуб"]
+            "translations": ["спортивный клуб"]
         },
         {
             "type": "noun",
@@ -633,11 +633,13 @@
                 "locative": "stotelėje",
                 "vocative": "stotele"
             },
-            "ru": ["остановка"]
+            "translations": ["остановка"]
         },
         {
             "type": "noun",
             "lemma": "stotis",
+            "exception": true,
+            "exception_note_ru": "Женское существительное на -is; в дательном ед. ч. форма stočiai.",
             "forms": {
                 "nominative": "stotis",
                 "genitive": "stoties",
@@ -647,9 +649,7 @@
                 "locative": "stotyje",
                 "vocative": "stotie"
             },
-            "ru": ["станция", "вокзал"],
-            "exception": true,
-            "exception_note_ru": "Женское существительное на -is; в дательном ед. ч. форма stočiai."
+            "translations": ["станция", "вокзал"]
         },
         {
             "type": "noun",
@@ -663,7 +663,7 @@
                 "locative": "šviesofore",
                 "vocative": "šviesofore"
             },
-            "ru": ["светофор"]
+            "translations": ["светофор"]
         },
         {
             "type": "noun",
@@ -677,7 +677,7 @@
                 "locative": "uoste",
                 "vocative": "uoste"
             },
-            "ru": ["порт"]
+            "translations": ["порт"]
         },
         {
             "type": "noun",
@@ -691,7 +691,7 @@
                 "locative": "ežere",
                 "vocative": "ežere"
             },
-            "ru": ["озеро"]
+            "translations": ["озеро"]
         },
         {
             "type": "noun",
@@ -705,7 +705,8 @@
                 "locative": "jūroje",
                 "vocative": "jūra"
             },
-            "ru": ["море"]
+            "translations": ["море"]
         }
-    ]
+    ],
+    "schemaVersion": 1
 }

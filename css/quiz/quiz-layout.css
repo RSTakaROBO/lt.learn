@@ -5,7 +5,6 @@
     gap: var(--panel-section-gap);
     min-height: 0;
 }
-
 #quiz-verbs-ui:not(.hidden) {
     flex: 1;
     display: flex;
@@ -13,35 +12,29 @@
     gap: var(--panel-section-gap);
     min-height: 0;
 }
-
 #quiz.panel > .quiz-screen-body {
     flex: 0 1 auto;
 }
-
 #quiz.panel.quiz--vocab:not(.quiz--vocab-single):not(.quiz--vocab-hardcore) > .quiz-screen-body {
     flex: 1 1 0;
     overflow: hidden;
 }
-
 .quiz-footer-stack {
     display: flex;
     flex-direction: column;
     gap: 0.38rem;
     padding-bottom: 0;
 }
-
 .quiz-footer-stack > .quiz-footer-actions {
     margin-top: 0;
     padding-top: 0;
 }
-
 @media (max-width: 600px) {
     .quiz-footer-stack {
         gap: 0.3rem;
         margin-bottom: -0.65rem;
     }
 }
-
 #quiz.panel.quiz--verbs {
     row-gap: var(--panel-section-gap);
 }

@@ -5,13 +5,12 @@ function cleanString(value) {
 }
 
 export function vocabLemma(word) {
-    return cleanString(word?.lemma || word?.nominative)
+    return cleanString(word?.lemma)
 }
 
 export function vocabVerbFormsLine(word) {
     if (word?.type !== "verb") return ""
-    const source = word?.forms && typeof word.forms === "object" ? word.forms : word
-    return [source?.infinitive || word?.lemma, source?.present3, source?.past3]
+    return [word.forms?.infinitive, word.forms?.present3, word.forms?.past3]
         .map(cleanString)
         .filter(Boolean)
         .join("\n")
@@ -26,15 +25,13 @@ export function vocabLtDisplay(word, showVerbForms = false) {
 }
 
 export function vocabRuPrimary(word) {
-    if (Array.isArray(word?.ru_list)) return cleanString(word.ru_list[0])
-    if (Array.isArray(word?.ru)) return cleanString(word.ru[0])
-    return cleanString(word?.ru)
+    return Array.isArray(word?.translations) ? cleanString(word.translations[0]) : ""
 }
 
 export function vocabRuAlt(word) {
-    if (Array.isArray(word?.ru_list)) return word.ru_list.slice(1).map(cleanString).filter(Boolean)
-    if (Array.isArray(word?.ru)) return word.ru.slice(1).map(cleanString).filter(Boolean)
-    return []
+    return Array.isArray(word?.translations)
+        ? word.translations.slice(1).map(cleanString).filter(Boolean)
+        : []
 }
 
 export function vocabRuAcceptedList(word) {

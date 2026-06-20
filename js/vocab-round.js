@@ -30,7 +30,7 @@ export const VOCAB_ROUND_STREAK_TO_REMOVE = LEARNED_WORD_CORRECT_WRONG_DELTA
  * Ключ леммы в раунде (trim), чтобы пул, веса и счётчики совпадали.
  */
 export function roundLemmaKey(word) {
-    return cleanString(word?.lemma || word?.nominative)
+    return cleanString(word?.lemma)
 }
 
 function ensureRoundRow(vr, lemma) {
@@ -41,7 +41,9 @@ function ensureRoundRow(vr, lemma) {
 function learnedProgress(wordStats, lemma) {
     const row = wordStats?.[lemma]
     if (!row) return 0
-    return Math.max(0, (Number(row.correct) || 0) - (Number(row.wrong) || 0))
+    const progress = Number(row.progress)
+    if (!Number.isFinite(progress)) return 0
+    return Math.max(0, Math.min(LEARNED_WORD_CORRECT_WRONG_DELTA, progress))
 }
 
 function isLearnedLemma(wordStats, lemma) {
@@ -222,7 +224,6 @@ export function getVocabRoundSummarySnapshot() {
     return {
         accuracyPct,
         stages: graded + skipped,
-        answered: graded,
         correct: vr.gradedCorrect,
         wrong: vr.gradedWrong,
         maxStreak: vr.maxStreak,

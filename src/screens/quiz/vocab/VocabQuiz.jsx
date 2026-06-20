@@ -31,7 +31,7 @@ import { SingleVocabCardDeck } from "src/screens/quiz/vocab/SingleVocabCardDeck.
 
 function vocabPromptForTask(task, showVerbForms) {
     if (!task?.word) return { text: "", lang: undefined }
-    const dir = task.vocabDirection || VOCAB_DIRECTION.RU_TO_LT
+    const dir = task.vocabDirection
     if (dir === VOCAB_DIRECTION.LT_TO_RU) {
         return { text: vocabLtDisplay(task.word, showVerbForms), lang: "lt" }
     }
@@ -42,7 +42,7 @@ function hardcoreAnswerForTask(task, feedback, typedAnswer) {
     if (feedback?.kind !== "ok" && feedback?.kind !== "bad") return ""
     if (feedback.expected) return feedback.expected
 
-    const dir = task?.vocabDirection || VOCAB_DIRECTION.RU_TO_LT
+    const dir = task?.vocabDirection
     return dir === VOCAB_DIRECTION.LT_TO_RU
         ? String(typedAnswer || "").trim()
         : vocabLemma(task?.word)
@@ -53,7 +53,7 @@ function vocabChoiceClass(lem, task, answered, choiceState) {
     if (!answered) classes.push("ghost")
     if (!answered || !task?.word) return classes.join(" ")
 
-    const dir = task.vocabDirection || VOCAB_DIRECTION.RU_TO_LT
+    const dir = task.vocabDirection
     const isCorrect =
         dir === VOCAB_DIRECTION.LT_TO_RU
             ? vocabRuUserMatches(task.word, lem)
@@ -69,7 +69,7 @@ function vocabChoiceClass(lem, task, answered, choiceState) {
 
 function VocabChoices({ task, answered, choiceState, showVerbForms, showWrongTranslation }) {
     const choices = Array.isArray(task?.choices) ? task.choices : []
-    const dir = task?.vocabDirection || VOCAB_DIRECTION.RU_TO_LT
+    const dir = task?.vocabDirection
     const ariaLabel =
         dir === VOCAB_DIRECTION.LT_TO_RU ? STR.quiz.vocabLtToRuAria : STR.quiz.vocabRuToLtAria
 
@@ -177,16 +177,16 @@ export function VocabQuiz({
     vocabSingleNextTask,
     vocabSingleState,
 }) {
-    const isHardcore = !!task?.vocabHardcore
+    const isHardcore = task?.vocabMode === VOCAB_MODE.HARDCORE
     const isSingle = task?.vocabMode === VOCAB_MODE.SINGLE
     const prompt = vocabPromptForTask(task, showVerbForms)
     const showChoices = isActive && !isHardcore && !isSingle
     const feedbackKind = feedback?.kind === "ok" || feedback?.kind === "bad" ? feedback.kind : ""
     const hardcoreAnswer = isHardcore ? hardcoreAnswerForTask(task, feedback, quizTypingAnswer) : ""
     const cardKey = [
-        task?.word?.id || task?.word?.lemma || task?.word?.nominative || prompt.text,
+        task?.word?.id || task?.word?.lemma || prompt.text,
         task?.vocabDirection || "",
-        task?.vocabMode || (isHardcore ? "hardcore" : "choices"),
+        task?.vocabMode || "",
     ].join(":")
 
     useEffect(() => {

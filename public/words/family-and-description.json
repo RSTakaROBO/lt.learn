@@ -13,7 +13,7 @@
                 "locative": "šeimoje",
                 "vocative": "šeima"
             },
-            "ru": "семья"
+            "translations": ["семья"]
         },
         {
             "type": "noun",
@@ -29,7 +29,7 @@
                 "locative": "tėvuose",
                 "vocative": "tėvai"
             },
-            "ru": "родители"
+            "translations": ["родители"]
         },
         {
             "type": "noun",
@@ -43,7 +43,7 @@
                 "locative": "motinoje",
                 "vocative": "motina"
             },
-            "ru": "мать"
+            "translations": ["мать"]
         },
         {
             "type": "noun",
@@ -57,7 +57,7 @@
                 "locative": "mamoje",
                 "vocative": "mama"
             },
-            "ru": "мама"
+            "translations": ["мама"]
         },
         {
             "type": "noun",
@@ -71,7 +71,7 @@
                 "locative": "tėve",
                 "vocative": "tėve"
             },
-            "ru": "отец"
+            "translations": ["отец"]
         },
         {
             "type": "noun",
@@ -85,7 +85,7 @@
                 "locative": "tėtyje",
                 "vocative": "tėti"
             },
-            "ru": "папа"
+            "translations": ["папа"]
         },
         {
             "type": "noun",
@@ -99,7 +99,7 @@
                 "locative": "sūnuje",
                 "vocative": "sūnau"
             },
-            "ru": "сын"
+            "translations": ["сын"]
         },
         {
             "type": "noun",
@@ -115,7 +115,7 @@
                 "locative": "dukteryje",
                 "vocative": "dukterie"
             },
-            "ru": "дочь"
+            "translations": ["дочь"]
         },
         {
             "type": "noun",
@@ -129,7 +129,7 @@
                 "locative": "senelyje",
                 "vocative": "seneli"
             },
-            "ru": "дедушка"
+            "translations": ["дедушка"]
         },
         {
             "type": "noun",
@@ -143,7 +143,7 @@
                 "locative": "senelėje",
                 "vocative": "senele"
             },
-            "ru": "бабуля"
+            "translations": ["бабуля"]
         },
         {
             "type": "noun",
@@ -157,7 +157,7 @@
                 "locative": "močiutėje",
                 "vocative": "močiute"
             },
-            "ru": "бабушка"
+            "translations": ["бабушка"]
         },
         {
             "type": "noun",
@@ -171,7 +171,7 @@
                 "locative": "prosenelyje",
                 "vocative": "proseneli"
             },
-            "ru": "прадедушка"
+            "translations": ["прадедушка"]
         },
         {
             "type": "noun",
@@ -185,7 +185,7 @@
                 "locative": "prosenelėje",
                 "vocative": "prosenele"
             },
-            "ru": "прабабушка"
+            "translations": ["прабабушка"]
         },
         {
             "type": "noun",
@@ -199,7 +199,7 @@
                 "locative": "vyre",
                 "vocative": "vyre"
             },
-            "ru": ["муж", "мужчина"]
+            "translations": ["муж", "мужчина"]
         },
         {
             "type": "noun",
@@ -213,7 +213,7 @@
                 "locative": "žmonoje",
                 "vocative": "žmona"
             },
-            "ru": "жена"
+            "translations": ["жена"]
         },
         {
             "type": "noun",
@@ -227,7 +227,7 @@
                 "locative": "brolyje",
                 "vocative": "broli"
             },
-            "ru": "брат"
+            "translations": ["брат"]
         },
         {
             "type": "noun",
@@ -243,7 +243,7 @@
                 "locative": "seseryje",
                 "vocative": "seserie"
             },
-            "ru": "сестра"
+            "translations": ["сестра"]
         },
         {
             "type": "noun",
@@ -257,7 +257,7 @@
                 "locative": "vaike",
                 "vocative": "vaike"
             },
-            "ru": "ребёнок"
+            "translations": ["ребёнок"]
         },
         {
             "type": "noun",
@@ -271,7 +271,7 @@
                 "locative": "kūdikyje",
                 "vocative": "kūdiki"
             },
-            "ru": "младенец"
+            "translations": ["младенец"]
         },
         {
             "type": "noun",
@@ -285,7 +285,7 @@
                 "locative": "anūke",
                 "vocative": "anūke"
             },
-            "ru": "внук"
+            "translations": ["внук"]
         },
         {
             "type": "noun",
@@ -299,7 +299,7 @@
                 "locative": "anūkėje",
                 "vocative": "anūke"
             },
-            "ru": "внучка"
+            "translations": ["внучка"]
         },
         {
             "type": "noun",
@@ -315,7 +315,7 @@
                 "locative": "giminėse",
                 "vocative": "giminės"
             },
-            "ru": ["родственники", "родня"]
+            "translations": ["родственники", "родня"]
         },
         {
             "type": "noun",
@@ -329,7 +329,7 @@
                 "locative": "dėdėje",
                 "vocative": "dėde"
             },
-            "ru": "дядя"
+            "translations": ["дядя"]
         },
         {
             "type": "noun",
@@ -343,7 +343,7 @@
                 "locative": "tetoje",
                 "vocative": "teta"
             },
-            "ru": "тётя"
+            "translations": ["тётя"]
         },
         {
             "type": "noun",
@@ -357,7 +357,7 @@
                 "locative": "pusbrolyje",
                 "vocative": "pusbroli"
             },
-            "ru": ["двоюродный брат", "кузин"]
+            "translations": ["двоюродный брат", "кузин"]
         },
         {
             "type": "noun",
@@ -371,529 +371,608 @@
                 "locative": "pusseserėje",
                 "vocative": "pussesere"
             },
-            "ru": ["двоюродная сестра", "кузина"]
+            "translations": ["двоюродная сестра", "кузина"]
         },
         {
             "type": "verb",
             "lemma": "galėti",
+            "conjugation": "II",
             "forms": {
                 "infinitive": "galėti",
                 "present3": "gali",
                 "past3": "galėjo"
             },
-            "ru": "мочь",
-            "conjugation": "II"
+            "translations": ["мочь"]
         },
         {
             "type": "verb",
             "lemma": "mylėti",
+            "conjugation": "II",
             "forms": {
                 "infinitive": "mylėti",
                 "present3": "myli",
                 "past3": "mylėjo"
             },
-            "ru": "любить",
-            "conjugation": "II"
+            "translations": ["любить"]
         },
         {
             "type": "verb",
             "lemma": "norėti",
+            "conjugation": "II",
             "forms": {
                 "infinitive": "norėti",
                 "present3": "nori",
                 "past3": "norėjo"
             },
-            "ru": "хотеть",
-            "conjugation": "II"
+            "translations": ["хотеть"]
         },
         {
             "type": "verb",
             "lemma": "pasiilgti",
+            "conjugation": "I",
             "forms": {
                 "infinitive": "pasiilgti",
                 "present3": "pasiilgsta",
                 "past3": "pasiilgo"
             },
-            "ru": ["соскучиться", "тосковать"],
-            "conjugation": "I"
+            "translations": ["соскучиться", "тосковать"]
         },
         {
             "type": "verb",
             "lemma": "sėdėti",
+            "conjugation": "II",
             "forms": {
                 "infinitive": "sėdėti",
                 "present3": "sėdi",
                 "past3": "sėdėjo"
             },
-            "ru": "сидеть",
-            "conjugation": "II"
+            "translations": ["сидеть"]
         },
         {
             "type": "verb",
             "lemma": "stovėti",
+            "conjugation": "II",
             "forms": {
                 "infinitive": "stovėti",
                 "present3": "stovi",
                 "past3": "stovėjo"
             },
-            "ru": "стоять",
-            "conjugation": "II"
+            "translations": ["стоять"]
         },
         {
             "type": "verb",
             "lemma": "turėti",
+            "conjugation": "II",
             "forms": {
                 "infinitive": "turėti",
                 "present3": "turi",
                 "past3": "turėjo"
             },
-            "ru": "иметь",
-            "conjugation": "II"
+            "translations": ["иметь"]
         },
         {
             "type": "verb",
             "lemma": "žiūrėti",
+            "conjugation": "II",
             "forms": {
                 "infinitive": "žiūrėti",
                 "present3": "žiūri",
                 "past3": "žiūrėjo"
             },
-            "ru": "смотреть",
-            "conjugation": "II"
+            "translations": ["смотреть"]
         },
         {
             "type": "verb",
             "lemma": "girdėti",
+            "conjugation": "II",
             "forms": {
                 "infinitive": "girdėti",
                 "present3": "girdi",
                 "past3": "girdėjo"
             },
-            "ru": "слышать",
-            "conjugation": "II"
+            "translations": ["слышать"]
         },
         {
             "type": "verb",
             "lemma": "mėgti",
+            "conjugation": "I",
             "forms": {
                 "infinitive": "mėgti",
                 "present3": "mėgsta",
                 "past3": "mėgo"
             },
-            "ru": ["любить", "нравиться"],
-            "conjugation": "I"
+            "translations": ["любить", "нравиться"]
         },
         {
             "type": "verb",
             "lemma": "susipažinti",
+            "conjugation": "I",
             "forms": {
                 "infinitive": "susipažinti",
                 "present3": "susipažįsta",
                 "past3": "susipažino"
             },
-            "ru": "познакомиться",
-            "conjugation": "I"
+            "translations": ["познакомиться"]
         },
         {
             "type": "verb",
             "lemma": "žaisti",
+            "conjugation": "I",
             "forms": {
                 "infinitive": "žaisti",
                 "present3": "žaidžia",
                 "past3": "žaidė"
             },
-            "ru": "играть",
-            "conjugation": "I"
+            "translations": ["играть"]
         },
         {
             "type": "adjective",
             "lemma": "vedęs",
-            "ru": "женатый"
+            "forms": {},
+            "translations": ["женатый"]
         },
         {
             "type": "adjective",
             "lemma": "ištekėjusi",
-            "ru": "замужняя"
+            "forms": {},
+            "translations": ["замужняя"]
         },
         {
             "type": "adjective",
             "lemma": "išsiskyręs",
-            "ru": "разведённый"
+            "forms": {},
+            "translations": ["разведённый"]
         },
         {
             "type": "adjective",
             "lemma": "išsiskyrusi",
-            "ru": "разведённая"
+            "forms": {},
+            "translations": ["разведённая"]
         },
         {
             "type": "adjective",
             "lemma": "miręs",
-            "ru": "умерший"
+            "forms": {},
+            "translations": ["умерший"]
         },
         {
             "type": "adjective",
             "lemma": "mirusi",
-            "ru": "умершая"
+            "forms": {},
+            "translations": ["умершая"]
         },
         {
             "type": "adjective",
             "lemma": "jaunas",
-            "ru": "молодой"
+            "forms": {},
+            "translations": ["молодой"]
         },
         {
             "type": "adjective",
             "lemma": "jauna",
-            "ru": "молодая"
+            "forms": {},
+            "translations": ["молодая"]
         },
         {
             "type": "adjective",
             "lemma": "senas",
-            "ru": "старый"
+            "forms": {},
+            "translations": ["старый"]
         },
         {
             "type": "adjective",
             "lemma": "sena",
-            "ru": "старая"
+            "forms": {},
+            "translations": ["старая"]
         },
         {
             "type": "adjective",
             "lemma": "linksmas",
-            "ru": "весёлый"
+            "forms": {},
+            "translations": ["весёлый"]
         },
         {
             "type": "adjective",
             "lemma": "linksma",
-            "ru": "весёлая"
+            "forms": {},
+            "translations": ["весёлая"]
         },
         {
             "type": "adjective",
             "lemma": "liūdnas",
-            "ru": "грустный"
+            "forms": {},
+            "translations": ["грустный"]
         },
         {
             "type": "adjective",
             "lemma": "liūdna",
-            "ru": "грустная"
+            "forms": {},
+            "translations": ["грустная"]
         },
         {
             "type": "adjective",
             "lemma": "gražus",
-            "ru": "красивый"
+            "forms": {},
+            "translations": ["красивый"]
         },
         {
             "type": "adjective",
             "lemma": "graži",
-            "ru": "красивая"
+            "forms": {},
+            "translations": ["красивая"]
         },
         {
             "type": "adjective",
             "lemma": "negražus",
-            "ru": "некрасивый"
+            "forms": {},
+            "translations": ["некрасивый"]
         },
         {
             "type": "adjective",
             "lemma": "negraži",
-            "ru": "некрасивая"
+            "forms": {},
+            "translations": ["некрасивая"]
         },
         {
             "type": "adjective",
             "lemma": "šviesus",
-            "ru": "светлый"
+            "forms": {},
+            "translations": ["светлый"]
         },
         {
             "type": "adjective",
             "lemma": "šviesi",
-            "ru": "светлая"
+            "forms": {},
+            "translations": ["светлая"]
         },
         {
             "type": "adjective",
             "lemma": "tamsus",
-            "ru": "тёмный"
+            "forms": {},
+            "translations": ["тёмный"]
         },
         {
             "type": "adjective",
             "lemma": "tamsi",
-            "ru": "тёмная"
+            "forms": {},
+            "translations": ["тёмная"]
         },
         {
             "type": "adjective",
             "lemma": "žemas",
-            "ru": "низкий"
+            "forms": {},
+            "translations": ["низкий"]
         },
         {
             "type": "adjective",
             "lemma": "žema",
-            "ru": "низкая"
+            "forms": {},
+            "translations": ["низкая"]
         },
         {
             "type": "adjective",
             "lemma": "aukštas",
-            "ru": "высокий"
+            "forms": {},
+            "translations": ["высокий"]
         },
         {
             "type": "adjective",
             "lemma": "aukšta",
-            "ru": "высокая"
+            "forms": {},
+            "translations": ["высокая"]
         },
         {
             "type": "adjective",
             "lemma": "stambus",
-            "ru": "крупный"
+            "forms": {},
+            "translations": ["крупный"]
         },
         {
             "type": "adjective",
             "lemma": "stambi",
-            "ru": "крупная"
+            "forms": {},
+            "translations": ["крупная"]
         },
         {
             "type": "adjective",
             "lemma": "plonas",
-            "ru": "тонкий"
+            "forms": {},
+            "translations": ["тонкий"]
         },
         {
             "type": "adjective",
             "lemma": "plona",
-            "ru": "тонкая"
+            "forms": {},
+            "translations": ["тонкая"]
         },
         {
             "type": "adjective",
             "lemma": "stiprus",
-            "ru": "сильный"
+            "forms": {},
+            "translations": ["сильный"]
         },
         {
             "type": "adjective",
             "lemma": "stipri",
-            "ru": "сильная"
+            "forms": {},
+            "translations": ["сильная"]
         },
         {
             "type": "adjective",
             "lemma": "silpnas",
-            "ru": "слабый"
+            "forms": {},
+            "translations": ["слабый"]
         },
         {
             "type": "adjective",
             "lemma": "silpna",
-            "ru": "слабая"
+            "forms": {},
+            "translations": ["слабая"]
         },
         {
             "type": "adjective",
             "lemma": "tylus",
-            "ru": "тихий"
+            "forms": {},
+            "translations": ["тихий"]
         },
         {
             "type": "adjective",
             "lemma": "tyli",
-            "ru": "тихая"
+            "forms": {},
+            "translations": ["тихая"]
         },
         {
             "type": "adjective",
             "lemma": "triukšmingas",
-            "ru": "шумный"
+            "forms": {},
+            "translations": ["шумный"]
         },
         {
             "type": "adjective",
             "lemma": "triukšminga",
-            "ru": "шумная"
+            "forms": {},
+            "translations": ["шумная"]
         },
         {
             "type": "adjective",
             "lemma": "lėtas",
-            "ru": "медленный"
+            "forms": {},
+            "translations": ["медленный"]
         },
         {
             "type": "adjective",
             "lemma": "lėta",
-            "ru": "медленная"
+            "forms": {},
+            "translations": ["медленная"]
         },
         {
             "type": "adjective",
             "lemma": "greitas",
-            "ru": "быстрый"
+            "forms": {},
+            "translations": ["быстрый"]
         },
         {
             "type": "adjective",
             "lemma": "greita",
-            "ru": "быстрая"
+            "forms": {},
+            "translations": ["быстрая"]
         },
         {
             "type": "adjective",
             "lemma": "puikus",
-            "ru": "отличный"
+            "forms": {},
+            "translations": ["отличный"]
         },
         {
             "type": "adjective",
             "lemma": "puiki",
-            "ru": "отличная"
+            "forms": {},
+            "translations": ["отличная"]
         },
         {
             "type": "adjective",
             "lemma": "geras",
-            "ru": "хороший"
+            "forms": {},
+            "translations": ["хороший"]
         },
         {
             "type": "adjective",
             "lemma": "gera",
-            "ru": "хорошая"
+            "forms": {},
+            "translations": ["хорошая"]
         },
         {
             "type": "adjective",
             "lemma": "blogas",
-            "ru": "плохой"
+            "forms": {},
+            "translations": ["плохой"]
         },
         {
             "type": "adjective",
             "lemma": "bloga",
-            "ru": "плохая"
+            "forms": {},
+            "translations": ["плохая"]
         },
         {
             "type": "adjective",
             "lemma": "didelis",
-            "ru": "большой"
+            "forms": {},
+            "translations": ["большой"]
         },
         {
             "type": "adjective",
             "lemma": "didelė",
-            "ru": "большая"
+            "forms": {},
+            "translations": ["большая"]
         },
         {
             "type": "adjective",
             "lemma": "vidutinis",
-            "ru": "средний"
+            "forms": {},
+            "translations": ["средний"]
         },
         {
             "type": "adjective",
             "lemma": "vidutinė",
-            "ru": "средняя"
+            "forms": {},
+            "translations": ["средняя"]
         },
         {
             "type": "adjective",
             "lemma": "mažas",
-            "ru": "маленький"
+            "forms": {},
+            "translations": ["маленький"]
         },
         {
             "type": "adjective",
             "lemma": "maža",
-            "ru": "маленькая"
+            "forms": {},
+            "translations": ["маленькая"]
         },
         {
             "type": "adjective",
             "lemma": "malonus",
-            "ru": "приятный"
+            "forms": {},
+            "translations": ["приятный"]
         },
         {
             "type": "adjective",
             "lemma": "maloni",
-            "ru": "приятная"
+            "forms": {},
+            "translations": ["приятная"]
         },
         {
             "type": "adjective",
             "lemma": "bjaurus",
-            "ru": "противный"
+            "forms": {},
+            "translations": ["противный"]
         },
         {
             "type": "adjective",
             "lemma": "bjauri",
-            "ru": "противная"
+            "forms": {},
+            "translations": ["противная"]
         },
         {
             "type": "adjective",
             "lemma": "laimingas",
-            "ru": "счастливый"
+            "forms": {},
+            "translations": ["счастливый"]
         },
         {
             "type": "adjective",
             "lemma": "laiminga",
-            "ru": "счастливая"
+            "forms": {},
+            "translations": ["счастливая"]
         },
         {
             "type": "adjective",
             "lemma": "nelaimingas",
-            "ru": "несчастный"
+            "forms": {},
+            "translations": ["несчастный"]
         },
         {
             "type": "adjective",
             "lemma": "nelaiminga",
-            "ru": "несчастная"
+            "forms": {},
+            "translations": ["несчастная"]
         },
         {
             "type": "adjective",
             "lemma": "mielas",
-            "ru": "милый"
+            "forms": {},
+            "translations": ["милый"]
         },
         {
             "type": "adjective",
             "lemma": "miela",
-            "ru": "милая"
+            "forms": {},
+            "translations": ["милая"]
         },
         {
             "type": "adjective",
             "lemma": "piktas",
-            "ru": "злой"
+            "forms": {},
+            "translations": ["злой"]
         },
         {
             "type": "adjective",
             "lemma": "pikta",
-            "ru": "злая"
+            "forms": {},
+            "translations": ["злая"]
         },
         {
             "type": "adjective",
             "lemma": "naujas",
-            "ru": "новый"
+            "forms": {},
+            "translations": ["новый"]
         },
         {
             "type": "adjective",
             "lemma": "nauja",
-            "ru": "новая"
+            "forms": {},
+            "translations": ["новая"]
         },
         {
             "type": "adjective",
             "lemma": "keistas",
-            "ru": "странный"
+            "forms": {},
+            "translations": ["странный"]
         },
         {
             "type": "adjective",
             "lemma": "keista",
-            "ru": "странная"
+            "forms": {},
+            "translations": ["странная"]
         },
         {
             "type": "adjective",
             "lemma": "įdomus",
-            "ru": "интересный"
+            "forms": {},
+            "translations": ["интересный"]
         },
         {
             "type": "adjective",
             "lemma": "įdomi",
-            "ru": "интересная"
+            "forms": {},
+            "translations": ["интересная"]
         },
         {
             "type": "adjective",
             "lemma": "nuobodus",
-            "ru": "скучный"
+            "forms": {},
+            "translations": ["скучный"]
         },
         {
             "type": "adjective",
             "lemma": "nuobodi",
-            "ru": "скучная"
+            "forms": {},
+            "translations": ["скучная"]
         },
         {
             "type": "adjective",
             "lemma": "draugiškas",
-            "ru": "дружелюбный"
+            "forms": {},
+            "translations": ["дружелюбный"]
         },
         {
             "type": "adjective",
             "lemma": "draugiška",
-            "ru": "дружелюбная"
+            "forms": {},
+            "translations": ["дружелюбная"]
         },
         {
             "type": "adjective",
             "lemma": "protingas",
-            "ru": "умный"
+            "forms": {},
+            "translations": ["умный"]
         },
         {
             "type": "adjective",
             "lemma": "protinga",
-            "ru": "умная"
+            "forms": {},
+            "translations": ["умная"]
         }
-    ]
+    ],
+    "schemaVersion": 1
 }

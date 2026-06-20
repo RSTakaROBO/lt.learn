@@ -13,7 +13,7 @@
                 "locative": "žmoguje",
                 "vocative": "žmogau"
             },
-            "ru": ["человек"]
+            "translations": ["человек"]
         },
         {
             "type": "noun",
@@ -27,7 +27,7 @@
                 "locative": "mergaitėje",
                 "vocative": "mergaite"
             },
-            "ru": ["девочка"]
+            "translations": ["девочка"]
         },
         {
             "type": "noun",
@@ -41,11 +41,13 @@
                 "locative": "merginoje",
                 "vocative": "mergina"
             },
-            "ru": ["девушка"]
+            "translations": ["девушка"]
         },
         {
             "type": "noun",
             "lemma": "moteris",
+            "exception": true,
+            "exception_note_ru": "Особое склонение: родительный падеж — moters.",
             "forms": {
                 "nominative": "moteris",
                 "genitive": "moters",
@@ -55,9 +57,7 @@
                 "locative": "moteryje",
                 "vocative": "moterie"
             },
-            "ru": ["женщина"],
-            "exception": true,
-            "exception_note_ru": "Особое склонение: родительный падеж — moters."
+            "translations": ["женщина"]
         },
         {
             "type": "noun",
@@ -71,7 +71,7 @@
                 "locative": "berniuke",
                 "vocative": "berniuk"
             },
-            "ru": ["мальчик"]
+            "translations": ["мальчик"]
         },
         {
             "type": "noun",
@@ -85,7 +85,7 @@
                 "locative": "vaikine",
                 "vocative": "vaikine"
             },
-            "ru": ["парень", "юноша"]
+            "translations": ["парень", "юноша"]
         },
         {
             "type": "noun",
@@ -99,7 +99,7 @@
                 "locative": "vyre",
                 "vocative": "vyre"
             },
-            "ru": ["мужчина", "муж"]
+            "translations": ["мужчина", "муж"]
         },
         {
             "type": "noun",
@@ -113,7 +113,7 @@
                 "locative": "mokinyje",
                 "vocative": "mokiny"
             },
-            "ru": ["ученик"]
+            "translations": ["ученик"]
         },
         {
             "type": "noun",
@@ -127,7 +127,7 @@
                 "locative": "mokinėje",
                 "vocative": "mokine"
             },
-            "ru": ["ученица"]
+            "translations": ["ученица"]
         },
         {
             "type": "noun",
@@ -141,7 +141,7 @@
                 "locative": "studente",
                 "vocative": "studente"
             },
-            "ru": ["студент"]
+            "translations": ["студент"]
         },
         {
             "type": "noun",
@@ -155,7 +155,7 @@
                 "locative": "studentėje",
                 "vocative": "studente"
             },
-            "ru": ["студентка"]
+            "translations": ["студентка"]
         },
         {
             "type": "noun",
@@ -169,7 +169,7 @@
                 "locative": "pensininke",
                 "vocative": "pensininke"
             },
-            "ru": ["пенсионер"]
+            "translations": ["пенсионер"]
         },
         {
             "type": "noun",
@@ -183,7 +183,7 @@
                 "locative": "pensininkėje",
                 "vocative": "pensininke"
             },
-            "ru": ["пенсионерка"]
+            "translations": ["пенсионерка"]
         },
         {
             "type": "noun",
@@ -197,7 +197,7 @@
                 "locative": "šokėjuje",
                 "vocative": "šokėjau"
             },
-            "ru": ["танцор"]
+            "translations": ["танцор"]
         },
         {
             "type": "noun",
@@ -211,7 +211,7 @@
                 "locative": "šokėjoje",
                 "vocative": "šokėja"
             },
-            "ru": ["танцовщица"]
+            "translations": ["танцовщица"]
         },
         {
             "type": "noun",
@@ -225,7 +225,7 @@
                 "locative": "virėjuje",
                 "vocative": "virėjau"
             },
-            "ru": ["повар"]
+            "translations": ["повар"]
         },
         {
             "type": "noun",
@@ -239,7 +239,7 @@
                 "locative": "virėjoje",
                 "vocative": "virėja"
             },
-            "ru": ["повариха", "повар"]
+            "translations": ["повариха", "повар"]
         },
         {
             "type": "noun",
@@ -253,7 +253,7 @@
                 "locative": "mokytojuje",
                 "vocative": "mokytojau"
             },
-            "ru": ["учитель"]
+            "translations": ["учитель"]
         },
         {
             "type": "noun",
@@ -267,7 +267,7 @@
                 "locative": "mokytojoje",
                 "vocative": "mokytoja"
             },
-            "ru": ["учительница"]
+            "translations": ["учительница"]
         },
         {
             "type": "noun",
@@ -281,7 +281,7 @@
                 "locative": "dėstytojuje",
                 "vocative": "dėstytojau"
             },
-            "ru": ["преподаватель"]
+            "translations": ["преподаватель"]
         },
         {
             "type": "noun",
@@ -295,7 +295,7 @@
                 "locative": "dėstytojoje",
                 "vocative": "dėstytoja"
             },
-            "ru": ["преподавательница"]
+            "translations": ["преподавательница"]
         },
         {
             "type": "noun",
@@ -309,7 +309,7 @@
                 "locative": "gydytojuje",
                 "vocative": "gydytojau"
             },
-            "ru": ["врач", "доктор"]
+            "translations": ["врач", "доктор"]
         },
         {
             "type": "noun",
@@ -323,7 +323,7 @@
                 "locative": "gydytojoje",
                 "vocative": "gydytoja"
             },
-            "ru": ["врач (ж)", "врач", "доктор"]
+            "translations": ["врач (ж)", "врач", "доктор"]
         },
         {
             "type": "noun",
@@ -337,7 +337,7 @@
                 "locative": "slaugytojuje",
                 "vocative": "slaugytojau"
             },
-            "ru": ["медбрат", "медицинский брат"]
+            "translations": ["медбрат", "медицинский брат"]
         },
         {
             "type": "noun",
@@ -351,7 +351,7 @@
                 "locative": "slaugytojoje",
                 "vocative": "slaugytoja"
             },
-            "ru": ["медсестра", "медицинская сестра"]
+            "translations": ["медсестра", "медицинская сестра"]
         },
         {
             "type": "noun",
@@ -365,7 +365,7 @@
                 "locative": "vairuotojuje",
                 "vocative": "vairuotojau"
             },
-            "ru": ["водитель"]
+            "translations": ["водитель"]
         },
         {
             "type": "noun",
@@ -379,7 +379,7 @@
                 "locative": "vairuotojoje",
                 "vocative": "vairuotoja"
             },
-            "ru": ["водительница", "водитель"]
+            "translations": ["водительница", "водитель"]
         },
         {
             "type": "noun",
@@ -393,7 +393,7 @@
                 "locative": "muzikante",
                 "vocative": "muzikante"
             },
-            "ru": ["музыкант"]
+            "translations": ["музыкант"]
         },
         {
             "type": "noun",
@@ -407,7 +407,7 @@
                 "locative": "muzikantėje",
                 "vocative": "muzikante"
             },
-            "ru": ["музыкантка", "музыкант"]
+            "translations": ["музыкантка", "музыкант"]
         },
         {
             "type": "noun",
@@ -421,7 +421,7 @@
                 "locative": "fotografe",
                 "vocative": "fotografe"
             },
-            "ru": ["фотограф"]
+            "translations": ["фотограф"]
         },
         {
             "type": "noun",
@@ -435,7 +435,7 @@
                 "locative": "fotografėje",
                 "vocative": "fotografe"
             },
-            "ru": ["фотограф (ж)", "фотограф"]
+            "translations": ["фотограф (ж)", "фотограф"]
         },
         {
             "type": "noun",
@@ -449,7 +449,7 @@
                 "locative": "valytojuje",
                 "vocative": "valytojau"
             },
-            "ru": ["уборщик"]
+            "translations": ["уборщик"]
         },
         {
             "type": "noun",
@@ -463,7 +463,7 @@
                 "locative": "valytojoje",
                 "vocative": "valytoja"
             },
-            "ru": ["уборщица"]
+            "translations": ["уборщица"]
         },
         {
             "type": "noun",
@@ -477,7 +477,7 @@
                 "locative": "aktoriuje",
                 "vocative": "aktoriau"
             },
-            "ru": ["актёр"]
+            "translations": ["актёр"]
         },
         {
             "type": "noun",
@@ -491,7 +491,7 @@
                 "locative": "aktorėje",
                 "vocative": "aktore"
             },
-            "ru": ["актриса"]
+            "translations": ["актриса"]
         },
         {
             "type": "noun",
@@ -505,7 +505,7 @@
                 "locative": "dailininke",
                 "vocative": "dailininke"
             },
-            "ru": ["художник"]
+            "translations": ["художник"]
         },
         {
             "type": "noun",
@@ -519,7 +519,7 @@
                 "locative": "dailininkėje",
                 "vocative": "dailininke"
             },
-            "ru": ["художница"]
+            "translations": ["художница"]
         },
         {
             "type": "noun",
@@ -533,7 +533,7 @@
                 "locative": "dainininke",
                 "vocative": "dainininke"
             },
-            "ru": ["певец"]
+            "translations": ["певец"]
         },
         {
             "type": "noun",
@@ -547,7 +547,7 @@
                 "locative": "dainininkėje",
                 "vocative": "dainininke"
             },
-            "ru": ["певица"]
+            "translations": ["певица"]
         },
         {
             "type": "noun",
@@ -561,7 +561,7 @@
                 "locative": "sportininke",
                 "vocative": "sportininke"
             },
-            "ru": ["спортсмен"]
+            "translations": ["спортсмен"]
         },
         {
             "type": "noun",
@@ -575,7 +575,7 @@
                 "locative": "sportininkėje",
                 "vocative": "sportininke"
             },
-            "ru": ["спортсменка"]
+            "translations": ["спортсменка"]
         },
         {
             "type": "noun",
@@ -589,7 +589,7 @@
                 "locative": "mokslininke",
                 "vocative": "mokslininke"
             },
-            "ru": ["учёный"]
+            "translations": ["учёный"]
         },
         {
             "type": "noun",
@@ -603,7 +603,7 @@
                 "locative": "mokslininkėje",
                 "vocative": "mokslininke"
             },
-            "ru": ["учёная"]
+            "translations": ["учёная"]
         },
         {
             "type": "noun",
@@ -617,7 +617,7 @@
                 "locative": "darbininke",
                 "vocative": "darbininke"
             },
-            "ru": ["рабочий", "работник"]
+            "translations": ["рабочий", "работник"]
         },
         {
             "type": "noun",
@@ -631,7 +631,7 @@
                 "locative": "darbininkėje",
                 "vocative": "darbininke"
             },
-            "ru": ["рабочая", "работница"]
+            "translations": ["рабочая", "работница"]
         },
         {
             "type": "noun",
@@ -645,7 +645,7 @@
                 "locative": "policininke",
                 "vocative": "policininke"
             },
-            "ru": ["полицейский"]
+            "translations": ["полицейский"]
         },
         {
             "type": "noun",
@@ -659,7 +659,7 @@
                 "locative": "policininkėje",
                 "vocative": "policininke"
             },
-            "ru": ["полицейская"]
+            "translations": ["полицейская"]
         },
         {
             "type": "noun",
@@ -673,7 +673,7 @@
                 "locative": "ūkininke",
                 "vocative": "ūkininke"
             },
-            "ru": ["фермер", "хозяин"]
+            "translations": ["фермер", "хозяин"]
         },
         {
             "type": "noun",
@@ -687,7 +687,7 @@
                 "locative": "ūkininkėje",
                 "vocative": "ūkininke"
             },
-            "ru": ["фермерша", "фермер"]
+            "translations": ["фермерша", "фермер"]
         },
         {
             "type": "noun",
@@ -701,7 +701,7 @@
                 "locative": "siuvėjuje",
                 "vocative": "siuvėjau"
             },
-            "ru": ["портной"]
+            "translations": ["портной"]
         },
         {
             "type": "noun",
@@ -715,7 +715,7 @@
                 "locative": "siuvėjoje",
                 "vocative": "siuvėja"
             },
-            "ru": ["швея", "портниха"]
+            "translations": ["швея", "портниха"]
         },
         {
             "type": "noun",
@@ -729,7 +729,7 @@
                 "locative": "kirpėjuje",
                 "vocative": "kirpėjau"
             },
-            "ru": ["парикмахер"]
+            "translations": ["парикмахер"]
         },
         {
             "type": "noun",
@@ -743,7 +743,7 @@
                 "locative": "kirpėjoje",
                 "vocative": "kirpėja"
             },
-            "ru": ["парикмахерша", "парикмахер"]
+            "translations": ["парикмахерша", "парикмахер"]
         },
         {
             "type": "noun",
@@ -757,7 +757,7 @@
                 "locative": "padavėjuje",
                 "vocative": "padavėjau"
             },
-            "ru": ["официант"]
+            "translations": ["официант"]
         },
         {
             "type": "noun",
@@ -771,7 +771,7 @@
                 "locative": "padavėjoje",
                 "vocative": "padavėja"
             },
-            "ru": ["официантка"]
+            "translations": ["официантка"]
         },
         {
             "type": "noun",
@@ -785,7 +785,7 @@
                 "locative": "pardavėjuje",
                 "vocative": "pardavėjau"
             },
-            "ru": ["продавец"]
+            "translations": ["продавец"]
         },
         {
             "type": "noun",
@@ -799,7 +799,7 @@
                 "locative": "pardavėjoje",
                 "vocative": "pardavėja"
             },
-            "ru": ["продавщица", "продавец"]
+            "translations": ["продавщица", "продавец"]
         },
         {
             "type": "noun",
@@ -813,7 +813,7 @@
                 "locative": "advokate",
                 "vocative": "advokate"
             },
-            "ru": ["адвокат"]
+            "translations": ["адвокат"]
         },
         {
             "type": "noun",
@@ -827,7 +827,7 @@
                 "locative": "advokatėje",
                 "vocative": "advokate"
             },
-            "ru": ["адвокат (ж)", "адвокат"]
+            "translations": ["адвокат (ж)", "адвокат"]
         },
         {
             "type": "noun",
@@ -841,7 +841,7 @@
                 "locative": "ambasadoriuje",
                 "vocative": "ambasadoriau"
             },
-            "ru": ["посол"]
+            "translations": ["посол"]
         },
         {
             "type": "noun",
@@ -855,7 +855,7 @@
                 "locative": "ambasadorėje",
                 "vocative": "ambasadore"
             },
-            "ru": ["посол (ж)", "посол"]
+            "translations": ["посол (ж)", "посол"]
         },
         {
             "type": "noun",
@@ -869,7 +869,7 @@
                 "locative": "diplomate",
                 "vocative": "diplomate"
             },
-            "ru": ["дипломат"]
+            "translations": ["дипломат"]
         },
         {
             "type": "noun",
@@ -883,7 +883,7 @@
                 "locative": "diplomatėje",
                 "vocative": "diplomate"
             },
-            "ru": ["дипломат (ж)", "дипломат"]
+            "translations": ["дипломат (ж)", "дипломат"]
         },
         {
             "type": "noun",
@@ -897,7 +897,7 @@
                 "locative": "ekonomiste",
                 "vocative": "ekonomiste"
             },
-            "ru": ["экономист"]
+            "translations": ["экономист"]
         },
         {
             "type": "noun",
@@ -911,7 +911,7 @@
                 "locative": "ekonomistėje",
                 "vocative": "ekonomiste"
             },
-            "ru": ["экономист (ж)", "экономист"]
+            "translations": ["экономист (ж)", "экономист"]
         },
         {
             "type": "noun",
@@ -925,7 +925,7 @@
                 "locative": "inžinieriuje",
                 "vocative": "inžinieriau"
             },
-            "ru": ["инженер"]
+            "translations": ["инженер"]
         },
         {
             "type": "noun",
@@ -939,7 +939,7 @@
                 "locative": "inžinierėje",
                 "vocative": "inžiniere"
             },
-            "ru": ["инженер (ж)", "инженер"]
+            "translations": ["инженер (ж)", "инженер"]
         },
         {
             "type": "noun",
@@ -953,7 +953,7 @@
                 "locative": "jūrininke",
                 "vocative": "jūrininke"
             },
-            "ru": ["моряк"]
+            "translations": ["моряк"]
         },
         {
             "type": "noun",
@@ -967,7 +967,7 @@
                 "locative": "jūrininkėje",
                 "vocative": "jūrininke"
             },
-            "ru": ["моряк (ж)", "моряк"]
+            "translations": ["моряк (ж)", "моряк"]
         },
         {
             "type": "noun",
@@ -981,7 +981,7 @@
                 "locative": "lakūne",
                 "vocative": "lakūne"
             },
-            "ru": ["пилот", "лётчик"]
+            "translations": ["пилот", "лётчик"]
         },
         {
             "type": "noun",
@@ -995,7 +995,7 @@
                 "locative": "lakūnėje",
                 "vocative": "lakūne"
             },
-            "ru": ["пилот (ж)", "пилот", "лётчица"]
+            "translations": ["пилот (ж)", "пилот", "лётчица"]
         },
         {
             "type": "noun",
@@ -1009,7 +1009,7 @@
                 "locative": "profesoriuje",
                 "vocative": "profesoriau"
             },
-            "ru": ["профессор"]
+            "translations": ["профессор"]
         },
         {
             "type": "noun",
@@ -1023,7 +1023,7 @@
                 "locative": "profesorėje",
                 "vocative": "profesore"
             },
-            "ru": ["профессор (ж)", "профессор"]
+            "translations": ["профессор (ж)", "профессор"]
         },
         {
             "type": "noun",
@@ -1037,7 +1037,7 @@
                 "locative": "režisieriuje",
                 "vocative": "režisieriau"
             },
-            "ru": ["режиссёр"]
+            "translations": ["режиссёр"]
         },
         {
             "type": "noun",
@@ -1051,7 +1051,7 @@
                 "locative": "režisierėje",
                 "vocative": "režisiere"
             },
-            "ru": ["режиссёр (ж)", "режиссёр"]
+            "translations": ["режиссёр (ж)", "режиссёр"]
         },
         {
             "type": "noun",
@@ -1065,7 +1065,7 @@
                 "locative": "sekretoriuje",
                 "vocative": "sekretoriau"
             },
-            "ru": ["секретарь"]
+            "translations": ["секретарь"]
         },
         {
             "type": "noun",
@@ -1079,7 +1079,7 @@
                 "locative": "sekretorėje",
                 "vocative": "sekretore"
             },
-            "ru": ["секретарь (ж)", "секретарь"]
+            "translations": ["секретарь (ж)", "секретарь"]
         },
         {
             "type": "noun",
@@ -1093,7 +1093,7 @@
                 "locative": "tarnautojuje",
                 "vocative": "tarnautojau"
             },
-            "ru": ["служащий"]
+            "translations": ["служащий"]
         },
         {
             "type": "noun",
@@ -1107,7 +1107,7 @@
                 "locative": "tarnautojoje",
                 "vocative": "tarnautoja"
             },
-            "ru": ["служащая", "служащий"]
+            "translations": ["служащая", "служащий"]
         },
         {
             "type": "noun",
@@ -1121,7 +1121,7 @@
                 "locative": "teisininke",
                 "vocative": "teisininke"
             },
-            "ru": ["юрист"]
+            "translations": ["юрист"]
         },
         {
             "type": "noun",
@@ -1135,7 +1135,7 @@
                 "locative": "teisininkėje",
                 "vocative": "teisininke"
             },
-            "ru": ["юрист (ж)", "юрист"]
+            "translations": ["юрист (ж)", "юрист"]
         },
         {
             "type": "noun",
@@ -1149,7 +1149,7 @@
                 "locative": "vadybininke",
                 "vocative": "vadybininke"
             },
-            "ru": ["менеджер"]
+            "translations": ["менеджер"]
         },
         {
             "type": "noun",
@@ -1163,7 +1163,7 @@
                 "locative": "vadybininkėje",
                 "vocative": "vadybininke"
             },
-            "ru": ["менеджер (ж)", "менеджер"]
+            "translations": ["менеджер (ж)", "менеджер"]
         },
         {
             "type": "noun",
@@ -1177,7 +1177,7 @@
                 "locative": "verslininke",
                 "vocative": "verslininke"
             },
-            "ru": ["предприниматель", "бизнесмен"]
+            "translations": ["предприниматель", "бизнесмен"]
         },
         {
             "type": "noun",
@@ -1191,7 +1191,7 @@
                 "locative": "verslininkėje",
                 "vocative": "verslininke"
             },
-            "ru": ["предпринимательница", "предприниматель"]
+            "translations": ["предпринимательница", "предприниматель"]
         },
         {
             "type": "noun",
@@ -1205,7 +1205,7 @@
                 "locative": "vertėjuje",
                 "vocative": "vertėjau"
             },
-            "ru": ["переводчик"]
+            "translations": ["переводчик"]
         },
         {
             "type": "noun",
@@ -1219,7 +1219,7 @@
                 "locative": "vertėjoje",
                 "vocative": "vertėja"
             },
-            "ru": ["переводчица", "переводчик"]
+            "translations": ["переводчица", "переводчик"]
         },
         {
             "type": "noun",
@@ -1233,7 +1233,7 @@
                 "locative": "žurnaliste",
                 "vocative": "žurnaliste"
             },
-            "ru": ["журналист"]
+            "translations": ["журналист"]
         },
         {
             "type": "noun",
@@ -1247,7 +1247,8 @@
                 "locative": "žurnalistėje",
                 "vocative": "žurnaliste"
             },
-            "ru": ["журналистка", "журналист"]
+            "translations": ["журналистка", "журналист"]
         }
-    ]
+    ],
+    "schemaVersion": 1
 }

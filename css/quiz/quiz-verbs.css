@@ -16,18 +16,15 @@
     background: transparent;
     overflow: visible;
 }
-
 #quiz-verbs-ui > .verb-forms-block > .verb-forms-block__main {
     width: 100%;
 }
-
 .verb-forms-grid {
     width: 100%;
     display: grid;
     grid-template-columns: minmax(0, 1fr);
     gap: clamp(0.45rem, 1.45vmin, 0.68rem);
 }
-
 .verb-form-card {
     min-width: 0;
     padding: 0.5rem 0.7rem;
@@ -45,17 +42,14 @@
         0 8px 20px color-mix(in srgb, var(--bg) 13%, transparent);
     text-align: center;
 }
-
 @media (min-width: 720px) {
     .verb-form-card {
         padding-block: 0.85rem;
     }
-
     .verb-form-value {
         margin-top: 0.48rem;
     }
 }
-
 .verb-form-label {
     display: block;
     color: var(--muted);
@@ -64,7 +58,6 @@
     line-height: 1.2;
     text-transform: uppercase;
 }
-
 .verb-form-value {
     display: inline-flex;
     flex-wrap: wrap;
@@ -80,16 +73,13 @@
     line-height: 1.2;
     overflow-wrap: break-word;
 }
-
 .verb-form-value-text {
     min-width: 0;
 }
-
 .verb-form-verdict-emoji {
     flex-shrink: 0;
     line-height: 1;
 }
-
 .verb-translation-line {
     margin: 0.42rem 0 0;
     color: color-mix(in srgb, var(--muted) 82%, var(--accent));
@@ -98,7 +88,6 @@
     line-height: 1.25;
     text-align: center;
 }
-
 .verb-form-card--hidden {
     border-color: color-mix(in srgb, var(--accent) 45%, var(--border));
     background:
@@ -112,12 +101,9 @@
         inset 0 1px 0 color-mix(in srgb, white 12%, transparent),
         0 10px 24px color-mix(in srgb, var(--accent) 12%, transparent);
 }
-
 .verb-form-card--hidden .verb-form-value {
     color: var(--muted);
 }
-
-/* Глаголы: верно / неверно — подсветка ячейки с угадываемой формой (без блока фидбека) */
 #quiz-verbs-ui .verb-form-card--hidden.verb-form-card--feedback-ok {
     border-color: color-mix(in srgb, var(--success) 55%, var(--border));
     background:
@@ -128,11 +114,9 @@
         ),
         color-mix(in srgb, var(--success) 24%, var(--surface-elevated));
 }
-
 #quiz-verbs-ui .verb-form-card--hidden.verb-form-card--feedback-ok .verb-form-value {
     color: color-mix(in srgb, var(--success) 78%, var(--text));
 }
-
 #quiz-verbs-ui .verb-form-card--hidden.verb-form-card--feedback-bad {
     border-color: color-mix(in srgb, var(--error) 55%, var(--border));
     background:
@@ -143,7 +127,6 @@
         ),
         color-mix(in srgb, var(--error) 22%, var(--surface-elevated));
 }
-
 #quiz-verbs-ui .verb-form-card--hidden.verb-form-card--feedback-bad .verb-form-value {
     color: color-mix(in srgb, var(--error) 82%, var(--text));
 }

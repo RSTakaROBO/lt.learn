@@ -120,7 +120,6 @@ function readInitialSelectedPackIds() {
  * @typedef {Object} VocabRoundSummarySnapshot
  * @property {number | null} accuracyPct
  * @property {number} stages
- * @property {number} answered
  * @property {number} correct
  * @property {number} wrong
  * @property {number} maxStreak
@@ -150,7 +149,7 @@ function readInitialSelectedPackIds() {
  * @property {boolean} answered
  * @property {string[]} shownLemmaHistory
  * @property {unknown | null} manifestCache
- * @property {Record<string, { correct: number; wrong: number; skipped: number }>} wordStats
+ * @property {Record<string, { correct: number; wrong: number; skipped: number; progress: number }>} wordStats
  * @property {number} vocabCorrectStreak
  * @property {number} vocabStreakPulseId
  * @property {unknown | null} vocabRound
@@ -398,9 +397,6 @@ export const trainerStore = configureStore({
 export function mutateEngine(recipe) {
     trainerStore.dispatch(runEngineRecipe(recipe))
 }
-
-/** Синоним {@link mutateEngine} (мастер падежей и др.). */
-export const applyEngine = mutateEngine
 
 /** @returns {TrainerEngine} */
 export function getEngine() {

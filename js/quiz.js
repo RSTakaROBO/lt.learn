@@ -1,4 +1,4 @@
-import { TRAIN_MODE, VERB_FORM_BY_KEY, VOCAB_DIRECTION, VOCAB_MODE } from "./config.js"
+import { CASE_BY_KEY, TRAIN_MODE, VERB_FORM_BY_KEY, VOCAB_DIRECTION, VOCAB_MODE } from "./config.js"
 import { STR } from "./i18n/strings-ru.js"
 import {
     getActiveTrainerScreen,
@@ -57,25 +57,31 @@ export function resetVocabCorrectStreak() {
     })
 }
 
-export function inferQuizMode(task) {
-    if (!task?.word) return TRAIN_MODE.CASES
-    if (task.mode === TRAIN_MODE.VOCAB) return TRAIN_MODE.VOCAB
-    if (task.mode === TRAIN_MODE.VERBS) return TRAIN_MODE.VERBS
-    if (task.mode === TRAIN_MODE.CASES) return TRAIN_MODE.CASES
-    if (task.vocabHardcore || task.vocabMode === VOCAB_MODE.SINGLE) return TRAIN_MODE.VOCAB
-    if (Array.isArray(task.choices) && task.choices.length >= 4) return TRAIN_MODE.VOCAB
-    return TRAIN_MODE.CASES
+function isCurrentQuizTask(task) {
+    if (!task?.word || !Object.values(TRAIN_MODE).includes(task.mode)) return false
+    if (task.mode === TRAIN_MODE.CASES) return !!CASE_BY_KEY[task.targetCase]
+    if (task.mode === TRAIN_MODE.VERBS) return !!VERB_FORM_BY_KEY[task.hiddenVerbFormKey]
+    if (
+        !Object.values(VOCAB_DIRECTION).includes(task.vocabDirection) ||
+        !Object.values(VOCAB_MODE).includes(task.vocabMode)
+    ) {
+        return false
+    }
+    return (
+        task.vocabMode !== VOCAB_MODE.CHOICES ||
+        (Array.isArray(task.choices) && task.choices.length >= 4)
+    )
 }
 
 export function showQuiz(task) {
-    task = { ...task, mode: inferQuizMode(task) }
+    if (!isCurrentQuizTask(task)) return
     debugQuiz("showQuiz:start", {
         nextLemma: task?.word ? roundLemmaKey(task.word) : null,
         nextMode: task?.mode ?? null,
         choiceCount: Array.isArray(task?.choices) ? task.choices.length : null,
     })
 
-    const histKey = roundLemmaKey(task.word) || String(lemmaKey(task.word) ?? "").trim()
+    const histKey = roundLemmaKey(task.word)
     mutateEngine((e) => {
         e.currentTask = task
         if (histKey) e.shownLemmaHistory.push(histKey)
@@ -88,27 +94,12 @@ export function showQuiz(task) {
     clearQuizFeedback()
 
     if (task.mode === TRAIN_MODE.VOCAB || task.mode === TRAIN_MODE.VERBS) {
-        if (task.mode === TRAIN_MODE.VERBS && !VERB_FORM_BY_KEY[task.hiddenVerbFormKey]) {
-            resetVocabCorrectStreak()
-            setQuizFeedback({ kind: "info", message: STR.events.verbsStartFail })
-            setVocabRoundLemmaDots(null)
-            return
-        }
-
         if (task.mode === TRAIN_MODE.VERBS) {
             setVocabRoundLemmaDots(task.word)
             return
         }
 
-        const hardcore = !!task.vocabHardcore
         const isSingle = task.vocabMode === VOCAB_MODE.SINGLE
-
-        if (!hardcore && !isSingle && (!Array.isArray(task.choices) || task.choices.length < 4)) {
-            resetVocabCorrectStreak()
-            setQuizFeedback({ kind: "info", message: STR.quiz.noVocabChoices })
-            setVocabRoundLemmaDots(null)
-            return
-        }
 
         setVocabRoundLemmaDots(task.word)
         if (isSingle) {
@@ -162,7 +153,7 @@ export function finalizeVocabChoice(ok, expected, word, pickedLemma = "") {
     }
     applyVocabRoundAnswer(word, ok)
     clearQuizFeedback()
-    const dir = getEngine().currentTask?.vocabDirection || VOCAB_DIRECTION.RU_TO_LT
+    const dir = getEngine().currentTask?.vocabDirection
     const correctNom = vocabLemma(word) || expected
     const correctLemma = dir === VOCAB_DIRECTION.LT_TO_RU ? vocabRuFeedbackLine(word) : correctNom
     mutateEngine((e) => {
@@ -174,10 +165,10 @@ export function finalizeVocabChoice(ok, expected, word, pickedLemma = "") {
     })
 }
 
-function expectedVocabAnswerForTask(task, fallback = "") {
-    const dir = task?.vocabDirection || VOCAB_DIRECTION.RU_TO_LT
-    if (dir === VOCAB_DIRECTION.LT_TO_RU) return vocabRuFeedbackLine(task?.word) || fallback
-    return vocabLemma(task?.word) || fallback
+function expectedVocabAnswerForTask(task) {
+    const dir = task?.vocabDirection
+    if (dir === VOCAB_DIRECTION.LT_TO_RU) return vocabRuFeedbackLine(task?.word)
+    return vocabLemma(task?.word)
 }
 
 function applyVocabAnswerOutcome(ok, expected, word) {
@@ -281,13 +272,13 @@ export function handleVocabSingleSwipe(direction) {
 /** Хардкор-слова: первая отправка формы — проверка; вторая — следующее слово. */
 export function processVocabHardcoreSubmit(userInput) {
     if (
-        !getEngine().currentTask?.vocabHardcore ||
+        getEngine().currentTask?.vocabMode !== VOCAB_MODE.HARDCORE ||
         getEngine().currentTask.mode !== TRAIN_MODE.VOCAB
     )
         return
 
     if (!getEngine().answered) {
-        const dir = getEngine().currentTask.vocabDirection || VOCAB_DIRECTION.RU_TO_LT
+        const dir = getEngine().currentTask.vocabDirection
         const word = getEngine().currentTask.word
         let expected
         let ok
@@ -431,7 +422,7 @@ export function handleMorphCasesAnswerSubmit(user) {
     if (getEngine().currentTask.mode === TRAIN_MODE.VERBS) return
 
     const keys = getCheckedCaseKeys()
-    const expected = getEngine().currentTask.word[getEngine().currentTask.targetCase]
+    const expected = getEngine().currentTask.word.forms[getEngine().currentTask.targetCase]
 
     if (!getEngine().answered) {
         const ok = answersMatch(user, expected)
@@ -475,7 +466,7 @@ export function handleVocabChoice(lem) {
         return
     if (getEngine().answered) {
         const word = getEngine().currentTask.word
-        const dir = getEngine().currentTask.vocabDirection || VOCAB_DIRECTION.RU_TO_LT
+        const dir = getEngine().currentTask.vocabDirection
         const matches =
             dir === VOCAB_DIRECTION.LT_TO_RU
                 ? vocabRuUserMatches(word, lem)
@@ -489,7 +480,7 @@ export function handleVocabChoice(lem) {
     mutateEngine((e) => {
         e.answered = true
     })
-    const dir = getEngine().currentTask.vocabDirection || VOCAB_DIRECTION.RU_TO_LT
+    const dir = getEngine().currentTask.vocabDirection
     const word = getEngine().currentTask.word
     const ok =
         dir === VOCAB_DIRECTION.LT_TO_RU
@@ -499,14 +490,6 @@ export function handleVocabChoice(lem) {
     finalizeVocabChoice(ok, expected, getEngine().currentTask.word, lem)
 }
 
-export function handleVocabChoicesClick(/** @type {Event} */ e) {
-    const t = e.target
-    if (!(t instanceof Node)) return
-    const btn = t instanceof Element ? t.closest(".vocab-choice") : null
-    const lem = btn?.getAttribute("data-lemma") || ""
-    handleVocabChoice(lem)
-}
-
 export function handleQuizSkipButtonClick() {
     debugQuiz("handleQuizSkipButtonClick:clicked")
     if (getEngine().currentTask?.mode === TRAIN_MODE.VERBS && getEngine().answered) {
@@ -514,7 +497,7 @@ export function handleQuizSkipButtonClick() {
         return
     }
     if (getEngine().currentTask?.mode === TRAIN_MODE.VOCAB && getEngine().answered) {
-        if (getEngine().currentTask.vocabHardcore) {
+        if (getEngine().currentTask.vocabMode === VOCAB_MODE.HARDCORE) {
             debugQuiz("handleQuizSkipButtonClick:blocked-hardcore-after-answer")
             return
         }
@@ -534,7 +517,7 @@ export function handleVerbFormSubmit(userInput) {
 
     const word = getEngine().currentTask.word
     const formKey = getEngine().currentTask.hiddenVerbFormKey
-    const expected = word?.[formKey] || word?.forms?.[formKey] || ""
+    const expected = word?.forms?.[formKey] || ""
 
     if (!getEngine().answered) {
         const ok = answersMatch(userInput, expected)

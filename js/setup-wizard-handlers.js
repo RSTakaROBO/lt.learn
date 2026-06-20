@@ -72,8 +72,7 @@ export function handleVocabDirectionStartClick() {
     saveVocabDirections(dirsTry)
     const withHint = getEngine().wordBank.filter(isVocabTrainingWord)
     const dirsNow = getResolvedVocabDirections()
-    const vocabMode =
-        dirsNow.vocabMode || (dirsNow.hardcore ? VOCAB_MODE.HARDCORE : VOCAB_MODE.CHOICES)
+    const vocabMode = dirsNow.vocabMode
     const needChoices = vocabMode === VOCAB_MODE.CHOICES && withHint.length < 4
     const needAny = vocabMode !== VOCAB_MODE.CHOICES && withHint.length < 1
     if (needChoices || needAny) {
@@ -128,9 +127,7 @@ export async function handlePacksNextClick() {
         if (loadTrainMode() === TRAIN_MODE.VOCAB) {
             const withHint = getEngine().wordBank.filter(isVocabTrainingWord)
             const directions = getResolvedVocabDirections()
-            const vocabMode =
-                directions.vocabMode ||
-                (directions.hardcore ? VOCAB_MODE.HARDCORE : VOCAB_MODE.CHOICES)
+            const vocabMode = directions.vocabMode
             if (
                 (vocabMode === VOCAB_MODE.CHOICES && withHint.length < 4) ||
                 (vocabMode !== VOCAB_MODE.CHOICES && withHint.length < 1)

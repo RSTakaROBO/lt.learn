@@ -2,6 +2,7 @@ import { wordsFetchBase } from "js/config.js"
 import { hydrateCustomPacksFromStorage, packDisplayTitle } from "js/custom-packs.js"
 import { fmt } from "js/i18n/core.js"
 import { STR } from "js/i18n/strings-ru.js"
+import { parseCurrentWordPackDocument } from "js/word-entry.js"
 
 export function normalizeManifest(raw) {
     if (raw.packs && Array.isArray(raw.packs) && raw.packs.length) {
@@ -29,7 +30,9 @@ export async function prefetchPackWordFiles(base, packs) {
                         fmt(STR.errors.fileBadStatus, { ref: file, status: res.status })
                     )
                 }
-                map.set(file, await res.json())
+                const data = parseCurrentWordPackDocument(await res.json())
+                if (!data) throw new Error(fmt(STR.errors.fileNoWordsArray, { ref: file }))
+                map.set(file, data)
             } catch {
                 map.set(file, null)
             }

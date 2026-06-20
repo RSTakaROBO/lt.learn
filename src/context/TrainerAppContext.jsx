@@ -55,7 +55,7 @@ export function TrainerAppProvider({ children }) {
 }
 
 /**
- * Dispatch legacy UI actions into Redux without subscribing to full trainer state.
+ * Dispatch domain UI actions into Redux without subscribing to full trainer state.
  * @returns {import("react").Dispatch<import("js/trainer-ui-state.js").TrainerUiAction>}
  */
 export function useTrainerDispatch() {

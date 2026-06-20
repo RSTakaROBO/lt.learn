@@ -96,7 +96,7 @@ export function QuizScreen({ heightMode = "fill", hidden = false } = {}) {
     const isVocab = task?.mode === TRAIN_MODE.VOCAB
     const isVerbs = task?.mode === TRAIN_MODE.VERBS
     const isCases = !isVocab && !isVerbs
-    const isHardcore = !!task?.vocabHardcore
+    const isHardcore = task?.vocabMode === VOCAB_MODE.HARDCORE
     const isSingleVocab = isVocab && task?.vocabMode === VOCAB_MODE.SINGLE
     const usesTypedLtQuiz = isCases || isVerbs || (isVocab && isHardcore)
     const showChoices = isVocab && !isHardcore && !isSingleVocab

@@ -25,7 +25,7 @@ import { wordCountsForPackWords, wordsForPack } from "src/context/manifestPacks/
 const ManifestPacksContext = createContext(null)
 
 /**
- * @typedef {{ pack: object; title: string; words: unknown[]; wordCountsByMode: Record<string, {total: number; suitable: number}|null>; safeInputId: string; previewRows: { type: string; lemma: string; translation: string; translations: string[] }[] }} PackRowUi
+ * @typedef {{ pack: object; title: string; words: unknown[]; wordCountsByMode: Record<string, {total: number; suitable: number}|null>; safeInputId: string; previewRows: { type: string; lemma: string; translations: string[] }[] }} PackRowUi
  */
 
 /**

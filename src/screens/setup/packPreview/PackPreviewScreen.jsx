@@ -89,12 +89,7 @@ export function PackPreviewScreen({ heightMode = "fill" } = {}) {
                                         rows={group.rows.map((row, index) => ({
                                             lemma: row.lemma,
                                             translation: (
-                                                <TranslationCell
-                                                    translations={
-                                                        row.translations ||
-                                                        (row.translation ? [row.translation] : [])
-                                                    }
-                                                />
+                                                <TranslationCell translations={row.translations} />
                                             ),
                                             rowKey: `${group.type}-${row.lemma}-${index}`,
                                         }))}

@@ -4,7 +4,6 @@
     gap: 0.32rem;
     padding: 0;
     box-sizing: border-box;
-    /* Чтобы ключи второго ряда (во внутреннем flex) не брали другой процент-баз для --lt-kb-cell */
     container-type: inline-size;
     container-name: lt-keyboard-inline;
     --lt-kb-gap: 0.28rem;
@@ -16,39 +15,31 @@
         0 1px 0 color-mix(in srgb, white 36%, transparent) inset,
         0 -1px 0 color-mix(in srgb, var(--text) 9%, transparent) inset,
         0 0.18rem 0.42rem color-mix(in srgb, var(--bg) 42%, transparent);
-    /* по умолчанию %; см. ниже про cqi — иначе вложенная полоса 9 клавиш берёт свой % и строка короче */
     --lt-kb-cell: calc((100% - 9 * var(--lt-kb-gap)) / 10);
 }
-
 @supports (width: 1cqi) {
     .lt-keyboard {
         --lt-kb-cell: calc((100cqi - 9 * var(--lt-kb-gap)) / 10);
     }
-
     .lt-keyboard--ru {
         --lt-kb-cell: calc((100cqi - 10 * var(--lt-kb-gap)) / 11);
     }
 }
-
 .lt-keyboard--ru {
     --lt-kb-cell: calc((100% - 10 * var(--lt-kb-gap)) / 11);
 }
-
 .lt-keyboard--ru .lt-keyboard-row--letters .lt-keyboard-key {
     font-size: 1.08rem;
 }
-
 .lt-keyboard-row {
     display: flex;
     width: 100%;
     min-width: 0;
     gap: var(--lt-kb-gap);
 }
-
 .lt-keyboard-row--letters {
     justify-content: flex-start;
 }
-
 .lt-keyboard-row--letters .lt-keyboard-key {
     box-sizing: border-box;
     width: var(--lt-kb-cell);
@@ -58,23 +49,18 @@
     font-weight: 420;
     letter-spacing: 0;
 }
-
 .lt-keyboard-row--letters .lt-keyboard-key.lt-keyboard-key--shift,
 .lt-keyboard-row--letters .lt-keyboard-key.lt-keyboard-key--backspace {
     font-size: 1.05rem;
     font-weight: 520;
     letter-spacing: normal;
 }
-
-/* Третий ряд (shift · zcvbnm · ⌫): те же размеры/насыщенность букв, но без решётки 10 столбцов — shift/⌫ по-прежнему flex-grow */
 .lt-keyboard-row--letters-tail
     .lt-keyboard-key:not(.lt-keyboard-key--shift):not(.lt-keyboard-key--backspace) {
     font-size: 1.22rem;
     font-weight: 420;
     letter-spacing: 0;
 }
-
-/* Верхний ряд: литовские буквы из панели ChartsToolbar (равномерно на всю ширину) */
 .lt-keyboard-diacritic-block {
     display: flex;
     flex-direction: column;
@@ -82,15 +68,12 @@
     width: 100%;
     gap: 0.16rem;
 }
-
 .lt-keyboard-row--diacritics {
     gap: var(--lt-kb-gap);
 }
-
 .lt-keyboard-diacritic-fade-rule {
     display: none;
 }
-
 .lt-keyboard-row--diacritics .lt-keyboard-key--diacritic {
     box-sizing: border-box;
     flex: 1 1 0;
@@ -100,20 +83,16 @@
     font-weight: 420;
     letter-spacing: 0;
 }
-
-/* Вторая буквенная строка: полклеточные заглушки краями, фиксированная средняя «полоса» из 9 клавиш */
 .lt-keyboard-row--stagger {
     gap: 0;
     align-items: stretch;
 }
-
 .lt-keyboard-half-stub {
     flex: 0 0 calc((var(--lt-kb-cell) + var(--lt-kb-gap)) / 2);
     align-self: stretch;
     pointer-events: none;
     flex-shrink: 0;
 }
-
 .lt-keyboard-row-letter-run {
     display: flex;
     flex-shrink: 0;
@@ -122,13 +101,11 @@
     gap: var(--lt-kb-gap);
     box-sizing: border-box;
 }
-
 .lt-keyboard-row--bottom .lt-keyboard-key {
     min-height: 2.5rem;
     padding-block: 0.26rem;
     padding-inline: 0.16rem;
 }
-
 .lt-keyboard-key {
     -webkit-appearance: none;
     appearance: none;
@@ -161,7 +138,6 @@
         background 0.08s ease,
         box-shadow 0.08s ease;
 }
-
 .lt-keyboard-key-pop {
     position: absolute;
     left: 50%;
@@ -193,14 +169,12 @@
     pointer-events: none;
     transform: translateX(-50%);
 }
-
 .lt-keyboard-key--space {
     flex-grow: 4;
     font-size: 0.9rem;
     font-weight: 480;
     color: color-mix(in srgb, var(--text) 58%, var(--muted));
 }
-
 .lt-keyboard-key--shift,
 .lt-keyboard-key--backspace,
 .lt-keyboard-key--enter {
@@ -208,7 +182,6 @@
     font-size: 1.05rem;
     font-weight: 520;
 }
-
 .lt-keyboard-key--shift,
 .lt-keyboard-key--backspace,
 .lt-keyboard-key--hide {
@@ -220,13 +193,11 @@
         ),
         color-mix(in srgb, var(--surface) 78%, var(--muted));
 }
-
 .lt-keyboard-key--shift {
     display: inline-flex;
     align-items: center;
     justify-content: center;
 }
-
 .lt-keyboard-key--enter {
     display: inline-flex;
     align-items: center;
@@ -243,51 +214,40 @@
     color: color-mix(in srgb, var(--accent) 88%, var(--text));
     font-weight: 560;
 }
-
-/* Размеры иконок в CSS — без атрибутов width/height у SVG (стабильно в WebView) */
 .lt-keyboard-chevron,
 .lt-keyboard-check,
 .lt-keyboard-shift {
     display: block;
     flex-shrink: 0;
 }
-
 .lt-keyboard-chevron {
     width: 1.375rem;
     height: 1.375rem;
 }
-
 .lt-keyboard-check {
     width: 1.125rem;
     height: 1.125rem;
 }
-
 .lt-keyboard-shift {
     width: 1.125rem;
     height: 1.125rem;
 }
-
-/* Нижний ряд клавиш: класс на кнопке (портал в body — надёжнее, чем селектор по родительской строке) */
 .lt-keyboard-key.lt-keyboard-key--bottom-row.lt-keyboard-key--space {
     font-size: 1.22rem;
     font-weight: 420;
     letter-spacing: 0;
 }
-
 .lt-keyboard-key.lt-keyboard-key--bottom-row.lt-keyboard-key--enter {
     font-weight: 430;
 }
-
 .lt-keyboard-key--bottom-row .lt-keyboard-chevron {
     width: 1.26rem;
     height: 1.26rem;
 }
-
 .lt-keyboard-key--bottom-row .lt-keyboard-check {
     width: 1.22rem;
     height: 1.22rem;
 }
-
 .lt-keyboard-key--active {
     border-color: color-mix(in srgb, var(--accent) 56%, var(--lt-key-border));
     background:
@@ -303,7 +263,6 @@
         0 1px 0 color-mix(in srgb, white 34%, transparent) inset,
         0 0.2rem 0.52rem color-mix(in srgb, var(--accent) 16%, transparent);
 }
-
 .lt-keyboard-key:active {
     transform: translateY(2px) scale(0.965);
     border-color: color-mix(in srgb, var(--accent) 70%, var(--border));
@@ -320,7 +279,6 @@
         0 1px 0 color-mix(in srgb, var(--text) 9%, transparent) inset,
         0 0.08rem 0.16rem color-mix(in srgb, var(--bg) 28%, transparent);
 }
-
 @media (hover: hover) and (pointer: fine) {
     .lt-keyboard-key:hover {
         color: var(--accent);
@@ -333,12 +291,10 @@
             ),
             var(--lt-key-bg-raised);
     }
-
     .lt-keyboard-key--enter:hover {
         color: color-mix(in srgb, var(--accent) 88%, var(--text));
     }
 }
-
 @media (max-width: 600px) {
     .lt-chars {
         grid-template-columns: repeat(9, minmax(0, 1fr));
@@ -346,7 +302,6 @@
         row-gap: 0;
         padding: 0.35rem;
     }
-
     .lt-char {
         padding: 0.34rem 0.05rem;
         min-height: 2.7rem;

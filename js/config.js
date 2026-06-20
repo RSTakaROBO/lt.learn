@@ -52,7 +52,7 @@ export const STORAGE_KEYS = {
 }
 
 /** Текущая версия схемы; при увеличении добавить миграцию `STORAGE_MIGRATIONS[nextVersion]`. */
-export const STORAGE_SCHEMA_VERSION = 1
+export const STORAGE_SCHEMA_VERSION = 3
 
 /** Направление в режиме «Изучение слов». */
 export const VOCAB_DIRECTION = {

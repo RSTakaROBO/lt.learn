@@ -2,149 +2,202 @@
     "title": "Дом и быт",
     "words": [
         {
-            "nominative": "stalas",
             "stress": 2,
-            "genitive": "stalo",
-            "dative": "stalui",
-            "accusative": "stalą",
-            "instrumental": "stalu",
-            "locative": "stale",
-            "vocative": "stale",
-            "ru": "стол"
+            "type": "noun",
+            "lemma": "stalas",
+            "forms": {
+                "nominative": "stalas",
+                "genitive": "stalo",
+                "dative": "stalui",
+                "accusative": "stalą",
+                "instrumental": "stalu",
+                "locative": "stale",
+                "vocative": "stale"
+            },
+            "translations": ["стол"]
         },
         {
-            "nominative": "kėdė",
             "stress": 3,
-            "genitive": "kėdės",
-            "dative": "kėdei",
-            "accusative": "kėdę",
-            "instrumental": "kėde",
-            "locative": "kėdėje",
-            "vocative": "kėde",
-            "ru": "стул"
+            "type": "noun",
+            "lemma": "kėdė",
+            "forms": {
+                "nominative": "kėdė",
+                "genitive": "kėdės",
+                "dative": "kėdei",
+                "accusative": "kėdę",
+                "instrumental": "kėde",
+                "locative": "kėdėje",
+                "vocative": "kėde"
+            },
+            "translations": ["стул"]
         },
         {
-            "nominative": "lova",
             "stress": 1,
-            "genitive": "lovos",
-            "dative": "lovai",
-            "accusative": "lovą",
-            "instrumental": "lova",
-            "locative": "lovoje",
-            "vocative": "lova",
-            "ru": "кровать"
+            "type": "noun",
+            "lemma": "lova",
+            "forms": {
+                "nominative": "lova",
+                "genitive": "lovos",
+                "dative": "lovai",
+                "accusative": "lovą",
+                "instrumental": "lova",
+                "locative": "lovoje",
+                "vocative": "lova"
+            },
+            "translations": ["кровать"]
         },
         {
-            "nominative": "šaldytuvas",
             "stress": 6,
-            "genitive": "šaldytuvo",
-            "dative": "šaldytuvui",
-            "accusative": "šaldytuvą",
-            "instrumental": "šaldytuvu",
-            "locative": "šaldytuve",
-            "vocative": "šaldytuvai",
-            "ru": "холодильник"
+            "type": "noun",
+            "lemma": "šaldytuvas",
+            "forms": {
+                "nominative": "šaldytuvas",
+                "genitive": "šaldytuvo",
+                "dative": "šaldytuvui",
+                "accusative": "šaldytuvą",
+                "instrumental": "šaldytuvu",
+                "locative": "šaldytuve",
+                "vocative": "šaldytuvai"
+            },
+            "translations": ["холодильник"]
         },
         {
-            "nominative": "lemputė",
             "stress": 4,
-            "genitive": "lemputės",
-            "dative": "lemputei",
-            "accusative": "lemputę",
-            "instrumental": "lempute",
-            "locative": "lemputėje",
-            "vocative": "lempute",
-            "ru": "лампа"
+            "type": "noun",
+            "lemma": "lemputė",
+            "forms": {
+                "nominative": "lemputė",
+                "genitive": "lemputės",
+                "dative": "lemputei",
+                "accusative": "lemputę",
+                "instrumental": "lempute",
+                "locative": "lemputėje",
+                "vocative": "lempute"
+            },
+            "translations": ["лампа"]
         },
         {
             "exception": true,
             "exception_note_ru": "Существительное только во множественном числе (pluralia tantum); парадигма как у мн. ч., не как у одного предмета.",
-            "nominative": "durys",
             "stress": 1,
-            "genitive": "durių",
-            "dative": "durims",
-            "accusative": "duris",
-            "instrumental": "durimis",
-            "locative": "duryse",
-            "vocative": "durys",
-            "ru": "дверь"
+            "type": "noun",
+            "lemma": "durys",
+            "forms": {
+                "nominative": "durys",
+                "genitive": "durių",
+                "dative": "durims",
+                "accusative": "duris",
+                "instrumental": "durimis",
+                "locative": "duryse",
+                "vocative": "durys"
+            },
+            "translations": ["дверь"]
         },
         {
-            "nominative": "puodelis",
             "stress": 4,
-            "genitive": "puodelio",
-            "dative": "puodeliui",
-            "accusative": "puodelį",
-            "instrumental": "puodeliu",
-            "locative": "puodelyje",
-            "vocative": "puodeli",
-            "ru": "чашка"
+            "type": "noun",
+            "lemma": "puodelis",
+            "forms": {
+                "nominative": "puodelis",
+                "genitive": "puodelio",
+                "dative": "puodeliui",
+                "accusative": "puodelį",
+                "instrumental": "puodeliu",
+                "locative": "puodelyje",
+                "vocative": "puodeli"
+            },
+            "translations": ["чашка"]
         },
         {
-            "nominative": "lėkštė",
             "stress": 1,
-            "genitive": "lėkštės",
-            "dative": "lėkštei",
-            "accusative": "lėkštę",
-            "instrumental": "lėkšte",
-            "locative": "lėkštėje",
-            "vocative": "lėkšte",
-            "ru": "тарелка"
+            "type": "noun",
+            "lemma": "lėkštė",
+            "forms": {
+                "nominative": "lėkštė",
+                "genitive": "lėkštės",
+                "dative": "lėkštei",
+                "accusative": "lėkštę",
+                "instrumental": "lėkšte",
+                "locative": "lėkštėje",
+                "vocative": "lėkšte"
+            },
+            "translations": ["тарелка"]
         },
         {
-            "nominative": "šaukštas",
             "stress": 2,
-            "genitive": "šaukšto",
-            "dative": "šaukštui",
-            "accusative": "šaukštą",
-            "instrumental": "šaukštu",
-            "locative": "šaukšte",
-            "vocative": "šaukštai",
-            "ru": "ложка"
+            "type": "noun",
+            "lemma": "šaukštas",
+            "forms": {
+                "nominative": "šaukštas",
+                "genitive": "šaukšto",
+                "dative": "šaukštui",
+                "accusative": "šaukštą",
+                "instrumental": "šaukštu",
+                "locative": "šaukšte",
+                "vocative": "šaukštai"
+            },
+            "translations": ["ложка"]
         },
         {
-            "nominative": "virtuvė",
             "stress": 4,
-            "genitive": "virtuvės",
-            "dative": "virtuvei",
-            "accusative": "virtuvę",
-            "instrumental": "virtuve",
-            "locative": "virtuvėje",
-            "vocative": "virtuve",
-            "ru": "кухня"
+            "type": "noun",
+            "lemma": "virtuvė",
+            "forms": {
+                "nominative": "virtuvė",
+                "genitive": "virtuvės",
+                "dative": "virtuvei",
+                "accusative": "virtuvę",
+                "instrumental": "virtuve",
+                "locative": "virtuvėje",
+                "vocative": "virtuve"
+            },
+            "translations": ["кухня"]
         },
         {
-            "nominative": "vonia",
             "stress": 4,
-            "genitive": "vonios",
-            "dative": "voniai",
-            "accusative": "vonią",
-            "instrumental": "vonia",
-            "locative": "vonioje",
-            "vocative": "vonia",
-            "ru": "ванная"
+            "type": "noun",
+            "lemma": "vonia",
+            "forms": {
+                "nominative": "vonia",
+                "genitive": "vonios",
+                "dative": "voniai",
+                "accusative": "vonią",
+                "instrumental": "vonia",
+                "locative": "vonioje",
+                "vocative": "vonia"
+            },
+            "translations": ["ванная"]
         },
         {
-            "nominative": "kilimas",
             "stress": 1,
-            "genitive": "kilimo",
-            "dative": "kilimui",
-            "accusative": "kilimą",
-            "instrumental": "kilimu",
-            "locative": "kilime",
-            "vocative": "kilime",
-            "ru": "ковёр"
+            "type": "noun",
+            "lemma": "kilimas",
+            "forms": {
+                "nominative": "kilimas",
+                "genitive": "kilimo",
+                "dative": "kilimui",
+                "accusative": "kilimą",
+                "instrumental": "kilimu",
+                "locative": "kilime",
+                "vocative": "kilime"
+            },
+            "translations": ["ковёр"]
         },
         {
-            "nominative": "veidrodis",
             "stress": 1,
-            "genitive": "veidrodžio",
-            "dative": "veidrodžiui",
-            "accusative": "veidrodį",
-            "instrumental": "veidrodžiu",
-            "locative": "veidrodyje",
-            "vocative": "veidrodi",
-            "ru": "зеркало"
+            "type": "noun",
+            "lemma": "veidrodis",
+            "forms": {
+                "nominative": "veidrodis",
+                "genitive": "veidrodžio",
+                "dative": "veidrodžiui",
+                "accusative": "veidrodį",
+                "instrumental": "veidrodžiu",
+                "locative": "veidrodyje",
+                "vocative": "veidrodi"
+            },
+            "translations": ["зеркало"]
         }
-    ]
+    ],
+    "schemaVersion": 1
 }

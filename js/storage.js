@@ -1,42 +1,14 @@
 import {
+    LEARNED_WORD_CORRECT_WRONG_DELTA,
     normalizeLearningScopeSize,
     STORAGE_KEYS,
-    STORAGE_SCHEMA_VERSION,
     TRAIN_MODE,
     VOCAB_MODE,
 } from "./config.js"
 import { STR } from "./i18n/strings-ru.js"
+import { migrateStorage } from "./storage-migrations.js"
 import { getEngine, mutateEngine } from "./trainer-ui-state.js"
-
-/**
- * Миграции по одной ступени: ключ = целевая версия после шага (1 = первое присвоение версии схемы).
- * Аргумент — `localStorage` (или совместимый Storage) для тестов.
- * @type {Record<number, (store: Storage) => void>}
- */
-const STORAGE_MIGRATIONS = {
-    1() {
-        // 0 → 1: явная запись версии схемы; переименований ключей не требовалось.
-    },
-}
-
-function readSchemaVersion(store) {
-    try {
-        const raw = store.getItem(STORAGE_KEYS.schemaVersion)
-        if (raw == null || raw === "") return 0
-        const n = parseInt(raw, 10)
-        return Number.isFinite(n) && n >= 0 ? n : 0
-    } catch {
-        return 0
-    }
-}
-
-function writeSchemaVersion(store, version) {
-    try {
-        store.setItem(STORAGE_KEYS.schemaVersion, String(version))
-    } catch {
-        /* ignore */
-    }
-}
+import { WORD_PACK_SCHEMA_VERSION } from "./word-entry.js"
 
 /**
  * Единая точка работы с данными в `localStorage`: версия схемы и миграции при старте.
@@ -51,16 +23,7 @@ export class TrainerStorage {
     /** Вызвать один раз при загрузке приложения (до чтения остальных ключей). */
     init() {
         if (this._initialized) return
-        let v = readSchemaVersion(this._store)
-        while (v < STORAGE_SCHEMA_VERSION) {
-            const next = v + 1
-            const step = STORAGE_MIGRATIONS[next]
-            if (typeof step === "function") {
-                step(this._store)
-            }
-            writeSchemaVersion(this._store, next)
-            v = next
-        }
+        migrateStorage(this._store)
         this._initialized = true
     }
 
@@ -118,6 +81,7 @@ export class TrainerStorage {
         rows.push({
             id: record.id,
             title: record.title,
+            schemaVersion: WORD_PACK_SCHEMA_VERSION,
             words: record.words,
         })
         try {
@@ -172,7 +136,7 @@ export class TrainerStorage {
             if (!parsed || typeof parsed !== "object") return {}
             const out = {}
             for (const [k, v] of Object.entries(parsed)) {
-                const row = normalizeWordStatRow(v)
+                const row = parseCurrentWordStatRow(v)
                 if (row) out[k] = row
             }
             return out
@@ -204,15 +168,25 @@ export class TrainerStorage {
     getWordStat(lemma) {
         const row = getEngine().wordStats[lemma]
         if (!row) return null
-        return normalizeWordStatRow(row)
+        return parseCurrentWordStatRow(row)
     }
 
     bumpWordStat(lemma, field) {
         if (!lemma || !["correct", "wrong", "skipped"].includes(field)) return
         mutateEngine((e) => {
             const ws = e.wordStats
-            if (!ws[lemma]) ws[lemma] = { correct: 0, wrong: 0, skipped: 0 }
+            if (!ws[lemma]) ws[lemma] = { correct: 0, wrong: 0, skipped: 0, progress: 0 }
             ws[lemma][field]++
+            if (field === "correct") {
+                ws[lemma].progress = Math.min(
+                    LEARNED_WORD_CORRECT_WRONG_DELTA,
+                    ws[lemma].progress + 1
+                )
+            } else if (field === "wrong") {
+                // Ошибка снимает одну накопленную отметку, но не создаёт скрытый
+                // отрицательный «долг», который пришлось бы отрабатывать ответами.
+                ws[lemma].progress = Math.max(0, ws[lemma].progress - 1)
+            }
         })
         this.saveWordStatsToStorage()
     }
@@ -244,16 +218,17 @@ export class TrainerStorage {
             if (!raw) return null
             const p = JSON.parse(raw)
             if (!p || typeof p !== "object") return null
-            const vocabMode = Object.values(VOCAB_MODE).includes(p.vocabMode)
-                ? p.vocabMode
-                : p.hardcore
-                  ? VOCAB_MODE.HARDCORE
-                  : VOCAB_MODE.CHOICES
+            if (
+                typeof p.ru_to_lt !== "boolean" ||
+                typeof p.lt_to_ru !== "boolean" ||
+                !Object.values(VOCAB_MODE).includes(p.vocabMode)
+            ) {
+                return null
+            }
             return {
-                ru_to_lt: !!p.ru_to_lt,
-                lt_to_ru: !!p.lt_to_ru,
-                hardcore: vocabMode === VOCAB_MODE.HARDCORE,
-                vocabMode,
+                ru_to_lt: p.ru_to_lt,
+                lt_to_ru: p.lt_to_ru,
+                vocabMode: p.vocabMode,
             }
         } catch {
             return null
@@ -262,18 +237,13 @@ export class TrainerStorage {
 
     saveVocabDirections(dirs) {
         try {
-            const vocabMode = Object.values(VOCAB_MODE).includes(dirs.vocabMode)
-                ? dirs.vocabMode
-                : dirs.hardcore
-                  ? VOCAB_MODE.HARDCORE
-                  : VOCAB_MODE.CHOICES
+            if (!Object.values(VOCAB_MODE).includes(dirs.vocabMode)) return
             this._store.setItem(
                 STORAGE_KEYS.vocabDirections,
                 JSON.stringify({
                     ru_to_lt: !!dirs.ru_to_lt,
                     lt_to_ru: !!dirs.lt_to_ru,
-                    hardcore: vocabMode === VOCAB_MODE.HARDCORE,
-                    vocabMode,
+                    vocabMode: dirs.vocabMode,
                 })
             )
         } catch {
@@ -400,20 +370,17 @@ export class TrainerStorage {
 
 export const trainerStorage = new TrainerStorage()
 
-export function initTrainerStorage() {
-    trainerStorage.init()
-}
-
-export function normalizeWordStatRow(raw) {
+export function parseCurrentWordStatRow(raw) {
     if (!raw || typeof raw !== "object") return null
-    const correct = Number(raw.correct)
-    const wrong = Number(raw.wrong)
-    const skipped = Number(raw.skipped)
-    if (![correct, wrong, skipped].every((n) => Number.isFinite(n))) return null
+    const { correct, wrong, skipped, progress } = raw
+    if (![correct, wrong, skipped, progress].every((n) => Number.isFinite(n))) return null
+    const normalizedCorrect = Math.max(0, Math.floor(correct))
+    const normalizedWrong = Math.max(0, Math.floor(wrong))
     return {
-        correct: Math.max(0, Math.floor(correct)),
-        wrong: Math.max(0, Math.floor(wrong)),
+        correct: normalizedCorrect,
+        wrong: normalizedWrong,
         skipped: Math.max(0, Math.floor(skipped)),
+        progress: Math.max(0, Math.min(LEARNED_WORD_CORRECT_WRONG_DELTA, Math.floor(progress))),
     }
 }
 
@@ -445,7 +412,6 @@ export function getResolvedVocabDirections() {
     return {
         ru_to_lt: true,
         lt_to_ru: false,
-        hardcore: false,
         vocabMode: VOCAB_MODE.CHOICES,
     }
 }

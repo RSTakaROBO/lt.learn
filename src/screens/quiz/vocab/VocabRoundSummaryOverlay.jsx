@@ -84,22 +84,20 @@ export function VocabRoundSummaryOverlay({ heightMode = "fill" } = {}) {
                                     <span className="vocab-round-summary-stat-label">
                                         {VR.statAnswered}
                                     </span>
-                                    <strong>
-                                        {displaySnap.stages ?? displaySnap.answered ?? 0}
-                                    </strong>
+                                    <strong>{displaySnap.stages}</strong>
                                 </div>
                                 <div className="vocab-round-summary-stat-tile">
                                     <span className="vocab-round-summary-stat-label">
                                         {VR.statMaxStreak}
                                     </span>
-                                    <strong>×{displaySnap.maxStreak ?? 0}</strong>
+                                    <strong>×{displaySnap.maxStreak}</strong>
                                 </div>
                                 <div className="vocab-round-summary-stat-tile">
                                     <span className="vocab-round-summary-stat-label">
                                         {VR.statCorrect}
                                     </span>
                                     <strong className="vocab-round-summary-stat-ok">
-                                        {displaySnap.correct ?? 0}
+                                        {displaySnap.correct}
                                     </strong>
                                 </div>
                                 <div className="vocab-round-summary-stat-tile">
@@ -107,7 +105,7 @@ export function VocabRoundSummaryOverlay({ heightMode = "fill" } = {}) {
                                         {VR.statWrong}
                                     </span>
                                     <strong className="vocab-round-summary-stat-bad">
-                                        {displaySnap.wrong ?? 0}
+                                        {displaySnap.wrong}
                                     </strong>
                                 </div>
                             </div>
