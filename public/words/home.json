@@ -3,6 +3,7 @@
     "words": [
         {
             "nominative": "stalas",
+            "stress": 2,
             "genitive": "stalo",
             "dative": "stalui",
             "accusative": "stalą",
@@ -13,6 +14,7 @@
         },
         {
             "nominative": "kėdė",
+            "stress": 3,
             "genitive": "kėdės",
             "dative": "kėdei",
             "accusative": "kėdę",
@@ -23,6 +25,7 @@
         },
         {
             "nominative": "lova",
+            "stress": 1,
             "genitive": "lovos",
             "dative": "lovai",
             "accusative": "lovą",
@@ -33,6 +36,7 @@
         },
         {
             "nominative": "šaldytuvas",
+            "stress": 6,
             "genitive": "šaldytuvo",
             "dative": "šaldytuvui",
             "accusative": "šaldytuvą",
@@ -43,6 +47,7 @@
         },
         {
             "nominative": "lemputė",
+            "stress": 4,
             "genitive": "lemputės",
             "dative": "lemputei",
             "accusative": "lemputę",
@@ -55,6 +60,7 @@
             "exception": true,
             "exception_note_ru": "Существительное только во множественном числе (pluralia tantum); парадигма как у мн. ч., не как у одного предмета.",
             "nominative": "durys",
+            "stress": 1,
             "genitive": "durių",
             "dative": "durims",
             "accusative": "duris",
@@ -65,6 +71,7 @@
         },
         {
             "nominative": "puodelis",
+            "stress": 4,
             "genitive": "puodelio",
             "dative": "puodeliui",
             "accusative": "puodelį",
@@ -75,6 +82,7 @@
         },
         {
             "nominative": "lėkštė",
+            "stress": 1,
             "genitive": "lėkštės",
             "dative": "lėkštei",
             "accusative": "lėkštę",
@@ -85,6 +93,7 @@
         },
         {
             "nominative": "šaukštas",
+            "stress": 2,
             "genitive": "šaukšto",
             "dative": "šaukštui",
             "accusative": "šaukštą",
@@ -95,6 +104,7 @@
         },
         {
             "nominative": "virtuvė",
+            "stress": 4,
             "genitive": "virtuvės",
             "dative": "virtuvei",
             "accusative": "virtuvę",
@@ -105,6 +115,7 @@
         },
         {
             "nominative": "vonia",
+            "stress": 4,
             "genitive": "vonios",
             "dative": "voniai",
             "accusative": "vonią",
@@ -115,6 +126,7 @@
         },
         {
             "nominative": "kilimas",
+            "stress": 1,
             "genitive": "kilimo",
             "dative": "kilimui",
             "accusative": "kilimą",
@@ -125,6 +137,7 @@
         },
         {
             "nominative": "veidrodis",
+            "stress": 1,
             "genitive": "veidrodžio",
             "dative": "veidrodžiui",
             "accusative": "veidrodį",

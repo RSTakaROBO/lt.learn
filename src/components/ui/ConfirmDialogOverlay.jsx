@@ -12,6 +12,7 @@ import { Button } from "src/components/ui/Button.jsx"
  *   open: boolean;
  *   title: string;
  *   message: string;
+ *   details?: import("react").ReactNode;
  *   cancelLabel: string;
  *   confirmLabel: string;
  *   onCancel: () => void;
@@ -23,6 +24,7 @@ export function ConfirmDialogOverlay({
     open,
     title,
     message,
+    details,
     cancelLabel,
     confirmLabel,
     onCancel,
@@ -55,6 +57,7 @@ export function ConfirmDialogOverlay({
         >
             <div className="app-screen__body confirm-dialog-body">
                 <p>{message}</p>
+                {details}
             </div>
         </AppModalOverlay>
     )

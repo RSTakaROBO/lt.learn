@@ -1,4 +1,8 @@
 /* Только режим «слова»: колонка — тело карточки забирает высоту, прокрутка только внутри него */
+#quiz-vocab-ui {
+    --vocab-word-text-accent: color-mix(in srgb, var(--accent) 42%, #ffd166);
+}
+
 #quiz-vocab-ui > .vocab-card-stack {
     flex-direction: column;
     align-items: stretch;
@@ -56,7 +60,6 @@
 }
 
 .vocab-single-deck {
-    --vocab-single-text-accent: color-mix(in srgb, var(--accent) 42%, #ffd166);
     --vocab-single-card-scale-0: 1;
     --vocab-single-card-scale-1: 0.982;
     --vocab-single-card-scale-2: 0.965;
@@ -330,8 +333,8 @@
     word-break: normal;
 }
 
-#quiz.panel.quiz--vocab-single #quiz-vocab-ui:not(.hidden) .vocab-ru-card .vocab-ru-display {
-    color: var(--vocab-single-text-accent);
+#quiz.panel.quiz--vocab #quiz-vocab-ui:not(.hidden) .vocab-ru-card .vocab-ru-display {
+    color: var(--vocab-word-text-accent);
     font-family: inherit;
     font-weight: 800;
     text-shadow:

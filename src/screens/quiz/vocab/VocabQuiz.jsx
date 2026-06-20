@@ -19,6 +19,7 @@ import {
     VocabRoundProgress,
     VocabStreakMultiplier,
     VerbConjugationMark,
+    StressedWord,
 } from "src/screens/quiz/shared/index.js"
 import {
     vocabLtDisplay,
@@ -229,7 +230,11 @@ export function VocabQuiz({
                                 id="vocab-ru-display"
                                 lang={prompt.lang}
                             >
-                                {prompt.text}
+                                {prompt.lang === "lt" ? (
+                                    <StressedWord stress={task?.word?.stress} text={prompt.text} />
+                                ) : (
+                                    prompt.text
+                                )}
                             </AutoFitText>
                             <QuizFeedback
                                 className="vocab-card-feedback"

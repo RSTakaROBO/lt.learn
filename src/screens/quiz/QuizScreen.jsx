@@ -39,6 +39,7 @@ export function QuizScreen({ heightMode = "fill", hidden = false } = {}) {
         feedback,
         roundDots,
         roundProgress,
+        roundStages,
         vocabStreak,
         vocabStreakPulseId,
         vocabShowVerbForms,
@@ -53,6 +54,14 @@ export function QuizScreen({ heightMode = "fill", hidden = false } = {}) {
             vocabSingleNextTask: s.trainer.engine.vocabSingleNextTask,
             feedback: s.trainer.quizFeedback,
             roundDots: s.trainer.engine.vocabRoundDots,
+            roundStages: s.trainer.engine.vocabRound
+                ? s.trainer.engine.vocabRound.gradedCorrect +
+                  s.trainer.engine.vocabRound.gradedWrong +
+                  Object.values(s.trainer.engine.vocabRound.roundRow).reduce(
+                      (sum, row) => sum + (row.skipped || 0),
+                      0
+                  )
+                : 0,
             vocabStreak: s.trainer.engine.vocabCorrectStreak,
             vocabStreakPulseId: s.trainer.engine.vocabStreakPulseId,
             vocabShowVerbForms: s.trainer.persisted.vocabShowVerbForms,
@@ -281,6 +290,23 @@ export function QuizScreen({ heightMode = "fill", hidden = false } = {}) {
                 open={finishConfirmOpen}
                 title={STR.confirm.finishRoundTitle}
                 message={STR.confirm.finishRoundMessage}
+                details={
+                    roundProgress ? (
+                        <div className="finish-round-mini-stats" aria-live="polite">
+                            <div className="finish-round-mini-stat">
+                                <span>{STR.confirm.finishRoundWords}</span>
+                                <strong>
+                                    {roundProgress.done} {STR.confirm.finishRoundOf}{" "}
+                                    {roundProgress.total}
+                                </strong>
+                            </div>
+                            <div className="finish-round-mini-stat">
+                                <span>{STR.confirm.finishRoundStages}</span>
+                                <strong>{roundStages}</strong>
+                            </div>
+                        </div>
+                    ) : null
+                }
                 cancelLabel={STR.confirm.cancel}
                 confirmLabel={STR.confirm.finish}
                 onCancel={() => setFinishConfirmOpen(false)}

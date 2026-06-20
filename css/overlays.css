@@ -368,6 +368,35 @@ body.vocab-round-summary-modal-open .quiz-bottom-bar {
     text-align: center;
 }
 
+.finish-round-mini-stats {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.65rem;
+    margin-top: 1rem;
+}
+
+.finish-round-mini-stat {
+    display: grid;
+    gap: 0.3rem;
+    padding: 0.7rem 0.55rem;
+    border: 1px solid color-mix(in srgb, var(--accent) 22%, var(--border));
+    border-radius: 14px;
+    background: color-mix(in srgb, var(--accent) 7%, transparent);
+    text-align: center;
+}
+
+.finish-round-mini-stat span {
+    color: var(--muted);
+    font-size: 0.78rem;
+    line-height: 1.25;
+}
+
+.finish-round-mini-stat strong {
+    color: var(--text);
+    font-size: 1.05rem;
+    line-height: 1.2;
+}
+
 .confirm-dialog-actions {
     display: grid;
     grid-template-columns: 1fr 1fr;

@@ -5,6 +5,7 @@ import { VOCAB_DIRECTION } from "js/config.js"
 import { STR } from "js/i18n/strings-ru.js"
 import { handleVocabSingleSwipe, requestVocabSingleFutureTask } from "js/quiz.js"
 import { AutoFitText } from "src/screens/quiz/shared/AutoFitText.jsx"
+import { StressedWord } from "src/screens/quiz/shared/StressedWord.jsx"
 import { VerbConjugationMark } from "src/screens/quiz/shared/VerbConjugationMark.jsx"
 import { VocabRoundDots } from "src/screens/quiz/shared/VocabRoundDots.jsx"
 import { vocabLtDisplay, vocabRuPrimary } from "src/screens/quiz/vocab/vocabWords.js"
@@ -91,7 +92,11 @@ function PromptCard({ card, dots, showVerbForms }) {
                         .join(" ")}
                     lang={prompt.lang}
                 >
-                    {prompt.text}
+                    {prompt.lang === "lt" ? (
+                        <StressedWord stress={card.task?.word?.stress} text={prompt.text} />
+                    ) : (
+                        prompt.text
+                    )}
                 </AutoFitText>
             </div>
             <VocabRoundDots dots={dots} />
@@ -100,12 +105,20 @@ function PromptCard({ card, dots, showVerbForms }) {
 }
 
 function AnswerCard({ card, onOpenWordInfo, showInfoButton, showVerbForms }) {
+    const expected = vocabExpectedForTask(card.task, showVerbForms)
+    const direction = card.task?.vocabDirection || VOCAB_DIRECTION.RU_TO_LT
+    const lang = direction === VOCAB_DIRECTION.RU_TO_LT ? "lt" : "ru"
+
     return (
         <div className="vocab-ru-card vocab-single-answer" aria-live="polite">
             <VerbConjugationMark word={card.task?.word} />
             <span className="vocab-single-answer__label">{STR.quiz.vocabSingleAnswerLabel}</span>
-            <AutoFitText as="span" className="vocab-single-answer__value">
-                {vocabExpectedForTask(card.task, showVerbForms)}
+            <AutoFitText as="span" className="vocab-single-answer__value" lang={lang}>
+                {lang === "lt" ? (
+                    <StressedWord stress={card.task?.word?.stress} text={expected} />
+                ) : (
+                    expected
+                )}
             </AutoFitText>
             {showInfoButton ? (
                 <VocabWordInfoButton onClick={() => onOpenWordInfo?.(card.task?.word)} />

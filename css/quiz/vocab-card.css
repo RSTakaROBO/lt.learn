@@ -350,6 +350,12 @@
     display: block;
 }
 
+.vocab-word-stress {
+    color: #ef4444;
+    -webkit-text-fill-color: #ef4444;
+    font-weight: 900;
+}
+
 .auto-fit-text__inner {
     display: inline-block;
     white-space: inherit;
