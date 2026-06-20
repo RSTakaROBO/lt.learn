@@ -37,6 +37,16 @@ function vocabPromptForTask(task, showVerbForms) {
     return { text: vocabRuPrimary(task.word), lang: "ru" }
 }
 
+function hardcoreAnswerForTask(task, feedback, typedAnswer) {
+    if (feedback?.kind !== "ok" && feedback?.kind !== "bad") return ""
+    if (feedback.expected) return feedback.expected
+
+    const dir = task?.vocabDirection || VOCAB_DIRECTION.RU_TO_LT
+    return dir === VOCAB_DIRECTION.LT_TO_RU
+        ? String(typedAnswer || "").trim()
+        : vocabLemma(task?.word)
+}
+
 function vocabChoiceClass(lem, task, answered, choiceState) {
     const classes = ["btn", "vocab-choice"]
     if (!answered) classes.push("ghost")
@@ -62,9 +72,40 @@ function VocabChoices({ task, answered, choiceState, showVerbForms, showWrongTra
     const ariaLabel =
         dir === VOCAB_DIRECTION.LT_TO_RU ? STR.quiz.vocabLtToRuAria : STR.quiz.vocabRuToLtAria
 
+    useEffect(() => {
+        function handleChoiceShortcut(e) {
+            if (e.defaultPrevented || e.ctrlKey || e.altKey || e.metaKey || e.shiftKey) return
+            const choiceIndex = /^[1-4]$/.test(e.key) ? Number(e.key) - 1 : null
+            const continueAfterCorrect = e.key === " " || e.key === "Spacebar"
+            if (choiceIndex === null && !continueAfterCorrect) return
+
+            const target = e.target
+            if (
+                target instanceof Element &&
+                (target.matches("input, textarea, select") || target.closest("[contenteditable]"))
+            ) {
+                return
+            }
+
+            const options = document.getElementById("vocab-options")
+            if (!options || options.closest(".hidden")) return
+
+            const button = continueAfterCorrect
+                ? options.querySelector(".vocab-choice--correct.vocab-choice--picked")
+                : options.querySelectorAll(".vocab-choice")[choiceIndex]
+            if (!(button instanceof HTMLButtonElement) || button.disabled) return
+
+            e.preventDefault()
+            button.click()
+        }
+
+        document.addEventListener("keydown", handleChoiceShortcut)
+        return () => document.removeEventListener("keydown", handleChoiceShortcut)
+    }, [])
+
     return (
         <div id="vocab-options" className="vocab-options" role="group" aria-label={ariaLabel}>
-            {choices.map((lem) => {
+            {choices.map((lem, index) => {
                 const correct =
                     answered && task?.word
                         ? dir === VOCAB_DIRECTION.LT_TO_RU
@@ -93,8 +134,12 @@ function VocabChoices({ task, answered, choiceState, showVerbForms, showWrongTra
                         data-lemma={lem}
                         disabled={answered && !correct}
                         aria-label={choiceLabel}
+                        aria-keyshortcuts={String(index + 1)}
                         onClick={() => handleVocabChoice(lem)}
                     >
+                        <span className="vocab-choice-number" aria-hidden="true">
+                            {index + 1}
+                        </span>
                         <span className="vocab-choice-main">{choiceLabel}</span>
                         {reveal ? <span className="vocab-choice-reveal">{reveal}</span> : null}
                     </button>
@@ -136,6 +181,7 @@ export function VocabQuiz({
     const prompt = vocabPromptForTask(task, showVerbForms)
     const showChoices = isActive && !isHardcore && !isSingle
     const feedbackKind = feedback?.kind === "ok" || feedback?.kind === "bad" ? feedback.kind : ""
+    const hardcoreAnswer = isHardcore ? hardcoreAnswerForTask(task, feedback, quizTypingAnswer) : ""
     const cardKey = [
         task?.word?.id || task?.word?.lemma || task?.word?.nominative || prompt.text,
         task?.vocabDirection || "",
@@ -191,6 +237,20 @@ export function VocabQuiz({
                                 id="vocab-card-feedback"
                                 reserveSpace={isHardcore}
                             />
+                            {isHardcore ? (
+                                <p
+                                    className={[
+                                        "vocab-hardcore-answer",
+                                        !hardcoreAnswer && "vocab-hardcore-answer--placeholder",
+                                    ]
+                                        .filter(Boolean)
+                                        .join(" ")}
+                                    aria-hidden="true"
+                                >
+                                    <span>{STR.quiz.correctIs}</span>
+                                    <strong>{hardcoreAnswer || "\u00a0"}</strong>
+                                </p>
+                            ) : null}
                         </div>
                         <VocabStreakMultiplier streak={streak} pulseId={pulseId} />
                         <VocabRoundDots dots={roundDots} />

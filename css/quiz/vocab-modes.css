@@ -342,6 +342,7 @@
 }
 
 .vocab-choice {
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -365,6 +366,17 @@
         background 0.16s ease,
         box-shadow 0.16s ease,
         transform 0.12s ease;
+}
+
+.vocab-choice-number {
+    position: absolute;
+    top: clamp(0.42rem, 1.5vmin, 0.62rem);
+    left: clamp(0.5rem, 1.7vmin, 0.72rem);
+    font-size: clamp(0.62rem, 1.8vmin, 0.78rem);
+    font-weight: 700;
+    line-height: 1;
+    opacity: 0.45;
+    pointer-events: none;
 }
 
 .vocab-choice-main,

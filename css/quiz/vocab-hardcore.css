@@ -80,3 +80,67 @@ html.ios-standalone
     margin-top: 0;
     padding-top: 0;
 }
+
+.vocab-hardcore-answer {
+    display: none;
+}
+
+/* Полноразмерный десктоп: ответ становится второй крупной частью карточки. */
+@media (display-mode: browser) and (min-width: 900px) and (min-height: 600px) and (hover: hover) and (pointer: fine) {
+    #quiz.panel.quiz--vocab-hardcore #quiz-vocab-ui:not(.hidden) > .vocab-card-stack {
+        flex: 0 0 clamp(20rem, 46dvh, 28rem);
+        min-height: clamp(20rem, 46dvh, 28rem);
+        max-height: clamp(20rem, 46dvh, 28rem);
+    }
+
+    #quiz.panel.quiz--vocab-hardcore
+        #quiz-vocab-ui:not(.hidden)
+        > .vocab-card-stack
+        > .vocab-ru-card
+        > .vocab-ru-card-body {
+        justify-content: center;
+        gap: clamp(0.8rem, 1.7dvh, 1.25rem);
+        padding-top: 0;
+        overflow-y: hidden;
+    }
+
+    #quiz.panel.quiz--vocab-hardcore .vocab-card-feedback .correct-form {
+        display: none;
+    }
+
+    #quiz.panel.quiz--vocab-hardcore .vocab-hardcore-answer {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: min(100%, 42rem);
+        margin: 0;
+        padding-top: clamp(0.7rem, 1.5dvh, 1rem);
+        border-top: 1px solid color-mix(in srgb, var(--border) 72%, transparent);
+        text-align: center;
+    }
+
+    #quiz.panel.quiz--vocab-hardcore .vocab-hardcore-answer--placeholder {
+        visibility: hidden;
+    }
+
+    #quiz.panel.quiz--vocab-hardcore .vocab-hardcore-answer > span {
+        color: var(--muted);
+        font-size: 0.9rem;
+        font-weight: 650;
+    }
+
+    #quiz.panel.quiz--vocab-hardcore .vocab-hardcore-answer > strong {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 2.16em;
+        max-width: 100%;
+        margin-top: 0.18em;
+        color: color-mix(in srgb, var(--accent) 62%, var(--text));
+        font-size: clamp(2.25rem, 4.6vw, 3.6rem);
+        font-weight: 850;
+        line-height: 1.08;
+        overflow-wrap: break-word;
+        word-break: break-word;
+    }
+}

@@ -42,7 +42,7 @@
     min-height: 0;
     display: flex;
     flex-direction: column;
-    overflow-x: hidden;
+    overflow: hidden;
 }
 
 #setup .wizard-step:not(.hidden) {
