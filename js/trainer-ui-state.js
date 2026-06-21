@@ -103,6 +103,7 @@ function readInitialSelectedPackIds() {
  * @property {boolean} vocabRound
  * @property {boolean} casesHelp
  * @property {boolean} verbsHelp
+ * @property {boolean} verbFormsHelp
  */
 
 /**
@@ -214,6 +215,7 @@ function buildInitialState() {
             vocabRound: false,
             casesHelp: false,
             verbsHelp: false,
+            verbFormsHelp: false,
         },
         persisted: {
             themeId: readInitialThemeId(),
@@ -279,6 +281,7 @@ const trainerSlice = createSlice({
                     state.overlay.vocabRound = false
                     state.overlay.casesHelp = false
                     state.overlay.verbsHelp = false
+                    state.overlay.verbFormsHelp = false
                     state.vocabRoundSummary = null
                     break
                 case "OVERLAY_OPEN": {
@@ -290,6 +293,7 @@ const trainerSlice = createSlice({
                     state.overlay.vocabRound = name === "vocabRound"
                     state.overlay.casesHelp = name === "casesHelp"
                     state.overlay.verbsHelp = name === "verbsHelp"
+                    state.overlay.verbFormsHelp = name === "verbFormsHelp"
                     state.vocabRoundSummary =
                         name === "vocabRound"
                             ? (a.snapshot ?? state.vocabRoundSummary)
@@ -464,6 +468,10 @@ export function isCasesHelpOpen() {
 
 export function isVerbsHelpOpen() {
     return !!trainerStore.getState().trainer.overlay.verbsHelp
+}
+
+export function isVerbFormsHelpOpen() {
+    return !!trainerStore.getState().trainer.overlay.verbFormsHelp
 }
 
 export function isStatsOverlayOpen() {

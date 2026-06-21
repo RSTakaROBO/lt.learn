@@ -14,6 +14,7 @@ import { useStandaloneAppHeight } from "src/hooks/useStandaloneAppHeight.js"
 import { useTrainerKeyboardShortcuts } from "src/hooks/useTrainerKeyboardShortcuts.js"
 import { CasesHelpScreen } from "src/screens/help/CasesHelpScreen.jsx"
 import { HelpHubScreen } from "src/screens/help/HelpHubScreen.jsx"
+import { VerbFormsHelpScreen } from "src/screens/help/VerbFormsHelpScreen.jsx"
 import { VerbsHelpScreen } from "src/screens/help/VerbsHelpScreen.jsx"
 import { QuizScreen } from "src/screens/quiz/QuizScreen.jsx"
 import { VocabRoundSummaryOverlay } from "src/screens/quiz/vocab/VocabRoundSummaryOverlay.jsx"
@@ -69,6 +70,7 @@ function AppScreens() {
     const mainScreenCovered = !!(
         overlay.casesHelp ||
         overlay.verbsHelp ||
+        overlay.verbFormsHelp ||
         overlay.helpHub ||
         overlay.stats ||
         overlay.settings ||
@@ -83,6 +85,7 @@ function AppScreens() {
             {overlay.packPrompt && <PackPromptOverlay heightMode="scroll" />}
             {overlay.casesHelp && <CasesHelpScreen />}
             {overlay.verbsHelp && <VerbsHelpScreen />}
+            {overlay.verbFormsHelp && <VerbFormsHelpScreen />}
             {overlay.helpHub && <HelpHubScreen />}
             {overlay.vocabRound && <VocabRoundSummaryOverlay />}
             {overlay.stats && <StatsScreen />}

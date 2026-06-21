@@ -51,6 +51,17 @@ export function HelpHubScreen({ heightMode = "fill" } = {}) {
                                 Справка: <span lang="lt">yra</span> / <span lang="lt">nėra</span>
                             </>
                         </Button>
+                        <Button
+                            type="button"
+                            onClick={() =>
+                                postTrainerUiAction({
+                                    type: "OVERLAY_OPEN",
+                                    name: "verbFormsHelp",
+                                })
+                            }
+                        >
+                            Три спряжения глаголов
+                        </Button>
                     </div>
                 </div>
                 <div className="app-screen__footer actions app-screen__footer--single">

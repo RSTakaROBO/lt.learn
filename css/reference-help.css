@@ -44,6 +44,31 @@
     line-height: 1.4;
 }
 
+.verb-forms-help-lead {
+    margin-top: 0;
+    color: var(--muted);
+}
+
+.verb-forms-help-example {
+    margin: -0.1rem 0 0.45rem;
+    font-size: 0.86rem;
+    color: var(--muted);
+}
+
+.verb-forms-help-example span[lang="lt"] {
+    font-weight: 700;
+    color: var(--accent);
+}
+
+.verb-forms-help-ending {
+    font-weight: 800;
+    color: var(--accent);
+}
+
+.verb-forms-help-final-note {
+    margin-top: -0.15rem;
+}
+
 .cases-help-table-wrap {
     overflow: hidden;
     margin-bottom: 0;
@@ -121,6 +146,7 @@
 }
 
 #cases-help .app-screen__footer .btn,
-#verbs-help .app-screen__footer .btn {
+#verbs-help .app-screen__footer .btn,
+#verb-forms-help .app-screen__footer .btn {
     width: 100%;
 }

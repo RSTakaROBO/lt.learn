@@ -21,11 +21,11 @@ function barBtnClass(active) {
 /** Нижняя панель: статистика, меню, справка, настройки. */
 export function QuizBottomBar() {
     const [state, dispatch] = useTrainerApp()
-    const { casesHelp, helpHub, settings, stats, verbsHelp } = state.overlay
+    const { casesHelp, helpHub, settings, stats, verbFormsHelp, verbsHelp } = state.overlay
     const { screen, engine } = state
     const [menuQuitConfirmOpen, setMenuQuitConfirmOpen] = useState(false)
 
-    const helpActive = helpHub || casesHelp || verbsHelp
+    const helpActive = helpHub || casesHelp || verbsHelp || verbFormsHelp
     const homeActive = !stats && !helpActive && !settings
 
     useEffect(() => {
@@ -67,6 +67,11 @@ export function QuizBottomBar() {
 
         if (verbsHelp) {
             dispatch({ type: "OVERLAY_CLOSE", name: "verbsHelp" })
+            return
+        }
+
+        if (verbFormsHelp) {
+            dispatch({ type: "OVERLAY_CLOSE", name: "verbFormsHelp" })
             return
         }
 

@@ -10,6 +10,7 @@ import {
     isPackPromptOverlayOpen,
     isSettingsOverlayOpen,
     isStatsOverlayOpen,
+    isVerbFormsHelpOpen,
     isVerbsHelpOpen,
     isVocabRoundSummaryOpen,
     postTrainerUiAction,
@@ -47,7 +48,7 @@ export function useTrainerKeyboardShortcuts() {
                 postTrainerUiAction({ type: "OVERLAY_CLOSE", name: "stats" })
                 return
             }
-            if (isCasesHelpOpen() || isVerbsHelpOpen()) {
+            if (isCasesHelpOpen() || isVerbsHelpOpen() || isVerbFormsHelpOpen()) {
                 e.preventDefault()
                 postTrainerUiAction({ type: "OVERLAY_OPEN", name: "helpHub" })
                 return
