@@ -44,16 +44,6 @@ export function HelpHubScreen({ heightMode = "fill" } = {}) {
                         <Button
                             type="button"
                             onClick={() =>
-                                postTrainerUiAction({ type: "OVERLAY_OPEN", name: "verbsHelp" })
-                            }
-                        >
-                            <>
-                                Справка: <span lang="lt">yra</span> / <span lang="lt">nėra</span>
-                            </>
-                        </Button>
-                        <Button
-                            type="button"
-                            onClick={() =>
                                 postTrainerUiAction({
                                     type: "OVERLAY_OPEN",
                                     name: "verbFormsHelp",

@@ -42,6 +42,7 @@ export const STORAGE_KEYS = {
     theme: "lt-trainer-theme-v1",
     vocabBestStreak: "lt-trainer-vocab-best-streak-v1",
     vocabDirections: "lt-trainer-vocab-directions-v1",
+    verbMode: "lt-trainer-verb-mode-v1",
     casesShowTranslation: "lt-trainer-cases-show-translation-v1",
     casesUseNativeKeyboard: "lt-trainer-cases-use-native-keyboard-v1",
     vocabShowWrongTranslation: "lt-trainer-vocab-show-wrong-translation-v1",
@@ -65,6 +66,13 @@ export const VOCAB_MODE = {
     CHOICES: "choices",
     SINGLE: "single",
     HARDCORE: "hardcore",
+}
+
+/** Формат ответа в режиме «Изучение глаголов». */
+export const VERB_MODE = {
+    FORMS: "forms",
+    CARDS: "cards",
+    FORM_CARDS: "form_cards",
 }
 
 /** Доступные профили из themes.css (атрибут data-theme на documentElement). */

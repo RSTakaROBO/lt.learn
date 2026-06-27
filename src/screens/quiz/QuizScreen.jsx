@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react"
 import { shallowEqual, useSelector } from "react-redux"
 
-import { TRAIN_MODE, VOCAB_DIRECTION, VOCAB_MODE } from "js/config.js"
+import { TRAIN_MODE, VERB_MODE, VOCAB_DIRECTION, VOCAB_MODE } from "js/config.js"
 import { STR } from "js/i18n/strings-ru.js"
 import { AppFlowScreen } from "src/components/layout/AppFlowScreen.jsx"
 import { handleQuizSkipButtonClick } from "js/quiz.js"
@@ -95,30 +95,36 @@ export function QuizScreen({ heightMode = "fill", hidden = false } = {}) {
     )
     const isVocab = task?.mode === TRAIN_MODE.VOCAB
     const isVerbs = task?.mode === TRAIN_MODE.VERBS
+    const isVerbCards =
+        isVerbs && (task?.verbMode === VERB_MODE.CARDS || task?.verbMode === VERB_MODE.FORM_CARDS)
+    const isVerbForms = isVerbs && !isVerbCards
     const isCases = !isVocab && !isVerbs
     const isHardcore = task?.vocabMode === VOCAB_MODE.HARDCORE
     const isSingleVocab = isVocab && task?.vocabMode === VOCAB_MODE.SINGLE
-    const usesTypedLtQuiz = isCases || isVerbs || (isVocab && isHardcore)
+    const isSingleCard = (isVocab || isVerbCards) && task?.vocabMode === VOCAB_MODE.SINGLE
+    const usesTypedLtQuiz = isCases || isVerbForms || (isVocab && isHardcore)
     const showChoices = isVocab && !isHardcore && !isSingleVocab
     const showFinish = !!roundProgress
     const showSkip = isVocab && !isHardcore && !isSingleVocab
-    const submitHidden = isVocab && !isHardcore
+    const submitHidden = (isVocab || isVerbCards) && !isHardcore
     const visibleFooterButtons = (showFinish ? 1 : 0) + (showSkip ? 1 : 0) + (!submitHidden ? 1 : 0)
     const footerSingle = visibleFooterButtons === 1
     const skipLabel =
-        (isVocab && answered && !isHardcore && !isSingleVocab) || (isVerbs && answered)
+        (isVocab && answered && !isHardcore && !isSingleVocab) || (isVerbForms && answered)
             ? STR.quiz.next
             : STR.quiz.skip
     const skipDisabled =
-        !task || (answered && !(isVocab && !isHardcore && !isSingleVocab) && !isVerbs)
+        !task || (answered && !(isVocab && !isHardcore && !isSingleVocab) && !isVerbForms)
     const submitLabel = answered ? STR.quiz.next : STR.quiz.check
-    const quizModeClass = isVerbs
+    const quizModeClass = isVerbForms
         ? "quiz--verbs"
-        : isVocab
+        : isVocab || isVerbCards
           ? isHardcore
               ? "quiz--vocab quiz--vocab-hardcore"
-              : isSingleVocab
-                ? "quiz--vocab quiz--vocab-single"
+              : isSingleCard
+                ? ["quiz--vocab", "quiz--vocab-single", isVerbCards && "quiz--verb-cards"]
+                      .filter(Boolean)
+                      .join(" ")
                 : "quiz--vocab"
           : "quiz--cases"
 
@@ -184,9 +190,9 @@ export function QuizScreen({ heightMode = "fill", hidden = false } = {}) {
                         <VocabQuiz
                             answered={answered}
                             choiceState={choiceState}
-                            feedback={isVocab ? feedback : null}
+                            feedback={isVocab || isVerbCards ? feedback : null}
                             finishLabel={STR.confirm.finish}
-                            isActive={isVocab}
+                            isActive={isVocab || isVerbCards}
                             onFinish={() => setFinishConfirmOpen(true)}
                             pulseId={vocabStreakPulseId}
                             roundDots={roundDots}
@@ -197,7 +203,7 @@ export function QuizScreen({ heightMode = "fill", hidden = false } = {}) {
                             submitHidden={submitHidden}
                             submitLabel={submitLabel}
                             showFinish={showFinish}
-                            showVerbForms={vocabShowVerbForms}
+                            showVerbForms={isVerbCards ? true : vocabShowVerbForms}
                             showWrongTranslation={vocabShowWrongTranslation}
                             lithuanianOverlayKeyboard={showOverlayKeyboard && isHardcore}
                             onRevealLithuanianKeyboard={() => setQuizLtKeyboardOpen(true)}
@@ -212,10 +218,10 @@ export function QuizScreen({ heightMode = "fill", hidden = false } = {}) {
                         <VerbsQuiz
                             answered={answered}
                             answerValue={quizTypingAnswer}
-                            feedback={isVerbs ? feedback : null}
+                            feedback={isVerbForms ? feedback : null}
                             inputRef={quizTypingInputRef}
-                            isActive={isVerbs}
-                            lithuanianOverlayKeyboard={showOverlayKeyboard && isVerbs}
+                            isActive={isVerbForms}
+                            lithuanianOverlayKeyboard={showOverlayKeyboard && isVerbForms}
                             onAnswerValueChange={setQuizTypingAnswer}
                             onRevealLithuanianKeyboard={() => setQuizLtKeyboardOpen(true)}
                             pulseId={vocabStreakPulseId}
@@ -243,7 +249,7 @@ export function QuizScreen({ heightMode = "fill", hidden = false } = {}) {
                                     answered={answered}
                                     finishLabel={STR.confirm.finish}
                                     isHardcore={isHardcore}
-                                    isVerbs={isVerbs}
+                                    isVerbs={isVerbForms}
                                     isVocab={isVocab}
                                     onFinish={() => setFinishConfirmOpen(true)}
                                     onSkip={handleQuizSkipButtonClick}
@@ -255,7 +261,7 @@ export function QuizScreen({ heightMode = "fill", hidden = false } = {}) {
                                     submitLabel={submitLabel}
                                 />
                             </div>
-                            {(isCases || isVerbs) && showOverlayKeyboard ? (
+                            {(isCases || isVerbForms) && showOverlayKeyboard ? (
                                 <LithuanianKeyboard
                                     inputRef={quizTypingInputRef}
                                     layout={KEYBOARD_LAYOUT_LT}

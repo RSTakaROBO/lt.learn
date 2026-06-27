@@ -1,6 +1,444 @@
 {
-    "title": "Люди и профессии",
+    "title": "2. Kaip sekasi?",
     "words": [
+        {
+            "type": "verb",
+            "lemma": "atostogauti",
+            "forms": {
+                "infinitive": "atostogauti",
+                "present3": "atostogauja",
+                "past3": "atostogavo"
+            },
+            "translations": ["отдыхать", "быть в отпуске"]
+        },
+        {
+            "type": "verb",
+            "lemma": "eiti",
+            "forms": {
+                "infinitive": "eiti",
+                "present3": "eina",
+                "past3": "ėjo"
+            },
+            "translations": ["идти", "ходить"]
+        },
+        {
+            "type": "verb",
+            "lemma": "skambinti",
+            "forms": {
+                "infinitive": "skambinti",
+                "present3": "skambina",
+                "past3": "skambino"
+            },
+            "translations": ["звонить"]
+        },
+        {
+            "type": "verb",
+            "lemma": "skubėti",
+            "forms": {
+                "infinitive": "skubėti",
+                "present3": "skuba",
+                "past3": "skubėjo"
+            },
+            "translations": ["спешить"]
+        },
+        {
+            "type": "verb",
+            "lemma": "susitikti",
+            "forms": {
+                "infinitive": "susitikti",
+                "present3": "susitinka",
+                "past3": "susitiko"
+            },
+            "translations": ["встретиться", "встречать"]
+        },
+        {
+            "type": "verb",
+            "lemma": "važiuoti",
+            "forms": {
+                "infinitive": "važiuoti",
+                "present3": "važiuoja",
+                "past3": "važiavo"
+            },
+            "translations": ["ехать"]
+        },
+        {
+            "type": "verb",
+            "lemma": "vėluoti",
+            "forms": {
+                "infinitive": "vėluoti",
+                "present3": "vėluoja",
+                "past3": "vėlavo"
+            },
+            "translations": ["опаздывать"]
+        },
+        {
+            "type": "noun",
+            "lemma": "bankas",
+            "forms": {
+                "nominative": "bankas",
+                "genitive": "banko",
+                "dative": "bankui",
+                "accusative": "banką",
+                "instrumental": "banku",
+                "locative": "banke",
+                "vocative": "banke"
+            },
+            "translations": ["банк"]
+        },
+        {
+            "type": "noun",
+            "lemma": "baras",
+            "forms": {
+                "nominative": "baras",
+                "genitive": "baro",
+                "dative": "barui",
+                "accusative": "barą",
+                "instrumental": "baru",
+                "locative": "bare",
+                "vocative": "bare"
+            },
+            "translations": ["бар"]
+        },
+        {
+            "type": "noun",
+            "lemma": "baseinas",
+            "forms": {
+                "nominative": "baseinas",
+                "genitive": "baseino",
+                "dative": "baseinui",
+                "accusative": "baseiną",
+                "instrumental": "baseinu",
+                "locative": "baseine",
+                "vocative": "baseine"
+            },
+            "translations": ["бассейн"]
+        },
+        {
+            "type": "noun",
+            "lemma": "biblioteka",
+            "forms": {
+                "nominative": "biblioteka",
+                "genitive": "bibliotekos",
+                "dative": "bibliotekai",
+                "accusative": "biblioteką",
+                "instrumental": "biblioteka",
+                "locative": "bibliotekoje",
+                "vocative": "biblioteka"
+            },
+            "translations": ["библиотека"]
+        },
+        {
+            "type": "noun",
+            "lemma": "bokštas",
+            "forms": {
+                "nominative": "bokštas",
+                "genitive": "bokšto",
+                "dative": "bokštui",
+                "accusative": "bokštą",
+                "instrumental": "bokštu",
+                "locative": "bokšte",
+                "vocative": "bokšte"
+            },
+            "translations": ["башня"]
+        },
+        {
+            "type": "noun",
+            "lemma": "fontanas",
+            "forms": {
+                "nominative": "fontanas",
+                "genitive": "fontano",
+                "dative": "fontanui",
+                "accusative": "fontaną",
+                "instrumental": "fontanu",
+                "locative": "fontane",
+                "vocative": "fontane"
+            },
+            "translations": ["фонтан"]
+        },
+        {
+            "type": "noun",
+            "lemma": "kirpykla",
+            "forms": {
+                "nominative": "kirpykla",
+                "genitive": "kirpyklos",
+                "dative": "kirpyklai",
+                "accusative": "kirpyklą",
+                "instrumental": "kirpykla",
+                "locative": "kirpykloje",
+                "vocative": "kirpykla"
+            },
+            "translations": ["парикмахерская"]
+        },
+        {
+            "type": "noun",
+            "lemma": "knygynas",
+            "forms": {
+                "nominative": "knygynas",
+                "genitive": "knygyno",
+                "dative": "knygynui",
+                "accusative": "knygyną",
+                "instrumental": "knygynu",
+                "locative": "knygyne",
+                "vocative": "knygyne"
+            },
+            "translations": ["книжный магазин"]
+        },
+        {
+            "type": "noun",
+            "lemma": "klubas",
+            "forms": {
+                "nominative": "klubas",
+                "genitive": "klubo",
+                "dative": "klubui",
+                "accusative": "klubą",
+                "instrumental": "klubu",
+                "locative": "klube",
+                "vocative": "klube"
+            },
+            "translations": ["клуб"]
+        },
+        {
+            "type": "noun",
+            "lemma": "mokykla",
+            "forms": {
+                "nominative": "mokykla",
+                "genitive": "mokyklos",
+                "dative": "mokyklai",
+                "accusative": "mokyklą",
+                "instrumental": "mokykla",
+                "locative": "mokykloje",
+                "vocative": "mokykla"
+            },
+            "translations": ["школа"]
+        },
+        {
+            "type": "noun",
+            "lemma": "muziejus",
+            "exception": true,
+            "exception_note_ru": "Существительное на -jus: в косвенных падежах основа muziej-.",
+            "forms": {
+                "nominative": "muziejus",
+                "genitive": "muziejaus",
+                "dative": "muziejui",
+                "accusative": "muziejų",
+                "instrumental": "muziejumi",
+                "locative": "muziejuje",
+                "vocative": "muziejau"
+            },
+            "translations": ["музей"]
+        },
+        {
+            "type": "noun",
+            "lemma": "operos teatras",
+            "forms": {
+                "nominative": "operos teatras",
+                "genitive": "operos teatro",
+                "dative": "operos teatrui",
+                "accusative": "operos teatrą",
+                "instrumental": "operos teatru",
+                "locative": "operos teatre",
+                "vocative": "operos teatre"
+            },
+            "translations": ["оперный театр"]
+        },
+        {
+            "type": "noun",
+            "lemma": "oro uostas",
+            "forms": {
+                "nominative": "oro uostas",
+                "genitive": "oro uosto",
+                "dative": "oro uostui",
+                "accusative": "oro uostą",
+                "instrumental": "oro uostu",
+                "locative": "oro uoste",
+                "vocative": "oro uoste"
+            },
+            "translations": ["аэропорт"]
+        },
+        {
+            "type": "noun",
+            "lemma": "sankryža",
+            "forms": {
+                "nominative": "sankryža",
+                "genitive": "sankryžos",
+                "dative": "sankryžai",
+                "accusative": "sankryžą",
+                "instrumental": "sankryža",
+                "locative": "sankryžoje",
+                "vocative": "sankryža"
+            },
+            "translations": ["перекрёсток"]
+        },
+        {
+            "type": "noun",
+            "lemma": "sporto klubas",
+            "forms": {
+                "nominative": "sporto klubas",
+                "genitive": "sporto klubo",
+                "dative": "sporto klubui",
+                "accusative": "sporto klubą",
+                "instrumental": "sporto klubu",
+                "locative": "sporto klube",
+                "vocative": "sporto klube"
+            },
+            "translations": ["спортивный клуб"]
+        },
+        {
+            "type": "noun",
+            "lemma": "stotelė",
+            "forms": {
+                "nominative": "stotelė",
+                "genitive": "stotelės",
+                "dative": "stotelei",
+                "accusative": "stotelę",
+                "instrumental": "stotele",
+                "locative": "stotelėje",
+                "vocative": "stotele"
+            },
+            "translations": ["остановка"]
+        },
+        {
+            "type": "noun",
+            "lemma": "stotis",
+            "exception": true,
+            "exception_note_ru": "Женское существительное на -is; в дательном ед. ч. форма stočiai.",
+            "forms": {
+                "nominative": "stotis",
+                "genitive": "stoties",
+                "dative": "stočiai",
+                "accusative": "stotį",
+                "instrumental": "stotimi",
+                "locative": "stotyje",
+                "vocative": "stotie"
+            },
+            "translations": ["станция", "вокзал"]
+        },
+        {
+            "type": "noun",
+            "lemma": "šviesoforas",
+            "forms": {
+                "nominative": "šviesoforas",
+                "genitive": "šviesoforo",
+                "dative": "šviesoforui",
+                "accusative": "šviesoforą",
+                "instrumental": "šviesoforu",
+                "locative": "šviesofore",
+                "vocative": "šviesofore"
+            },
+            "translations": ["светофор"]
+        },
+        {
+            "type": "noun",
+            "lemma": "teatras",
+            "forms": {
+                "nominative": "teatras",
+                "genitive": "teatro",
+                "dative": "teatrui",
+                "accusative": "teatrą",
+                "instrumental": "teatru",
+                "locative": "teatre",
+                "vocative": "teatre"
+            },
+            "translations": ["театр"]
+        },
+        {
+            "type": "noun",
+            "lemma": "uostas",
+            "forms": {
+                "nominative": "uostas",
+                "genitive": "uosto",
+                "dative": "uostui",
+                "accusative": "uostą",
+                "instrumental": "uostu",
+                "locative": "uoste",
+                "vocative": "uoste"
+            },
+            "translations": ["порт"]
+        },
+        {
+            "type": "noun",
+            "lemma": "ežeras",
+            "forms": {
+                "nominative": "ežeras",
+                "genitive": "ežero",
+                "dative": "ežerui",
+                "accusative": "ežerą",
+                "instrumental": "ežeru",
+                "locative": "ežere",
+                "vocative": "ežere"
+            },
+            "translations": ["озеро"]
+        },
+        {
+            "type": "noun",
+            "lemma": "jūra",
+            "forms": {
+                "nominative": "jūra",
+                "genitive": "jūros",
+                "dative": "jūrai",
+                "accusative": "jūrą",
+                "instrumental": "jūra",
+                "locative": "jūroje",
+                "vocative": "jūra"
+            },
+            "translations": ["море"]
+        },
+        {
+            "type": "noun",
+            "lemma": "pavasaris",
+            "forms": {
+                "nominative": "pavasaris",
+                "genitive": "pavasario",
+                "dative": "pavasariui",
+                "accusative": "pavasarį",
+                "instrumental": "pavasariu",
+                "locative": "pavasaryje",
+                "vocative": "pavasari"
+            },
+            "translations": ["весна"]
+        },
+        {
+            "type": "noun",
+            "lemma": "vasara",
+            "forms": {
+                "nominative": "vasara",
+                "genitive": "vasaros",
+                "dative": "vasarai",
+                "accusative": "vasarą",
+                "instrumental": "vasara",
+                "locative": "vasaroje",
+                "vocative": "vasara"
+            },
+            "translations": ["лето"]
+        },
+        {
+            "type": "noun",
+            "lemma": "ruduo",
+            "forms": {
+                "nominative": "ruduo",
+                "genitive": "rudens",
+                "dative": "rudeniui",
+                "accusative": "rudenį",
+                "instrumental": "rudeniu",
+                "locative": "rudenyje",
+                "vocative": "rudenie"
+            },
+            "translations": ["осень"]
+        },
+        {
+            "type": "noun",
+            "lemma": "žiema",
+            "forms": {
+                "nominative": "žiema",
+                "genitive": "žiemos",
+                "dative": "žiemai",
+                "accusative": "žiemą",
+                "instrumental": "žiema",
+                "locative": "žiemoje",
+                "vocative": "žiema"
+            },
+            "translations": ["зима"]
+        },
         {
             "type": "noun",
             "lemma": "žmogus",
@@ -1248,6 +1686,330 @@
                 "vocative": "žurnaliste"
             },
             "translations": ["журналистка", "журналист"]
+        },
+        {
+            "type": "noun",
+            "lemma": "skaitymas",
+            "forms": {
+                "nominative": "skaitymas",
+                "genitive": "skaitymo",
+                "dative": "skaitymui",
+                "accusative": "skaitymą",
+                "instrumental": "skaitymu",
+                "locative": "skaityme",
+                "vocative": "skaityme"
+            },
+            "translations": ["чтение"]
+        },
+        {
+            "type": "noun",
+            "lemma": "puslapis",
+            "forms": {
+                "nominative": "puslapis",
+                "genitive": "puslapio",
+                "dative": "puslapiui",
+                "accusative": "puslapį",
+                "instrumental": "puslapiu",
+                "locative": "puslapyje",
+                "vocative": "puslapi"
+            },
+            "translations": ["страница"]
+        },
+        {
+            "type": "noun",
+            "lemma": "miestas",
+            "forms": {
+                "nominative": "miestas",
+                "genitive": "miesto",
+                "dative": "miestui",
+                "accusative": "miestą",
+                "instrumental": "miestu",
+                "locative": "mieste",
+                "vocative": "mieste"
+            },
+            "translations": ["город"]
+        },
+        {
+            "type": "noun",
+            "lemma": "senamiestis",
+            "forms": {
+                "nominative": "senamiestis",
+                "genitive": "senamiesčio",
+                "dative": "senamiesčiui",
+                "accusative": "senamiestį",
+                "instrumental": "senamiesčiu",
+                "locative": "senamiestyje",
+                "vocative": "senamiesti"
+            },
+            "translations": ["старый город", "исторический центр"]
+        },
+        {
+            "type": "noun",
+            "lemma": "pilis",
+            "forms": {
+                "nominative": "pilis",
+                "genitive": "pilies",
+                "dative": "piliai",
+                "accusative": "pilį",
+                "instrumental": "pilimi",
+                "locative": "pilyje",
+                "vocative": "pilie"
+            },
+            "translations": ["замок"]
+        },
+        {
+            "type": "noun",
+            "lemma": "gatvė",
+            "forms": {
+                "nominative": "gatvė",
+                "genitive": "gatvės",
+                "dative": "gatvei",
+                "accusative": "gatvę",
+                "instrumental": "gatve",
+                "locative": "gatvėje",
+                "vocative": "gatve"
+            },
+            "translations": ["улица"]
+        },
+        {
+            "type": "noun",
+            "lemma": "aikštė",
+            "forms": {
+                "nominative": "aikštė",
+                "genitive": "aikštės",
+                "dative": "aikštei",
+                "accusative": "aikštę",
+                "instrumental": "aikšte",
+                "locative": "aikštėje",
+                "vocative": "aikšte"
+            },
+            "translations": ["площадь"]
+        },
+        {
+            "type": "noun",
+            "lemma": "kavinė",
+            "forms": {
+                "nominative": "kavinė",
+                "genitive": "kavinės",
+                "dative": "kavinei",
+                "accusative": "kavinę",
+                "instrumental": "kavine",
+                "locative": "kavinėje",
+                "vocative": "kavine"
+            },
+            "translations": ["кафе"]
+        },
+        {
+            "type": "noun",
+            "lemma": "kioskas",
+            "forms": {
+                "nominative": "kioskas",
+                "genitive": "kiosko",
+                "dative": "kioskui",
+                "accusative": "kioską",
+                "instrumental": "kiosku",
+                "locative": "kioske",
+                "vocative": "kioske"
+            },
+            "translations": ["киоск"]
+        },
+        {
+            "type": "noun",
+            "lemma": "ligoninė",
+            "forms": {
+                "nominative": "ligoninė",
+                "genitive": "ligoninės",
+                "dative": "ligoninei",
+                "accusative": "ligoninę",
+                "instrumental": "ligonine",
+                "locative": "ligoninėje",
+                "vocative": "ligonine"
+            },
+            "translations": ["больница"]
+        },
+        {
+            "type": "noun",
+            "lemma": "paštas",
+            "forms": {
+                "nominative": "paštas",
+                "genitive": "pašto",
+                "dative": "paštui",
+                "accusative": "paštą",
+                "instrumental": "paštu",
+                "locative": "pašte",
+                "vocative": "pašte"
+            },
+            "translations": ["почта"]
+        },
+        {
+            "type": "noun",
+            "lemma": "ministerija",
+            "forms": {
+                "nominative": "ministerija",
+                "genitive": "ministerijos",
+                "dative": "ministerijai",
+                "accusative": "ministeriją",
+                "instrumental": "ministerija",
+                "locative": "ministerijoje",
+                "vocative": "ministerija"
+            },
+            "translations": ["министерство"]
+        },
+        {
+            "type": "noun",
+            "lemma": "viešbutis",
+            "forms": {
+                "nominative": "viešbutis",
+                "genitive": "viešbučio",
+                "dative": "viešbučiui",
+                "accusative": "viešbutį",
+                "instrumental": "viešbučiu",
+                "locative": "viešbutyje",
+                "vocative": "viešbuti"
+            },
+            "translations": ["гостиница", "отель"]
+        },
+        {
+            "type": "noun",
+            "lemma": "restoranas",
+            "forms": {
+                "nominative": "restoranas",
+                "genitive": "restorano",
+                "dative": "restoranui",
+                "accusative": "restoraną",
+                "instrumental": "restoranu",
+                "locative": "restorane",
+                "vocative": "restorane"
+            },
+            "translations": ["ресторан"]
+        },
+        {
+            "type": "noun",
+            "lemma": "bendrabutis",
+            "forms": {
+                "nominative": "bendrabutis",
+                "genitive": "bendrabučio",
+                "dative": "bendrabučiui",
+                "accusative": "bendrabutį",
+                "instrumental": "bendrabučiu",
+                "locative": "bendrabutyje",
+                "vocative": "bendrabuti"
+            },
+            "translations": ["общежитие"]
+        },
+        {
+            "type": "noun",
+            "lemma": "vaistinė",
+            "forms": {
+                "nominative": "vaistinė",
+                "genitive": "vaistinės",
+                "dative": "vaistinei",
+                "accusative": "vaistinę",
+                "instrumental": "vaistine",
+                "locative": "vaistinėje",
+                "vocative": "vaistine"
+            },
+            "translations": ["аптека"]
+        },
+        {
+            "type": "noun",
+            "lemma": "ambasada",
+            "forms": {
+                "nominative": "ambasada",
+                "genitive": "ambasados",
+                "dative": "ambasadai",
+                "accusative": "ambasadą",
+                "instrumental": "ambasada",
+                "locative": "ambasadoje",
+                "vocative": "ambasada"
+            },
+            "translations": ["посольство"]
+        },
+        {
+            "type": "noun",
+            "lemma": "turgus",
+            "exception": true,
+            "exception_note_ru": "Существительное на -us с основой -aus в родительном падеже.",
+            "forms": {
+                "nominative": "turgus",
+                "genitive": "turgaus",
+                "dative": "turgui",
+                "accusative": "turgų",
+                "instrumental": "turgumi",
+                "locative": "turguje",
+                "vocative": "turgau"
+            },
+            "translations": ["рынок"]
+        },
+        {
+            "type": "noun",
+            "lemma": "bažnyčia",
+            "forms": {
+                "nominative": "bažnyčia",
+                "genitive": "bažnyčios",
+                "dative": "bažnyčiai",
+                "accusative": "bažnyčią",
+                "instrumental": "bažnyčia",
+                "locative": "bažnyčioje",
+                "vocative": "bažnyčia"
+            },
+            "translations": ["церковь"]
+        },
+        {
+            "type": "noun",
+            "lemma": "parduotuvė",
+            "forms": {
+                "nominative": "parduotuvė",
+                "genitive": "parduotuvės",
+                "dative": "parduotuvei",
+                "accusative": "parduotuvę",
+                "instrumental": "parduotuve",
+                "locative": "parduotuvėje",
+                "vocative": "parduotuve"
+            },
+            "translations": ["магазин"]
+        },
+        {
+            "type": "noun",
+            "lemma": "parkas",
+            "forms": {
+                "nominative": "parkas",
+                "genitive": "parko",
+                "dative": "parkui",
+                "accusative": "parką",
+                "instrumental": "parku",
+                "locative": "parke",
+                "vocative": "parke"
+            },
+            "translations": ["парк"]
+        },
+        {
+            "type": "noun",
+            "lemma": "upė",
+            "forms": {
+                "nominative": "upė",
+                "genitive": "upės",
+                "dative": "upei",
+                "accusative": "upę",
+                "instrumental": "upe",
+                "locative": "upėje",
+                "vocative": "upe"
+            },
+            "translations": ["река"]
+        },
+        {
+            "type": "noun",
+            "lemma": "tiltas",
+            "forms": {
+                "nominative": "tiltas",
+                "genitive": "tilto",
+                "dative": "tiltui",
+                "accusative": "tiltą",
+                "instrumental": "tiltu",
+                "locative": "tilte",
+                "vocative": "tilte"
+            },
+            "translations": ["мост"]
         }
     ],
     "schemaVersion": 1

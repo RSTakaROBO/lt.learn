@@ -3,10 +3,11 @@ import { useSelector } from "react-redux"
 
 import { VERB_FORM_ORDER } from "js/config.js"
 import { STR } from "js/i18n/strings-ru.js"
-import { handleVerbFormSubmit } from "js/quiz.js"
+import { excludeCurrentRoundWord, handleVerbFormSubmit } from "js/quiz.js"
 import {
     LithuanianInput,
     VocabRoundDots,
+    VocabRoundExcludeButton,
     VocabRoundProgress,
     VocabStreakMultiplier,
 } from "src/screens/quiz/shared/index.js"
@@ -107,6 +108,7 @@ export function VerbsQuiz({
         <div id="quiz-verbs-ui" className={isActive ? "" : "hidden"}>
             <VocabRoundProgress progress={roundProgress} />
             <div className="verb-forms-block">
+                <VocabRoundExcludeButton onClick={excludeCurrentRoundWord} />
                 <div className="verb-forms-block__main">
                     <VerbFormsPrompt answered={answered} feedbackKind={feedbackKind} task={task} />
                     {translation ? <p className="verb-translation-line">{translation}</p> : null}

@@ -5,6 +5,12 @@ const ENDINGS = ["−as", "−is", "−ys", "−us", "−a", "−ė"]
 
 const CASE_ENDINGS = [
     {
+        key: "nominative",
+        id: "ch-vard",
+        singular: ["−as", "−is", "−ys", "−us", "−a", "−ė"],
+        plural: ["−ai", "−iai", "−iai", "−ūs", "−os", "−ės"],
+    },
+    {
         key: "genitive",
         id: "ch-kil",
         singular: ["−o", "−io", "−io", "−aus", "−os", "−ės"],

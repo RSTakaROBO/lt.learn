@@ -5,11 +5,13 @@ import { STR } from "js/i18n/strings-ru.js"
 import {
     handlePacksNextClick,
     handleStartCasesTrainingClick,
+    handleVerbModeStartClick,
     handleVocabDirectionStartClick,
 } from "js/setup-wizard-handlers.js"
 import { loadTrainMode, saveExcludeLearnedWords, saveTrainMode } from "js/storage.js"
 import { AppFlowScreen } from "src/components/layout/AppFlowScreen.jsx"
 import { WizardCaseCheckboxes } from "src/components/setup/WizardCaseCheckboxes.jsx"
+import { WizardVerbModeForm } from "src/components/setup/WizardVerbModeForm.jsx"
 import { WizardVocabDirectionForm } from "src/components/setup/WizardVocabDirectionForm.jsx"
 import { WizardPackList } from "src/components/pack-card"
 import { Button } from "src/components/ui/Button.jsx"
@@ -33,6 +35,7 @@ export function SetupScreen({ heightMode = "fill", hidden = false } = {}) {
     const showMode = step === 1
     const showPacks = step === 2
     const showVocabDir = step === 3 && trainMode === TRAIN_MODE.VOCAB
+    const showVerbMode = step === 3 && trainMode === TRAIN_MODE.VERBS
     const showCases = step === 3 && trainMode === TRAIN_MODE.CASES
 
     function goWizardStep(next) {
@@ -182,6 +185,33 @@ export function SetupScreen({ heightMode = "fill", hidden = false } = {}) {
                             type="button"
                             aria-label={STR.packs.start}
                             onClick={handleVocabDirectionStartClick}
+                        >
+                            {STR.packs.start}
+                        </Button>
+                    </div>
+                </div>
+
+                <div id="step-verb-mode" className={wizardStepClass(showVerbMode)}>
+                    <h2 id="verb-mode-step-title">{STR.wizard.verbModeHeading}</h2>
+                    <WizardVerbModeForm />
+                    <p id="verb-mode-step-status" className="status" aria-live="polite">
+                        {status.verbMode}
+                    </p>
+                    <div className="actions wizard-pack-actions">
+                        <Button
+                            type="button"
+                            onClick={() => {
+                                dispatch({ type: "WIZARD_CLEAR_STATUS", name: "verbMode" })
+                                goWizardStep(2)
+                            }}
+                        >
+                            {STR.packs.back}
+                        </Button>
+                        <Button
+                            variant="primary"
+                            type="button"
+                            aria-label={STR.packs.start}
+                            onClick={handleVerbModeStartClick}
                         >
                             {STR.packs.start}
                         </Button>

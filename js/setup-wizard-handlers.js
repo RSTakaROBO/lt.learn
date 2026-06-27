@@ -1,4 +1,4 @@
-import { TRAIN_MODE, VOCAB_MODE } from "./config.js"
+import { TRAIN_MODE, VERB_MODE, VOCAB_MODE } from "./config.js"
 import { parseCustomPackJsonFile } from "./custom-packs.js"
 import { fmt } from "./i18n/core.js"
 import { STR } from "./i18n/strings-ru.js"
@@ -18,6 +18,7 @@ import {
 } from "./trainer-ui-state.js"
 import {
     appendCustomPackRecord,
+    getResolvedVerbMode,
     getResolvedVocabDirections,
     loadSelectedPacks,
     loadTrainMode,
@@ -30,7 +31,10 @@ import { resetVocabCorrectStreak, showQuiz } from "./quiz.js"
 import { nextCasesTask } from "../src/screens/quiz/cases/casesTask.js"
 import { isVocabTrainingWord } from "../src/screens/quiz/vocab/vocabWords.js"
 import { nextVocabTask } from "../src/screens/quiz/vocab/vocabTask.js"
-import { isVerbsTrainingWord } from "../src/screens/quiz/verbs/verbsWords.js"
+import {
+    isVerbCardsTrainingWord,
+    isVerbsTrainingWord,
+} from "../src/screens/quiz/verbs/verbsWords.js"
 import { nextVerbTask } from "../src/screens/quiz/verbs/verbsTask.js"
 
 export async function handlePackJsonInputChange(/** @type {Event} */ ev) {
@@ -105,9 +109,43 @@ export function handleVocabDirectionStartClick() {
     showQuiz(task)
 }
 
+export function handleVerbModeStartClick() {
+    clearWizardStatus("verbMode")
+    const verbMode = getResolvedVerbMode()
+    const usable = getEngine().wordBank.filter(
+        verbMode === VERB_MODE.CARDS ? isVerbCardsTrainingWord : isVerbsTrainingWord
+    )
+    if (!usable.length) {
+        setWizardStatus(
+            "verbMode",
+            verbMode === VERB_MODE.CARDS ? STR.events.verbCardsAfterPack : STR.events.verbsAfterPack
+        )
+        return
+    }
+    clearVocabRound()
+    mutateEngine((e) => {
+        e.shownLemmaHistory = []
+    })
+    resetVocabCorrectStreak()
+    if (!initVocabRound(TRAIN_MODE.VERBS, { verbMode })) {
+        setWizardStatus(
+            "verbMode",
+            verbMode === VERB_MODE.CARDS ? STR.events.verbCardsAfterPack : STR.events.verbsAfterPack
+        )
+        return
+    }
+    const task = nextVerbTask({ verbMode })
+    if (!task) {
+        setWizardStatus("verbMode", STR.events.verbsStartFail)
+        return
+    }
+    showQuiz(task)
+}
+
 export async function handlePacksNextClick() {
     clearWizardStatus("pack")
     clearWizardStatus("case")
+    clearWizardStatus("verbMode")
     const ids = getCheckedPackIds()
     if (!ids.length) {
         setWizardStatus("pack", STR.events.pickOnePack)
@@ -150,21 +188,7 @@ export async function handlePacksNextClick() {
                 return
             }
             saveSelectedPacks(ids)
-            clearVocabRound()
-            mutateEngine((e) => {
-                e.shownLemmaHistory = []
-            })
-            resetVocabCorrectStreak()
-            if (!initVocabRound(TRAIN_MODE.VERBS)) {
-                setWizardStatus("pack", STR.events.verbsAfterPack)
-                return
-            }
-            const task = nextVerbTask()
-            if (!task) {
-                setWizardStatus("pack", STR.events.verbsStartFail)
-                return
-            }
-            showQuiz(task)
+            postTrainerUiAction({ type: "WIZARD_SET_STEP", step: 3 })
             return
         }
         postTrainerUiAction({ type: "WIZARD_SET_STEP", step: 3 })

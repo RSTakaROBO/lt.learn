@@ -3,13 +3,13 @@ import { QuizBarSvg } from "src/components/icons/QuizBarSvg.jsx"
 export function QuizBarHelpIcon({ className }) {
     return (
         <QuizBarSvg className={className}>
-            <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" strokeWidth="2" />
             <path
                 fill="none"
                 stroke="currentColor"
                 strokeWidth="2"
                 strokeLinecap="round"
-                d="M9.75 9.75a2.25 2.25 0 1 1 3 2.13c-.56.49-.89 1-.89 1.62V14M12 17h.01"
+                strokeLinejoin="round"
+                d="M4.5 5.5c2.3 0 4.9.45 7.5 2.2v11c-2.6-1.75-5.2-2.2-7.5-2.2V5.5ZM19.5 5.5c-2.3 0-4.9.45-7.5 2.2v11c2.6-1.75 5.2-2.2 7.5-2.2V5.5ZM12 7.7v11"
             />
         </QuizBarSvg>
     )

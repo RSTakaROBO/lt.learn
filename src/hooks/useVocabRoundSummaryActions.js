@@ -1,9 +1,9 @@
 import { useCallback } from "react"
 
 import { STR } from "js/i18n/strings-ru.js"
-import { TRAIN_MODE, VOCAB_MODE } from "js/config.js"
+import { TRAIN_MODE, VERB_MODE, VOCAB_MODE } from "js/config.js"
 import { resetVocabCorrectStreak, showQuiz } from "js/quiz.js"
-import { getResolvedVocabDirections, loadTrainMode } from "js/storage.js"
+import { getResolvedVerbMode, getResolvedVocabDirections, loadTrainMode } from "js/storage.js"
 import { getCheckedCaseKeys, mutateEngine } from "js/trainer-ui-state.js"
 import { clearVocabRound, initVocabRound } from "js/vocab-round.js"
 import { useTrainerDispatch } from "src/context/TrainerAppContext.jsx"
@@ -50,25 +50,36 @@ export function useVocabRoundSummaryActions() {
         resetVocabCorrectStreak()
 
         const trainMode = loadTrainMode() || TRAIN_MODE.VOCAB
-        const fallbackStep = trainMode === TRAIN_MODE.VERBS ? 2 : 3
-        if (!initVocabRound(trainMode)) {
+        const verbMode = trainMode === TRAIN_MODE.VERBS ? getResolvedVerbMode() : VERB_MODE.FORMS
+        const fallbackStep = 3
+        if (!initVocabRound(trainMode, { verbMode })) {
+            const noWordsMessage =
+                trainMode === TRAIN_MODE.VERBS
+                    ? verbMode === VERB_MODE.CARDS
+                        ? STR.events.verbCardsAfterPack
+                        : STR.events.verbsAfterPack
+                    : STR.events.roundNoWords
             goToSetup(
                 fallbackStep,
-                STR.events.roundNoWords,
-                trainMode === TRAIN_MODE.CASES ? "case" : "vocabDirection"
+                noWordsMessage,
+                trainMode === TRAIN_MODE.CASES
+                    ? "case"
+                    : trainMode === TRAIN_MODE.VERBS
+                      ? "verbMode"
+                      : "vocabDirection"
             )
             return
         }
 
         const task =
             trainMode === TRAIN_MODE.VERBS
-                ? nextVerbTask()
+                ? nextVerbTask({ verbMode })
                 : trainMode === TRAIN_MODE.CASES
                   ? nextCasesTask(getCheckedCaseKeys())
                   : nextVocabTask()
         if (!task) {
             if (trainMode === TRAIN_MODE.VERBS) {
-                goToSetup(fallbackStep, STR.events.verbsStartFail)
+                goToSetup(fallbackStep, STR.events.verbsStartFail, "verbMode")
                 return
             }
             if (trainMode === TRAIN_MODE.CASES) {

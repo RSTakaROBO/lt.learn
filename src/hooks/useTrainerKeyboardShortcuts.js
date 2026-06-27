@@ -11,7 +11,6 @@ import {
     isSettingsOverlayOpen,
     isStatsOverlayOpen,
     isVerbFormsHelpOpen,
-    isVerbsHelpOpen,
     isVocabRoundSummaryOpen,
     postTrainerUiAction,
 } from "js/trainer-ui-state.js"
@@ -48,7 +47,7 @@ export function useTrainerKeyboardShortcuts() {
                 postTrainerUiAction({ type: "OVERLAY_CLOSE", name: "stats" })
                 return
             }
-            if (isCasesHelpOpen() || isVerbsHelpOpen() || isVerbFormsHelpOpen()) {
+            if (isCasesHelpOpen() || isVerbFormsHelpOpen()) {
                 e.preventDefault()
                 postTrainerUiAction({ type: "OVERLAY_OPEN", name: "helpHub" })
                 return

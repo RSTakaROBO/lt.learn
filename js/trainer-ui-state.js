@@ -102,7 +102,6 @@ function readInitialSelectedPackIds() {
  * @property {boolean} packPrompt
  * @property {boolean} vocabRound
  * @property {boolean} casesHelp
- * @property {boolean} verbsHelp
  * @property {boolean} verbFormsHelp
  */
 
@@ -132,7 +131,7 @@ function readInitialSelectedPackIds() {
 /**
  * @typedef {Object} TrainerUiWizard
  * @property {number} step
- * @property {{ pack: string; case: string; vocabDirection: string }} status
+ * @property {{ pack: string; case: string; vocabDirection: string; verbMode: string }} status
  */
 
 /**
@@ -197,8 +196,8 @@ function readInitialSelectedPackIds() {
  *   | { type: "SET_LEARNING_SCOPE_SIZE"; value: number }
  *   | { type: "SET_EXCLUDE_LEARNED_WORDS"; value: boolean }
  *   | { type: "WIZARD_SET_STEP"; step: number }
- *   | { type: "WIZARD_SET_STATUS"; name: "pack" | "case" | "vocabDirection"; message: string }
- *   | { type: "WIZARD_CLEAR_STATUS"; name?: "pack" | "case" | "vocabDirection" }
+ *   | { type: "WIZARD_SET_STATUS"; name: "pack" | "case" | "vocabDirection" | "verbMode"; message: string }
+ *   | { type: "WIZARD_CLEAR_STATUS"; name?: "pack" | "case" | "vocabDirection" | "verbMode" }
  *   | { type: "QUIZ_SET_FEEDBACK"; feedback: QuizFeedback }
  *   | { type: "QUIZ_CLEAR_FEEDBACK" }
  * )} TrainerUiAction
@@ -214,7 +213,6 @@ function buildInitialState() {
             packPrompt: false,
             vocabRound: false,
             casesHelp: false,
-            verbsHelp: false,
             verbFormsHelp: false,
         },
         persisted: {
@@ -234,6 +232,7 @@ function buildInitialState() {
                 pack: "",
                 case: "",
                 vocabDirection: "",
+                verbMode: "",
             },
         },
         engine: {
@@ -280,7 +279,6 @@ const trainerSlice = createSlice({
                     state.overlay.packPrompt = false
                     state.overlay.vocabRound = false
                     state.overlay.casesHelp = false
-                    state.overlay.verbsHelp = false
                     state.overlay.verbFormsHelp = false
                     state.vocabRoundSummary = null
                     break
@@ -292,7 +290,6 @@ const trainerSlice = createSlice({
                     state.overlay.packPrompt = name === "packPrompt"
                     state.overlay.vocabRound = name === "vocabRound"
                     state.overlay.casesHelp = name === "casesHelp"
-                    state.overlay.verbsHelp = name === "verbsHelp"
                     state.overlay.verbFormsHelp = name === "verbFormsHelp"
                     state.vocabRoundSummary =
                         name === "vocabRound"
@@ -344,6 +341,7 @@ const trainerSlice = createSlice({
                         state.wizard.status.pack = ""
                         state.wizard.status.case = ""
                         state.wizard.status.vocabDirection = ""
+                        state.wizard.status.verbMode = ""
                     }
                     break
                 }
@@ -424,7 +422,7 @@ export function postTrainerUiAction(action) {
 }
 
 /**
- * @param {"pack" | "case" | "vocabDirection"} name
+ * @param {"pack" | "case" | "vocabDirection" | "verbMode"} name
  * @param {string} message
  */
 export function setWizardStatus(name, message) {
@@ -432,7 +430,7 @@ export function setWizardStatus(name, message) {
 }
 
 /**
- * @param {"pack" | "case" | "vocabDirection"} [name]
+ * @param {"pack" | "case" | "vocabDirection" | "verbMode"} [name]
  */
 export function clearWizardStatus(name) {
     postTrainerUiAction({ type: "WIZARD_CLEAR_STATUS", name })
@@ -464,10 +462,6 @@ export function isSettingsOverlayOpen() {
 
 export function isCasesHelpOpen() {
     return !!trainerStore.getState().trainer.overlay.casesHelp
-}
-
-export function isVerbsHelpOpen() {
-    return !!trainerStore.getState().trainer.overlay.verbsHelp
 }
 
 export function isVerbFormsHelpOpen() {

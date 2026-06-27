@@ -1,4 +1,11 @@
-import { CASE_BY_KEY, TRAIN_MODE, VERB_FORM_BY_KEY, VOCAB_DIRECTION, VOCAB_MODE } from "./config.js"
+import {
+    CASE_BY_KEY,
+    TRAIN_MODE,
+    VERB_FORM_BY_KEY,
+    VERB_MODE,
+    VOCAB_DIRECTION,
+    VOCAB_MODE,
+} from "./config.js"
 import { STR } from "./i18n/strings-ru.js"
 import {
     getActiveTrainerScreen,
@@ -14,6 +21,7 @@ import { answersMatch } from "./text-utils.js"
 import {
     applyVocabRoundAnswer,
     applyVocabRoundSkip,
+    excludeVocabRoundWord,
     openVocabRoundSummaryOverlay,
     roundLemmaKey,
     setVocabRoundLemmaDots,
@@ -31,6 +39,7 @@ import { lemmaKey } from "../src/screens/quiz/shared/quizTaskSelection.js"
 const VOCAB_STREAK_MULT_FROM = 5
 const QUIZ_DEBUG_KEY = "lt-debug-quiz"
 const MIN_RECENT_SINGLE_EXCLUDES = 5
+const SINGLE_SWIPE_LOG_PREFIX = "[lt-single-swipe]"
 
 function debugQuiz(event, data = {}) {
     try {
@@ -60,7 +69,16 @@ export function resetVocabCorrectStreak() {
 function isCurrentQuizTask(task) {
     if (!task?.word || !Object.values(TRAIN_MODE).includes(task.mode)) return false
     if (task.mode === TRAIN_MODE.CASES) return !!CASE_BY_KEY[task.targetCase]
-    if (task.mode === TRAIN_MODE.VERBS) return !!VERB_FORM_BY_KEY[task.hiddenVerbFormKey]
+    if (task.mode === TRAIN_MODE.VERBS) {
+        if (task.verbMode === VERB_MODE.CARDS || task.verbMode === VERB_MODE.FORM_CARDS) {
+            return (
+                task.vocabDirection === VOCAB_DIRECTION.RU_TO_LT &&
+                task.vocabMode === VOCAB_MODE.SINGLE &&
+                (task.verbMode === VERB_MODE.CARDS || !!VERB_FORM_BY_KEY[task.hiddenVerbFormKey])
+            )
+        }
+        return !!VERB_FORM_BY_KEY[task.hiddenVerbFormKey]
+    }
     if (
         !Object.values(VOCAB_DIRECTION).includes(task.vocabDirection) ||
         !Object.values(VOCAB_MODE).includes(task.vocabMode)
@@ -73,8 +91,84 @@ function isCurrentQuizTask(task) {
     )
 }
 
+function isSingleCardTask(task) {
+    return (
+        task?.vocabMode === VOCAB_MODE.SINGLE &&
+        (task.mode === TRAIN_MODE.VOCAB ||
+            (task.mode === TRAIN_MODE.VERBS &&
+                (task.verbMode === VERB_MODE.CARDS || task.verbMode === VERB_MODE.FORM_CARDS)))
+    )
+}
+
+function singleCardTaskKey(task) {
+    if (!isSingleCardTask(task)) return ""
+    return [
+        task.mode || "",
+        task.verbMode || "",
+        task.vocabDirection || "",
+        task.vocabMode || "",
+        task.hiddenVerbFormKey || "",
+        roundLemmaKey(task.word),
+    ].join(":")
+}
+
+function singleTaskDebug(task) {
+    if (!task) return null
+    return {
+        key: singleCardTaskKey(task),
+        lemma: task.word?.lemma || "",
+        mode: task.mode || "",
+        verbMode: task.verbMode || "",
+        dir: task.vocabDirection || "",
+        vocabMode: task.vocabMode || "",
+        hiddenVerbFormKey: task.hiddenVerbFormKey || "",
+    }
+}
+
+function singleStateDebug() {
+    const state = getEngine()
+    return {
+        current: singleTaskDebug(state.currentTask),
+        next: singleTaskDebug(state.vocabSingleNextTask),
+        future: singleTaskDebug(state.vocabSingleFutureTask),
+        single: state.vocabSingle,
+        answered: state.answered,
+        poolSize: state.vocabRound?.pool?.size ?? null,
+        reserveSize: state.vocabRound?.reserve?.length ?? null,
+    }
+}
+
+function logSingleSwipe(event, payload = {}) {
+    try {
+        console.log(SINGLE_SWIPE_LOG_PREFIX, event, {
+            ...payload,
+            engine: singleStateDebug(),
+        })
+    } catch {
+        /* diagnostics only */
+    }
+}
+
+function isVerbFormsTask(task) {
+    return (
+        task?.mode === TRAIN_MODE.VERBS &&
+        task.verbMode !== VERB_MODE.CARDS &&
+        task.verbMode !== VERB_MODE.FORM_CARDS
+    )
+}
+
+function nextSingleCardTask(sourceTask, opts) {
+    if (sourceTask?.mode === TRAIN_MODE.VERBS) {
+        return nextVerbTask({ ...opts, verbMode: sourceTask.verbMode || VERB_MODE.CARDS })
+    }
+    return nextVocabTask(opts)
+}
+
 export function showQuiz(task) {
     if (!isCurrentQuizTask(task)) return
+    if (isSingleCardTask(task)) {
+        logSingleSwipe("showQuiz:before", { task: singleTaskDebug(task) })
+    }
     debugQuiz("showQuiz:start", {
         nextLemma: task?.word ? roundLemmaKey(task.word) : null,
         nextMode: task?.mode ?? null,
@@ -94,16 +188,10 @@ export function showQuiz(task) {
     clearQuizFeedback()
 
     if (task.mode === TRAIN_MODE.VOCAB || task.mode === TRAIN_MODE.VERBS) {
-        if (task.mode === TRAIN_MODE.VERBS) {
-            setVocabRoundLemmaDots(task.word)
-            return
-        }
-
-        const isSingle = task.vocabMode === VOCAB_MODE.SINGLE
-
         setVocabRoundLemmaDots(task.word)
-        if (isSingle) {
-            prepareVocabSingleNextTask(task.word)
+        if (isSingleCardTask(task)) {
+            prepareVocabSingleNextTask(task)
+            logSingleSwipe("showQuiz:after-prepare-single", { task: singleTaskDebug(task) })
         }
         return
     }
@@ -166,6 +254,9 @@ export function finalizeVocabChoice(ok, expected, word, pickedLemma = "") {
 }
 
 function expectedVocabAnswerForTask(task) {
+    if (task?.mode === TRAIN_MODE.VERBS && task.verbMode === VERB_MODE.FORM_CARDS) {
+        return task.word?.forms?.[task.hiddenVerbFormKey] || ""
+    }
     const dir = task?.vocabDirection
     if (dir === VOCAB_DIRECTION.LT_TO_RU) return vocabRuFeedbackLine(task?.word)
     return vocabLemma(task?.word)
@@ -198,54 +289,104 @@ function recentSingleExcludeLemmas(word) {
     return [...new Set([current, ...recent].filter(Boolean))]
 }
 
-function prepareVocabSingleNextTask(word) {
+function prepareVocabSingleNextTask(sourceTask) {
+    const word = sourceTask?.word
     const futureTask = getEngine().vocabSingleFutureTask
+    const excludes = recentSingleExcludeLemmas(word)
     const nextTask =
         futureTask?.word && roundLemmaKey(futureTask.word) !== roundLemmaKey(word)
             ? futureTask
-            : nextVocabTask({ excludeLemmas: recentSingleExcludeLemmas(word) })
+            : nextSingleCardTask(sourceTask, { excludeLemmas: excludes })
     mutateEngine((e) => {
         e.vocabSingleNextTask = nextTask
         if (futureTask === nextTask) e.vocabSingleFutureTask = null
+    })
+    logSingleSwipe("prepare-next", {
+        source: singleTaskDebug(sourceTask),
+        futureUsed: futureTask === nextTask,
+        excludes,
+        next: singleTaskDebug(nextTask),
     })
     return nextTask
 }
 
 export function requestVocabSingleNextTask() {
     const task = getEngine().currentTask
-    if (!task || task.mode !== TRAIN_MODE.VOCAB || task.vocabMode !== VOCAB_MODE.SINGLE) {
+    if (!isSingleCardTask(task)) {
+        logSingleSwipe("request-next:blocked", { task: singleTaskDebug(task) })
         return null
     }
-    if (getEngine().vocabSingleNextTask?.word) return getEngine().vocabSingleNextTask
-    return prepareVocabSingleNextTask(task.word)
+    if (getEngine().vocabSingleNextTask?.word) {
+        logSingleSwipe("request-next:cached", {
+            task: singleTaskDebug(task),
+            next: singleTaskDebug(getEngine().vocabSingleNextTask),
+        })
+        return getEngine().vocabSingleNextTask
+    }
+    logSingleSwipe("request-next:prepare", { task: singleTaskDebug(task) })
+    return prepareVocabSingleNextTask(task)
 }
 
 export function requestVocabSingleFutureTask(excludeTasks = []) {
     const task = getEngine().currentTask
-    if (!task || task.mode !== TRAIN_MODE.VOCAB || task.vocabMode !== VOCAB_MODE.SINGLE) {
+    if (!isSingleCardTask(task)) {
+        logSingleSwipe("request-future:blocked", { task: singleTaskDebug(task) })
         return null
     }
-    if (getEngine().vocabSingleFutureTask?.word) return getEngine().vocabSingleFutureTask
+    if (getEngine().vocabSingleFutureTask?.word) {
+        logSingleSwipe("request-future:cached", {
+            task: singleTaskDebug(task),
+            future: singleTaskDebug(getEngine().vocabSingleFutureTask),
+        })
+        return getEngine().vocabSingleFutureTask
+    }
     const visibleExcludes = excludeTasks.map((row) => roundLemmaKey(row?.word)).filter(Boolean)
-    const nextTask = nextVocabTask({
+    const nextTask = nextSingleCardTask(task, {
         excludeLemmas: [...new Set([...recentSingleExcludeLemmas(task.word), ...visibleExcludes])],
     })
     mutateEngine((e) => {
         e.vocabSingleFutureTask = nextTask
     })
+    logSingleSwipe("request-future:new", {
+        task: singleTaskDebug(task),
+        visibleExcludes,
+        future: singleTaskDebug(nextTask),
+    })
     return nextTask
 }
 
-export function handleVocabSingleSwipe(direction) {
-    const task = getEngine().currentTask
-    if (!task || task.mode !== TRAIN_MODE.VOCAB || task.vocabMode !== VOCAB_MODE.SINGLE) return
+export function handleVocabSingleSwipe(direction, swipedTask = null, swipedCardType = "") {
+    let task = isSingleCardTask(swipedTask) ? swipedTask : getEngine().currentTask
+    logSingleSwipe("swipe:received", {
+        direction,
+        swipedCardType,
+        swipedTask: singleTaskDebug(swipedTask),
+        chosenTask: singleTaskDebug(task),
+    })
+    if (!isSingleCardTask(task)) return { handled: false }
+    if (singleCardTaskKey(task) !== singleCardTaskKey(getEngine().currentTask)) {
+        logSingleSwipe("swipe:sync-current-task", {
+            from: singleTaskDebug(getEngine().currentTask),
+            to: singleTaskDebug(task),
+        })
+        showQuiz(task)
+        task = getEngine().currentTask
+        if (!isSingleCardTask(task)) return { handled: false }
+    }
 
     const swipeRight = direction === "right"
     const word = task.word
     const expected = expectedVocabAnswerForTask(task)
     const state = getEngine().vocabSingle || { revealed: false, scored: false, lockedWrong: false }
+    logSingleSwipe("swipe:state", {
+        direction,
+        swipedCardType,
+        task: singleTaskDebug(task),
+        expected,
+        state,
+    })
 
-    if (!state.revealed) {
+    if (swipedCardType === "prompt" || (!swipedCardType && !state.revealed)) {
         mutateEngine((e) => {
             e.vocabSingle = {
                 revealed: true,
@@ -258,15 +399,36 @@ export function handleVocabSingleSwipe(direction) {
             applyVocabAnswerOutcome(false, expected, word)
         }
         if (!getEngine().vocabSingleNextTask) {
-            prepareVocabSingleNextTask(word)
+            prepareVocabSingleNextTask(task)
         }
-        return
+        logSingleSwipe("swipe:prompt-done", {
+            direction,
+            task: singleTaskDebug(task),
+            scoredWrongImmediately: !swipeRight,
+        })
+        return {
+            handled: true,
+            advanced: false,
+            currentTask: getEngine().currentTask,
+            nextTask: getEngine().vocabSingleNextTask,
+        }
     }
 
     if (!state.scored) {
         applyVocabAnswerOutcome(swipeRight, expected, word)
     }
+    logSingleSwipe("swipe:answer-before-advance", {
+        direction,
+        task: singleTaskDebug(task),
+        scoredNow: !state.scored,
+    })
     advanceVocabQuiz()
+    return {
+        handled: true,
+        advanced: true,
+        currentTask: getEngine().currentTask,
+        nextTask: getEngine().vocabSingleNextTask,
+    }
 }
 
 /** Хардкор-слова: первая отправка формы — проверка; вторая — следующее слово. */
@@ -314,23 +476,29 @@ export function processVocabHardcoreSubmit(userInput) {
 }
 
 export function advanceVocabQuiz() {
-    if (
-        !getEngine().currentTask ||
-        getEngine().currentTask.mode !== TRAIN_MODE.VOCAB ||
-        !getEngine().answered
-    )
-        return
+    if (!getEngine().currentTask || !getEngine().answered) return
+    const currentTask = getEngine().currentTask
+    if (currentTask.mode !== TRAIN_MODE.VOCAB && !isSingleCardTask(currentTask)) return
     const queuedSingleTask =
-        getEngine().currentTask?.vocabMode === VOCAB_MODE.SINGLE
-            ? getEngine().vocabSingleNextTask
-            : null
+        currentTask?.vocabMode === VOCAB_MODE.SINGLE ? getEngine().vocabSingleNextTask : null
     const task =
         queuedSingleTask ||
-        nextVocabTask(
-            getEngine().currentTask?.vocabMode === VOCAB_MODE.SINGLE
-                ? { excludeLemmas: recentSingleExcludeLemmas(getEngine().currentTask.word) }
-                : undefined
-        )
+        (isSingleCardTask(currentTask)
+            ? nextSingleCardTask(currentTask, {
+                  excludeLemmas: recentSingleExcludeLemmas(currentTask.word),
+              })
+            : nextVocabTask(
+                  currentTask?.vocabMode === VOCAB_MODE.SINGLE
+                      ? { excludeLemmas: recentSingleExcludeLemmas(currentTask.word) }
+                      : undefined
+              ))
+    if (isSingleCardTask(currentTask)) {
+        logSingleSwipe("advance", {
+            current: singleTaskDebug(currentTask),
+            queued: singleTaskDebug(queuedSingleTask),
+            selected: singleTaskDebug(task),
+        })
+    }
     if (!task) {
         resetVocabCorrectStreak()
         if (getEngine().vocabRound && getEngine().vocabRound.pool.size === 0) {
@@ -346,7 +514,7 @@ export function advanceVocabQuiz() {
 export function advanceVerbQuiz() {
     if (
         !getEngine().currentTask ||
-        getEngine().currentTask.mode !== TRAIN_MODE.VERBS ||
+        !isVerbFormsTask(getEngine().currentTask) ||
         !getEngine().answered
     )
         return
@@ -355,7 +523,7 @@ export function advanceVerbQuiz() {
         openVocabRoundSummaryOverlay()
         return
     }
-    const task = nextVerbTask()
+    const task = nextVerbTask({ verbMode: VERB_MODE.FORMS })
     if (!task) {
         resetVocabCorrectStreak()
         setQuizFeedback({ kind: "info", message: STR.quiz.noWordsLeft })
@@ -398,7 +566,10 @@ export function skipCurrentWord() {
         const skippedLemma = roundLemmaKey(getEngine().currentTask.word)
         applyVocabRoundSkip(getEngine().currentTask.word)
         resetVocabCorrectStreak()
-        const task = nextVerbTask({ excludeLemma: skippedLemma })
+        const task = nextVerbTask({
+            excludeLemma: skippedLemma,
+            verbMode: getEngine().currentTask.verbMode || VERB_MODE.FORMS,
+        })
         if (!task) {
             if (getEngine().vocabRound && getEngine().vocabRound.pool.size === 0) {
                 openVocabRoundSummaryOverlay()
@@ -412,6 +583,56 @@ export function skipCurrentWord() {
     const task = nextCasesTask(keys)
     if (!task) return
     showQuiz(task)
+}
+
+function clearTransientVocabState() {
+    clearQuizFeedback()
+    mutateEngine((e) => {
+        e.answered = false
+        e.vocabChoice = null
+        e.vocabSingle = null
+        e.vocabSingleNextTask = null
+        e.vocabSingleFutureTask = null
+    })
+}
+
+export function excludeCurrentRoundWord() {
+    const task = getEngine().currentTask
+    if (!task?.word || !getEngine().vocabRound) return
+
+    const removedLemma = roundLemmaKey(task.word)
+    if (!excludeVocabRoundWord(task.word)) return
+
+    resetVocabCorrectStreak()
+    clearTransientVocabState()
+
+    if (getEngine().vocabRound && getEngine().vocabRound.pool.size === 0) {
+        openVocabRoundSummaryOverlay()
+        return
+    }
+
+    let nextTask = null
+    if (task.mode === TRAIN_MODE.VOCAB) {
+        nextTask = nextVocabTask({ excludeLemma: removedLemma })
+    } else if (task.mode === TRAIN_MODE.VERBS) {
+        nextTask = nextVerbTask({
+            excludeLemma: removedLemma,
+            verbMode: task.verbMode || VERB_MODE.FORMS,
+        })
+    } else if (task.mode === TRAIN_MODE.CASES) {
+        nextTask = nextCasesTask(getCheckedCaseKeys(), { excludeLemma: removedLemma })
+    }
+
+    if (!nextTask) {
+        if (getEngine().vocabRound && getEngine().vocabRound.pool.size === 0) {
+            openVocabRoundSummaryOverlay()
+            return
+        }
+        setQuizFeedback({ kind: "info", message: STR.quiz.noWordsLeft })
+        return
+    }
+
+    showQuiz(nextTask)
 }
 
 /** Обработчики для {@link QuizScreen} (клики и отправка форм). */
@@ -492,7 +713,7 @@ export function handleVocabChoice(lem) {
 
 export function handleQuizSkipButtonClick() {
     debugQuiz("handleQuizSkipButtonClick:clicked")
-    if (getEngine().currentTask?.mode === TRAIN_MODE.VERBS && getEngine().answered) {
+    if (isVerbFormsTask(getEngine().currentTask) && getEngine().answered) {
         advanceVerbQuiz()
         return
     }
@@ -513,7 +734,7 @@ export function handleVocabHardcoreFormSubmit(userInput) {
 }
 
 export function handleVerbFormSubmit(userInput) {
-    if (!getEngine().currentTask || getEngine().currentTask.mode !== TRAIN_MODE.VERBS) return
+    if (!isVerbFormsTask(getEngine().currentTask)) return
 
     const word = getEngine().currentTask.word
     const formKey = getEngine().currentTask.hiddenVerbFormKey

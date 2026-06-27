@@ -4,13 +4,14 @@ import { useSelector } from "react-redux"
 import { TRAIN_MODE } from "js/config.js"
 import { caseRu } from "js/i18n/core.js"
 import { STR } from "js/i18n/strings-ru.js"
-import { handleMorphCasesAnswerSubmit } from "js/quiz.js"
+import { excludeCurrentRoundWord, handleMorphCasesAnswerSubmit } from "js/quiz.js"
 import {
     LithuanianInput,
     AutoFitText,
     QuizFeedback,
     SwipeCardStack,
     VocabRoundDots,
+    VocabRoundExcludeButton,
     VocabRoundProgress,
     VocabStreakMultiplier,
 } from "src/screens/quiz/shared/index.js"
@@ -74,6 +75,7 @@ export function CasesQuiz({
                             .filter(Boolean)
                             .join(" ")}
                     >
+                        <VocabRoundExcludeButton onClick={excludeCurrentRoundWord} />
                         <div className="cases-lemma-block">
                             <AutoFitText
                                 as="p"

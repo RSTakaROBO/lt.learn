@@ -206,6 +206,54 @@
 .vocab-round-lemma-dot.is-filled::after {
     border-color: color-mix(in srgb, var(--accent) 86%, var(--text));
 }
+.vocab-round-exclude-btn {
+    --vocab-exclude-accent: color-mix(in srgb, var(--muted) 72%, var(--text));
+    position: absolute;
+    top: clamp(0.62rem, 2.1vmin, 0.82rem);
+    left: clamp(0.62rem, 2.1vmin, 0.82rem);
+    z-index: 7;
+    display: grid;
+    place-items: center;
+    width: clamp(2rem, 6.4vmin, 2.42rem);
+    height: clamp(2rem, 6.4vmin, 2.42rem);
+    padding: 0;
+    border: 1px solid color-mix(in srgb, var(--vocab-exclude-accent) 28%, var(--border));
+    border-radius: 999px;
+    background:
+        linear-gradient(
+            180deg,
+            color-mix(in srgb, white 16%, transparent),
+            color-mix(in srgb, var(--accent) 4%, transparent)
+        ),
+        color-mix(in srgb, var(--surface-elevated) 88%, var(--surface));
+    color: var(--vocab-exclude-accent);
+    box-shadow:
+        inset 0 1px 0 color-mix(in srgb, white 16%, transparent),
+        0 6px 14px color-mix(in srgb, var(--bg) 14%, transparent);
+    cursor: pointer;
+    touch-action: manipulation;
+}
+.vocab-round-exclude-btn svg {
+    width: 1.12rem;
+    height: 1.12rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+.vocab-round-exclude-btn:hover {
+    --vocab-exclude-accent: color-mix(in srgb, var(--accent) 60%, var(--text));
+    border-color: color-mix(in srgb, var(--accent) 32%, var(--border));
+    filter: brightness(1.04);
+}
+.vocab-round-exclude-btn:active {
+    transform: translateY(1px) scale(0.98);
+}
+.vocab-round-exclude-btn:focus-visible {
+    outline: calc(var(--stroke) + 1px) solid var(--accent);
+    outline-offset: 2px;
+}
 .vocab-streak-mult-value {
     font-weight: 800;
     letter-spacing: -0.04em;

@@ -328,62 +328,6 @@
             "lemma": "retai",
             "forms": {},
             "translations": ["редко"]
-        },
-        {
-            "type": "noun",
-            "lemma": "pavasaris",
-            "forms": {
-                "nominative": "pavasaris",
-                "genitive": "pavasario",
-                "dative": "pavasariui",
-                "accusative": "pavasarį",
-                "instrumental": "pavasariu",
-                "locative": "pavasaryje",
-                "vocative": "pavasari"
-            },
-            "translations": ["весна"]
-        },
-        {
-            "type": "noun",
-            "lemma": "vasara",
-            "forms": {
-                "nominative": "vasara",
-                "genitive": "vasaros",
-                "dative": "vasarai",
-                "accusative": "vasarą",
-                "instrumental": "vasara",
-                "locative": "vasaroje",
-                "vocative": "vasara"
-            },
-            "translations": ["лето"]
-        },
-        {
-            "type": "noun",
-            "lemma": "ruduo",
-            "forms": {
-                "nominative": "ruduo",
-                "genitive": "rudens",
-                "dative": "rudeniui",
-                "accusative": "rudenį",
-                "instrumental": "rudeniu",
-                "locative": "rudenyje",
-                "vocative": "rudenie"
-            },
-            "translations": ["осень"]
-        },
-        {
-            "type": "noun",
-            "lemma": "žiema",
-            "forms": {
-                "nominative": "žiema",
-                "genitive": "žiemos",
-                "dative": "žiemai",
-                "accusative": "žiemą",
-                "instrumental": "žiema",
-                "locative": "žiemoje",
-                "vocative": "žiema"
-            },
-            "translations": ["зима"]
         }
     ],
     "schemaVersion": 1

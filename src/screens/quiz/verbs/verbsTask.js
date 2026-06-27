@@ -1,16 +1,31 @@
-import { TRAIN_MODE, VERB_FORM_KEYS } from "js/config.js"
+import { TRAIN_MODE, VERB_FORM_KEYS, VERB_MODE, VOCAB_DIRECTION, VOCAB_MODE } from "js/config.js"
 import { pickRandom, pickWeightedRandom } from "js/random.js"
+import { getResolvedVerbMode } from "js/storage.js"
 import { getEngine } from "js/trainer-ui-state.js"
 import { roundLemmaKey } from "js/vocab-round.js"
 import {
     usableAfterLemmaGap,
     vocabTaskSelectionWeight,
 } from "src/screens/quiz/shared/quizTaskSelection.js"
-import { isVerbsTrainingWord } from "src/screens/quiz/verbs/verbsWords.js"
+import { isVerbCardsTrainingWord, isVerbsTrainingWord } from "src/screens/quiz/verbs/verbsWords.js"
+
+function usableIgnoringExcludedLemma(usable, excludeLemma) {
+    if (getEngine().vocabRound) {
+        return usable.filter(
+            (word) =>
+                getEngine().vocabRound.pool.has(roundLemmaKey(word)) &&
+                roundLemmaKey(word) !== excludeLemma
+        )
+    }
+    return usable.filter((word) => roundLemmaKey(word) !== excludeLemma)
+}
 
 export function nextVerbTask(opts = {}) {
     const excludeLemma = opts.excludeLemma || null
-    const usable = getEngine().wordBank.filter(isVerbsTrainingWord)
+    const verbMode = opts.verbMode || getResolvedVerbMode()
+    const usable = getEngine().wordBank.filter(
+        verbMode === VERB_MODE.CARDS ? isVerbCardsTrainingWord : isVerbsTrainingWord
+    )
     if (!usable.length) return null
 
     let candidates = usableAfterLemmaGap(usable)
@@ -27,7 +42,7 @@ export function nextVerbTask(opts = {}) {
         if (filtered.length) {
             candidates = filtered
         } else {
-            const fallback = usable.filter((word) => roundLemmaKey(word) !== excludeLemma)
+            const fallback = usableIgnoringExcludedLemma(usable, excludeLemma)
             if (fallback.length) candidates = fallback
         }
     }
@@ -35,9 +50,21 @@ export function nextVerbTask(opts = {}) {
     if (!candidates.length) return null
 
     const word = pickWeightedRandom(candidates, vocabTaskSelectionWeight)
+    if (verbMode === VERB_MODE.CARDS || verbMode === VERB_MODE.FORM_CARDS) {
+        return {
+            mode: TRAIN_MODE.VERBS,
+            verbMode,
+            word,
+            hiddenVerbFormKey: verbMode === VERB_MODE.FORM_CARDS ? pickRandom(VERB_FORM_KEYS) : "",
+            vocabDirection: VOCAB_DIRECTION.RU_TO_LT,
+            vocabMode: VOCAB_MODE.SINGLE,
+        }
+    }
+
     const hiddenVerbFormKey = pickRandom(VERB_FORM_KEYS)
     return {
         mode: TRAIN_MODE.VERBS,
+        verbMode: VERB_MODE.FORMS,
         word,
         hiddenVerbFormKey,
     }

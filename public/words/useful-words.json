@@ -1,0 +1,60 @@
+{
+    "title": "Полезные слова",
+    "words": [
+        {
+            "type": "adverb",
+            "lemma": "jau",
+            "forms": {},
+            "translations": ["уже"]
+        },
+        {
+            "type": "conjunction",
+            "lemma": "nes",
+            "forms": {},
+            "translations": ["потому что", "так как"]
+        },
+        {
+            "type": "particle",
+            "lemma": "net",
+            "forms": {},
+            "translations": ["даже"]
+        },
+        {
+            "type": "conjunction",
+            "lemma": "kai",
+            "forms": {},
+            "translations": ["когда"]
+        },
+        {
+            "type": "adverb",
+            "lemma": "daug",
+            "forms": {},
+            "translations": ["много"]
+        },
+        {
+            "type": "adverb",
+            "lemma": "vėl",
+            "forms": {},
+            "translations": ["снова", "опять"]
+        },
+        {
+            "type": "adverb",
+            "lemma": "ten",
+            "forms": {},
+            "translations": ["там"]
+        },
+        {
+            "type": "particle",
+            "lemma": "gal",
+            "forms": {},
+            "translations": ["может быть", "возможно"]
+        },
+        {
+            "type": "adverb",
+            "lemma": "dar",
+            "forms": {},
+            "translations": ["ещё"]
+        }
+    ],
+    "schemaVersion": 1
+}

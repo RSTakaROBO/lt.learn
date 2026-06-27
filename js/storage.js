@@ -3,6 +3,7 @@ import {
     normalizeLearningScopeSize,
     STORAGE_KEYS,
     TRAIN_MODE,
+    VERB_MODE,
     VOCAB_MODE,
 } from "./config.js"
 import { STR } from "./i18n/strings-ru.js"
@@ -251,6 +252,31 @@ export class TrainerStorage {
         }
     }
 
+    loadVerbMode() {
+        try {
+            const raw = this._store.getItem(STORAGE_KEYS.verbMode)
+            if (raw === VERB_MODE.FORMS || raw === VERB_MODE.CARDS || raw === VERB_MODE.FORM_CARDS)
+                return raw
+        } catch {
+            /* ignore */
+        }
+        return null
+    }
+
+    saveVerbMode(mode) {
+        try {
+            if (
+                mode === VERB_MODE.FORMS ||
+                mode === VERB_MODE.CARDS ||
+                mode === VERB_MODE.FORM_CARDS
+            ) {
+                this._store.setItem(STORAGE_KEYS.verbMode, mode)
+            }
+        } catch {
+            /* ignore */
+        }
+    }
+
     /** @returns {boolean|null} */
     loadCasesShowTranslation() {
         try {
@@ -403,6 +429,8 @@ export const saveVocabBestStreakIfHigher = (streak) =>
     trainerStorage.saveVocabBestStreakIfHigher(streak)
 export const loadVocabDirections = () => trainerStorage.loadVocabDirections()
 export const saveVocabDirections = (dirs) => trainerStorage.saveVocabDirections(dirs)
+export const loadVerbMode = () => trainerStorage.loadVerbMode()
+export const saveVerbMode = (mode) => trainerStorage.saveVerbMode(mode)
 export const saveLearningScopeSize = (size) => trainerStorage.saveLearningScopeSize(size)
 
 /** Как в мастере до первого сохранения; для логики вне React (события, квиз). */
@@ -414,6 +442,10 @@ export function getResolvedVocabDirections() {
         lt_to_ru: false,
         vocabMode: VOCAB_MODE.CHOICES,
     }
+}
+
+export function getResolvedVerbMode() {
+    return loadVerbMode() || VERB_MODE.FORMS
 }
 
 export const loadCasesShowTranslation = () => trainerStorage.loadCasesShowTranslation()

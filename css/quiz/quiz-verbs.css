@@ -19,6 +19,10 @@
 #quiz-verbs-ui > .verb-forms-block > .verb-forms-block__main {
     width: 100%;
 }
+#quiz-verbs-ui > .verb-forms-block > .vocab-round-exclude-btn {
+    top: 0;
+    left: 0;
+}
 .verb-forms-grid {
     width: 100%;
     display: grid;

@@ -1,24 +1,24 @@
 {
     "packs": [
         {
-            "id": "ndblk_2",
-            "files": ["ndblk_2.json"]
+            "id": "kaip-sekasi",
+            "files": ["kaip-sekasi.json"]
+        },
+        {
+            "id": "family-and-description",
+            "files": ["family-and-description.json"]
         },
         {
             "id": "ndblk_4",
             "files": ["ndblk_4.json"]
         },
         {
-            "id": "professions",
-            "files": ["professions.json"]
+            "id": "useful-words",
+            "files": ["useful-words.json"]
         },
         {
             "id": "time",
             "files": ["time.json"]
-        },
-        {
-            "id": "family-and-description",
-            "files": ["family-and-description.json"]
         },
         {
             "id": "basic",

@@ -18,6 +18,7 @@ export const STR = {
         packsHeading: "Наборы слов",
         casesHeading: "Падежи",
         vocabDirectionHeading: "Направление перевода",
+        verbModeHeading: "Режим глаголов",
     },
 
     mode: {
@@ -26,7 +27,7 @@ export const STR = {
         vocabTitle: "Изучение слов",
         vocabDesc: "Запоминайте слова и переводы в обычном или хардкор-режиме.",
         verbsTitle: "Изучение глаголов",
-        verbsDesc: "Восстанавливайте инфинитив, настоящее и прошедшее 3-го лица.",
+        verbsDesc: "Учите глаголы карточками или восстанавливайте их основные формы.",
     },
 
     packs: {
@@ -72,6 +73,15 @@ export const STR = {
             "Ввод слова вручную: поле ответа и кнопки литовских букв (без вариантов выбора)",
     },
 
+    verbMode: {
+        cardsTitle: "Карточки",
+        cardsMeta: "Русская подсказка, литовский глагол, свайпы влево и вправо",
+        formCardsTitle: "Изучение форм. Карточки",
+        formCardsMeta: "Три формы глагола, одна скрыта; ответ открывается следующей карточкой",
+        formsTitle: "Изучение форм",
+        formsMeta: "Восстанавливайте инфинитив, настоящее и прошедшее 3-го лица",
+    },
+
     quiz: {
         targetCasePrefix: "Падеж:",
         answerLabel: "Ваш ответ",
@@ -106,15 +116,11 @@ export const STR = {
     },
 
     help: {
-        casesTitle: "Справка по падежам",
+        casesTitle: "Правила падежей",
         close: "Закрыть",
         tableStem: "Основа",
         tableSg: "Ед. ч.",
         tablePl: "Мн. ч.",
-        verbsPresent: "Настоящее время",
-        verbsColPerson: "Лицо",
-        verbsColAffirm: "Утверждение",
-        verbsColNeg: "Отрицание",
         verbsRow1: "я",
         verbsRow2: "ты",
         verbsRow3: "он / она",
@@ -129,15 +135,15 @@ export const STR = {
         statsAria: "Статистика",
         menu: "Меню",
         menuAria: "В меню",
-        help: "Справка",
-        helpAria: "Справка",
+        help: "Правила",
+        helpAria: "Правила",
         settings: "Настройки",
         settingsAria: "Настройки",
     },
 
     helpHub: {
-        title: "Справка",
-        casesBtn: "Справка по падежам",
+        title: "Правила",
+        casesBtn: "Правила падежей",
         close: "Закрыть",
     },
 
@@ -145,6 +151,8 @@ export const STR = {
         summaryTitle: "Статистика",
         repeat: "Повторить",
         ok: "Ок",
+        excludeWordAria: "Убрать слово из текущего урока",
+        excludeWordTitle: "Убрать из урока",
         ariaDots: "Прогресс слова до статуса «выучено»: {filled} из {max}",
         ariaProgress: "Выучено {done} из {total} слов",
         statAccuracy: "Точность",
@@ -377,6 +385,7 @@ ${MD_FENCE}
         vocabAfterPackFour:
             "Для режима «4 карточки» нужно минимум 4 слова с русским переводом в выбранных наборах.",
         verbsAfterPack: "Для «Изучение глаголов» нужен хотя бы один глагол с тремя формами.",
+        verbCardsAfterPack: "Для карточек глаголов нужен хотя бы один глагол с русским переводом.",
         verbsStartFail: "Не удалось начать игру. Проверьте наборы глаголов.",
         loadFailed:
             "Ошибка загрузки: {message}. Откройте сайт через локальный сервер в папке проекта (fetch к файлам с file:// часто блокируется).",

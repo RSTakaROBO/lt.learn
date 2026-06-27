@@ -4,6 +4,7 @@ import { VOCAB_DIRECTION, VOCAB_MODE } from "js/config.js"
 import { STR } from "js/i18n/strings-ru.js"
 import {
     handleQuizSkipButtonClick,
+    excludeCurrentRoundWord,
     handleVocabChoice,
     handleVocabHardcoreFormSubmit,
     requestVocabSingleNextTask,
@@ -16,6 +17,7 @@ import {
     QuizFeedback,
     SwipeCardStack,
     VocabRoundDots,
+    VocabRoundExcludeButton,
     VocabRoundProgress,
     VocabStreakMultiplier,
     VerbConjugationMark,
@@ -184,6 +186,8 @@ export function VocabQuiz({
     const feedbackKind = feedback?.kind === "ok" || feedback?.kind === "bad" ? feedback.kind : ""
     const hardcoreAnswer = isHardcore ? hardcoreAnswerForTask(task, feedback, quizTypingAnswer) : ""
     const cardKey = [
+        task?.mode || "",
+        task?.verbMode || "",
         task?.word?.id || task?.word?.lemma || prompt.text,
         task?.vocabDirection || "",
         task?.vocabMode || "",
@@ -201,6 +205,7 @@ export function VocabQuiz({
             {isSingle ? (
                 <SingleVocabCardDeck
                     nextTask={vocabSingleNextTask}
+                    onExcludeCurrentWord={excludeCurrentRoundWord}
                     onRequestNextTask={requestVocabSingleNextTask}
                     roundDots={roundDots}
                     showVerbForms={showVerbForms}
@@ -217,6 +222,7 @@ export function VocabQuiz({
                             .filter(Boolean)
                             .join(" ")}
                     >
+                        <VocabRoundExcludeButton onClick={excludeCurrentRoundWord} />
                         <VerbConjugationMark word={task?.word} />
                         <div className="vocab-ru-card-body u-scrollbar-hidden">
                             <AutoFitText
