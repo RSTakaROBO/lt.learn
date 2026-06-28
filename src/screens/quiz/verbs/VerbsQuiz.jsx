@@ -13,12 +13,13 @@ import {
 } from "src/screens/quiz/shared/index.js"
 import { vocabRuAcceptedList } from "src/screens/quiz/vocab/vocabWords.js"
 
-function VerbFormsPrompt({ answered, feedbackKind, task }) {
+function VerbFormsPrompt({ answered, feedbackKind, onExclude, pulseId, roundDots, streak, task }) {
     const hiddenKey = task?.hiddenVerbFormKey
     const word = task?.word
 
     return (
-        <div className="verb-forms-grid" aria-label={STR.quiz.verbFormsAria}>
+        <div className="verb-forms-card" aria-label={STR.quiz.verbFormsAria}>
+            <VocabRoundExcludeButton onClick={onExclude} />
             {VERB_FORM_ORDER.map((form) => {
                 const hidden = form.key === hiddenKey
                 const value = word?.forms?.[form.key] || STR.quiz.emDash
@@ -35,8 +36,8 @@ function VerbFormsPrompt({ answered, feedbackKind, task }) {
                     <div
                         key={form.key}
                         className={[
-                            "verb-form-card",
-                            hidden && "verb-form-card--hidden",
+                            "verb-form-row",
+                            hidden && "verb-form-row--hidden",
                             verdictClass,
                         ]
                             .filter(Boolean)
@@ -65,6 +66,8 @@ function VerbFormsPrompt({ answered, feedbackKind, task }) {
                     </div>
                 )
             })}
+            <VocabStreakMultiplier streak={streak} pulseId={pulseId} />
+            <VocabRoundDots dots={roundDots} />
         </div>
     )
 }
@@ -108,9 +111,16 @@ export function VerbsQuiz({
         <div id="quiz-verbs-ui" className={isActive ? "" : "hidden"}>
             <VocabRoundProgress progress={roundProgress} />
             <div className="verb-forms-block">
-                <VocabRoundExcludeButton onClick={excludeCurrentRoundWord} />
                 <div className="verb-forms-block__main">
-                    <VerbFormsPrompt answered={answered} feedbackKind={feedbackKind} task={task} />
+                    <VerbFormsPrompt
+                        answered={answered}
+                        feedbackKind={feedbackKind}
+                        onExclude={excludeCurrentRoundWord}
+                        pulseId={pulseId}
+                        roundDots={roundDots}
+                        streak={streak}
+                        task={task}
+                    />
                     {translation ? <p className="verb-translation-line">{translation}</p> : null}
                     {verdictAnnouncement ? (
                         <p className="sr-only" aria-live="polite">
@@ -118,8 +128,6 @@ export function VerbsQuiz({
                         </p>
                     ) : null}
                 </div>
-                <VocabStreakMultiplier streak={streak} pulseId={pulseId} />
-                <VocabRoundDots dots={roundDots} />
             </div>
             <form
                 id="verb-answer-form"

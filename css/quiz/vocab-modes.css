@@ -174,12 +174,17 @@
     visibility: hidden;
 }
 .vocab-round-progress {
+    display: flex;
+    align-items: center;
+    gap: 0.72rem;
     flex: none;
     margin: 0 0 clamp(0.15rem, 1.2vmin, 0.35rem);
     padding-inline: 0.08rem;
 }
 .vocab-round-progress-track {
     position: relative;
+    flex: 1 1 auto;
+    min-width: 0;
     height: 1.05rem;
     border-radius: 999px;
     background: color-mix(in srgb, var(--bg) 58%, var(--surface-elevated));
@@ -188,6 +193,16 @@
     box-shadow:
         0 1px 0 color-mix(in srgb, white 22%, transparent) inset,
         0 0 0 1px color-mix(in srgb, var(--text) 5%, transparent) inset;
+}
+.vocab-round-progress-count {
+    flex: 0 0 auto;
+    min-width: 4.4rem;
+    color: color-mix(in srgb, var(--muted) 82%, var(--text));
+    font-size: clamp(0.78rem, 2.35vmin, 0.92rem);
+    font-weight: 750;
+    line-height: 1;
+    text-align: right;
+    white-space: nowrap;
 }
 .vocab-round-progress-fill {
     height: 100%;

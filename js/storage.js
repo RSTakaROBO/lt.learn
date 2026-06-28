@@ -11,6 +11,37 @@ import { migrateStorage } from "./storage-migrations.js"
 import { getEngine, mutateEngine } from "./trainer-ui-state.js"
 import { WORD_PACK_SCHEMA_VERSION } from "./word-entry.js"
 
+const MS_PER_DAY = 24 * 60 * 60 * 1000
+let appVisitSnapshot = {
+    previousDate: "",
+    today: "",
+    daysWithoutLithuanian: 0,
+}
+
+function localDateKey(date = new Date()) {
+    const y = date.getFullYear()
+    const m = String(date.getMonth() + 1).padStart(2, "0")
+    const d = String(date.getDate()).padStart(2, "0")
+    return `${y}-${m}-${d}`
+}
+
+function dateKeyToUtcDay(key) {
+    const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(key || ""))
+    if (!m) return NaN
+    const y = Number(m[1])
+    const month = Number(m[2])
+    const d = Number(m[3])
+    if (!Number.isInteger(y) || month < 1 || month > 12 || d < 1 || d > 31) return NaN
+    return Math.floor(Date.UTC(y, month - 1, d) / MS_PER_DAY)
+}
+
+function daysBetweenDateKeys(fromKey, toKey) {
+    const fromDay = dateKeyToUtcDay(fromKey)
+    const toDay = dateKeyToUtcDay(toKey)
+    if (!Number.isFinite(fromDay) || !Number.isFinite(toDay)) return 0
+    return Math.max(0, toDay - fromDay)
+}
+
 /**
  * Единая точка работы с данными в `localStorage`: версия схемы и миграции при старте.
  */
@@ -484,3 +515,24 @@ export const saveSimplifiedAnswerMode = (enabled) =>
     trainerStorage.saveSimplifiedAnswerMode(enabled)
 export const loadExcludeLearnedWords = () => trainerStorage.loadExcludeLearnedWords()
 export const saveExcludeLearnedWords = (exclude) => trainerStorage.saveExcludeLearnedWords(exclude)
+
+export function recordAppVisit(now = new Date()) {
+    const today = localDateKey(now)
+    let previousDate = ""
+    try {
+        previousDate = localStorage.getItem(STORAGE_KEYS.appLastVisitDate) || ""
+        localStorage.setItem(STORAGE_KEYS.appLastVisitDate, today)
+    } catch {
+        /* ignore */
+    }
+    appVisitSnapshot = {
+        previousDate,
+        today,
+        daysWithoutLithuanian: daysBetweenDateKeys(previousDate, today),
+    }
+    return appVisitSnapshot
+}
+
+export function getAppVisitSnapshot() {
+    return appVisitSnapshot
+}

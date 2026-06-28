@@ -198,7 +198,10 @@ function AnswerCard({
 }) {
     const expected = vocabExpectedForTask(card.task, showVerbForms)
     const direction = card.task?.vocabDirection
-    const lang = direction === VOCAB_DIRECTION.RU_TO_LT ? "lt" : "ru"
+    const lang =
+        direction === VOCAB_DIRECTION.RU_TO_LT || card.task?.verbMode === VERB_MODE.FORM_CARDS
+            ? "lt"
+            : "ru"
     const showStress = lang === "lt" && card.task?.verbMode !== VERB_MODE.FORM_CARDS
 
     return (

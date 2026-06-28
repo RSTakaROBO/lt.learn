@@ -3,7 +3,7 @@ import { createRoot } from "react-dom/client"
 import { shallowEqual, useSelector } from "react-redux"
 
 import { STR } from "js/i18n/strings-ru.js"
-import { loadPersistedWordStats } from "js/storage.js"
+import { loadPersistedWordStats, recordAppVisit } from "js/storage.js"
 import { mutateEngine, postTrainerUiAction } from "js/trainer-ui-state.js"
 
 import { QuizBottomBar } from "src/components/layout/QuizBottomBar.jsx"
@@ -123,6 +123,7 @@ export default function App() {
 mutateEngine((e) => {
     e.wordStats = loadPersistedWordStats()
 })
+recordAppVisit()
 postTrainerUiAction({ type: "WIZARD_SET_STEP", step: 1 })
 
 const rootEl = document.getElementById("root")

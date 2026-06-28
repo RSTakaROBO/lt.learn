@@ -241,6 +241,12 @@
     padding-block: 0.82rem;
 }
 
+.vocab-hardcore-list .pack-card-face,
+.pack-learned-filter .pack-card-face {
+    min-height: clamp(5.2rem, 18vmin, 6.35rem);
+    padding-block: 0.82rem;
+}
+
 /* Хардкор: без отдельной «зоны» — полноширинный разделитель + карточка на всю ширину ниже */
 .vocab-hardcore-block {
     display: flex;

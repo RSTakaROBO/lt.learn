@@ -14,6 +14,9 @@ export function VocabRoundProgress({ progress }) {
                 <div className="vocab-round-progress-track" aria-hidden="true">
                     <div id="vocab-round-progress-fill" className="vocab-round-progress-fill" />
                 </div>
+                <span className="vocab-round-progress-count" aria-hidden="true">
+                    0 {STR.confirm.finishRoundOf} 0
+                </span>
             </div>
         )
     }
@@ -39,6 +42,9 @@ export function VocabRoundProgress({ progress }) {
                     style={{ width: `${progress.pct}%` }}
                 />
             </div>
+            <span className="vocab-round-progress-count" aria-hidden="true">
+                {progress.done} {STR.confirm.finishRoundOf} {progress.total}
+            </span>
         </div>
     )
 }

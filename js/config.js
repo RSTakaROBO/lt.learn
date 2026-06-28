@@ -48,6 +48,7 @@ export const STORAGE_KEYS = {
     vocabShowWrongTranslation: "lt-trainer-vocab-show-wrong-translation-v1",
     vocabShowVerbForms: "lt-trainer-vocab-show-verb-forms-v1",
     simplifiedAnswerMode: "lt-trainer-simplified-answer-mode-v1",
+    appLastVisitDate: "lt-trainer-app-last-visit-date-v1",
     learningScopeSize: "lt-trainer-learning-scope-size-v1",
     excludeLearnedWords: "lt-trainer-exclude-learned-words-v1",
     customPacks: "lt-trainer-custom-packs-v1",
@@ -60,6 +61,7 @@ export const STORAGE_SCHEMA_VERSION = 3
 export const VOCAB_DIRECTION = {
     RU_TO_LT: "ru_to_lt",
     LT_TO_RU: "lt_to_ru",
+    LT_TO_LT: "lt_to_lt",
 }
 
 /** Формат ответа в режиме «Изучение слов». */

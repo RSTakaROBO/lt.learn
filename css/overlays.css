@@ -134,6 +134,11 @@ body.vocab-round-summary-modal-open .quiz-bottom-bar {
     margin: 0;
 }
 
+.settings-training-options-list .pack-card-face {
+    min-height: clamp(4.85rem, 16vmin, 5.8rem);
+    padding-block: 0.78rem;
+}
+
 .settings-scope-card {
     padding: 1rem;
     border: 1px solid color-mix(in srgb, var(--text) 10%, transparent);

@@ -56,7 +56,10 @@ export function nextVerbTask(opts = {}) {
             verbMode,
             word,
             hiddenVerbFormKey: verbMode === VERB_MODE.FORM_CARDS ? pickRandom(VERB_FORM_KEYS) : "",
-            vocabDirection: VOCAB_DIRECTION.RU_TO_LT,
+            vocabDirection:
+                verbMode === VERB_MODE.FORM_CARDS
+                    ? VOCAB_DIRECTION.LT_TO_LT
+                    : VOCAB_DIRECTION.RU_TO_LT,
             vocabMode: VOCAB_MODE.SINGLE,
         }
     }

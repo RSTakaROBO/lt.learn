@@ -19,19 +19,14 @@
 #quiz-verbs-ui > .verb-forms-block > .verb-forms-block__main {
     width: 100%;
 }
-#quiz-verbs-ui > .verb-forms-block > .vocab-round-exclude-btn {
-    top: 0;
-    left: 0;
-}
-.verb-forms-grid {
+.verb-forms-card {
+    position: relative;
     width: 100%;
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    gap: clamp(0.45rem, 1.45vmin, 0.68rem);
-}
-.verb-form-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
     min-width: 0;
-    padding: 0.5rem 0.7rem;
+    padding: 0.15rem 0;
     border-radius: 16px;
     border: 1px solid color-mix(in srgb, var(--text) 9%, transparent);
     background:
@@ -45,10 +40,42 @@
         inset 0 1px 0 color-mix(in srgb, white 8%, transparent),
         0 8px 20px color-mix(in srgb, var(--bg) 13%, transparent);
     text-align: center;
+    overflow: hidden;
+}
+.verb-form-row {
+    min-width: 0;
+    padding: 0.58rem 0.78rem;
+}
+.verb-form-row:first-of-type {
+    padding-top: 0.78rem;
+}
+.verb-form-row:last-of-type {
+    padding-bottom: 1.55rem;
+}
+.verb-form-row + .verb-form-row {
+    border-top: 1px solid color-mix(in srgb, var(--text) 8%, transparent);
+}
+.verb-forms-card > .vocab-round-exclude-btn {
+    top: 0.52rem;
+    left: 0.52rem;
+}
+.verb-forms-card > .vocab-round-lemma-dots {
+    left: 0.62rem;
+    bottom: 0.58rem;
+}
+.verb-forms-card > .vocab-streak-mult {
+    right: 0.62rem;
+    bottom: 0.5rem;
 }
 @media (min-width: 720px) {
-    .verb-form-card {
+    .verb-form-row {
         padding-block: 0.85rem;
+    }
+    .verb-form-row:first-of-type {
+        padding-top: 0.92rem;
+    }
+    .verb-form-row:last-of-type {
+        padding-bottom: 1.7rem;
     }
     .verb-form-value {
         margin-top: 0.48rem;
@@ -92,8 +119,7 @@
     line-height: 1.25;
     text-align: center;
 }
-.verb-form-card--hidden {
-    border-color: color-mix(in srgb, var(--accent) 45%, var(--border));
+.verb-form-row--hidden {
     background:
         linear-gradient(
             180deg,
@@ -105,11 +131,10 @@
         inset 0 1px 0 color-mix(in srgb, white 12%, transparent),
         0 10px 24px color-mix(in srgb, var(--accent) 12%, transparent);
 }
-.verb-form-card--hidden .verb-form-value {
+.verb-form-row--hidden .verb-form-value {
     color: var(--muted);
 }
-#quiz-verbs-ui .verb-form-card--hidden.verb-form-card--feedback-ok {
-    border-color: color-mix(in srgb, var(--success) 55%, var(--border));
+#quiz-verbs-ui .verb-form-row--hidden.verb-form-card--feedback-ok {
     background:
         linear-gradient(
             180deg,
@@ -118,11 +143,10 @@
         ),
         color-mix(in srgb, var(--success) 24%, var(--surface-elevated));
 }
-#quiz-verbs-ui .verb-form-card--hidden.verb-form-card--feedback-ok .verb-form-value {
+#quiz-verbs-ui .verb-form-row--hidden.verb-form-card--feedback-ok .verb-form-value {
     color: color-mix(in srgb, var(--success) 78%, var(--text));
 }
-#quiz-verbs-ui .verb-form-card--hidden.verb-form-card--feedback-bad {
-    border-color: color-mix(in srgb, var(--error) 55%, var(--border));
+#quiz-verbs-ui .verb-form-row--hidden.verb-form-card--feedback-bad {
     background:
         linear-gradient(
             180deg,
@@ -131,6 +155,6 @@
         ),
         color-mix(in srgb, var(--error) 22%, var(--surface-elevated));
 }
-#quiz-verbs-ui .verb-form-card--hidden.verb-form-card--feedback-bad .verb-form-value {
+#quiz-verbs-ui .verb-form-row--hidden.verb-form-card--feedback-bad .verb-form-value {
     color: color-mix(in srgb, var(--error) 82%, var(--text));
 }

@@ -1,6 +1,7 @@
 /** Экран настройки (мастер): режим → наборы → (направление слов | падежи). */
 import { TRAIN_MODE } from "js/config.js"
 import { APP_VERSION } from "js/app-version.js"
+import { ruPlural } from "js/i18n/core.js"
 import { STR } from "js/i18n/strings-ru.js"
 import {
     handlePacksNextClick,
@@ -8,7 +9,12 @@ import {
     handleVerbModeStartClick,
     handleVocabDirectionStartClick,
 } from "js/setup-wizard-handlers.js"
-import { loadTrainMode, saveExcludeLearnedWords, saveTrainMode } from "js/storage.js"
+import {
+    getAppVisitSnapshot,
+    loadTrainMode,
+    saveExcludeLearnedWords,
+    saveTrainMode,
+} from "js/storage.js"
 import { AppFlowScreen } from "src/components/layout/AppFlowScreen.jsx"
 import { WizardCaseCheckboxes } from "src/components/setup/WizardCaseCheckboxes.jsx"
 import { WizardVerbModeForm } from "src/components/setup/WizardVerbModeForm.jsx"
@@ -37,6 +43,11 @@ export function SetupScreen({ heightMode = "fill", hidden = false } = {}) {
     const showVocabDir = step === 3 && trainMode === TRAIN_MODE.VOCAB
     const showVerbMode = step === 3 && trainMode === TRAIN_MODE.VERBS
     const showCases = step === 3 && trainMode === TRAIN_MODE.CASES
+    const daysWithoutLithuanian = getAppVisitSnapshot().daysWithoutLithuanian
+    const homeKicker =
+        daysWithoutLithuanian > 0
+            ? `${daysWithoutLithuanian} ${ruPlural(daysWithoutLithuanian, "день", "дня", "дней")} без`
+            : STR.wizard.homeKicker
 
     function goWizardStep(next) {
         dispatch({ type: "WIZARD_SET_STEP", step: next })
@@ -48,9 +59,7 @@ export function SetupScreen({ heightMode = "fill", hidden = false } = {}) {
                 <div id="step-mode" className={wizardStepClass(showMode)}>
                     <header className="wizard-app-head">
                         <h2 className="wizard-home-title">
-                            <span className="wizard-home-title-kicker">
-                                {STR.wizard.homeKicker}
-                            </span>
+                            <span className="wizard-home-title-kicker">{homeKicker}</span>
                             <span className="wizard-home-title-em">{STR.wizard.homeEm}</span>
                         </h2>
                     </header>

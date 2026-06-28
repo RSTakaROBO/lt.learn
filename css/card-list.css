@@ -10,7 +10,7 @@
  * Разметка: src/components/ui/CheckboxButton.jsx.
  */
 .pack-card {
-    display: block;
+    display: flex;
     margin: 0;
     cursor: pointer;
     -webkit-tap-highlight-color: transparent;
@@ -25,9 +25,12 @@
 .pack-card-face {
     position: relative;
     display: flex;
+    flex: 1 1 auto;
     align-items: center;
     gap: 0.72rem;
+    width: 100%;
     min-height: 2.5rem;
+    box-sizing: border-box;
     padding: 0.56rem 0.64rem 0.56rem 0.78rem;
     border-radius: 14px;
     border: 1px solid color-mix(in srgb, var(--text) 8%, transparent);

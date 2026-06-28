@@ -71,11 +71,17 @@ function isCurrentQuizTask(task) {
     if (!task?.word || !Object.values(TRAIN_MODE).includes(task.mode)) return false
     if (task.mode === TRAIN_MODE.CASES) return !!CASE_BY_KEY[task.targetCase]
     if (task.mode === TRAIN_MODE.VERBS) {
-        if (task.verbMode === VERB_MODE.CARDS || task.verbMode === VERB_MODE.FORM_CARDS) {
+        if (task.verbMode === VERB_MODE.CARDS) {
             return (
                 task.vocabDirection === VOCAB_DIRECTION.RU_TO_LT &&
+                task.vocabMode === VOCAB_MODE.SINGLE
+            )
+        }
+        if (task.verbMode === VERB_MODE.FORM_CARDS) {
+            return (
+                task.vocabDirection === VOCAB_DIRECTION.LT_TO_LT &&
                 task.vocabMode === VOCAB_MODE.SINGLE &&
-                (task.verbMode === VERB_MODE.CARDS || !!VERB_FORM_BY_KEY[task.hiddenVerbFormKey])
+                !!VERB_FORM_BY_KEY[task.hiddenVerbFormKey]
             )
         }
         return !!VERB_FORM_BY_KEY[task.hiddenVerbFormKey]
