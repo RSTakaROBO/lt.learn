@@ -51,6 +51,17 @@ function readInitialVocabShowVerbForms() {
     return false
 }
 
+function readInitialSimplifiedAnswerMode() {
+    try {
+        const raw = localStorage.getItem(STORAGE_KEYS.simplifiedAnswerMode)
+        if (raw === "1") return true
+        if (raw === "0") return false
+    } catch {
+        /* ignore */
+    }
+    return false
+}
+
 function readInitialExcludeLearnedWords() {
     try {
         const raw = localStorage.getItem(STORAGE_KEYS.excludeLearnedWords)
@@ -112,6 +123,7 @@ function readInitialSelectedPackIds() {
  * @property {boolean} casesUseNativeKeyboard
  * @property {boolean} vocabShowWrongTranslation
  * @property {boolean} vocabShowVerbForms
+ * @property {boolean} simplifiedAnswerMode
  * @property {number} learningScopeSize
  * @property {boolean} excludeLearnedWords
  */
@@ -193,6 +205,7 @@ function readInitialSelectedPackIds() {
  *   | { type: "SET_CASES_USE_NATIVE_KEYBOARD"; value: boolean }
  *   | { type: "SET_VOCAB_SHOW_WRONG_TRANSLATION"; value: boolean }
  *   | { type: "SET_VOCAB_SHOW_VERB_FORMS"; value: boolean }
+ *   | { type: "SET_SIMPLIFIED_ANSWER_MODE"; value: boolean }
  *   | { type: "SET_LEARNING_SCOPE_SIZE"; value: number }
  *   | { type: "SET_EXCLUDE_LEARNED_WORDS"; value: boolean }
  *   | { type: "WIZARD_SET_STEP"; step: number }
@@ -221,6 +234,7 @@ function buildInitialState() {
             casesUseNativeKeyboard: readInitialCasesUseNativeKeyboard(),
             vocabShowWrongTranslation: readInitialVocabShowWrongTranslation(),
             vocabShowVerbForms: readInitialVocabShowVerbForms(),
+            simplifiedAnswerMode: readInitialSimplifiedAnswerMode(),
             learningScopeSize: readInitialLearningScopeSize(),
             excludeLearnedWords: readInitialExcludeLearnedWords(),
         },
@@ -319,6 +333,9 @@ const trainerSlice = createSlice({
                 case "SET_VOCAB_SHOW_VERB_FORMS":
                     state.persisted.vocabShowVerbForms = a.value
                     break
+                case "SET_SIMPLIFIED_ANSWER_MODE":
+                    state.persisted.simplifiedAnswerMode = a.value
+                    break
                 case "SET_LEARNING_SCOPE_SIZE":
                     state.persisted.learningScopeSize = normalizeLearningScopeSize(a.value)
                     break
@@ -407,6 +424,10 @@ export function getEngine() {
 
 export function getLearningScopeSize() {
     return trainerStore.getState().trainer.persisted.learningScopeSize
+}
+
+export function getSimplifiedAnswerMode() {
+    return !!trainerStore.getState().trainer.persisted.simplifiedAnswerMode
 }
 
 /** @returns {TrainerScreen} */

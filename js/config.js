@@ -47,6 +47,7 @@ export const STORAGE_KEYS = {
     casesUseNativeKeyboard: "lt-trainer-cases-use-native-keyboard-v1",
     vocabShowWrongTranslation: "lt-trainer-vocab-show-wrong-translation-v1",
     vocabShowVerbForms: "lt-trainer-vocab-show-verb-forms-v1",
+    simplifiedAnswerMode: "lt-trainer-simplified-answer-mode-v1",
     learningScopeSize: "lt-trainer-learning-scope-size-v1",
     excludeLearnedWords: "lt-trainer-exclude-learned-words-v1",
     customPacks: "lt-trainer-custom-packs-v1",

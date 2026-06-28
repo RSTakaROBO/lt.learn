@@ -6,6 +6,7 @@ import {
     saveCasesShowTranslation,
     saveCasesUseNativeKeyboard,
     saveLearningScopeSize,
+    saveSimplifiedAnswerMode,
     saveVocabShowVerbForms,
     saveVocabShowWrongTranslation,
 } from "js/storage.js"
@@ -29,6 +30,7 @@ export function SettingsScreen({ heightMode = "fill" } = {}) {
         casesUseNativeKeyboard,
         vocabShowWrongTranslation,
         vocabShowVerbForms,
+        simplifiedAnswerMode,
         learningScopeSize,
     } = state.persisted
     const closeButtonRef = useRef(null)
@@ -169,6 +171,20 @@ export function SettingsScreen({ heightMode = "fill" } = {}) {
                                         value: v,
                                     })
                                     saveVocabShowVerbForms(v)
+                                }}
+                            />
+                            <CheckboxButton
+                                id="settings-simplified-answer-mode"
+                                title={STR.settings.simplifiedAnswerModeTitle}
+                                meta={STR.settings.simplifiedAnswerModeMeta}
+                                checked={simplifiedAnswerMode}
+                                onChange={(e) => {
+                                    const v = e.target.checked
+                                    dispatch({
+                                        type: "SET_SIMPLIFIED_ANSWER_MODE",
+                                        value: v,
+                                    })
+                                    saveSimplifiedAnswerMode(v)
                                 }}
                             />
                         </CardList>

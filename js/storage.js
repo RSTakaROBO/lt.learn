@@ -361,6 +361,27 @@ export class TrainerStorage {
         }
     }
 
+    /** @returns {boolean|null} */
+    loadSimplifiedAnswerMode() {
+        try {
+            const raw = this._store.getItem(STORAGE_KEYS.simplifiedAnswerMode)
+            if (raw === null) return null
+            if (raw === "1") return true
+            if (raw === "0") return false
+            return null
+        } catch {
+            return null
+        }
+    }
+
+    saveSimplifiedAnswerMode(enabled) {
+        try {
+            this._store.setItem(STORAGE_KEYS.simplifiedAnswerMode, enabled ? "1" : "0")
+        } catch {
+            /* ignore */
+        }
+    }
+
     saveLearningScopeSize(size) {
         try {
             this._store.setItem(
@@ -458,5 +479,8 @@ export const saveVocabShowWrongTranslation = (show) =>
     trainerStorage.saveVocabShowWrongTranslation(show)
 export const loadVocabShowVerbForms = () => trainerStorage.loadVocabShowVerbForms()
 export const saveVocabShowVerbForms = (show) => trainerStorage.saveVocabShowVerbForms(show)
+export const loadSimplifiedAnswerMode = () => trainerStorage.loadSimplifiedAnswerMode()
+export const saveSimplifiedAnswerMode = (enabled) =>
+    trainerStorage.saveSimplifiedAnswerMode(enabled)
 export const loadExcludeLearnedWords = () => trainerStorage.loadExcludeLearnedWords()
 export const saveExcludeLearnedWords = (exclude) => trainerStorage.saveExcludeLearnedWords(exclude)

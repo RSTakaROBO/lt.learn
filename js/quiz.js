@@ -11,6 +11,7 @@ import {
     getActiveTrainerScreen,
     getCheckedCaseKeys,
     getEngine,
+    getSimplifiedAnswerMode,
     mutateEngine,
     postTrainerUiAction,
     clearQuizFeedback,
@@ -155,6 +156,12 @@ function isVerbFormsTask(task) {
         task.verbMode !== VERB_MODE.CARDS &&
         task.verbMode !== VERB_MODE.FORM_CARDS
     )
+}
+
+function typedAnswerMatch(user, expected) {
+    return answersMatch(user, expected, {
+        simplifyLtDiacritics: getSimplifiedAnswerMode(),
+    })
 }
 
 function nextSingleCardTask(sourceTask, opts) {
@@ -449,7 +456,7 @@ export function processVocabHardcoreSubmit(userInput) {
             ok = vocabRuUserMatches(word, userInput)
         } else {
             expected = vocabLemma(word)
-            ok = answersMatch(userInput, expected)
+            ok = typedAnswerMatch(userInput, expected)
         }
         mutateEngine((e) => {
             e.answered = true
@@ -646,7 +653,7 @@ export function handleMorphCasesAnswerSubmit(user) {
     const expected = getEngine().currentTask.word.forms[getEngine().currentTask.targetCase]
 
     if (!getEngine().answered) {
-        const ok = answersMatch(user, expected)
+        const ok = typedAnswerMatch(user, expected)
         mutateEngine((e) => {
             e.answered = true
             if (ok) {
@@ -741,7 +748,7 @@ export function handleVerbFormSubmit(userInput) {
     const expected = word?.forms?.[formKey] || ""
 
     if (!getEngine().answered) {
-        const ok = answersMatch(userInput, expected)
+        const ok = typedAnswerMatch(userInput, expected)
         mutateEngine((e) => {
             e.answered = true
             if (ok) {

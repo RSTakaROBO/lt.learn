@@ -224,6 +224,9 @@ export const STR = {
         vocabVerbFormsTitle: "Показывать три формы глагола",
         vocabVerbFormsMeta:
             "На карточках слов показывать инфинитив, 3-е лицо настоящего и прошедшего времени",
+        simplifiedAnswerModeTitle: "Упрощённый режим",
+        simplifiedAnswerModeMeta:
+            "При ручном вводе засчитывать e вместо ė и u вместо ū в литовских словах",
         casesNativeKeyboardTitle: "Нативная клавиатура",
         casesNativeKeyboardMeta: "Стандартная клавиатура телефона вместо встроенной в приложении",
         close: "Закрыть",
