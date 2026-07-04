@@ -34,6 +34,7 @@ import {
     vocabRuFeedbackLine,
     vocabRuUserMatches,
 } from "../src/screens/quiz/vocab/vocabWords.js"
+import { nextSentenceTask } from "../src/screens/quiz/sentences/sentenceTask.js"
 import { nextVerbTask } from "../src/screens/quiz/verbs/verbsTask.js"
 import { lemmaKey } from "../src/screens/quiz/shared/quizTaskSelection.js"
 
@@ -70,6 +71,15 @@ export function resetVocabCorrectStreak() {
 function isCurrentQuizTask(task) {
     if (!task?.word || !Object.values(TRAIN_MODE).includes(task.mode)) return false
     if (task.mode === TRAIN_MODE.CASES) return !!CASE_BY_KEY[task.targetCase]
+    if (task.mode === TRAIN_MODE.SENTENCES) {
+        return (
+            Array.isArray(task.tokens) &&
+            task.tokens.length > 0 &&
+            Array.isArray(task.expectedWords) &&
+            task.expectedWords.length > 0 &&
+            typeof task.sentence?.ru === "string"
+        )
+    }
     if (task.mode === TRAIN_MODE.VERBS) {
         if (task.verbMode === VERB_MODE.CARDS) {
             return (
@@ -200,7 +210,11 @@ export function showQuiz(task) {
     postTrainerUiAction({ type: "SCREEN_SET", screen: "quiz" })
     clearQuizFeedback()
 
-    if (task.mode === TRAIN_MODE.VOCAB || task.mode === TRAIN_MODE.VERBS) {
+    if (
+        task.mode === TRAIN_MODE.VOCAB ||
+        task.mode === TRAIN_MODE.VERBS ||
+        task.mode === TRAIN_MODE.SENTENCES
+    ) {
         setVocabRoundLemmaDots(task.word)
         if (isSingleCardTask(task)) {
             prepareVocabSingleNextTask(task)
@@ -221,6 +235,7 @@ function exceptionNote(word) {
 }
 
 function recordQuizOutcome(word, ok) {
+    if (word?.type === "sentence") return
     bumpWordStat(lemmaKey(word), ok ? "correct" : "wrong")
 }
 
@@ -293,6 +308,29 @@ function applyVocabAnswerOutcome(ok, expected, word) {
         saveVocabBestStreakIfHigher(getEngine().vocabCorrectStreak)
     }
     showFeedback(ok, expected, word, { showExceptionNote: false })
+    applyVocabRoundAnswer(word, ok)
+}
+
+function applySentenceAnswerOutcome(ok, expected, word) {
+    mutateEngine((e) => {
+        e.answered = true
+        if (ok) {
+            e.vocabCorrectStreak += 1
+            if (e.vocabCorrectStreak >= VOCAB_STREAK_MULT_FROM) e.vocabStreakPulseId += 1
+        } else {
+            if (e.vocabRound) {
+                e.vocabRound.maxStreak = Math.max(e.vocabRound.maxStreak, e.vocabCorrectStreak)
+            }
+            e.vocabCorrectStreak = 0
+            e.vocabStreakPulseId = 0
+        }
+    })
+    setQuizFeedback({
+        kind: ok ? "ok" : "bad",
+        message: ok ? STR.quiz.correct : STR.quiz.wrong,
+        expected: ok ? "" : expected,
+        exceptionNote: "",
+    })
     applyVocabRoundAnswer(word, ok)
 }
 
@@ -545,6 +583,23 @@ export function advanceVerbQuiz() {
     showQuiz(task)
 }
 
+export function advanceSentenceQuiz() {
+    if (!getEngine().currentTask || getEngine().currentTask.mode !== TRAIN_MODE.SENTENCES) return
+    if (!getEngine().answered) return
+    if (getEngine().vocabRound && getEngine().vocabRound.pool.size === 0) {
+        resetVocabCorrectStreak()
+        openVocabRoundSummaryOverlay()
+        return
+    }
+    const task = nextSentenceTask({ excludeLemma: roundLemmaKey(getEngine().currentTask.word) })
+    if (!task) {
+        resetVocabCorrectStreak()
+        setQuizFeedback({ kind: "info", message: STR.quiz.noWordsLeft })
+        return
+    }
+    showQuiz(task)
+}
+
 export function skipCurrentWord() {
     debugQuiz("skipCurrentWord:called")
     if (!getEngine().currentTask || getEngine().answered) {
@@ -554,7 +609,9 @@ export function skipCurrentWord() {
         })
         return
     }
-    bumpWordStat(lemmaKey(getEngine().currentTask.word), "skipped")
+    if (getEngine().currentTask.mode !== TRAIN_MODE.SENTENCES) {
+        bumpWordStat(lemmaKey(getEngine().currentTask.word), "skipped")
+    }
     if (getEngine().currentTask.mode === TRAIN_MODE.VOCAB) {
         const skippedLemma = roundLemmaKey(getEngine().currentTask.word)
         debugQuiz("skipCurrentWord:vocab-before-next", { skippedLemma })
@@ -583,6 +640,20 @@ export function skipCurrentWord() {
             excludeLemma: skippedLemma,
             verbMode: getEngine().currentTask.verbMode || VERB_MODE.FORMS,
         })
+        if (!task) {
+            if (getEngine().vocabRound && getEngine().vocabRound.pool.size === 0) {
+                openVocabRoundSummaryOverlay()
+            }
+            return
+        }
+        showQuiz(task)
+        return
+    }
+    if (getEngine().currentTask.mode === TRAIN_MODE.SENTENCES) {
+        const skippedLemma = roundLemmaKey(getEngine().currentTask.word)
+        applyVocabRoundSkip(getEngine().currentTask.word)
+        resetVocabCorrectStreak()
+        const task = nextSentenceTask({ excludeLemma: skippedLemma })
         if (!task) {
             if (getEngine().vocabRound && getEngine().vocabRound.pool.size === 0) {
                 openVocabRoundSummaryOverlay()
@@ -632,6 +703,8 @@ export function excludeCurrentRoundWord() {
             excludeLemma: removedLemma,
             verbMode: task.verbMode || VERB_MODE.FORMS,
         })
+    } else if (task.mode === TRAIN_MODE.SENTENCES) {
+        nextTask = nextSentenceTask({ excludeLemma: removedLemma })
     } else if (task.mode === TRAIN_MODE.CASES) {
         nextTask = nextCasesTask(getCheckedCaseKeys(), { excludeLemma: removedLemma })
     }
@@ -654,6 +727,7 @@ export function handleMorphCasesAnswerSubmit(user) {
     if (!getEngine().currentTask) return
     if (getEngine().currentTask.mode === TRAIN_MODE.VOCAB) return
     if (getEngine().currentTask.mode === TRAIN_MODE.VERBS) return
+    if (getEngine().currentTask.mode === TRAIN_MODE.SENTENCES) return
 
     const keys = getCheckedCaseKeys()
     const expected = getEngine().currentTask.word.forms[getEngine().currentTask.targetCase]
@@ -724,10 +798,33 @@ export function handleVocabChoice(lem) {
     finalizeVocabChoice(ok, expected, getEngine().currentTask.word, lem)
 }
 
+export function handleSentenceBuilderSubmit(words) {
+    if (!getEngine().currentTask || getEngine().currentTask.mode !== TRAIN_MODE.SENTENCES) return
+
+    if (getEngine().answered) {
+        advanceSentenceQuiz()
+        return
+    }
+
+    const picked = Array.isArray(words) ? words.map((word) => String(word || "").trim()) : []
+    const expectedWords = Array.isArray(getEngine().currentTask.expectedWords)
+        ? getEngine().currentTask.expectedWords
+        : []
+    const ok =
+        picked.length === expectedWords.length &&
+        expectedWords.every((word, index) => picked[index] === word)
+    const expected = expectedWords.join(" ")
+    applySentenceAnswerOutcome(ok, expected, getEngine().currentTask.word)
+}
+
 export function handleQuizSkipButtonClick() {
     debugQuiz("handleQuizSkipButtonClick:clicked")
     if (isVerbFormsTask(getEngine().currentTask) && getEngine().answered) {
         advanceVerbQuiz()
+        return
+    }
+    if (getEngine().currentTask?.mode === TRAIN_MODE.SENTENCES && getEngine().answered) {
+        advanceSentenceQuiz()
         return
     }
     if (getEngine().currentTask?.mode === TRAIN_MODE.VOCAB && getEngine().answered) {

@@ -1,5 +1,6 @@
 export { QuizBarSvg } from "src/components/icons/QuizBarSvg.jsx"
 export { QuizBarStatsIcon } from "src/components/icons/QuizBarStatsIcon.jsx"
+export { QuizBarSearchIcon } from "src/components/icons/QuizBarSearchIcon.jsx"
 export { QuizBarHomeIcon } from "src/components/icons/QuizBarHomeIcon.jsx"
 export { QuizBarHelpIcon } from "src/components/icons/QuizBarHelpIcon.jsx"
 export { QuizBarSettingsIcon } from "src/components/icons/QuizBarSettingsIcon.jsx"

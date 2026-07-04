@@ -11,7 +11,9 @@ import {
     isSettingsOverlayOpen,
     isStatsOverlayOpen,
     isVerbFormsHelpOpen,
+    isVerbTensesHelpOpen,
     isVocabRoundSummaryOpen,
+    isWordSearchOpen,
     postTrainerUiAction,
 } from "js/trainer-ui-state.js"
 import { useVocabRoundSummaryActions } from "src/hooks/useVocabRoundSummaryActions.js"
@@ -47,9 +49,14 @@ export function useTrainerKeyboardShortcuts() {
                 postTrainerUiAction({ type: "OVERLAY_CLOSE", name: "stats" })
                 return
             }
-            if (isCasesHelpOpen() || isVerbFormsHelpOpen()) {
+            if (isCasesHelpOpen() || isVerbFormsHelpOpen() || isVerbTensesHelpOpen()) {
                 e.preventDefault()
                 postTrainerUiAction({ type: "OVERLAY_OPEN", name: "helpHub" })
+                return
+            }
+            if (isWordSearchOpen()) {
+                e.preventDefault()
+                postTrainerUiAction({ type: "OVERLAY_CLOSE", name: "wordSearch" })
                 return
             }
             if (!getEngine().currentTask || getActiveTrainerScreen() !== "quiz") {

@@ -16,6 +16,7 @@ export const STR = {
         homeEm: "литовского",
         exerciseTypeAria: "Тип упражнения",
         packsHeading: "Наборы слов",
+        sentencePacksHeading: "Наборы предложений",
         casesHeading: "Падежи",
         vocabDirectionHeading: "Направление перевода",
         verbModeHeading: "Режим глаголов",
@@ -28,6 +29,8 @@ export const STR = {
         vocabDesc: "Запоминайте слова и переводы в обычном или хардкор-режиме.",
         verbsTitle: "Изучение глаголов",
         verbsDesc: "Учите глаголы карточками или восстанавливайте их основные формы.",
+        sentencesTitle: "Предложения",
+        sentencesDesc: "Собирайте литовский перевод из слов, среди которых есть лишние.",
     },
 
     packs: {
@@ -42,6 +45,10 @@ export const STR = {
         back: "Назад",
         next: "Далее",
         start: "Начать",
+    },
+
+    sentencePacks: {
+        countMeta: "Предложений: {count}",
     },
 
     confirm: {
@@ -113,6 +120,14 @@ export const STR = {
         exceptionStrong: "Исключение:",
         emDash: "—",
         lithuanianKeyboardHideAria: "Скрыть клавиатуру",
+        sentenceBuilderAria: "Соберите литовское предложение",
+        sentenceAnswerAria: "Ваше предложение",
+        sentenceWordBankAria: "Доступные литовские слова",
+        sentenceEmptyAnswer: "Ответ",
+        sentenceRemoveWord: "Убрать слово {word} из ответа",
+        sentenceAddWord: "Добавить слово {word}",
+        sentenceWordInfoAria: "Показать подсказку по слову {word}",
+        sentenceWordInfoCase: "Падеж",
     },
 
     help: {
@@ -131,6 +146,8 @@ export const STR = {
 
     bottomBar: {
         toolbarAria: "Меню тренажёра",
+        search: "Поиск",
+        searchAria: "Поиск слов",
         stats: "Статистика",
         statsAria: "Статистика",
         menu: "Меню",
@@ -381,6 +398,8 @@ ${MD_FENCE}
         vocabStartHardcoreFail: "Не удалось начать игру. Проверьте наборы слов.",
         vocabStartChoicesFail: "Не удалось составить четыре варианта ответа.",
         pickOnePack: "Выберите хотя бы один набор.",
+        pickOneSentencePack: "Выберите хотя бы один набор предложений.",
+        sentencesStartFail: "Не удалось начать урок. Проверьте наборы предложений.",
         packsNoWordFiles: "В выбранных паках нет файлов со словами.",
         loadingDictionaries: "Загрузка словарей…",
         vocabAfterPackHardcore:

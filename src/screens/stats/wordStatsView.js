@@ -1,4 +1,4 @@
-import { parseCurrentWordStatRow } from "js/storage.js"
+import { isSentenceStatKey, parseCurrentWordStatRow } from "js/storage.js"
 
 /**
  * @param {Record<string, unknown>} wordStats
@@ -8,7 +8,8 @@ export function aggregateWordStatsTotals(wordStats) {
     let correct = 0
     let wrong = 0
     let skipped = 0
-    for (const row of Object.values(wordStats)) {
+    for (const [lemma, row] of Object.entries(wordStats)) {
+        if (isSentenceStatKey(lemma)) continue
         const n = parseCurrentWordStatRow(row)
         if (!n) continue
         correct += n.correct
@@ -24,6 +25,7 @@ export function aggregateWordStatsTotals(wordStats) {
  */
 export function buildSortedWordStatRows(wordStats) {
     return Object.entries(wordStats)
+        .filter(([lemma]) => !isSentenceStatKey(lemma))
         .map(([lemma, row]) => {
             const n = parseCurrentWordStatRow(row)
             if (!n) return null

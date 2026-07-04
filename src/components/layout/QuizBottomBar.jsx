@@ -3,8 +3,8 @@ import { useEffect, useState } from "react"
 import {
     QuizBarHelpIcon,
     QuizBarHomeIcon,
+    QuizBarSearchIcon,
     QuizBarSettingsIcon,
-    QuizBarStatsIcon,
 } from "src/components/icons/index.js"
 import { ConfirmDialogOverlay } from "src/components/ui/ConfirmDialogOverlay.jsx"
 import { Button } from "src/components/ui/Button.jsx"
@@ -21,12 +21,13 @@ function barBtnClass(active) {
 /** Нижняя панель: статистика, меню, справка, настройки. */
 export function QuizBottomBar() {
     const [state, dispatch] = useTrainerApp()
-    const { casesHelp, helpHub, settings, stats, verbFormsHelp } = state.overlay
+    const { casesHelp, helpHub, settings, stats, verbFormsHelp, verbTensesHelp, wordSearch } =
+        state.overlay
     const { screen, engine } = state
     const [menuQuitConfirmOpen, setMenuQuitConfirmOpen] = useState(false)
 
-    const helpActive = helpHub || casesHelp || verbFormsHelp
-    const homeActive = !stats && !helpActive && !settings
+    const helpActive = helpHub || casesHelp || verbFormsHelp || verbTensesHelp
+    const homeActive = !stats && !helpActive && !settings && !wordSearch
 
     useEffect(() => {
         if (!menuQuitConfirmOpen) return
@@ -45,6 +46,7 @@ export function QuizBottomBar() {
         dispatch({ type: "OVERLAY_CLOSE", name: "settings" })
         dispatch({ type: "OVERLAY_CLOSE", name: "packPrompt" })
         dispatch({ type: "OVERLAY_CLOSE", name: "helpHub" })
+        dispatch({ type: "OVERLAY_CLOSE", name: "wordSearch" })
         dispatch({ type: "OVERLAY_CLOSE", name: "vocabRound" })
         clearVocabRound()
 
@@ -70,6 +72,16 @@ export function QuizBottomBar() {
             return
         }
 
+        if (verbTensesHelp) {
+            dispatch({ type: "OVERLAY_CLOSE", name: "verbTensesHelp" })
+            return
+        }
+
+        if (wordSearch) {
+            dispatch({ type: "OVERLAY_CLOSE", name: "wordSearch" })
+            return
+        }
+
         if (screen === "quiz" && (engine.currentTask != null || engine.vocabRound != null)) {
             setMenuQuitConfirmOpen(true)
             return
@@ -90,13 +102,13 @@ export function QuizBottomBar() {
                     <Button
                         variant="quizBar"
                         type="button"
-                        className={barBtnClass(stats)}
-                        aria-label={STR.bottomBar.statsAria}
-                        aria-current={stats ? "page" : undefined}
-                        onClick={() => dispatch({ type: "OVERLAY_OPEN", name: "stats" })}
+                        className={barBtnClass(wordSearch)}
+                        aria-label={STR.bottomBar.searchAria}
+                        aria-current={wordSearch ? "page" : undefined}
+                        onClick={() => dispatch({ type: "OVERLAY_OPEN", name: "wordSearch" })}
                     >
-                        <QuizBarStatsIcon />
-                        <span className="quiz-bar-label">{STR.bottomBar.stats}</span>
+                        <QuizBarSearchIcon />
+                        <span className="quiz-bar-label">{STR.bottomBar.search}</span>
                     </Button>
                     <Button
                         variant="quizBar"

@@ -45,7 +45,8 @@ body.vocab-round-summary-modal-open .quiz-bottom-bar {
 #help-hub-shell:not(.hidden),
 .cases-help-shell:not(.hidden),
 .verbs-help-shell:not(.hidden),
-.verb-forms-help-shell:not(.hidden) {
+.verb-forms-help-shell:not(.hidden),
+.verb-tenses-help-shell:not(.hidden) {
     position: fixed;
     inset: 0;
     z-index: 100;
@@ -73,7 +74,8 @@ body.vocab-round-summary-modal-open .quiz-bottom-bar {
 #help-hub-shell:not(.hidden) > #help-hub,
 .cases-help-shell:not(.hidden) > #cases-help,
 .verbs-help-shell:not(.hidden) > #verbs-help,
-.verb-forms-help-shell:not(.hidden) > #verb-forms-help {
+.verb-forms-help-shell:not(.hidden) > #verb-forms-help,
+.verb-tenses-help-shell:not(.hidden) > #verb-tenses-help {
     flex: 1 1 auto;
     width: min(100%, var(--shell-max-width));
     height: 100%;

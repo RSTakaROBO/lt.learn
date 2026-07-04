@@ -50,7 +50,18 @@ export function HelpHubScreen({ heightMode = "fill" } = {}) {
                                 })
                             }
                         >
-                            Три спряжения глаголов
+                            Спряжения настоящего времени
+                        </Button>
+                        <Button
+                            type="button"
+                            onClick={() =>
+                                postTrainerUiAction({
+                                    type: "OVERLAY_OPEN",
+                                    name: "verbTensesHelp",
+                                })
+                            }
+                        >
+                            Прошедшее и будущее время
                         </Button>
                     </div>
                 </div>

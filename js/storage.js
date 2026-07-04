@@ -10,12 +10,33 @@ import { STR } from "./i18n/strings-ru.js"
 import { migrateStorage } from "./storage-migrations.js"
 import { getEngine, mutateEngine } from "./trainer-ui-state.js"
 import { WORD_PACK_SCHEMA_VERSION } from "./word-entry.js"
+import {
+    DEFAULT_SENTENCE_PACK_IDS,
+    SENTENCE_BANK,
+    sentenceExpectedText,
+    sentencePackIds,
+} from "../src/screens/quiz/sentences/sentenceBank.js"
 
 const MS_PER_DAY = 24 * 60 * 60 * 1000
 let appVisitSnapshot = {
     previousDate: "",
     today: "",
     daysWithoutLithuanian: 0,
+}
+
+const SENTENCE_STAT_KEYS = new Set(SENTENCE_BANK.map(sentenceExpectedText).filter(Boolean))
+
+export function isSentenceStatKey(lemma) {
+    return SENTENCE_STAT_KEYS.has(lemma)
+}
+
+function normalizeSentencePackIds(ids, fallback = []) {
+    const valid = new Set(sentencePackIds())
+    const out = []
+    for (const id of Array.isArray(ids) ? ids : fallback) {
+        if (typeof id === "string" && valid.has(id) && !out.includes(id)) out.push(id)
+    }
+    return out
 }
 
 function localDateKey(date = new Date()) {
@@ -97,6 +118,28 @@ export class TrainerStorage {
         }
     }
 
+    loadSelectedSentencePacks() {
+        try {
+            const raw = this._store.getItem(STORAGE_KEYS.sentencePacks)
+            if (!raw) return normalizeSentencePackIds(DEFAULT_SENTENCE_PACK_IDS)
+            const parsed = JSON.parse(raw)
+            return normalizeSentencePackIds(parsed)
+        } catch {
+            return normalizeSentencePackIds(DEFAULT_SENTENCE_PACK_IDS)
+        }
+    }
+
+    saveSelectedSentencePacks(ids) {
+        try {
+            this._store.setItem(
+                STORAGE_KEYS.sentencePacks,
+                JSON.stringify(normalizeSentencePackIds(ids))
+            )
+        } catch {
+            /* ignore */
+        }
+    }
+
     loadCustomPackRecords() {
         try {
             const raw = this._store.getItem(STORAGE_KEYS.customPacks)
@@ -139,7 +182,13 @@ export class TrainerStorage {
     loadTrainMode() {
         try {
             const m = this._store.getItem(STORAGE_KEYS.trainMode)
-            if (m === TRAIN_MODE.VOCAB || m === TRAIN_MODE.CASES || m === TRAIN_MODE.VERBS) return m
+            if (
+                m === TRAIN_MODE.VOCAB ||
+                m === TRAIN_MODE.CASES ||
+                m === TRAIN_MODE.VERBS ||
+                m === TRAIN_MODE.SENTENCES
+            )
+                return m
         } catch {
             /* ignore */
         }
@@ -151,7 +200,8 @@ export class TrainerStorage {
             if (
                 mode === TRAIN_MODE.VOCAB ||
                 mode === TRAIN_MODE.CASES ||
-                mode === TRAIN_MODE.VERBS
+                mode === TRAIN_MODE.VERBS ||
+                mode === TRAIN_MODE.SENTENCES
             ) {
                 this._store.setItem(STORAGE_KEYS.trainMode, mode)
             }
@@ -167,9 +217,25 @@ export class TrainerStorage {
             const parsed = JSON.parse(raw)
             if (!parsed || typeof parsed !== "object") return {}
             const out = {}
+            let changed = false
             for (const [k, v] of Object.entries(parsed)) {
+                if (isSentenceStatKey(k)) {
+                    changed = true
+                    continue
+                }
                 const row = parseCurrentWordStatRow(v)
-                if (row) out[k] = row
+                if (row) {
+                    out[k] = row
+                } else {
+                    changed = true
+                }
+            }
+            if (changed) {
+                try {
+                    this._store.setItem(STORAGE_KEYS.wordStats, JSON.stringify(out))
+                } catch {
+                    /* ignore */
+                }
             }
             return out
         } catch {
@@ -205,6 +271,7 @@ export class TrainerStorage {
 
     bumpWordStat(lemma, field) {
         if (!lemma || !["correct", "wrong", "skipped"].includes(field)) return
+        if (isSentenceStatKey(lemma)) return
         mutateEngine((e) => {
             const ws = e.wordStats
             if (!ws[lemma]) ws[lemma] = { correct: 0, wrong: 0, skipped: 0, progress: 0 }
@@ -466,6 +533,8 @@ export const loadSelectedCases = () => trainerStorage.loadSelectedCases()
 export const saveSelectedCases = (keys) => trainerStorage.saveSelectedCases(keys)
 export const loadSelectedPacks = () => trainerStorage.loadSelectedPacks()
 export const saveSelectedPacks = (ids) => trainerStorage.saveSelectedPacks(ids)
+export const loadSelectedSentencePacks = () => trainerStorage.loadSelectedSentencePacks()
+export const saveSelectedSentencePacks = (ids) => trainerStorage.saveSelectedSentencePacks(ids)
 export const loadCustomPackRecords = () => trainerStorage.loadCustomPackRecords()
 export const appendCustomPackRecord = (record) => trainerStorage.appendCustomPackRecord(record)
 export const removeCustomPackById = (id) => trainerStorage.removeCustomPackById(id)

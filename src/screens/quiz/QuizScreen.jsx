@@ -17,6 +17,7 @@ import {
 import { CasesQuiz } from "src/screens/quiz/cases/CasesQuiz.jsx"
 import { usePreferCoarsePointer } from "src/hooks/usePreferCoarsePointer.js"
 import { VocabQuiz } from "src/screens/quiz/vocab/VocabQuiz.jsx"
+import { SentenceQuiz } from "src/screens/quiz/sentences/SentenceQuiz.jsx"
 import { VerbsQuiz } from "src/screens/quiz/verbs/VerbsQuiz.jsx"
 
 /**
@@ -95,10 +96,11 @@ export function QuizScreen({ heightMode = "fill", hidden = false } = {}) {
     )
     const isVocab = task?.mode === TRAIN_MODE.VOCAB
     const isVerbs = task?.mode === TRAIN_MODE.VERBS
+    const isSentences = task?.mode === TRAIN_MODE.SENTENCES
     const isVerbCards =
         isVerbs && (task?.verbMode === VERB_MODE.CARDS || task?.verbMode === VERB_MODE.FORM_CARDS)
     const isVerbForms = isVerbs && !isVerbCards
-    const isCases = !isVocab && !isVerbs
+    const isCases = task?.mode === TRAIN_MODE.CASES || (!isVocab && !isVerbs && !isSentences)
     const isHardcore = task?.vocabMode === VOCAB_MODE.HARDCORE
     const isSingleVocab = isVocab && task?.vocabMode === VOCAB_MODE.SINGLE
     const isSingleCard = (isVocab || isVerbCards) && task?.vocabMode === VOCAB_MODE.SINGLE
@@ -110,23 +112,28 @@ export function QuizScreen({ heightMode = "fill", hidden = false } = {}) {
     const visibleFooterButtons = (showFinish ? 1 : 0) + (showSkip ? 1 : 0) + (!submitHidden ? 1 : 0)
     const footerSingle = visibleFooterButtons === 1
     const skipLabel =
-        (isVocab && answered && !isHardcore && !isSingleVocab) || (isVerbForms && answered)
+        (isVocab && answered && !isHardcore && !isSingleVocab) ||
+        (isVerbForms && answered) ||
+        (isSentences && answered)
             ? STR.quiz.next
             : STR.quiz.skip
     const skipDisabled =
-        !task || (answered && !(isVocab && !isHardcore && !isSingleVocab) && !isVerbForms)
+        !task ||
+        (answered && !(isVocab && !isHardcore && !isSingleVocab) && !isVerbForms && !isSentences)
     const submitLabel = answered ? STR.quiz.next : STR.quiz.check
     const quizModeClass = isVerbForms
         ? "quiz--verbs"
-        : isVocab || isVerbCards
-          ? isHardcore
-              ? "quiz--vocab quiz--vocab-hardcore"
-              : isSingleCard
-                ? ["quiz--vocab", "quiz--vocab-single", isVerbCards && "quiz--verb-cards"]
-                      .filter(Boolean)
-                      .join(" ")
-                : "quiz--vocab"
-          : "quiz--cases"
+        : isSentences
+          ? "quiz--sentences"
+          : isVocab || isVerbCards
+            ? isHardcore
+                ? "quiz--vocab quiz--vocab-hardcore"
+                : isSingleCard
+                  ? ["quiz--vocab", "quiz--vocab-single", isVerbCards && "quiz--verb-cards"]
+                        .filter(Boolean)
+                        .join(" ")
+                  : "quiz--vocab"
+            : "quiz--cases"
 
     const overlayKeyboardEligible = coarseTouchPreferred && !casesUseNativeKeyboard
     const showOverlayKeyboard = overlayKeyboardEligible && usesTypedLtQuiz
@@ -231,10 +238,22 @@ export function QuizScreen({ heightMode = "fill", hidden = false } = {}) {
                             task={task}
                         />
 
+                        <SentenceQuiz
+                            answered={answered}
+                            feedback={isSentences ? feedback : null}
+                            finishLabel={STR.confirm.finish}
+                            isActive={isSentences}
+                            onFinish={() => setFinishConfirmOpen(true)}
+                            roundProgress={roundProgress}
+                            showFinish={showFinish}
+                            submitLabel={submitLabel}
+                            task={task}
+                        />
+
                         {isHardcore && !isVocab && !isCases && <QuizFeedback feedback={feedback} />}
                     </div>
 
-                    {!isHardcore && (
+                    {!isHardcore && !isSentences && (
                         <div className="app-screen__footer quiz-footer-stack">
                             <div
                                 className={[

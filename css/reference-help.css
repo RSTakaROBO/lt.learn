@@ -147,6 +147,7 @@
 
 #cases-help .app-screen__footer .btn,
 #verbs-help .app-screen__footer .btn,
-#verb-forms-help .app-screen__footer .btn {
+#verb-forms-help .app-screen__footer .btn,
+#verb-tenses-help .app-screen__footer .btn {
     width: 100%;
 }

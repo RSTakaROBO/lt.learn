@@ -29,9 +29,13 @@ function TrainerAppBridge({ children }) {
     useEffect(() => {
         document.body.classList.toggle(
             "help-reference-open",
-            !!(state.overlay.casesHelp || state.overlay.verbFormsHelp)
+            !!(
+                state.overlay.casesHelp ||
+                state.overlay.verbFormsHelp ||
+                state.overlay.verbTensesHelp
+            )
         )
-    }, [state.overlay.casesHelp, state.overlay.verbFormsHelp])
+    }, [state.overlay.casesHelp, state.overlay.verbFormsHelp, state.overlay.verbTensesHelp])
 
     useEffect(() => {
         const o = state.overlay

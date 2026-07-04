@@ -20,18 +20,18 @@
 
     .app-screen--flow:not(#stats-overlay):not(#settings-shell):not(#help-hub-shell):not(
             .cases-help-shell
-        ):not(.verbs-help-shell):not(.verb-forms-help-shell)
+        ):not(.verbs-help-shell):not(.verb-forms-help-shell):not(.verb-tenses-help-shell)
         > .app-screen__panel {
         max-width: none;
     }
 
     .app-screen--flow:not(#stats-overlay):not(#settings-shell):not(#help-hub-shell):not(
             .cases-help-shell
-        ):not(.verbs-help-shell):not(.verb-forms-help-shell)
+        ):not(.verbs-help-shell):not(.verb-forms-help-shell):not(.verb-tenses-help-shell)
         > .widget,
     .app-screen--flow:not(#stats-overlay):not(#settings-shell):not(#help-hub-shell):not(
             .cases-help-shell
-        ):not(.verbs-help-shell):not(.verb-forms-help-shell)
+        ):not(.verbs-help-shell):not(.verb-forms-help-shell):not(.verb-tenses-help-shell)
         > .panel {
         padding: 0;
         padding-bottom: 0;
@@ -48,12 +48,12 @@
 
     .app-screen--flow:not(#stats-overlay):not(#settings-shell):not(#help-hub-shell):not(
             .cases-help-shell
-        ):not(.verbs-help-shell):not(.verb-forms-help-shell)
+        ):not(.verbs-help-shell):not(.verb-forms-help-shell):not(.verb-tenses-help-shell)
         > .widget
         > h2:first-child,
     .app-screen--flow:not(#stats-overlay):not(#settings-shell):not(#help-hub-shell):not(
             .cases-help-shell
-        ):not(.verbs-help-shell):not(.verb-forms-help-shell)
+        ):not(.verbs-help-shell):not(.verb-forms-help-shell):not(.verb-tenses-help-shell)
         > .panel
         > h2:first-child,
     #setup .wizard-step:not(.hidden) > h2:first-child {
@@ -71,12 +71,12 @@
 
     .app-screen--flow:not(#stats-overlay):not(#settings-shell):not(#help-hub-shell):not(
             .cases-help-shell
-        ):not(.verbs-help-shell):not(.verb-forms-help-shell)
+        ):not(.verbs-help-shell):not(.verb-forms-help-shell):not(.verb-tenses-help-shell)
         > .widget
         > h2:first-child::after,
     .app-screen--flow:not(#stats-overlay):not(#settings-shell):not(#help-hub-shell):not(
             .cases-help-shell
-        ):not(.verbs-help-shell):not(.verb-forms-help-shell)
+        ):not(.verbs-help-shell):not(.verb-forms-help-shell):not(.verb-tenses-help-shell)
         > .panel
         > h2:first-child::after,
     #setup .wizard-step:not(.hidden) > h2:first-child::after {
@@ -115,7 +115,9 @@
 
     .app-screen--flow:not(#stats-overlay):not(#settings-shell):not(#help-hub-shell):not(
             .cases-help-shell
-        ):not(.verbs-help-shell):not(.verb-forms-help-shell):not(.hidden)
+        ):not(.verbs-help-shell):not(.verb-forms-help-shell):not(.verb-tenses-help-shell):not(
+            .hidden
+        )
         > .app-screen__panel
         > .app-screen__footer {
         padding-bottom: calc(var(--quiz-bottom-bar-zone) + var(--widget-actions-shadow-pad));

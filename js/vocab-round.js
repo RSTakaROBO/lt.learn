@@ -19,6 +19,7 @@ import {
 } from "./trainer-ui-state.js"
 import { isCasesTrainingWord } from "../src/screens/quiz/cases/casesWords.js"
 import { isVocabTrainingWord } from "../src/screens/quiz/vocab/vocabWords.js"
+import { sentenceRoundWords } from "../src/screens/quiz/sentences/sentenceTask.js"
 import {
     isVerbCardsTrainingWord,
     isVerbsTrainingWord,
@@ -89,9 +90,11 @@ export function initVocabRound(mode = TRAIN_MODE.VOCAB, { verbMode = VERB_MODE.F
               ? getEngine().wordBank.filter(
                     verbMode === VERB_MODE.CARDS ? isVerbCardsTrainingWord : isVerbsTrainingWord
                 )
-              : getEngine().wordBank.filter(isVocabTrainingWord)
+              : mode === TRAIN_MODE.SENTENCES
+                ? sentenceRoundWords()
+                : getEngine().wordBank.filter(isVocabTrainingWord)
     const wordStats = getEngine().wordStats
-    const excludeLearnedWords = !!loadExcludeLearnedWords()
+    const excludeLearnedWords = mode === TRAIN_MODE.SENTENCES ? false : !!loadExcludeLearnedWords()
     const uniqueRoundLemmas = [
         ...new Set(
             usable

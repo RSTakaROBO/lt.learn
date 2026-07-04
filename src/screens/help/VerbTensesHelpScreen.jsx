@@ -5,11 +5,11 @@ import { AppFlowScreen } from "src/components/layout/AppFlowScreen.jsx"
 import { Button } from "src/components/ui/Button.jsx"
 import { useTrainerApp } from "src/context/TrainerAppContext.jsx"
 import { useHelpScreenOpenEffect } from "src/hooks/useHelpScreenOpenEffect.js"
-import { PresentVerbFormsHelpTables } from "src/screens/help/VerbFormsHelpTables.jsx"
+import { OtherVerbTensesHelpTables } from "src/screens/help/VerbFormsHelpTables.jsx"
 
-export function VerbFormsHelpScreen({ heightMode = "fill" } = {}) {
+export function VerbTensesHelpScreen({ heightMode = "fill" } = {}) {
     const [uiState, dispatch] = useTrainerApp()
-    const open = uiState.overlay.verbFormsHelp
+    const open = uiState.overlay.verbTensesHelp
     const shellRef = useRef(null)
     const titleRef = useRef(null)
     const scrollBlockRef = useRef(null)
@@ -19,23 +19,23 @@ export function VerbFormsHelpScreen({ heightMode = "fill" } = {}) {
     return (
         <AppFlowScreen
             ref={shellRef}
-            id="verb-forms-help-shell"
+            id="verb-tenses-help-shell"
             heightMode={heightMode}
-            className={["verb-forms-help-shell", !open && "hidden"].filter(Boolean).join(" ")}
+            className={["verb-tenses-help-shell", !open && "hidden"].filter(Boolean).join(" ")}
         >
             <section
-                id="verb-forms-help"
+                id="verb-tenses-help"
                 className="app-screen__panel widget panel"
-                aria-labelledby="verb-forms-help-title"
+                aria-labelledby="verb-tenses-help-title"
             >
-                <h2 ref={titleRef} id="verb-forms-help-title" tabIndex={-1}>
-                    Спряжения настоящего времени
+                <h2 ref={titleRef} id="verb-tenses-help-title" tabIndex={-1}>
+                    Прошедшее и будущее время
                 </h2>
                 <div
                     ref={scrollBlockRef}
                     className="app-screen__body cases-help-scroll-block u-scrollbar-hidden"
                 >
-                    <PresentVerbFormsHelpTables />
+                    <OtherVerbTensesHelpTables />
                 </div>
                 <div className="app-screen__footer actions">
                     <Button

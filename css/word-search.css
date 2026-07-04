@@ -1,0 +1,202 @@
+#word-search-shell:not(.hidden) > #word-search {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+}
+
+#word-search {
+    overflow: visible;
+}
+
+.word-search-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    padding-inline: 0.1rem;
+    padding-bottom: var(--panel-scroll-pad);
+}
+
+.word-search-field {
+    display: grid;
+    gap: 0.4rem;
+}
+
+.word-search-field span {
+    color: var(--muted);
+    font-size: 0.78rem;
+    font-weight: 700;
+}
+
+.word-search-field input {
+    width: 100%;
+    min-height: var(--touch-btn-min-h);
+    padding: 0.72rem 0.9rem;
+    border: 1px solid color-mix(in srgb, var(--accent) 22%, var(--border));
+    border-radius: 18px;
+    background: color-mix(in srgb, var(--text) 5%, transparent);
+    color: var(--text);
+    font: inherit;
+    font-size: 1rem;
+    outline: none;
+    box-shadow: inset 0 1px 0 color-mix(in srgb, white 7%, transparent);
+}
+
+.word-search-field input:focus {
+    border-color: color-mix(in srgb, var(--accent) 62%, white 8%);
+    box-shadow:
+        inset 0 1px 0 color-mix(in srgb, white 8%, transparent),
+        0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent);
+}
+
+.word-search-status {
+    margin: -0.2rem 0 0;
+    color: var(--muted);
+    font-size: 0.84rem;
+    line-height: 1.35;
+}
+
+.word-search-results {
+    display: grid;
+    gap: 0.55rem;
+}
+
+.word-search-result {
+    border: 1px solid color-mix(in srgb, var(--text) 9%, transparent);
+    border-radius: 8px;
+    background: color-mix(in srgb, var(--text) 4.5%, transparent);
+    overflow: hidden;
+}
+
+.word-search-summary {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 0.6rem;
+    align-items: center;
+    padding: 0.72rem 0.82rem;
+    cursor: pointer;
+}
+
+.word-search-summary::marker {
+    color: var(--accent);
+}
+
+.word-search-summary-main {
+    min-width: 0;
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+}
+
+.word-search-lemma {
+    min-width: 0;
+    overflow-wrap: anywhere;
+    color: var(--text);
+    font-size: 1rem;
+    font-weight: 800;
+}
+
+.word-search-type {
+    flex: 0 0 auto;
+    color: var(--muted);
+    font-size: 0.72rem;
+    font-weight: 700;
+}
+
+.word-search-translations {
+    min-width: 0;
+    justify-self: end;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--muted);
+    font-size: 0.84rem;
+    line-height: 1.3;
+}
+
+.word-search-details {
+    display: grid;
+    gap: 0.8rem;
+    padding: 0 0.82rem 0.82rem;
+    border-top: 1px solid color-mix(in srgb, var(--text) 8%, transparent);
+}
+
+.word-search-section {
+    display: grid;
+    gap: 0.45rem;
+}
+
+.word-search-section h3 {
+    margin: 0.72rem 0 0;
+    color: var(--muted);
+    font-size: 0.78rem;
+    font-weight: 800;
+}
+
+.word-search-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+}
+
+.word-search-chips span {
+    padding: 0.28rem 0.48rem;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--accent) 12%, transparent);
+    color: var(--text);
+    font-size: 0.82rem;
+    font-weight: 650;
+}
+
+.word-search-rows {
+    display: grid;
+    gap: 0;
+    margin: 0;
+    border: 1px solid color-mix(in srgb, var(--text) 8%, transparent);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.word-search-row {
+    display: grid;
+    grid-template-columns: minmax(6.5rem, 0.75fr) minmax(0, 1.25fr);
+    gap: 0.65rem;
+    padding: 0.5rem 0.58rem;
+    border-bottom: 1px solid color-mix(in srgb, var(--text) 7%, transparent);
+}
+
+.word-search-row:last-child {
+    border-bottom: none;
+}
+
+.word-search-row dt {
+    color: var(--muted);
+    font-size: 0.78rem;
+    font-weight: 700;
+}
+
+.word-search-row dd {
+    margin: 0;
+    min-width: 0;
+    overflow-wrap: anywhere;
+    color: var(--text);
+    font-size: 0.86rem;
+    font-weight: 620;
+}
+
+@media (max-width: 440px) {
+    .word-search-summary {
+        grid-template-columns: 1fr;
+        gap: 0.28rem;
+    }
+
+    .word-search-translations {
+        justify-self: start;
+    }
+
+    .word-search-row {
+        grid-template-columns: 1fr;
+        gap: 0.18rem;
+    }
+}

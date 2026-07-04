@@ -20,22 +20,20 @@ export async function reloadManifestPacks() {
     return reloadManifestImpl()
 }
 
-export function resolveFilesFromPackIds(packIds) {
-    if (!getEngine().manifestCache?.packs) return []
+function refsFromPacks(packs) {
     const out = []
     const seen = new Set()
-    for (const id of packIds) {
-        const pack = getEngine().manifestCache.packs.find((p) => p.id === id)
+    for (const pack of Array.isArray(packs) ? packs : []) {
         if (!pack) continue
         if (pack.custom && Array.isArray(pack.words)) {
             const token = `custom:${pack.id}`
-            if (!seen.has(token)) {
+            if (typeof pack.id === "string" && !seen.has(token)) {
                 seen.add(token)
                 out.push(token)
             }
             continue
         }
-        if (!pack.files?.length) continue
+        if (!Array.isArray(pack.files)) continue
         for (const file of pack.files) {
             if (typeof file !== "string" || !file || seen.has(file)) continue
             seen.add(file)
@@ -45,8 +43,19 @@ export function resolveFilesFromPackIds(packIds) {
     return out
 }
 
-/** refs — пути вида «имя.json» или «custom:id». */
-export async function loadWordsFromFiles(refs) {
+export function resolveFilesFromPackIds(packIds) {
+    const packs = getEngine().manifestCache?.packs
+    if (!Array.isArray(packIds) || !packs) return []
+    const selected = new Set(packIds)
+    return refsFromPacks(packs.filter((pack) => selected.has(pack?.id)))
+}
+
+export function resolveAllWordFiles() {
+    return refsFromPacks(getEngine().manifestCache?.packs)
+}
+
+/** refs are "name.json" or "custom:id". */
+export async function loadWordsFromFiles(refs, { filterLearned = loadExcludeLearnedWords() } = {}) {
     if (!Array.isArray(refs) || !refs.length) throw new Error(STR.errors.noFilesToLoad)
 
     const base = wordsFetchBase()
@@ -67,7 +76,7 @@ export async function loadWordsFromFiles(refs) {
         all.push(...data.words)
     }
 
-    const words = loadExcludeLearnedWords() ? filterLearnedWords(all, getEngine().wordStats) : all
+    const words = filterLearned ? filterLearnedWords(all, getEngine().wordStats) : all
 
     mutateEngine((e) => {
         e.wordBank = words

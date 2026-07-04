@@ -8,6 +8,7 @@ import { getCheckedCaseKeys, mutateEngine } from "js/trainer-ui-state.js"
 import { clearVocabRound, initVocabRound } from "js/vocab-round.js"
 import { useTrainerDispatch } from "src/context/TrainerAppContext.jsx"
 import { nextVocabTask } from "src/screens/quiz/vocab/vocabTask.js"
+import { nextSentenceTask } from "src/screens/quiz/sentences/sentenceTask.js"
 import { nextVerbTask } from "src/screens/quiz/verbs/verbsTask.js"
 import { nextCasesTask } from "src/screens/quiz/cases/casesTask.js"
 
@@ -58,7 +59,9 @@ export function useVocabRoundSummaryActions() {
                     ? verbMode === VERB_MODE.CARDS
                         ? STR.events.verbCardsAfterPack
                         : STR.events.verbsAfterPack
-                    : STR.events.roundNoWords
+                    : trainMode === TRAIN_MODE.SENTENCES
+                      ? STR.events.sentencesStartFail
+                      : STR.events.roundNoWords
             goToSetup(
                 fallbackStep,
                 noWordsMessage,
@@ -66,7 +69,9 @@ export function useVocabRoundSummaryActions() {
                     ? "case"
                     : trainMode === TRAIN_MODE.VERBS
                       ? "verbMode"
-                      : "vocabDirection"
+                      : trainMode === TRAIN_MODE.SENTENCES
+                        ? "pack"
+                        : "vocabDirection"
             )
             return
         }
@@ -74,12 +79,18 @@ export function useVocabRoundSummaryActions() {
         const task =
             trainMode === TRAIN_MODE.VERBS
                 ? nextVerbTask({ verbMode })
-                : trainMode === TRAIN_MODE.CASES
-                  ? nextCasesTask(getCheckedCaseKeys())
-                  : nextVocabTask()
+                : trainMode === TRAIN_MODE.SENTENCES
+                  ? nextSentenceTask()
+                  : trainMode === TRAIN_MODE.CASES
+                    ? nextCasesTask(getCheckedCaseKeys())
+                    : nextVocabTask()
         if (!task) {
             if (trainMode === TRAIN_MODE.VERBS) {
                 goToSetup(fallbackStep, STR.events.verbsStartFail, "verbMode")
+                return
+            }
+            if (trainMode === TRAIN_MODE.SENTENCES) {
+                goToSetup(2, STR.events.sentencesStartFail, "pack")
                 return
             }
             if (trainMode === TRAIN_MODE.CASES) {

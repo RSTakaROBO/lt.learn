@@ -4,6 +4,7 @@ import { fmt } from "./i18n/core.js"
 import { STR } from "./i18n/strings-ru.js"
 import {
     getCheckedPackIds,
+    resolveAllWordFiles,
     loadWordsFromFiles,
     reloadManifestPacks,
     resolveFilesFromPackIds,
@@ -20,6 +21,7 @@ import {
     appendCustomPackRecord,
     getResolvedVerbMode,
     getResolvedVocabDirections,
+    loadSelectedSentencePacks,
     loadSelectedPacks,
     loadTrainMode,
     saveSelectedCases,
@@ -31,6 +33,7 @@ import { resetVocabCorrectStreak, showQuiz } from "./quiz.js"
 import { nextCasesTask } from "../src/screens/quiz/cases/casesTask.js"
 import { isVocabTrainingWord } from "../src/screens/quiz/vocab/vocabWords.js"
 import { nextVocabTask } from "../src/screens/quiz/vocab/vocabTask.js"
+import { nextSentenceTask } from "../src/screens/quiz/sentences/sentenceTask.js"
 import {
     isVerbCardsTrainingWord,
     isVerbsTrainingWord,
@@ -137,6 +140,42 @@ export function handleVerbModeStartClick() {
     const task = nextVerbTask({ verbMode })
     if (!task) {
         setWizardStatus("verbMode", STR.events.verbsStartFail)
+        return
+    }
+    showQuiz(task)
+}
+
+export async function handleSentenceModeStartClick() {
+    clearWizardStatus("pack")
+    if (!loadSelectedSentencePacks().length) {
+        setWizardStatus("pack", STR.events.pickOneSentencePack)
+        return
+    }
+    if (!getEngine().manifestCache?.packs?.length) {
+        await reloadManifestPacks()
+    }
+    const hintFiles = resolveAllWordFiles()
+    if (hintFiles.length) {
+        setWizardStatus("pack", STR.events.loadingDictionaries)
+        try {
+            await loadWordsFromFiles(hintFiles, { filterLearned: false })
+        } catch (err) {
+            console.error(err)
+        }
+        clearWizardStatus("pack")
+    }
+    clearVocabRound()
+    mutateEngine((e) => {
+        e.shownLemmaHistory = []
+    })
+    resetVocabCorrectStreak()
+    if (!initVocabRound(TRAIN_MODE.SENTENCES)) {
+        setWizardStatus("pack", STR.events.sentencesStartFail)
+        return
+    }
+    const task = nextSentenceTask()
+    if (!task) {
+        setWizardStatus("pack", STR.events.sentencesStartFail)
         return
     }
     showQuiz(task)

@@ -52,6 +52,7 @@ export const STORAGE_KEYS = {
     learningScopeSize: "lt-trainer-learning-scope-size-v1",
     excludeLearnedWords: "lt-trainer-exclude-learned-words-v1",
     customPacks: "lt-trainer-custom-packs-v1",
+    sentencePacks: "lt-trainer-selected-sentence-packs-v1",
 }
 
 /** Текущая версия схемы; при увеличении добавить миграцию `STORAGE_MIGRATIONS[nextVersion]`. */
@@ -85,6 +86,7 @@ export const TRAIN_MODE = {
     CASES: "cases",
     VOCAB: "vocab",
     VERBS: "verbs",
+    SENTENCES: "sentences",
 }
 
 export const VERB_FORM_BY_KEY = {
