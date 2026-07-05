@@ -108,6 +108,7 @@ function readInitialSelectedPackIds() {
 /**
  * @typedef {Object} TrainerUiOverlay
  * @property {boolean} stats
+ * @property {boolean} changelog
  * @property {boolean} settings
  * @property {boolean} helpHub
  * @property {boolean} packPrompt
@@ -223,6 +224,7 @@ function buildInitialState() {
         screen: "setup",
         overlay: {
             stats: false,
+            changelog: false,
             settings: false,
             helpHub: false,
             packPrompt: false,
@@ -292,6 +294,7 @@ const trainerSlice = createSlice({
             switch (a.type) {
                 case "OVERLAY_CLOSE_ALL":
                     state.overlay.stats = false
+                    state.overlay.changelog = false
                     state.overlay.settings = false
                     state.overlay.helpHub = false
                     state.overlay.packPrompt = false
@@ -305,6 +308,7 @@ const trainerSlice = createSlice({
                 case "OVERLAY_OPEN": {
                     const name = a.name
                     state.overlay.stats = name === "stats"
+                    state.overlay.changelog = name === "changelog"
                     state.overlay.settings = name === "settings"
                     state.overlay.helpHub = name === "helpHub"
                     state.overlay.packPrompt = name === "packPrompt"
@@ -507,6 +511,10 @@ export function isWordSearchOpen() {
 
 export function isStatsOverlayOpen() {
     return !!trainerStore.getState().trainer.overlay.stats
+}
+
+export function isChangelogOverlayOpen() {
+    return !!trainerStore.getState().trainer.overlay.changelog
 }
 
 export function isPackPromptOverlayOpen() {

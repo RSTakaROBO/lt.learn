@@ -5,6 +5,7 @@ import {
     QuizBarHomeIcon,
     QuizBarSearchIcon,
     QuizBarSettingsIcon,
+    QuizBarStatsIcon,
 } from "src/components/icons/index.js"
 import { ConfirmDialogOverlay } from "src/components/ui/ConfirmDialogOverlay.jsx"
 import { Button } from "src/components/ui/Button.jsx"
@@ -43,6 +44,7 @@ export function QuizBottomBar() {
 
     function exitToSetupMenu() {
         dispatch({ type: "OVERLAY_CLOSE", name: "stats" })
+        dispatch({ type: "OVERLAY_CLOSE", name: "changelog" })
         dispatch({ type: "OVERLAY_CLOSE", name: "settings" })
         dispatch({ type: "OVERLAY_CLOSE", name: "packPrompt" })
         dispatch({ type: "OVERLAY_CLOSE", name: "helpHub" })
@@ -109,6 +111,17 @@ export function QuizBottomBar() {
                     >
                         <QuizBarSearchIcon />
                         <span className="quiz-bar-label">{STR.bottomBar.search}</span>
+                    </Button>
+                    <Button
+                        variant="quizBar"
+                        type="button"
+                        className={barBtnClass(stats)}
+                        aria-label={STR.bottomBar.statsAria}
+                        aria-current={stats ? "page" : undefined}
+                        onClick={() => dispatch({ type: "OVERLAY_OPEN", name: "stats" })}
+                    >
+                        <QuizBarStatsIcon />
+                        <span className="quiz-bar-label">{STR.bottomBar.stats}</span>
                     </Button>
                     <Button
                         variant="quizBar"

@@ -7,6 +7,7 @@ import { loadPersistedWordStats, recordAppVisit } from "js/storage.js"
 import { mutateEngine, postTrainerUiAction } from "js/trainer-ui-state.js"
 
 import { QuizBottomBar } from "src/components/layout/QuizBottomBar.jsx"
+import { ChangelogScreen } from "src/screens/changelog/ChangelogScreen.jsx"
 import { ManifestPacksProvider, useManifestPacks } from "src/context/ManifestPacksContext.jsx"
 import { TrainerAppProvider } from "src/context/TrainerAppContext.jsx"
 import { useIosDocumentScrollLock } from "src/hooks/useIosDocumentScrollLock.js"
@@ -75,6 +76,7 @@ function AppScreens() {
         overlay.wordSearch ||
         overlay.helpHub ||
         overlay.stats ||
+        overlay.changelog ||
         overlay.settings ||
         previewPackRow
     )
@@ -92,6 +94,7 @@ function AppScreens() {
             {overlay.helpHub && <HelpHubScreen />}
             {overlay.vocabRound && <VocabRoundSummaryOverlay />}
             {overlay.stats && <StatsScreen />}
+            {overlay.changelog && <ChangelogScreen />}
             {overlay.settings && <SettingsScreen />}
             <QuizBottomBar />
         </div>

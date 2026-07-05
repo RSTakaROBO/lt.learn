@@ -7,7 +7,16 @@ import {
     usableAfterLemmaGap,
     vocabTaskSelectionWeight,
 } from "src/screens/quiz/shared/quizTaskSelection.js"
-import { isVerbCardsTrainingWord, isVerbsTrainingWord } from "src/screens/quiz/verbs/verbsWords.js"
+import {
+    isVerbCardsTrainingWord,
+    isVerbConjugationTrainingWord,
+    isVerbsTrainingWord,
+} from "src/screens/quiz/verbs/verbsWords.js"
+import {
+    VERB_CONJUGATION_PERSONS,
+    VERB_CONJUGATION_TENSES,
+    verbConjugationExpectedForTask,
+} from "src/screens/quiz/verbs/verbConjugation.js"
 
 function usableIgnoringExcludedLemma(usable, excludeLemma) {
     if (getEngine().vocabRound) {
@@ -23,9 +32,11 @@ function usableIgnoringExcludedLemma(usable, excludeLemma) {
 export function nextVerbTask(opts = {}) {
     const excludeLemma = opts.excludeLemma || null
     const verbMode = opts.verbMode || getResolvedVerbMode()
-    const usable = getEngine().wordBank.filter(
-        verbMode === VERB_MODE.CARDS ? isVerbCardsTrainingWord : isVerbsTrainingWord
-    )
+    const usable = getEngine().wordBank.filter((word) => {
+        if (verbMode === VERB_MODE.CARDS) return isVerbCardsTrainingWord(word)
+        if (verbMode === VERB_MODE.CONJUGATION) return isVerbConjugationTrainingWord(word)
+        return isVerbsTrainingWord(word)
+    })
     if (!usable.length) return null
 
     let candidates = usableAfterLemmaGap(usable)
@@ -61,6 +72,24 @@ export function nextVerbTask(opts = {}) {
                     ? VOCAB_DIRECTION.LT_TO_LT
                     : VOCAB_DIRECTION.RU_TO_LT,
             vocabMode: VOCAB_MODE.SINGLE,
+        }
+    }
+
+    if (verbMode === VERB_MODE.CONJUGATION) {
+        const tense = pickRandom(VERB_CONJUGATION_TENSES)
+        const person = pickRandom(VERB_CONJUGATION_PERSONS)
+        const task = {
+            mode: TRAIN_MODE.VERBS,
+            verbMode: VERB_MODE.CONJUGATION,
+            word,
+            tenseKey: tense.key,
+            timeCueLt: tense.timeCueLt,
+            personKey: person.key,
+            pronounLt: person.pronounLt,
+        }
+        return {
+            ...task,
+            expected: verbConjugationExpectedForTask(task),
         }
     }
 

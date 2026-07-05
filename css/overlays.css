@@ -290,6 +290,59 @@ body.vocab-round-summary-modal-open .quiz-bottom-bar {
     text-align: center;
 }
 
+.changelog-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    padding-bottom: 0.25rem;
+}
+
+.changelog-version {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.7rem 0.85rem;
+    border-radius: 12px;
+    background: color-mix(in srgb, var(--accent) 9%, transparent);
+}
+
+.changelog-version__label {
+    color: var(--muted);
+    font-size: 0.78rem;
+    font-weight: 760;
+    text-transform: uppercase;
+}
+
+.changelog-version--previous {
+    margin-top: 0.35rem;
+    background: color-mix(in srgb, var(--text) 6%, transparent);
+}
+
+.changelog-list {
+    display: grid;
+    gap: 0.7rem;
+}
+
+.changelog-item {
+    padding: 0.82rem 0.9rem;
+    border: 1px solid color-mix(in srgb, var(--text) 8%, transparent);
+    border-radius: 12px;
+    background: color-mix(in srgb, var(--surface-elevated) 82%, var(--accent) 4%);
+}
+
+.changelog-item h3 {
+    margin: 0 0 0.35rem;
+    font-size: clamp(1rem, 3.6vmin, 1.18rem);
+    line-height: 1.2;
+}
+
+.changelog-item p {
+    margin: 0;
+    color: var(--muted);
+    line-height: 1.45;
+}
+
 .stats-footer-actions {
     grid-template-columns: auto 1fr;
 }

@@ -36,9 +36,22 @@ import { nextVocabTask } from "../src/screens/quiz/vocab/vocabTask.js"
 import { nextSentenceTask } from "../src/screens/quiz/sentences/sentenceTask.js"
 import {
     isVerbCardsTrainingWord,
+    isVerbConjugationTrainingWord,
     isVerbsTrainingWord,
 } from "../src/screens/quiz/verbs/verbsWords.js"
 import { nextVerbTask } from "../src/screens/quiz/verbs/verbsTask.js"
+
+function verbModeTrainingWordFilter(verbMode) {
+    if (verbMode === VERB_MODE.CARDS) return isVerbCardsTrainingWord
+    if (verbMode === VERB_MODE.CONJUGATION) return isVerbConjugationTrainingWord
+    return isVerbsTrainingWord
+}
+
+function verbModeNoWordsMessage(verbMode) {
+    if (verbMode === VERB_MODE.CARDS) return STR.events.verbCardsAfterPack
+    if (verbMode === VERB_MODE.CONJUGATION) return STR.events.verbConjugationAfterPack
+    return STR.events.verbsAfterPack
+}
 
 export async function handlePackJsonInputChange(/** @type {Event} */ ev) {
     const target = ev.target
@@ -115,14 +128,9 @@ export function handleVocabDirectionStartClick() {
 export function handleVerbModeStartClick() {
     clearWizardStatus("verbMode")
     const verbMode = getResolvedVerbMode()
-    const usable = getEngine().wordBank.filter(
-        verbMode === VERB_MODE.CARDS ? isVerbCardsTrainingWord : isVerbsTrainingWord
-    )
+    const usable = getEngine().wordBank.filter(verbModeTrainingWordFilter(verbMode))
     if (!usable.length) {
-        setWizardStatus(
-            "verbMode",
-            verbMode === VERB_MODE.CARDS ? STR.events.verbCardsAfterPack : STR.events.verbsAfterPack
-        )
+        setWizardStatus("verbMode", verbModeNoWordsMessage(verbMode))
         return
     }
     clearVocabRound()
@@ -131,10 +139,7 @@ export function handleVerbModeStartClick() {
     })
     resetVocabCorrectStreak()
     if (!initVocabRound(TRAIN_MODE.VERBS, { verbMode })) {
-        setWizardStatus(
-            "verbMode",
-            verbMode === VERB_MODE.CARDS ? STR.events.verbCardsAfterPack : STR.events.verbsAfterPack
-        )
+        setWizardStatus("verbMode", verbModeNoWordsMessage(verbMode))
         return
     }
     const task = nextVerbTask({ verbMode })

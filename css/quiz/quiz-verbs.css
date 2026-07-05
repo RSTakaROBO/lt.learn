@@ -158,3 +158,59 @@
 #quiz-verbs-ui .verb-form-row--hidden.verb-form-card--feedback-bad .verb-form-value {
     color: color-mix(in srgb, var(--error) 82%, var(--text));
 }
+.verb-conjugation-card {
+    min-height: 13rem;
+    justify-content: center;
+    padding: 1.2rem 0.9rem 1.85rem;
+}
+.verb-conjugation-card--feedback-ok {
+    background:
+        linear-gradient(
+            180deg,
+            color-mix(in srgb, white 10%, transparent),
+            color-mix(in srgb, var(--success) 10%, transparent)
+        ),
+        color-mix(in srgb, var(--success) 26%, var(--surface-elevated));
+}
+.verb-conjugation-card--feedback-bad {
+    background:
+        linear-gradient(
+            180deg,
+            color-mix(in srgb, white 9%, transparent),
+            color-mix(in srgb, var(--error) 9%, transparent)
+        ),
+        color-mix(in srgb, var(--error) 24%, var(--surface-elevated));
+}
+.verb-conjugation-cue {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.28em;
+    align-items: center;
+    justify-content: center;
+    min-width: 0;
+    color: var(--accent);
+    font-size: clamp(1.55rem, 6.8vmin, 2.65rem);
+    font-weight: 820;
+    line-height: 1.08;
+    overflow-wrap: anywhere;
+}
+.verb-conjugation-cue__time,
+.verb-conjugation-cue__pronoun {
+    color: inherit;
+}
+.verb-conjugation-cue__lemma {
+    max-width: 100%;
+    color: var(--text);
+    overflow-wrap: break-word;
+}
+.verb-conjugation-verdict {
+    margin-top: 0.65rem;
+    font-size: clamp(2.1rem, 9vmin, 3.5rem);
+    line-height: 1;
+}
+.verb-conjugation-card--feedback-ok .verb-conjugation-cue {
+    color: color-mix(in srgb, var(--success) 74%, var(--text));
+}
+.verb-conjugation-card--feedback-bad .verb-conjugation-cue {
+    color: color-mix(in srgb, var(--error) 78%, var(--text));
+}

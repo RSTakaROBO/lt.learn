@@ -225,6 +225,12 @@
                 "present3": "mėgsta",
                 "past3": "mėgo"
             },
+            "conjugation": "I",
+            "stems": {
+                "infinitive": "mėg",
+                "present": "mėgst",
+                "past": "mėg"
+            },
             "translations": ["любить"]
         },
         {
@@ -234,6 +240,12 @@
                 "infinitive": "patikti",
                 "present3": "patinka",
                 "past3": "patiko"
+            },
+            "conjugation": "I",
+            "stems": {
+                "infinitive": "patik",
+                "present": "patink",
+                "past": "patik"
             },
             "translations": ["нравиться"]
         },
@@ -245,6 +257,12 @@
                 "present3": "ragauja",
                 "past3": "ragavo"
             },
+            "conjugation": "I",
+            "stems": {
+                "infinitive": "ragau",
+                "present": "ragauj",
+                "past": "ragav"
+            },
             "translations": ["пробовать на вкус"]
         },
         {
@@ -254,6 +272,12 @@
                 "infinitive": "valgyti",
                 "present3": "valgo",
                 "past3": "valgė"
+            },
+            "conjugation": "III",
+            "stems": {
+                "infinitive": "valgy",
+                "present": "valg",
+                "past": "valg"
             },
             "translations": ["есть"]
         },
@@ -265,6 +289,21 @@
                 "present3": "geria",
                 "past3": "gėrė"
             },
+            "conjugation": "I",
+            "stems": {
+                "infinitive": "ger",
+                "present": "ger",
+                "past": "gėr"
+            },
+            "overrides": {
+                "present": {
+                    "1s": "geriu",
+                    "2s": "geri",
+                    "3": "geria",
+                    "1p": "geriame",
+                    "2p": "geriate"
+                }
+            },
             "translations": ["пить"]
         },
         {
@@ -274,6 +313,12 @@
                 "infinitive": "pusryčiauti",
                 "present3": "pusryčiauja",
                 "past3": "pusryčiavo"
+            },
+            "conjugation": "I",
+            "stems": {
+                "infinitive": "pusryčiau",
+                "present": "pusryčiauj",
+                "past": "pusryčiav"
             },
             "translations": ["завтракать"]
         },
@@ -285,6 +330,12 @@
                 "present3": "pietauja",
                 "past3": "pietavo"
             },
+            "conjugation": "I",
+            "stems": {
+                "infinitive": "pietau",
+                "present": "pietauj",
+                "past": "pietav"
+            },
             "translations": ["обедать"]
         },
         {
@@ -294,6 +345,12 @@
                 "infinitive": "vakarieniauti",
                 "present3": "vakarieniauja",
                 "past3": "vakarieniavo"
+            },
+            "conjugation": "I",
+            "stems": {
+                "infinitive": "vakarieniau",
+                "present": "vakarieniauj",
+                "past": "vakarieniav"
             },
             "translations": ["ужинать"]
         },
@@ -305,6 +362,24 @@
                 "present3": "kviečia",
                 "past3": "kvietė"
             },
+            "conjugation": "I",
+            "stems": {
+                "infinitive": "kvie",
+                "present": "kvieč",
+                "past": "kviet"
+            },
+            "overrides": {
+                "present": {
+                    "1s": "kviečiu",
+                    "2s": "kvieti",
+                    "3": "kviečia",
+                    "1p": "kviečiame",
+                    "2p": "kviečiate"
+                },
+                "past": {
+                    "1s": "kviečiau"
+                }
+            },
             "translations": ["звать"]
         },
         {
@@ -314,6 +389,21 @@
                 "infinitive": "laukti",
                 "present3": "laukia",
                 "past3": "laukė"
+            },
+            "conjugation": "I",
+            "stems": {
+                "infinitive": "lauk",
+                "present": "lauk",
+                "past": "lauk"
+            },
+            "overrides": {
+                "present": {
+                    "1s": "laukiu",
+                    "2s": "lauki",
+                    "3": "laukia",
+                    "1p": "laukiame",
+                    "2p": "laukiate"
+                }
             },
             "translations": ["ждать"]
         },
@@ -325,6 +415,12 @@
                 "present3": "verda",
                 "past3": "virė"
             },
+            "conjugation": "I",
+            "stems": {
+                "infinitive": "vir",
+                "present": "verd",
+                "past": "vir"
+            },
             "translations": ["варить"]
         },
         {
@@ -334,6 +430,12 @@
                 "infinitive": "kepti",
                 "present3": "kepa",
                 "past3": "kepė"
+            },
+            "conjugation": "I",
+            "stems": {
+                "infinitive": "kep",
+                "present": "kep",
+                "past": "kep"
             },
             "translations": ["жарить", "печь"]
         },
@@ -345,6 +447,12 @@
                 "present3": "daro",
                 "past3": "darė"
             },
+            "conjugation": "III",
+            "stems": {
+                "infinitive": "dary",
+                "present": "dar",
+                "past": "dar"
+            },
             "translations": ["делать"]
         },
         {
@@ -354,6 +462,12 @@
                 "infinitive": "imti",
                 "present3": "ima",
                 "past3": "ėmė"
+            },
+            "conjugation": "I",
+            "stems": {
+                "infinitive": "im",
+                "present": "im",
+                "past": "ėm"
             },
             "translations": ["брать"]
         },
@@ -365,6 +479,12 @@
                 "present3": "duoda",
                 "past3": "davė"
             },
+            "conjugation": "I",
+            "stems": {
+                "infinitive": "duo",
+                "present": "duod",
+                "past": "dav"
+            },
             "translations": ["давать"]
         },
         {
@@ -374,6 +494,12 @@
                 "infinitive": "pilti",
                 "present3": "pila",
                 "past3": "pylė"
+            },
+            "conjugation": "I",
+            "stems": {
+                "infinitive": "pil",
+                "present": "pil",
+                "past": "pyl"
             },
             "translations": ["лить", "наливать"]
         },
@@ -385,6 +511,12 @@
                 "present3": "deda",
                 "past3": "dėjo"
             },
+            "conjugation": "I",
+            "stems": {
+                "infinitive": "dė",
+                "present": "ded",
+                "past": "dėj"
+            },
             "translations": ["класть", "ставить"]
         },
         {
@@ -394,6 +526,12 @@
                 "infinitive": "maišyti",
                 "present3": "maišo",
                 "past3": "maišė"
+            },
+            "conjugation": "III",
+            "stems": {
+                "infinitive": "maišy",
+                "present": "maiš",
+                "past": "maiš"
             },
             "translations": ["мешать"]
         },
@@ -405,6 +543,17 @@
                 "present3": "pjausto",
                 "past3": "pjaustė"
             },
+            "conjugation": "III",
+            "stems": {
+                "infinitive": "pjausty",
+                "present": "pjaust",
+                "past": "pjaust"
+            },
+            "overrides": {
+                "past": {
+                    "1s": "pjausčiau"
+                }
+            },
             "translations": ["резать"]
         },
         {
@@ -414,6 +563,17 @@
                 "infinitive": "pašildyti",
                 "present3": "pašildo",
                 "past3": "pašildė"
+            },
+            "conjugation": "III",
+            "stems": {
+                "infinitive": "pašildy",
+                "present": "pašild",
+                "past": "pašild"
+            },
+            "overrides": {
+                "past": {
+                    "1s": "pašildžiau"
+                }
             },
             "translations": ["подогреть"]
         },
@@ -425,6 +585,17 @@
                 "present3": "atrodo",
                 "past3": "atrodė"
             },
+            "conjugation": "III",
+            "stems": {
+                "infinitive": "atrody",
+                "present": "atrod",
+                "past": "atrod"
+            },
+            "overrides": {
+                "past": {
+                    "1s": "atrodžiau"
+                }
+            },
             "translations": ["выглядеть"]
         },
         {
@@ -434,6 +605,12 @@
                 "infinitive": "manyti",
                 "present3": "mano",
                 "past3": "manė"
+            },
+            "conjugation": "III",
+            "stems": {
+                "infinitive": "many",
+                "present": "man",
+                "past": "man"
             },
             "translations": ["думать"]
         },
@@ -445,6 +622,12 @@
                 "present3": "prašo",
                 "past3": "prašė"
             },
+            "conjugation": "III",
+            "stems": {
+                "infinitive": "prašy",
+                "present": "praš",
+                "past": "praš"
+            },
             "translations": ["просить"]
         },
         {
@@ -455,6 +638,12 @@
                 "present3": "rašo",
                 "past3": "rašė"
             },
+            "conjugation": "III",
+            "stems": {
+                "infinitive": "rašy",
+                "present": "raš",
+                "past": "raš"
+            },
             "translations": ["писать"]
         },
         {
@@ -464,6 +653,17 @@
                 "infinitive": "skaityti",
                 "present3": "skaito",
                 "past3": "skaitė"
+            },
+            "conjugation": "III",
+            "stems": {
+                "infinitive": "skaity",
+                "present": "skait",
+                "past": "skait"
+            },
+            "overrides": {
+                "past": {
+                    "1s": "skaičiau"
+                }
             },
             "translations": ["читать"]
         },

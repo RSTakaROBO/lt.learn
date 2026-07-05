@@ -5,6 +5,7 @@ import {
     closePackPromptOverlay,
     getActiveTrainerScreen,
     getEngine,
+    isChangelogOverlayOpen,
     isCasesHelpOpen,
     isHelpHubOpen,
     isPackPromptOverlayOpen,
@@ -47,6 +48,11 @@ export function useTrainerKeyboardShortcuts() {
             if (isStatsOverlayOpen()) {
                 e.preventDefault()
                 postTrainerUiAction({ type: "OVERLAY_CLOSE", name: "stats" })
+                return
+            }
+            if (isChangelogOverlayOpen()) {
+                e.preventDefault()
+                postTrainerUiAction({ type: "OVERLAY_CLOSE", name: "changelog" })
                 return
             }
             if (isCasesHelpOpen() || isVerbFormsHelpOpen() || isVerbTensesHelpOpen()) {

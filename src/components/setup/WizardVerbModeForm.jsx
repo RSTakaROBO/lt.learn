@@ -45,6 +45,15 @@ export function WizardVerbModeForm() {
                 onChange={() => commit(VERB_MODE.FORM_CARDS)}
             />
             <CheckboxButton
+                id="verb-mode-conjugation"
+                type="radio"
+                name="verb-mode"
+                title={STR.verbMode.conjugationTitle}
+                meta={STR.verbMode.conjugationMeta}
+                checked={mode === VERB_MODE.CONJUGATION}
+                onChange={() => commit(VERB_MODE.CONJUGATION)}
+            />
+            <CheckboxButton
                 id="verb-mode-forms"
                 type="radio"
                 name="verb-mode"

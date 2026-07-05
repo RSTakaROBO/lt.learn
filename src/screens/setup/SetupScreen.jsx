@@ -155,15 +155,26 @@ export function SetupScreen({ heightMode = "fill", hidden = false } = {}) {
                         <span className="wizard-home-version__label">{STR.app.versionLabel}</span>{" "}
                         <span className="wizard-home-version__value">{APP_VERSION}</span>
                     </p>
-                    <Button
-                        type="button"
-                        className="wizard-home-stats-btn"
-                        aria-label={STR.bottomBar.statsAria}
-                        title={STR.bottomBar.stats}
-                        onClick={() => dispatch({ type: "OVERLAY_OPEN", name: "stats" })}
-                    >
-                        <QuizBarStatsIcon />
-                    </Button>
+                    <div className="wizard-home-quick-actions">
+                        <Button
+                            type="button"
+                            className="wizard-home-stats-btn"
+                            aria-label={STR.bottomBar.statsAria}
+                            title={STR.bottomBar.stats}
+                            onClick={() => dispatch({ type: "OVERLAY_OPEN", name: "stats" })}
+                        >
+                            <QuizBarStatsIcon />
+                        </Button>
+                        <Button
+                            type="button"
+                            className="wizard-home-changelog-btn"
+                            aria-label={STR.bottomBar.changelogAria}
+                            title={STR.bottomBar.changelog}
+                            onClick={() => dispatch({ type: "OVERLAY_OPEN", name: "changelog" })}
+                        >
+                            {STR.bottomBar.changelog}
+                        </Button>
+                    </div>
                 </div>
 
                 <div id="step-packs" className={wizardStepClass(showPacks)}>

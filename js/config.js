@@ -77,6 +77,7 @@ export const VERB_MODE = {
     FORMS: "forms",
     CARDS: "cards",
     FORM_CARDS: "form_cards",
+    CONJUGATION: "conjugation",
 }
 
 /** Доступные профили из themes.css (атрибут data-theme на documentElement). */

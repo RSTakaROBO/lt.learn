@@ -22,6 +22,7 @@ import { isVocabTrainingWord } from "../src/screens/quiz/vocab/vocabWords.js"
 import { sentenceRoundWords } from "../src/screens/quiz/sentences/sentenceTask.js"
 import {
     isVerbCardsTrainingWord,
+    isVerbConjugationTrainingWord,
     isVerbsTrainingWord,
 } from "../src/screens/quiz/verbs/verbsWords.js"
 
@@ -63,6 +64,10 @@ function roundProgress(vr, lemma) {
     return Math.max(0, Math.min(VOCAB_ROUND_STREAK_TO_REMOVE, Math.floor(correct)))
 }
 
+function correctAnswersToRemove(word) {
+    return word?.type === "sentence" ? 1 : VOCAB_ROUND_STREAK_TO_REMOVE
+}
+
 function remainingRoundWords(vr) {
     return vr.pool.size + vr.reserve.length
 }
@@ -88,7 +93,11 @@ export function initVocabRound(mode = TRAIN_MODE.VOCAB, { verbMode = VERB_MODE.F
               )
             : mode === TRAIN_MODE.VERBS
               ? getEngine().wordBank.filter(
-                    verbMode === VERB_MODE.CARDS ? isVerbCardsTrainingWord : isVerbsTrainingWord
+                    verbMode === VERB_MODE.CARDS
+                        ? isVerbCardsTrainingWord
+                        : verbMode === VERB_MODE.CONJUGATION
+                          ? isVerbConjugationTrainingWord
+                          : isVerbsTrainingWord
                 )
               : mode === TRAIN_MODE.SENTENCES
                 ? sentenceRoundWords()
@@ -191,7 +200,7 @@ export function applyVocabRoundAnswer(word, ok) {
             vr.maxStreak = Math.max(vr.maxStreak, e.vocabCorrectStreak || 0)
         }
         out.dots = roundProgress(vr, lem)
-        if (roundProgress(vr, lem) >= VOCAB_ROUND_STREAK_TO_REMOVE) {
+        if (roundProgress(vr, lem) >= correctAnswersToRemove(word)) {
             vr.pool.delete(lem)
             fillActivePool(vr, e.wordStats)
         }

@@ -12,6 +12,12 @@ import { nextSentenceTask } from "src/screens/quiz/sentences/sentenceTask.js"
 import { nextVerbTask } from "src/screens/quiz/verbs/verbsTask.js"
 import { nextCasesTask } from "src/screens/quiz/cases/casesTask.js"
 
+function verbModeNoWordsMessage(verbMode) {
+    if (verbMode === VERB_MODE.CARDS) return STR.events.verbCardsAfterPack
+    if (verbMode === VERB_MODE.CONJUGATION) return STR.events.verbConjugationAfterPack
+    return STR.events.verbsAfterPack
+}
+
 export function useVocabRoundSummaryActions() {
     const dispatch = useTrainerDispatch()
 
@@ -56,9 +62,7 @@ export function useVocabRoundSummaryActions() {
         if (!initVocabRound(trainMode, { verbMode })) {
             const noWordsMessage =
                 trainMode === TRAIN_MODE.VERBS
-                    ? verbMode === VERB_MODE.CARDS
-                        ? STR.events.verbCardsAfterPack
-                        : STR.events.verbsAfterPack
+                    ? verbModeNoWordsMessage(verbMode)
                     : trainMode === TRAIN_MODE.SENTENCES
                       ? STR.events.sentencesStartFail
                       : STR.events.roundNoWords

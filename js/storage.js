@@ -353,7 +353,12 @@ export class TrainerStorage {
     loadVerbMode() {
         try {
             const raw = this._store.getItem(STORAGE_KEYS.verbMode)
-            if (raw === VERB_MODE.FORMS || raw === VERB_MODE.CARDS || raw === VERB_MODE.FORM_CARDS)
+            if (
+                raw === VERB_MODE.FORMS ||
+                raw === VERB_MODE.CARDS ||
+                raw === VERB_MODE.FORM_CARDS ||
+                raw === VERB_MODE.CONJUGATION
+            )
                 return raw
         } catch {
             /* ignore */
@@ -366,7 +371,8 @@ export class TrainerStorage {
             if (
                 mode === VERB_MODE.FORMS ||
                 mode === VERB_MODE.CARDS ||
-                mode === VERB_MODE.FORM_CARDS
+                mode === VERB_MODE.FORM_CARDS ||
+                mode === VERB_MODE.CONJUGATION
             ) {
                 this._store.setItem(STORAGE_KEYS.verbMode, mode)
             }

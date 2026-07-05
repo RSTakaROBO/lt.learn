@@ -36,7 +36,7 @@
 
 .quiz-bottom-bar-inner {
     display: grid !important;
-    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
     width: 100% !important;
     box-sizing: border-box !important;
     gap: 0.28rem !important;

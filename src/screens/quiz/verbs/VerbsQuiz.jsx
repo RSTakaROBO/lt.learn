@@ -1,7 +1,7 @@
 import { useEffect } from "react"
 import { useSelector } from "react-redux"
 
-import { VERB_FORM_ORDER } from "js/config.js"
+import { VERB_FORM_ORDER, VERB_MODE } from "js/config.js"
 import { STR } from "js/i18n/strings-ru.js"
 import { excludeCurrentRoundWord, handleVerbFormSubmit } from "js/quiz.js"
 import {
@@ -72,6 +72,62 @@ function VerbFormsPrompt({ answered, feedbackKind, onExclude, pulseId, roundDots
     )
 }
 
+function VerbConjugationPrompt({
+    answered,
+    feedbackKind,
+    onExclude,
+    pulseId,
+    roundDots,
+    streak,
+    task,
+}) {
+    const expected = task?.expected || ""
+    const verdictClass =
+        answered && (feedbackKind === "ok" || feedbackKind === "bad")
+            ? feedbackKind === "ok"
+                ? "verb-conjugation-card--feedback-ok"
+                : "verb-conjugation-card--feedback-bad"
+            : ""
+    const answerText =
+        answered && expected
+            ? expected
+            : task?.word?.forms?.infinitive || task?.word?.lemma || STR.quiz.emDash
+    const verdictEmoji =
+        answered && (feedbackKind === "ok" || feedbackKind === "bad")
+            ? feedbackKind === "ok"
+                ? STR.quiz.correct
+                : STR.quiz.wrong
+            : ""
+    return (
+        <div
+            className={["verb-forms-card", "verb-conjugation-card", verdictClass]
+                .filter(Boolean)
+                .join(" ")}
+            aria-label={STR.quiz.verbConjugationAria}
+        >
+            <VocabRoundExcludeButton onClick={onExclude} />
+            <div className="verb-conjugation-cue">
+                <span className="verb-conjugation-cue__time" lang="lt">
+                    {task?.timeCueLt || STR.quiz.emDash}
+                </span>
+                <span className="verb-conjugation-cue__pronoun" lang="lt">
+                    {task?.pronounLt || STR.quiz.emDash}
+                </span>
+                <span className="verb-conjugation-cue__lemma" lang="lt">
+                    {answerText}
+                </span>
+            </div>
+            {verdictEmoji ? (
+                <div className="verb-conjugation-verdict" aria-hidden="true">
+                    {verdictEmoji}
+                </div>
+            ) : null}
+            <VocabStreakMultiplier streak={streak} pulseId={pulseId} />
+            <VocabRoundDots dots={roundDots} />
+        </div>
+    )
+}
+
 export function VerbsQuiz({
     answered,
     answerValue,
@@ -90,6 +146,7 @@ export function VerbsQuiz({
     const feedbackKind = feedback?.kind === "ok" || feedback?.kind === "bad" ? feedback.kind : ""
     const showTranslation = useSelector((s) => s.trainer.persisted.casesShowTranslation)
     const translation = showTranslation ? (vocabRuAcceptedList(task?.word)[0] ?? "") : ""
+    const isConjugation = task?.verbMode === VERB_MODE.CONJUGATION
 
     let verdictAnnouncement = ""
     if (answered && feedbackKind === "ok") verdictAnnouncement = STR.vocabRound.statCorrect
@@ -112,15 +169,27 @@ export function VerbsQuiz({
             <VocabRoundProgress progress={roundProgress} />
             <div className="verb-forms-block">
                 <div className="verb-forms-block__main">
-                    <VerbFormsPrompt
-                        answered={answered}
-                        feedbackKind={feedbackKind}
-                        onExclude={excludeCurrentRoundWord}
-                        pulseId={pulseId}
-                        roundDots={roundDots}
-                        streak={streak}
-                        task={task}
-                    />
+                    {isConjugation ? (
+                        <VerbConjugationPrompt
+                            answered={answered}
+                            feedbackKind={feedbackKind}
+                            onExclude={excludeCurrentRoundWord}
+                            pulseId={pulseId}
+                            roundDots={roundDots}
+                            streak={streak}
+                            task={task}
+                        />
+                    ) : (
+                        <VerbFormsPrompt
+                            answered={answered}
+                            feedbackKind={feedbackKind}
+                            onExclude={excludeCurrentRoundWord}
+                            pulseId={pulseId}
+                            roundDots={roundDots}
+                            streak={streak}
+                            task={task}
+                        />
+                    )}
                     {translation ? <p className="verb-translation-line">{translation}</p> : null}
                     {verdictAnnouncement ? (
                         <p className="sr-only" aria-live="polite">

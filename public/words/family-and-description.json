@@ -382,6 +382,11 @@
                 "present3": "gali",
                 "past3": "galėjo"
             },
+            "stems": {
+                "infinitive": "galė",
+                "present": "gal",
+                "past": "galėj"
+            },
             "translations": ["мочь"]
         },
         {
@@ -392,6 +397,11 @@
                 "infinitive": "mylėti",
                 "present3": "myli",
                 "past3": "mylėjo"
+            },
+            "stems": {
+                "infinitive": "mylė",
+                "present": "myl",
+                "past": "mylėj"
             },
             "translations": ["любить"]
         },
@@ -404,6 +414,11 @@
                 "present3": "nori",
                 "past3": "norėjo"
             },
+            "stems": {
+                "infinitive": "norė",
+                "present": "nor",
+                "past": "norėj"
+            },
             "translations": ["хотеть"]
         },
         {
@@ -414,6 +429,11 @@
                 "infinitive": "pasiilgti",
                 "present3": "pasiilgsta",
                 "past3": "pasiilgo"
+            },
+            "stems": {
+                "infinitive": "pasiilg",
+                "present": "pasiilgst",
+                "past": "pasiilg"
             },
             "translations": ["соскучиться", "тосковать"]
         },
@@ -426,6 +446,16 @@
                 "present3": "sėdi",
                 "past3": "sėdėjo"
             },
+            "stems": {
+                "infinitive": "sėdė",
+                "present": "sėd",
+                "past": "sėdėj"
+            },
+            "overrides": {
+                "present": {
+                    "1s": "sėdžiu"
+                }
+            },
             "translations": ["сидеть"]
         },
         {
@@ -436,6 +466,11 @@
                 "infinitive": "stovėti",
                 "present3": "stovi",
                 "past3": "stovėjo"
+            },
+            "stems": {
+                "infinitive": "stovė",
+                "present": "stov",
+                "past": "stovėj"
             },
             "translations": ["стоять"]
         },
@@ -448,6 +483,11 @@
                 "present3": "turi",
                 "past3": "turėjo"
             },
+            "stems": {
+                "infinitive": "turė",
+                "present": "tur",
+                "past": "turėj"
+            },
             "translations": ["иметь"]
         },
         {
@@ -458,6 +498,11 @@
                 "infinitive": "žiūrėti",
                 "present3": "žiūri",
                 "past3": "žiūrėjo"
+            },
+            "stems": {
+                "infinitive": "žiūrė",
+                "present": "žiūr",
+                "past": "žiūrėj"
             },
             "translations": ["смотреть"]
         },
@@ -470,6 +515,16 @@
                 "present3": "girdi",
                 "past3": "girdėjo"
             },
+            "stems": {
+                "infinitive": "girdė",
+                "present": "gird",
+                "past": "girdėj"
+            },
+            "overrides": {
+                "present": {
+                    "1s": "girdžiu"
+                }
+            },
             "translations": ["слышать"]
         },
         {
@@ -480,6 +535,11 @@
                 "infinitive": "mėgti",
                 "present3": "mėgsta",
                 "past3": "mėgo"
+            },
+            "stems": {
+                "infinitive": "mėg",
+                "present": "mėgst",
+                "past": "mėg"
             },
             "translations": ["любить", "нравиться"]
         },
@@ -492,6 +552,11 @@
                 "present3": "susipažįsta",
                 "past3": "susipažino"
             },
+            "stems": {
+                "infinitive": "susipažin",
+                "present": "susipažįst",
+                "past": "susipažin"
+            },
             "translations": ["познакомиться"]
         },
         {
@@ -502,6 +567,23 @@
                 "infinitive": "žaisti",
                 "present3": "žaidžia",
                 "past3": "žaidė"
+            },
+            "stems": {
+                "infinitive": "žai",
+                "present": "žaidž",
+                "past": "žaid"
+            },
+            "overrides": {
+                "present": {
+                    "1s": "žaidžiu",
+                    "2s": "žaidi",
+                    "3": "žaidžia",
+                    "1p": "žaidžiame",
+                    "2p": "žaidžiate"
+                },
+                "past": {
+                    "1s": "žaidžiau"
+                }
             },
             "translations": ["играть"]
         },

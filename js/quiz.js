@@ -36,6 +36,7 @@ import {
 } from "../src/screens/quiz/vocab/vocabWords.js"
 import { nextSentenceTask } from "../src/screens/quiz/sentences/sentenceTask.js"
 import { nextVerbTask } from "../src/screens/quiz/verbs/verbsTask.js"
+import { verbConjugationExpectedForTask } from "../src/screens/quiz/verbs/verbConjugation.js"
 import { lemmaKey } from "../src/screens/quiz/shared/quizTaskSelection.js"
 
 const VOCAB_STREAK_MULT_FROM = 5
@@ -92,6 +93,15 @@ function isCurrentQuizTask(task) {
                 task.vocabDirection === VOCAB_DIRECTION.LT_TO_LT &&
                 task.vocabMode === VOCAB_MODE.SINGLE &&
                 !!VERB_FORM_BY_KEY[task.hiddenVerbFormKey]
+            )
+        }
+        if (task.verbMode === VERB_MODE.CONJUGATION) {
+            return (
+                typeof task.timeCueLt === "string" &&
+                typeof task.pronounLt === "string" &&
+                !!task.tenseKey &&
+                !!task.personKey &&
+                !!verbConjugationExpectedForTask(task)
             )
         }
         return !!VERB_FORM_BY_KEY[task.hiddenVerbFormKey]
@@ -172,6 +182,13 @@ function isVerbFormsTask(task) {
         task.verbMode !== VERB_MODE.CARDS &&
         task.verbMode !== VERB_MODE.FORM_CARDS
     )
+}
+
+function expectedVerbAnswerForTask(task) {
+    if (task?.verbMode === VERB_MODE.CONJUGATION) {
+        return task.expected || verbConjugationExpectedForTask(task)
+    }
+    return task?.word?.forms?.[task?.hiddenVerbFormKey] || ""
 }
 
 function typedAnswerMatch(user, expected) {
@@ -574,7 +591,7 @@ export function advanceVerbQuiz() {
         openVocabRoundSummaryOverlay()
         return
     }
-    const task = nextVerbTask({ verbMode: VERB_MODE.FORMS })
+    const task = nextVerbTask({ verbMode: getEngine().currentTask.verbMode || VERB_MODE.FORMS })
     if (!task) {
         resetVocabCorrectStreak()
         setQuizFeedback({ kind: "info", message: STR.quiz.noWordsLeft })
@@ -847,8 +864,7 @@ export function handleVerbFormSubmit(userInput) {
     if (!isVerbFormsTask(getEngine().currentTask)) return
 
     const word = getEngine().currentTask.word
-    const formKey = getEngine().currentTask.hiddenVerbFormKey
-    const expected = word?.forms?.[formKey] || ""
+    const expected = expectedVerbAnswerForTask(getEngine().currentTask)
 
     if (!getEngine().answered) {
         const ok = typedAnswerMatch(userInput, expected)
