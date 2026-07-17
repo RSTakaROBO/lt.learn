@@ -319,6 +319,43 @@ body.vocab-round-summary-modal-open .quiz-bottom-bar {
     background: color-mix(in srgb, var(--text) 6%, transparent);
 }
 
+.changelog-history {
+    display: grid;
+    gap: 0.7rem;
+}
+
+.changelog-history__trigger {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    gap: 0.65rem;
+    align-items: baseline;
+    width: 100%;
+    margin-top: 0.35rem;
+    padding: 0.7rem 0.85rem;
+    color: var(--text);
+    border: 0;
+    border-radius: 12px;
+    background: color-mix(in srgb, var(--text) 6%, transparent);
+    cursor: pointer;
+    text-align: left;
+}
+
+.changelog-history__trigger:hover {
+    background: color-mix(in srgb, var(--accent) 10%, var(--surface-elevated));
+}
+
+.changelog-history__trigger:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
+.changelog-history__icon {
+    color: var(--muted);
+    font-size: 1.2rem;
+    font-weight: 700;
+    line-height: 1;
+}
+
 .changelog-list {
     display: grid;
     gap: 0.7rem;

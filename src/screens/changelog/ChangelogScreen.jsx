@@ -1,4 +1,4 @@
-import { useRef } from "react"
+import { useRef, useState } from "react"
 import { useSelector } from "react-redux"
 
 import { APP_VERSION } from "js/app-version.js"
@@ -12,6 +12,7 @@ export function ChangelogScreen({ heightMode = "fill" } = {}) {
     const dispatch = useTrainerDispatch()
     const open = useSelector((s) => s.trainer.overlay.changelog)
     const closeButtonRef = useRef(null)
+    const [openHistoryVersion, setOpenHistoryVersion] = useState("")
 
     useAutoFocusOnOpen(closeButtonRef, open)
 
@@ -42,30 +43,42 @@ export function ChangelogScreen({ heightMode = "fill" } = {}) {
                             </article>
                         ))}
                     </div>
-                    <header className="changelog-version changelog-version--previous">
-                        <span className="changelog-version__label">{STR.changelog.version}</span>
-                        <strong>{STR.changelog.previousVersion}</strong>
-                    </header>
-                    <div className="changelog-list">
-                        {STR.changelog.previous.map((item) => (
-                            <article className="changelog-item" key={item.title}>
-                                <h3>{item.title}</h3>
-                                <p>{item.text}</p>
-                            </article>
-                        ))}
-                    </div>
-                    <header className="changelog-version changelog-version--previous">
-                        <span className="changelog-version__label">{STR.changelog.version}</span>
-                        <strong>{STR.changelog.olderVersion}</strong>
-                    </header>
-                    <div className="changelog-list">
-                        {STR.changelog.older.map((item) => (
-                            <article className="changelog-item" key={item.title}>
-                                <h3>{item.title}</h3>
-                                <p>{item.text}</p>
-                            </article>
-                        ))}
-                    </div>
+                    {[
+                        { version: STR.changelog.previousVersion, items: STR.changelog.previous },
+                        { version: STR.changelog.olderVersion, items: STR.changelog.older },
+                    ].map(({ version, items }) => {
+                        const expanded = openHistoryVersion === version
+                        const contentId = `changelog-version-${version.replaceAll(".", "-")}`
+                        return (
+                            <section className="changelog-history" key={version}>
+                                <button
+                                    className="changelog-history__trigger"
+                                    type="button"
+                                    aria-expanded={expanded}
+                                    aria-controls={contentId}
+                                    onClick={() => setOpenHistoryVersion(expanded ? "" : version)}
+                                >
+                                    <span className="changelog-version__label">
+                                        {STR.changelog.version}
+                                    </span>
+                                    <strong>{version}</strong>
+                                    <span className="changelog-history__icon" aria-hidden="true">
+                                        {expanded ? "−" : "+"}
+                                    </span>
+                                </button>
+                                {expanded ? (
+                                    <div id={contentId} className="changelog-list">
+                                        {items.map((item) => (
+                                            <article className="changelog-item" key={item.title}>
+                                                <h3>{item.title}</h3>
+                                                <p>{item.text}</p>
+                                            </article>
+                                        ))}
+                                    </div>
+                                ) : null}
+                            </section>
+                        )
+                    })}
                 </div>
                 <div className="app-screen__footer actions app-screen__footer--single">
                     <Button
