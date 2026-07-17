@@ -120,7 +120,8 @@ export function QuizScreen({ heightMode = "fill", hidden = false } = {}) {
     const skipDisabled =
         !task ||
         (answered && !(isVocab && !isHardcore && !isSingleVocab) && !isVerbForms && !isSentences)
-    const submitLabel = answered ? STR.quiz.next : STR.quiz.check
+    const submitLabel =
+        answered || (isVerbForms && !quizTypingAnswer.trim()) ? STR.quiz.next : STR.quiz.check
     const quizModeClass = isVerbForms
         ? "quiz--verbs"
         : isSentences

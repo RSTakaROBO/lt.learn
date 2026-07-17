@@ -1,5 +1,5 @@
 #quiz-vocab-ui {
-    --vocab-word-text-accent: color-mix(in srgb, var(--accent) 42%, #ffd166);
+    --vocab-word-text-accent: var(--accent);
 }
 #quiz-vocab-ui > .vocab-card-stack {
     flex-direction: column;
@@ -240,10 +240,7 @@
     margin-bottom: 0;
 }
 .vocab-single-answer {
-    --vocab-answer-accent: var(
-        --vocab-single-text-accent,
-        color-mix(in srgb, var(--accent) 42%, #ffd166)
-    );
+    --vocab-answer-accent: var(--vocab-single-text-accent, var(--accent));
     --vocab-card-radius: 18px;
     display: flex;
     flex: 1;

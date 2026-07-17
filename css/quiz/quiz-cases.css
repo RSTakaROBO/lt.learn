@@ -20,7 +20,7 @@
     flex: none;
 }
 #quiz-cases-ui .prompt > .vocab-card-stack > .vocab-ru-card {
-    --vocab-single-text-accent: color-mix(in srgb, var(--accent) 42%, #ffd166);
+    --vocab-single-text-accent: var(--accent);
     --vocab-answer-accent: var(--vocab-single-text-accent);
     min-height: unset;
     flex-direction: column;

@@ -1,0 +1,535 @@
+{
+    "title": "5. Prašau paragauti",
+    "words": [
+        {
+            "type": "adjective",
+            "lemma": "baltas",
+            "forms": {},
+            "translations": ["белый"]
+        },
+        {
+            "type": "adjective",
+            "lemma": "geltonas",
+            "forms": {},
+            "translations": ["жёлтый"]
+        },
+        {
+            "type": "adjective",
+            "lemma": "juodas",
+            "forms": {},
+            "translations": ["чёрный"]
+        },
+        {
+            "type": "adjective",
+            "lemma": "mėlynas",
+            "forms": {},
+            "translations": ["синий"]
+        },
+        {
+            "type": "adjective",
+            "lemma": "raudonas",
+            "forms": {},
+            "translations": ["красный"]
+        },
+        {
+            "type": "adjective",
+            "lemma": "rudas",
+            "forms": {},
+            "translations": ["коричневый"]
+        },
+        {
+            "type": "adjective",
+            "lemma": "žalias",
+            "forms": {},
+            "translations": ["зелёный"]
+        },
+        {
+            "type": "verb",
+            "lemma": "kainuoti",
+            "forms": { "infinitive": "kainuoti", "present3": "kainuoja", "past3": "kainavo" },
+            "conjugation": "I",
+            "stems": { "infinitive": "kainuo", "present": "kainuoj", "past": "kainav" },
+            "translations": ["стоить"]
+        },
+        {
+            "type": "verb",
+            "lemma": "mokėti",
+            "forms": { "infinitive": "mokėti", "present3": "moka", "past3": "mokėjo" },
+            "conjugation": "I",
+            "stems": { "infinitive": "mokė", "present": "mok", "past": "mokėj" },
+            "overrides": {
+                "past": {
+                    "1s": "mokėjau",
+                    "2s": "mokėjai",
+                    "3": "mokėjo",
+                    "1p": "mokėjome",
+                    "2p": "mokėjote"
+                }
+            },
+            "translations": ["платить"]
+        },
+        {
+            "type": "verb",
+            "lemma": "parduoti",
+            "forms": { "infinitive": "parduoti", "present3": "parduoda", "past3": "pardavė" },
+            "conjugation": "I",
+            "stems": { "infinitive": "parduo", "present": "parduod", "past": "pardav" },
+            "translations": ["продавать"]
+        },
+        {
+            "type": "verb",
+            "lemma": "pirkti",
+            "forms": { "infinitive": "pirkti", "present3": "perka", "past3": "pirko" },
+            "conjugation": "I",
+            "stems": { "infinitive": "pirk", "present": "perk", "past": "pirk" },
+            "translations": ["покупать"]
+        },
+        {
+            "type": "verb",
+            "lemma": "reikėti",
+            "forms": { "infinitive": "reikėti", "present3": "reikia", "past3": "reikėjo" },
+            "translations": ["нуждаться"]
+        },
+        {
+            "type": "verb",
+            "lemma": "siūlyti",
+            "forms": { "infinitive": "siūlyti", "present3": "siūlo", "past3": "siūlė" },
+            "conjugation": "III",
+            "stems": { "infinitive": "siūly", "present": "siūl", "past": "siūl" },
+            "translations": ["предлагать"]
+        },
+        {
+            "type": "verb",
+            "lemma": "užsisakyti",
+            "forms": { "infinitive": "užsisakyti", "present3": "užsisako", "past3": "užsisakė" },
+            "conjugation": "III",
+            "stems": { "infinitive": "užsisaky", "present": "užsisak", "past": "užsisak" },
+            "translations": ["заказывать"]
+        },
+        {
+            "type": "noun",
+            "lemma": "butelis",
+            "forms": {
+                "nominative": "butelis",
+                "genitive": "butelio",
+                "dative": "buteliui",
+                "accusative": "butelį",
+                "instrumental": "buteliu",
+                "locative": "butelyje",
+                "vocative": "buteli"
+            },
+            "translations": ["бутылка"]
+        },
+        {
+            "type": "noun",
+            "lemma": "stiklainis",
+            "forms": {
+                "nominative": "stiklainis",
+                "genitive": "stiklainio",
+                "dative": "stiklainiui",
+                "accusative": "stiklainį",
+                "instrumental": "stiklainiu",
+                "locative": "stiklainyje",
+                "vocative": "stiklaini"
+            },
+            "translations": ["банка"]
+        },
+        {
+            "type": "noun",
+            "lemma": "dėžutė",
+            "forms": {
+                "nominative": "dėžutė",
+                "genitive": "dėžutės",
+                "dative": "dėžutei",
+                "accusative": "dėžutę",
+                "instrumental": "dėžute",
+                "locative": "dėžutėje",
+                "vocative": "dėžute"
+            },
+            "translations": ["коробочка"]
+        },
+        {
+            "type": "noun",
+            "lemma": "pakelis",
+            "forms": {
+                "nominative": "pakelis",
+                "genitive": "pakelio",
+                "dative": "pakeliui",
+                "accusative": "pakelį",
+                "instrumental": "pakeliu",
+                "locative": "pakelyje",
+                "vocative": "pakeli"
+            },
+            "translations": ["пачка"]
+        },
+        {
+            "type": "noun",
+            "lemma": "gabalėlis",
+            "forms": {
+                "nominative": "gabalėlis",
+                "genitive": "gabalėlio",
+                "dative": "gabalėliui",
+                "accusative": "gabalėlį",
+                "instrumental": "gabalėliu",
+                "locative": "gabalėlyje",
+                "vocative": "gabalėli"
+            },
+            "translations": ["кусочек"]
+        },
+        {
+            "type": "noun",
+            "lemma": "maišelis",
+            "forms": {
+                "nominative": "maišelis",
+                "genitive": "maišelio",
+                "dative": "maišeliui",
+                "accusative": "maišelį",
+                "instrumental": "maišeliu",
+                "locative": "maišelyje",
+                "vocative": "maišeli"
+            },
+            "translations": ["пакет"]
+        },
+        {
+            "type": "noun",
+            "lemma": "indelis",
+            "forms": {
+                "nominative": "indelis",
+                "genitive": "indelio",
+                "dative": "indeliui",
+                "accusative": "indelį",
+                "instrumental": "indeliu",
+                "locative": "indelyje",
+                "vocative": "indeli"
+            },
+            "translations": ["баночка"]
+        },
+        {
+            "type": "noun",
+            "lemma": "gramas",
+            "forms": {
+                "nominative": "gramas",
+                "genitive": "gramo",
+                "dative": "gramui",
+                "accusative": "gramą",
+                "instrumental": "gramu",
+                "locative": "grame",
+                "vocative": "grame"
+            },
+            "translations": ["грамм"]
+        },
+        {
+            "type": "noun",
+            "lemma": "kilogramas",
+            "forms": {
+                "nominative": "kilogramas",
+                "genitive": "kilogramo",
+                "dative": "kilogramui",
+                "accusative": "kilogramą",
+                "instrumental": "kilogramu",
+                "locative": "kilograme",
+                "vocative": "kilograme"
+            },
+            "translations": ["килограмм"]
+        },
+        {
+            "type": "noun",
+            "lemma": "dėžė",
+            "forms": {
+                "nominative": "dėžė",
+                "genitive": "dėžės",
+                "dative": "dėžei",
+                "accusative": "dėžę",
+                "instrumental": "dėže",
+                "locative": "dėžėje",
+                "vocative": "dėže"
+            },
+            "translations": ["коробка"]
+        },
+        {
+            "type": "noun",
+            "lemma": "kepalas",
+            "forms": {
+                "nominative": "kepalas",
+                "genitive": "kepalo",
+                "dative": "kepalui",
+                "accusative": "kepalą",
+                "instrumental": "kepalu",
+                "locative": "kepale",
+                "vocative": "kepale"
+            },
+            "translations": ["буханка"]
+        },
+        {
+            "type": "noun",
+            "lemma": "plytelė",
+            "forms": {
+                "nominative": "plytelė",
+                "genitive": "plytelės",
+                "dative": "plytelei",
+                "accusative": "plytelę",
+                "instrumental": "plytele",
+                "locative": "plytelėje",
+                "vocative": "plytele"
+            },
+            "translations": ["плитка"]
+        },
+        {
+            "type": "noun",
+            "lemma": "barščiai",
+            "exception": true,
+            "exception_note_ru": "Употребляется во множественном числе.",
+            "forms": {
+                "nominative": "barščiai",
+                "genitive": "barščių",
+                "dative": "barščiams",
+                "accusative": "barščius",
+                "instrumental": "barščiais",
+                "locative": "barščiuose",
+                "vocative": "barščiai"
+            },
+            "translations": ["борщ"]
+        },
+        {
+            "type": "noun",
+            "lemma": "sriuba",
+            "forms": {
+                "nominative": "sriuba",
+                "genitive": "sriubos",
+                "dative": "sriubai",
+                "accusative": "sriubą",
+                "instrumental": "sriuba",
+                "locative": "sriuboje",
+                "vocative": "sriuba"
+            },
+            "translations": ["суп"]
+        },
+        {
+            "type": "noun",
+            "lemma": "sultinys",
+            "forms": {
+                "nominative": "sultinys",
+                "genitive": "sultinio",
+                "dative": "sultiniui",
+                "accusative": "sultinį",
+                "instrumental": "sultiniu",
+                "locative": "sultinyje",
+                "vocative": "sultiny"
+            },
+            "translations": ["бульон"]
+        },
+        {
+            "type": "noun",
+            "lemma": "šaltibarščiai",
+            "exception": true,
+            "exception_note_ru": "Употребляется во множественном числе.",
+            "forms": {
+                "nominative": "šaltibarščiai",
+                "genitive": "šaltibarščių",
+                "dative": "šaltibarščiams",
+                "accusative": "šaltibarščius",
+                "instrumental": "šaltibarščiais",
+                "locative": "šaltibarščiuose",
+                "vocative": "šaltibarščiai"
+            },
+            "translations": ["шалтибарщай"]
+        },
+        {
+            "type": "noun",
+            "lemma": "balandėliai",
+            "exception": true,
+            "exception_note_ru": "Употребляется во множественном числе.",
+            "forms": {
+                "nominative": "balandėliai",
+                "genitive": "balandėlių",
+                "dative": "balandėliams",
+                "accusative": "balandėlius",
+                "instrumental": "balandėliais",
+                "locative": "balandėliuose",
+                "vocative": "balandėliai"
+            },
+            "translations": ["голубцы"]
+        },
+        {
+            "type": "noun",
+            "lemma": "blynai",
+            "exception": true,
+            "exception_note_ru": "Обычно употребляется во множественном числе.",
+            "forms": {
+                "nominative": "blynai",
+                "genitive": "blynų",
+                "dative": "blynams",
+                "accusative": "blynus",
+                "instrumental": "blynais",
+                "locative": "blynuose",
+                "vocative": "blynai"
+            },
+            "translations": ["блины"]
+        },
+        {
+            "type": "noun",
+            "lemma": "didžkukuliai",
+            "exception": true,
+            "exception_note_ru": "Употребляется во множественном числе.",
+            "forms": {
+                "nominative": "didžkukuliai",
+                "genitive": "didžkukulių",
+                "dative": "didžkukuliams",
+                "accusative": "didžkukulius",
+                "instrumental": "didžkukuliais",
+                "locative": "didžkukuliuose",
+                "vocative": "didžkukuliai"
+            },
+            "translations": ["цеппелины"]
+        },
+        {
+            "type": "noun",
+            "lemma": "cepelinai",
+            "exception": true,
+            "exception_note_ru": "Употребляется во множественном числе.",
+            "forms": {
+                "nominative": "cepelinai",
+                "genitive": "cepelinų",
+                "dative": "cepelinams",
+                "accusative": "cepelinus",
+                "instrumental": "cepelinais",
+                "locative": "cepelinuose",
+                "vocative": "cepelinai"
+            },
+            "translations": ["цеппелины"]
+        },
+        {
+            "type": "noun",
+            "lemma": "kepsnys",
+            "forms": {
+                "nominative": "kepsnys",
+                "genitive": "kepsnio",
+                "dative": "kepsniui",
+                "accusative": "kepsnį",
+                "instrumental": "kepsniu",
+                "locative": "kepsnyje",
+                "vocative": "kepsny"
+            },
+            "translations": ["стейк"]
+        },
+        {
+            "type": "noun",
+            "lemma": "kiaušinienė",
+            "forms": {
+                "nominative": "kiaušinienė",
+                "genitive": "kiaušinienės",
+                "dative": "kiaušinienei",
+                "accusative": "kiaušinienę",
+                "instrumental": "kiaušiniene",
+                "locative": "kiaušinienėje",
+                "vocative": "kiaušiniene"
+            },
+            "translations": ["яичница"]
+        },
+        {
+            "type": "noun",
+            "lemma": "koldūnai",
+            "exception": true,
+            "exception_note_ru": "Обычно употребляется во множественном числе.",
+            "forms": {
+                "nominative": "koldūnai",
+                "genitive": "koldūnų",
+                "dative": "koldūnams",
+                "accusative": "koldūnus",
+                "instrumental": "koldūnais",
+                "locative": "koldūnuose",
+                "vocative": "koldūnai"
+            },
+            "translations": ["пельмени"]
+        },
+        {
+            "type": "noun",
+            "lemma": "košė",
+            "forms": {
+                "nominative": "košė",
+                "genitive": "košės",
+                "dative": "košei",
+                "accusative": "košę",
+                "instrumental": "koše",
+                "locative": "košėje",
+                "vocative": "koše"
+            },
+            "translations": ["каша"]
+        },
+        {
+            "type": "noun",
+            "lemma": "kotletas",
+            "forms": {
+                "nominative": "kotletas",
+                "genitive": "kotleto",
+                "dative": "kotletui",
+                "accusative": "kotletą",
+                "instrumental": "kotletu",
+                "locative": "kotlete",
+                "vocative": "kotlete"
+            },
+            "translations": ["котлета"]
+        },
+        {
+            "type": "noun",
+            "lemma": "omletas",
+            "forms": {
+                "nominative": "omletas",
+                "genitive": "omleto",
+                "dative": "omletui",
+                "accusative": "omletą",
+                "instrumental": "omletu",
+                "locative": "omlete",
+                "vocative": "omlete"
+            },
+            "translations": ["омлет"]
+        },
+        {
+            "type": "noun",
+            "lemma": "salotos",
+            "exception": true,
+            "exception_note_ru": "Употребляется во множественном числе.",
+            "forms": {
+                "nominative": "salotos",
+                "genitive": "salotų",
+                "dative": "salotoms",
+                "accusative": "salotas",
+                "instrumental": "salotomis",
+                "locative": "salotose",
+                "vocative": "salotos"
+            },
+            "translations": ["салат"]
+        },
+        {
+            "type": "noun",
+            "lemma": "troškinys",
+            "forms": {
+                "nominative": "troškinys",
+                "genitive": "troškinio",
+                "dative": "troškiniui",
+                "accusative": "troškinį",
+                "instrumental": "troškiniu",
+                "locative": "troškinyje",
+                "vocative": "troškini"
+            },
+            "translations": ["рагу"]
+        },
+        {
+            "type": "noun",
+            "lemma": "virtiniai",
+            "exception": true,
+            "exception_note_ru": "Обычно употребляется во множественном числе.",
+            "forms": {
+                "nominative": "virtiniai",
+                "genitive": "virtinių",
+                "dative": "virtiniams",
+                "accusative": "virtinius",
+                "instrumental": "virtiniais",
+                "locative": "virtiniuose",
+                "vocative": "virtiniai"
+            },
+            "translations": ["вареники"]
+        }
+    ],
+    "schemaVersion": 1
+}

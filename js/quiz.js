@@ -867,6 +867,20 @@ export function handleVerbFormSubmit(userInput) {
     const expected = expectedVerbAnswerForTask(getEngine().currentTask)
 
     if (!getEngine().answered) {
+        if (!String(userInput || "").trim()) {
+            mutateEngine((e) => {
+                e.answered = true
+            })
+            resetVocabCorrectStreak()
+            setQuizFeedback({
+                kind: "skip",
+                message: "",
+                expected,
+                exceptionNote: "",
+            })
+            applyVocabRoundSkip(word)
+            return
+        }
         const ok = typedAnswerMatch(userInput, expected)
         mutateEngine((e) => {
             e.answered = true
