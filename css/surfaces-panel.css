@@ -33,7 +33,13 @@
     min-height: 0;
     display: flex;
     flex-direction: column;
-    overflow-x: hidden;
+    /*
+     * Не оставляем только overflow-x: hidden: согласно CSS это неявно делает
+     * overflow-y: auto и прокручивает весь экран мастера. Скролл должен
+     * оставаться исключительно в .wizard-scroll-well, чья flex-высота
+     * подстраивается под свободное место между заголовком и кнопками.
+     */
+    overflow: hidden;
 }
 
 /* Предпросмотр набора: колонка на высоту области; вертикальный скролл в .app-screen__body */

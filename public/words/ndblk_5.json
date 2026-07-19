@@ -384,22 +384,6 @@
         },
         {
             "type": "noun",
-            "lemma": "cepelinai",
-            "exception": true,
-            "exception_note_ru": "Употребляется во множественном числе.",
-            "forms": {
-                "nominative": "cepelinai",
-                "genitive": "cepelinų",
-                "dative": "cepelinams",
-                "accusative": "cepelinus",
-                "instrumental": "cepelinais",
-                "locative": "cepelinuose",
-                "vocative": "cepelinai"
-            },
-            "translations": ["цеппелины"]
-        },
-        {
-            "type": "noun",
             "lemma": "kepsnys",
             "forms": {
                 "nominative": "kepsnys",

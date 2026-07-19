@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 
 import {
     QuizBarHelpIcon,
@@ -22,10 +22,24 @@ function barBtnClass(active) {
 /** Нижняя панель: статистика, меню, справка, настройки. */
 export function QuizBottomBar() {
     const [state, dispatch] = useTrainerApp()
-    const { casesHelp, helpHub, settings, stats, verbFormsHelp, verbTensesHelp, wordSearch } =
-        state.overlay
+    const {
+        casesHelp,
+        changelog,
+        helpHub,
+        packPrompt,
+        settings,
+        stats,
+        verbFormsHelp,
+        verbTensesHelp,
+        vocabRound,
+        wordSearch,
+    } = state.overlay
     const { screen, engine } = state
     const [menuQuitConfirmOpen, setMenuQuitConfirmOpen] = useState(false)
+    const browserBackHandlerRef = useRef(() => false)
+    const lessonBackGuardArmedRef = useRef(false)
+    const restoringBackGuardRef = useRef(false)
+    const allowNativeBackRef = useRef(false)
 
     const helpActive = helpHub || casesHelp || verbFormsHelp || verbTensesHelp
     const homeActive = !stats && !helpActive && !settings && !wordSearch
@@ -62,6 +76,87 @@ export function QuizBottomBar() {
             e.shownLemmaHistory = []
         })
     }
+
+    browserBackHandlerRef.current = () => {
+        if (menuQuitConfirmOpen) {
+            setMenuQuitConfirmOpen(false)
+            return true
+        }
+        if (packPrompt) {
+            dispatch({ type: "OVERLAY_CLOSE", name: "packPrompt" })
+            return true
+        }
+        if (vocabRound) {
+            exitToSetupMenu()
+            return true
+        }
+        if (helpHub) {
+            dispatch({ type: "OVERLAY_CLOSE", name: "helpHub" })
+            return true
+        }
+        if (settings || stats || changelog || wordSearch) {
+            dispatch({
+                type: "OVERLAY_CLOSE",
+                name: settings
+                    ? "settings"
+                    : stats
+                      ? "stats"
+                      : changelog
+                        ? "changelog"
+                        : "wordSearch",
+            })
+            return true
+        }
+        if (casesHelp || verbFormsHelp || verbTensesHelp) {
+            dispatch({ type: "OVERLAY_OPEN", name: "helpHub" })
+            return true
+        }
+        // На Android состояние текущего задания может обновиться позже, чем
+        // придёт системный жест «Назад». Сам экран quiz уже означает урок,
+        // поэтому не полагаемся здесь на engine.currentTask.
+        if (screen === "quiz") {
+            setMenuQuitConfirmOpen(true)
+            return true
+        }
+        return false
+    }
+
+    useEffect(() => {
+        function onPopState() {
+            if (restoringBackGuardRef.current) {
+                restoringBackGuardRef.current = false
+                return
+            }
+            if (allowNativeBackRef.current) {
+                allowNativeBackRef.current = false
+                return
+            }
+            if (browserBackHandlerRef.current()) {
+                restoringBackGuardRef.current = true
+                window.history.go(1)
+                return
+            }
+            allowNativeBackRef.current = true
+            window.history.back()
+        }
+
+        window.addEventListener("popstate", onPopState)
+        return () => window.removeEventListener("popstate", onPopState)
+    }, [])
+
+    useEffect(() => {
+        if (screen !== "quiz") {
+            lessonBackGuardArmedRef.current = false
+            return
+        }
+        if (lessonBackGuardArmedRef.current) return
+
+        // Запись создаётся именно при входе в урок. Поэтому Android всегда
+        // делает первый Back внутри той же страницы и присылает popstate, а не
+        // сразу уходит на предыдущий документ.
+        window.history.pushState({ ltTrainerBackGuard: true }, "")
+        lessonBackGuardArmedRef.current = true
+    }, [screen])
 
     const handleHomeClick = () => {
         if (casesHelp) {

@@ -1318,58 +1318,66 @@
             "translations": ["фрукт"]
         },
         {
+            "exception": true,
+            "exception_note_ru": "В этой теме слово обычно употребляется во множественном числе; приведена парадигма мн. ч.",
             "type": "noun",
-            "lemma": "uoga",
+            "lemma": "uogos",
             "forms": {
-                "nominative": "uoga",
-                "genitive": "uogos",
-                "dative": "uogai",
-                "accusative": "uogą",
-                "instrumental": "uoga",
-                "locative": "uogoje",
-                "vocative": "uoga"
+                "nominative": "uogos",
+                "genitive": "uogų",
+                "dative": "uogoms",
+                "accusative": "uogas",
+                "instrumental": "uogomis",
+                "locative": "uogose",
+                "vocative": "uogos"
             },
-            "translations": ["ягода"]
+            "translations": ["ягоды"]
         },
         {
+            "exception": true,
+            "exception_note_ru": "Название ягод обычно употребляется во множественном числе; приведена парадигма мн. ч.",
             "type": "noun",
-            "lemma": "avietė",
+            "lemma": "avietės",
             "forms": {
-                "nominative": "avietė",
-                "genitive": "avietės",
-                "dative": "avietei",
-                "accusative": "avietę",
-                "instrumental": "aviete",
-                "locative": "avietėje",
-                "vocative": "aviete"
+                "nominative": "avietės",
+                "genitive": "aviečių",
+                "dative": "avietėms",
+                "accusative": "avietes",
+                "instrumental": "avietėmis",
+                "locative": "avietėse",
+                "vocative": "avietės"
             },
             "translations": ["малина"]
         },
         {
+            "exception": true,
+            "exception_note_ru": "Название ягод обычно употребляется во множественном числе; приведена парадигма мн. ч.",
             "type": "noun",
-            "lemma": "serbentas",
+            "lemma": "serbentai",
             "forms": {
-                "nominative": "serbentas",
-                "genitive": "serbento",
-                "dative": "serbentui",
-                "accusative": "serbentą",
-                "instrumental": "serbentu",
-                "locative": "serbente",
-                "vocative": "serbente"
+                "nominative": "serbentai",
+                "genitive": "serbentų",
+                "dative": "serbentams",
+                "accusative": "serbentus",
+                "instrumental": "serbentais",
+                "locative": "serbentuose",
+                "vocative": "serbentai"
             },
             "translations": ["смородина"]
         },
         {
+            "exception": true,
+            "exception_note_ru": "Название ягод обычно употребляется во множественном числе; приведена парадигма мн. ч.",
             "type": "noun",
-            "lemma": "vynuogė",
+            "lemma": "vynuogės",
             "forms": {
-                "nominative": "vynuogė",
-                "genitive": "vynuogės",
-                "dative": "vynuogei",
-                "accusative": "vynuogę",
-                "instrumental": "vynuoge",
-                "locative": "vynuogėje",
-                "vocative": "vynuoge"
+                "nominative": "vynuogės",
+                "genitive": "vynuogių",
+                "dative": "vynuogėms",
+                "accusative": "vynuoges",
+                "instrumental": "vynuogėmis",
+                "locative": "vynuogėse",
+                "vocative": "vynuogės"
             },
             "translations": ["виноград"]
         },
@@ -1402,58 +1410,66 @@
             "translations": ["мандарин"]
         },
         {
+            "exception": true,
+            "exception_note_ru": "Название ягод обычно употребляется во множественном числе; приведена парадигма мн. ч.",
             "type": "noun",
-            "lemma": "bruknė",
+            "lemma": "bruknės",
             "forms": {
-                "nominative": "bruknė",
-                "genitive": "bruknės",
-                "dative": "bruknei",
-                "accusative": "bruknę",
-                "instrumental": "brukne",
-                "locative": "bruknėje",
-                "vocative": "brukne"
+                "nominative": "bruknės",
+                "genitive": "bruknių",
+                "dative": "bruknėms",
+                "accusative": "bruknes",
+                "instrumental": "bruknėmis",
+                "locative": "bruknėse",
+                "vocative": "bruknės"
             },
             "translations": ["брусника"]
         },
         {
+            "exception": true,
+            "exception_note_ru": "Название ягод обычно употребляется во множественном числе; приведена парадигма мн. ч.",
             "type": "noun",
-            "lemma": "mėlynė",
+            "lemma": "mėlynės",
             "forms": {
-                "nominative": "mėlynė",
-                "genitive": "mėlynės",
-                "dative": "mėlynei",
-                "accusative": "mėlynę",
-                "instrumental": "mėlyne",
-                "locative": "mėlynėje",
-                "vocative": "mėlyne"
+                "nominative": "mėlynės",
+                "genitive": "mėlynių",
+                "dative": "mėlynėms",
+                "accusative": "mėlynes",
+                "instrumental": "mėlynėmis",
+                "locative": "mėlynėse",
+                "vocative": "mėlynės"
             },
             "translations": ["черника"]
         },
         {
+            "exception": true,
+            "exception_note_ru": "Название ягод обычно употребляется во множественном числе; приведена парадигма мн. ч.",
             "type": "noun",
-            "lemma": "spanguolė",
+            "lemma": "spanguolės",
             "forms": {
-                "nominative": "spanguolė",
-                "genitive": "spanguolės",
-                "dative": "spanguolei",
-                "accusative": "spanguolę",
-                "instrumental": "spanguole",
-                "locative": "spanguolėje",
-                "vocative": "spanguole"
+                "nominative": "spanguolės",
+                "genitive": "spanguolių",
+                "dative": "spanguolėms",
+                "accusative": "spanguoles",
+                "instrumental": "spanguolėmis",
+                "locative": "spanguolėse",
+                "vocative": "spanguolės"
             },
             "translations": ["клюква"]
         },
         {
+            "exception": true,
+            "exception_note_ru": "Название ягод обычно употребляется во множественном числе; приведена парадигма мн. ч.",
             "type": "noun",
-            "lemma": "žemuogė",
+            "lemma": "žemuogės",
             "forms": {
-                "nominative": "žemuogė",
-                "genitive": "žemuogės",
-                "dative": "žemuogei",
-                "accusative": "žemuogę",
-                "instrumental": "žemuoge",
-                "locative": "žemuogėje",
-                "vocative": "žemuoge"
+                "nominative": "žemuogės",
+                "genitive": "žemuogių",
+                "dative": "žemuogėms",
+                "accusative": "žemuoges",
+                "instrumental": "žemuogėmis",
+                "locative": "žemuogėse",
+                "vocative": "žemuogės"
             },
             "translations": ["земляника"]
         },
@@ -1500,16 +1516,18 @@
             "translations": ["слива"]
         },
         {
+            "exception": true,
+            "exception_note_ru": "Название ягод обычно употребляется во множественном числе; приведена парадигма мн. ч.",
             "type": "noun",
-            "lemma": "vyšnia",
+            "lemma": "vyšnios",
             "forms": {
-                "nominative": "vyšnia",
-                "genitive": "vyšnios",
-                "dative": "vyšniai",
-                "accusative": "vyšnią",
-                "instrumental": "vyšnia",
-                "locative": "vyšnioje",
-                "vocative": "vyšnia"
+                "nominative": "vyšnios",
+                "genitive": "vyšnių",
+                "dative": "vyšnioms",
+                "accusative": "vyšnias",
+                "instrumental": "vyšniomis",
+                "locative": "vyšniose",
+                "vocative": "vyšnios"
             },
             "translations": ["вишня"]
         },
@@ -1556,16 +1574,18 @@
             "translations": ["апельсин"]
         },
         {
+            "exception": true,
+            "exception_note_ru": "Название ягод обычно употребляется во множественном числе; приведена парадигма мн. ч.",
             "type": "noun",
-            "lemma": "braškė",
+            "lemma": "braškės",
             "forms": {
-                "nominative": "braškė",
-                "genitive": "braškės",
-                "dative": "braškei",
-                "accusative": "braškę",
-                "instrumental": "braške",
-                "locative": "braškėje",
-                "vocative": "braške"
+                "nominative": "braškės",
+                "genitive": "braškių",
+                "dative": "braškėms",
+                "accusative": "braškes",
+                "instrumental": "braškėmis",
+                "locative": "braškėse",
+                "vocative": "braškės"
             },
             "translations": ["клубника"]
         },
