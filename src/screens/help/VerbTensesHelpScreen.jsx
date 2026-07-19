@@ -5,9 +5,9 @@ import { AppFlowScreen } from "src/components/layout/AppFlowScreen.jsx"
 import { Button } from "src/components/ui/Button.jsx"
 import { useTrainerApp } from "src/context/TrainerAppContext.jsx"
 import { useHelpScreenOpenEffect } from "src/hooks/useHelpScreenOpenEffect.js"
-import { OtherVerbTensesHelpTables } from "src/screens/help/VerbFormsHelpTables.jsx"
+import { OtherVerbTensesReferenceTables } from "src/screens/help/VerbFormsHelpTables.jsx"
 
-export function VerbTensesHelpScreen({ heightMode = "fill" } = {}) {
+export function VerbTensesHelpScreen({ heightMode = "fill", dockedTenses, onPinTense } = {}) {
     const [uiState, dispatch] = useTrainerApp()
     const open = uiState.overlay.verbTensesHelp
     const shellRef = useRef(null)
@@ -35,7 +35,31 @@ export function VerbTensesHelpScreen({ heightMode = "fill" } = {}) {
                     ref={scrollBlockRef}
                     className="app-screen__body cases-help-scroll-block u-scrollbar-hidden"
                 >
-                    <OtherVerbTensesHelpTables />
+                    <OtherVerbTensesReferenceTables
+                        renderControls={(tenseId) => {
+                            const side = dockedTenses?.left?.includes(tenseId)
+                                ? "left"
+                                : dockedTenses?.right?.includes(tenseId)
+                                  ? "right"
+                                  : null
+                            return (
+                                <div className="cases-help-pin-actions">
+                                    <Button
+                                        className={side === "left" ? "is-active" : undefined}
+                                        onClick={() => onPinTense?.(tenseId, "left")}
+                                    >
+                                        {side === "left" ? STR.help.unpin : STR.help.pinLeft}
+                                    </Button>
+                                    <Button
+                                        className={side === "right" ? "is-active" : undefined}
+                                        onClick={() => onPinTense?.(tenseId, "right")}
+                                    >
+                                        {side === "right" ? STR.help.unpin : STR.help.pinRight}
+                                    </Button>
+                                </div>
+                            )
+                        }}
+                    />
                 </div>
                 <div className="app-screen__footer actions">
                     <Button

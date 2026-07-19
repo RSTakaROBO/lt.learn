@@ -10,7 +10,7 @@ import { useHelpScreenOpenEffect } from "src/hooks/useHelpScreenOpenEffect.js"
 /**
  * @param {{ heightMode?: "fill"|"scroll" }} [props]
  */
-export function CasesHelpScreen({ heightMode = "fill" } = {}) {
+export function CasesHelpScreen({ heightMode = "fill", dockedCases, onPinCase } = {}) {
     const [uiState, dispatch] = useTrainerApp()
     const open = uiState.overlay.casesHelp
     const shellRef = useRef(null)
@@ -38,7 +38,31 @@ export function CasesHelpScreen({ heightMode = "fill" } = {}) {
                     ref={scrollBlockRef}
                     className="app-screen__body cases-help-scroll-block u-scrollbar-hidden"
                 >
-                    <CasesHelpTables />
+                    <CasesHelpTables
+                        renderControls={(caseKey) => {
+                            const side = dockedCases?.left?.includes(caseKey)
+                                ? "left"
+                                : dockedCases?.right?.includes(caseKey)
+                                  ? "right"
+                                  : null
+                            return (
+                                <div className="cases-help-pin-actions">
+                                    <Button
+                                        className={side === "left" ? "is-active" : undefined}
+                                        onClick={() => onPinCase?.(caseKey, "left")}
+                                    >
+                                        {side === "left" ? STR.help.unpin : STR.help.pinLeft}
+                                    </Button>
+                                    <Button
+                                        className={side === "right" ? "is-active" : undefined}
+                                        onClick={() => onPinCase?.(caseKey, "right")}
+                                    >
+                                        {side === "right" ? STR.help.unpin : STR.help.pinRight}
+                                    </Button>
+                                </div>
+                            )
+                        }}
+                    />
                 </div>
                 <div className="app-screen__footer actions">
                     <Button

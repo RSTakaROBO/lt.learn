@@ -55,7 +55,7 @@ const CASE_ENDINGS = [
     },
 ]
 
-function CaseTitle({ caseKey }) {
+export function CaseTitle({ caseKey }) {
     const lt = CASE_BY_KEY[caseKey]?.lt ?? caseKey
 
     return (
@@ -81,13 +81,25 @@ function EndingsRow({ label, endings }) {
     )
 }
 
-/** Окончания по падежам: исходная форма, единственное и множественное число. */
-export function CasesHelpTables() {
-    return CASE_ENDINGS.map(({ key, id, singular, plural, note }) => (
-        <section className="cases-help-case-block" aria-labelledby={id} key={key}>
-            <h3 className="cases-help-table-title" id={id}>
-                <CaseTitle caseKey={key} />
-            </h3>
+/** Одна таблица окончаний; используется и в справке, и в боковой карточке. */
+export function CaseReferenceCard({ caseKey, controls = null, docked = false }) {
+    const item = CASE_ENDINGS.find((entry) => entry.key === caseKey)
+    if (!item) return null
+
+    const { key, id, singular, plural, note } = item
+    const titleId = docked ? undefined : id
+
+    return (
+        <section
+            className={docked ? "case-reference-dock-card" : "cases-help-case-block"}
+            aria-labelledby={titleId}
+        >
+            <div className="cases-help-case-heading">
+                <h3 className="cases-help-table-title" id={titleId}>
+                    <CaseTitle caseKey={key} />
+                </h3>
+                {controls}
+            </div>
             <div className="cases-help-table-wrap">
                 <table className="cases-help-table cases-help-table--endings">
                     <tbody>
@@ -99,5 +111,12 @@ export function CasesHelpTables() {
             </div>
             {note && <p className="cases-help-case-note sub">{note}</p>}
         </section>
+    )
+}
+
+/** Окончания по падежам: исходная форма, единственное и множественное число. */
+export function CasesHelpTables({ renderControls }) {
+    return CASE_ENDINGS.map(({ key }) => (
+        <CaseReferenceCard key={key} caseKey={key} controls={renderControls?.(key)} />
     ))
 }

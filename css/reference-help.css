@@ -17,6 +17,284 @@
     margin-bottom: 1.2rem;
 }
 
+.cases-help-case-heading {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem;
+}
+
+.cases-help-case-heading .cases-help-table-title {
+    flex: 1;
+}
+
+.cases-help-pin-actions {
+    display: none;
+    flex: 0 0 auto;
+    gap: 0.25rem;
+}
+
+.cases-help-pin-actions .btn {
+    min-height: 0;
+    padding: 0.22rem 0.42rem;
+    font-size: 0.68rem;
+    box-shadow: none;
+}
+
+.cases-help-pin-actions .btn.is-active {
+    color: var(--accent);
+    border-color: var(--accent);
+}
+
+.case-reference-dock {
+    display: none;
+}
+
+.verb-tenses-reference-dock {
+    display: none;
+}
+
+.reference-dock-configurator {
+    display: none;
+}
+
+@media (min-width: 1120px) and (pointer: fine) {
+    .cases-help-pin-actions {
+        display: flex;
+    }
+
+    .case-reference-dock,
+    .verb-tenses-reference-dock {
+        position: fixed;
+        top: max(var(--shell-pad-top), env(safe-area-inset-top, 0px));
+        bottom: 1rem;
+        z-index: 30;
+        display: flex;
+        width: min(22.8rem, calc((100vw - var(--shell-max-width)) / 2 - 1.5rem));
+        min-width: 14rem;
+        flex-direction: column;
+        gap: 0.75rem;
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        padding: 0;
+    }
+
+    .reference-dock-configurator {
+        position: fixed;
+        right: max(1rem, env(safe-area-inset-right, 0px));
+        top: max(1rem, env(safe-area-inset-top, 0px));
+        z-index: 45;
+        display: block;
+    }
+
+    .reference-dock-configurator__trigger {
+        display: grid;
+        width: 3.1rem;
+        height: 3.1rem;
+        place-items: center;
+        border: 1px solid color-mix(in srgb, var(--accent) 48%, var(--border));
+        border-radius: 50%;
+        background: color-mix(in srgb, var(--surface) 88%, var(--accent));
+        color: var(--accent);
+        box-shadow: var(--shadow-soft);
+        cursor: pointer;
+        font: inherit;
+        line-height: 1;
+        backdrop-filter: blur(16px);
+    }
+
+    .reference-dock-configurator__trigger svg {
+        width: 1.45rem;
+        height: 1.45rem;
+        fill: none;
+        stroke: currentColor;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-width: 1.8;
+    }
+
+    .reference-dock-configurator__trigger:hover,
+    .reference-dock-configurator__trigger[aria-expanded="true"] {
+        background: var(--accent);
+        color: var(--surface);
+        transform: translateY(-2px);
+    }
+
+    .reference-dock-configurator__popover {
+        position: absolute;
+        right: 0;
+        top: calc(100% + 0.7rem);
+        width: min(22rem, calc(100vw - 2rem));
+        padding: 1rem;
+        border: 1px solid color-mix(in srgb, var(--border) 80%, var(--accent));
+        border-radius: var(--radius-panel);
+        background: var(--surface-glass);
+        box-shadow: var(--shadow-soft);
+        backdrop-filter: blur(18px);
+    }
+
+    .reference-dock-configurator__popover h2 {
+        margin: 0 0 0.8rem;
+        font-size: 1rem;
+    }
+
+    .reference-dock-configurator__side > div {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 0.35rem;
+    }
+
+    .reference-dock-configurator__side .btn {
+        min-height: 0;
+        padding: 0.38rem 0.5rem;
+        box-shadow: none;
+        font-size: 0.78rem;
+    }
+
+    .reference-dock-configurator__side .btn.is-active {
+        color: var(--accent);
+        border-color: var(--accent);
+        background: color-mix(in srgb, var(--accent) 12%, transparent);
+    }
+
+    .reference-dock-configurator__field,
+    .reference-dock-configurator__side {
+        display: grid;
+        gap: 0.3rem;
+        margin-top: 0.8rem;
+        color: var(--muted);
+        font-size: 0.76rem;
+        font-weight: 600;
+    }
+
+    .reference-dock-configurator__field select {
+        width: 100%;
+        min-width: 0;
+        padding: 0.52rem 0.6rem;
+        border: 1px solid var(--border);
+        border-radius: 0.65rem;
+        background: var(--surface);
+        color: var(--text);
+        font: inherit;
+        font-size: 0.86rem;
+    }
+
+    .case-reference-dock--left,
+    .verb-tenses-reference-dock--left {
+        right: calc(50% + var(--shell-max-width) / 2 + 0.75rem);
+    }
+
+    .case-reference-dock--right,
+    .verb-tenses-reference-dock--right {
+        left: calc(50% + var(--shell-max-width) / 2 + 0.75rem);
+    }
+
+    .reference-docks:has(.case-reference-dock--left):has(.verb-tenses-reference-dock--left)
+        .case-reference-dock--left,
+    .reference-docks:has(.case-reference-dock--right):has(.verb-tenses-reference-dock--right)
+        .case-reference-dock--right {
+        bottom: calc(50% + 0.45rem);
+    }
+
+    .reference-docks:has(.case-reference-dock--left):has(.verb-tenses-reference-dock--left)
+        .verb-tenses-reference-dock--left,
+    .reference-docks:has(.case-reference-dock--right):has(.verb-tenses-reference-dock--right)
+        .verb-tenses-reference-dock--right {
+        top: calc(50% + 0.45rem);
+    }
+
+    .case-reference-dock-card {
+        position: relative;
+        padding: 0.8rem;
+        border: 1px solid color-mix(in srgb, var(--border) 72%, var(--hairline));
+        border-radius: var(--radius-panel);
+        background: color-mix(in srgb, var(--surface) 94%, transparent);
+        box-shadow: 0 0.5rem 1.5rem color-mix(in srgb, var(--bg) 28%, transparent);
+        backdrop-filter: blur(14px);
+    }
+
+    .verb-tenses-reference-dock-card {
+        position: relative;
+        padding: 0.8rem;
+        border: 1px solid color-mix(in srgb, var(--border) 72%, var(--hairline));
+        border-radius: var(--radius-panel);
+        background: color-mix(in srgb, var(--surface) 94%, transparent);
+        box-shadow: 0 0.5rem 1.5rem color-mix(in srgb, var(--bg) 28%, transparent);
+        backdrop-filter: blur(14px);
+    }
+
+    .case-reference-dock-card .cases-help-table-title {
+        padding-right: 1.4rem;
+    }
+
+    .case-reference-dock__unpin {
+        position: absolute;
+        top: 0.52rem;
+        right: 0.52rem;
+        width: 1.45rem;
+        height: 1.45rem;
+        padding: 0;
+        border: 0;
+        border-radius: 50%;
+        background: transparent;
+        color: var(--muted);
+        cursor: pointer;
+        font: inherit;
+        font-size: 1.25rem;
+        line-height: 1;
+    }
+
+    .verb-tenses-reference-dock__unpin {
+        position: absolute;
+        top: 0.52rem;
+        right: 0.52rem;
+        width: 1.45rem;
+        height: 1.45rem;
+        padding: 0;
+        border: 0;
+        border-radius: 50%;
+        background: transparent;
+        color: var(--muted);
+        cursor: pointer;
+        font: inherit;
+        font-size: 1.25rem;
+        line-height: 1;
+    }
+
+    .case-reference-dock__unpin:hover {
+        color: var(--text);
+        background: color-mix(in srgb, var(--accent) 12%, transparent);
+    }
+
+    .verb-tenses-reference-dock__unpin:hover {
+        color: var(--text);
+        background: color-mix(in srgb, var(--accent) 12%, transparent);
+    }
+
+    .case-reference-dock .cases-help-table {
+        font-size: 0.7rem;
+    }
+
+    .verb-tenses-reference-dock .cases-help-table {
+        font-size: 0.68rem;
+    }
+
+    .case-reference-dock .cases-help-table th,
+    .case-reference-dock .cases-help-table td {
+        padding: 0.32rem 0.16rem;
+    }
+
+    .verb-tenses-reference-dock .cases-help-table th,
+    .verb-tenses-reference-dock .cases-help-table td {
+        padding: 0.32rem 0.22rem;
+    }
+
+    .case-reference-dock .cases-help-table--endings th[scope="row"] {
+        padding-inline: 0.28rem 0.15rem;
+        font-size: 0.65rem;
+    }
+}
+
 .cases-help-case-block:last-child {
     margin-bottom: 0;
 }
@@ -103,6 +381,11 @@
 
 .cases-help-table--endings td {
     padding-inline: 0.15rem;
+}
+
+.cases-help-table--endings tbody tr:first-child th,
+.cases-help-table--endings tbody tr:first-child td {
+    background: color-mix(in srgb, var(--accent) 13%, var(--surface));
 }
 
 .cases-help-table th,
