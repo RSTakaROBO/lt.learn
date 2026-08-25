@@ -110,7 +110,22 @@ h1 {
     overflow: visible;
     padding: 2rem 1.5rem;
   }
-  .hero__visual img { max-width: min(100%, 420px); }
+  .hero__content {
+    grid-row: 1;
+  }
+
+  .hero__visual {
+    grid-row: 2;
+    width: 100%;
+    min-height: auto;
+    max-height: none;
+    align-self: start;
+  }
+
+  .hero__visual img {
+    width: min(100%, 420px);
+    max-height: none;
+  }
 }
 
 .policy-page { background: #fff8ef; }
