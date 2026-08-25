@@ -102,9 +102,12 @@ h1 {
 
 @media (max-width: 760px) {
   .hero {
+    height: auto;
+    min-height: 100svh;
     grid-template-columns: 1fr;
-    grid-template-rows: auto minmax(0, 1fr);
+    grid-template-rows: auto auto;
     gap: 1.25rem;
+    overflow: visible;
     padding: 2rem 1.5rem;
   }
   .hero__visual img { max-width: min(100%, 420px); }
