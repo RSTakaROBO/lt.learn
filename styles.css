@@ -158,3 +158,14 @@ h1 {
   font-size: 1rem;
   line-height: 1.68;
 }
+
+.policy__card ul {
+  margin: .7rem 0 0;
+  padding-left: 1.25rem;
+  color: #65574f;
+  line-height: 1.68;
+}
+
+.policy__card li + li { margin-top: .45rem; }
+
+.policy__card a { color: #b85408; }
