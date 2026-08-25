@@ -4,4 +4,4 @@
 
 После публикации через GitHub Pages политика будет доступна по адресу:
 
-`https://rstakarobo.github.io/lt.learning/privacy.html`
+`https://rstakarobo.github.io/lt.learn/privacy.html`
