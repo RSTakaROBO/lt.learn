@@ -43,7 +43,7 @@ h1 {
 .lead {
   margin: 2rem 0 .55rem;
   color: #c95c08;
-  font-size: clamp(1.35rem, 2.2vw, 2rem);
+  font-size: clamp(1.55rem, 2.7vw, 2.5rem);
   font-weight: 800;
   line-height: 1.2;
 }
@@ -56,9 +56,17 @@ h1 {
   line-height: 1.65;
 }
 
+.availability-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .55rem;
+}
+
 .android-badge {
   display: inline-flex;
   align-items: center;
+  min-height: 3rem;
+  justify-content: center;
   gap: .65rem;
   padding: .75rem 1.05rem;
   border: 1px solid #eac6a7;
@@ -70,6 +78,24 @@ h1 {
 }
 
 .android-badge svg { width: 1.45rem; fill: #c95c08; }
+
+.web-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  min-height: 3rem;
+  justify-content: center;
+  padding: .75rem 1.05rem;
+  border: 1px solid #c95c08;
+  border-radius: 999px;
+  background: #c95c08;
+  color: #fffdf9;
+  font-size: .9rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.web-badge:hover { background: #ad4e06; border-color: #ad4e06; }
 
 .privacy-link {
   display: block;
@@ -187,3 +213,11 @@ h1 {
 .policy__card li + li { margin-top: .45rem; }
 
 .policy__card a { color: #b85408; }
+
+.web-button {
+  display: inline-flex;
+  width: fit-content;
+  margin: 1.1rem 0 .7rem;
+  padding: .9rem 1.3rem;
+  font-size: 1rem;
+}
